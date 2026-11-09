@@ -128,15 +128,19 @@ def mat_prices(m, k=10):
 # ---------- layout ----------
 NAV = [("/jajae/", "자재 백과"), ("/jaryo/", "전체 자재"), ("/video/", "영상"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/visit.html", "매장 안내")]
 
-def page(path, title, desc, body, active="", jsonld=None):
+def page(path, title, desc, body, active="", jsonld=None, img=None):
     canon = BASE + ("/" + path if path != "index.html" else "/").replace("index.html", "")
     nav = "".join(f'<a href="{h}"{" class=on" if active==h else ""}>{t}</a>' for h, t in NAV)
-    ld = f'<script type="application/ld+json">{json.dumps(jsonld, ensure_ascii=False)}</script>' if jsonld else ""
+    lds = jsonld if isinstance(jsonld, list) else ([jsonld] if jsonld else [])
+    lds = lds + [{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "홈", "item": BASE + "/"}] +
+                 ([{"@type": "ListItem", "position": 2, "name": dict(NAV).get(active, ""), "item": BASE + active}] if active and active != "/" else []) +
+                 ([{"@type": "ListItem", "position": 3 if active else 2, "name": title.split(" — ")[0].split(" | ")[0], "item": canon}] if canon.rstrip("/") != (BASE + active).rstrip("/") and path != "index.html" else [])}]
+    ld = "".join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>' for x in lds)
     doc = f"""<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{E(title)}</title><meta name="description" content="{E(desc)}">
 <link rel="canonical" href="{canon}"><meta name="naver-site-verification" content="a59ff6921fc90666c920da00bf9a23ecb0ba3514"><meta property="og:type" content="website"><meta property="og:title" content="{E(title)}">
-<meta property="og:description" content="{E(desc)}"><meta property="og:url" content="{canon}"><meta property="og:image" content="https://i.ytimg.com/vi/xPsUVr7exLU/hqdefault.jpg">
+<meta property="og:description" content="{E(desc)}"><meta property="og:url" content="{canon}"><meta property="og:image" content="{E(img or "https://i.ytimg.com/vi/xPsUVr7exLU/hqdefault.jpg")}"><meta property="og:site_name" content="영진종합목재 (월드건축자재)"><meta property="og:locale" content="ko_KR"><meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/assets/style.css">{'<meta name="robots" content="noindex,nofollow">' if PREVIEW else ''}{ld}</head><body>
 <div class="top"><div class="wrap row sb"><span>{HOURS} · {ADDR}</span><span><a href="/dome.html">업체·도매회원</a> <a href="/visit.html">매장 길찾기</a></span></div></div>
 <header><div class="wrap row sb hd"><a class="logo" href="/"><b>영진종합목재 (월드건축자재)</b><small>· 충청권 최대규모 목재상</small></a>
@@ -171,7 +175,8 @@ CTA = f"""<section class="cta"><div class="wrap g2"><div><h2>실물 보고, 원�
 
 BIZ = {"@context": "https://schema.org", "@type": "HardwareStore", "name": "월드건축자재(영진종합목재)",
        "telephone": "+82-42-545-2900", "address": {"@type": "PostalAddress", "streetAddress": "유성대로 44, 1층", "addressLocality": "대전", "addressCountry": "KR"},
-       "openingHours": "Mo-Sa 08:00-18:00", "url": BASE + "/", "sameAs": [YT, MALL]}
+       "openingHours": "Mo-Sa 08:00-18:00", "url": BASE + "/", "sameAs": [YT, MALL], "alternateName": ["영진종합목재", "월드건축자재", "영진목재"],
+       "image": "https://i.ytimg.com/vi/xPsUVr7exLU/hqdefault.jpg", "priceRange": "₩", "areaServed": ["대전", "세종"]}
 
 # ---------- pages ----------
 def build():
@@ -218,8 +223,10 @@ def build():
     for p in POSTS:
         vids = "".join(embed(byid[i]) if i in byid else f'<div class="emb"><iframe loading="lazy" src="https://www.youtube.com/embed/{E(i)}" allowfullscreen></iframe></div>' for i in p.get("videos", [])[:2])
         art = {"@context": "https://schema.org", "@type": "Article", "headline": p["title"], "datePublished": p.get("date", ""), "author": {"@type": "Organization", "name": "월드건축자재(영진종합목재)"}, "publisher": {"@type": "Organization", "name": "월드건축자재(영진종합목재)"}}
+        pimg = f"https://i.ytimg.com/vi/{p['videos'][0]}/hqdefault.jpg" if p.get("videos") else None
+        if pimg: art["image"] = pimg
         page(f"news/{p['slug']}.html", f"{p['title']} | 대전 월드건축자재", p.get("desc", p["title"]),
-             f'<article class="wrap sec post"><p class="crumb"><a href="/news/">소식·정보</a> › {E(p.get("date",""))}</p><h1>{E(p["title"])}</h1>{vids}<div class="pb">{p["body"]}</div></article>{CTA}', "/news/", art)
+             f'<article class="wrap sec post"><p class="crumb"><a href="/news/">소식·정보</a> › {E(p.get("date",""))}</p><h1>{E(p["title"])}</h1>{vids}<div class="pb">{p["body"]}</div></article>{CTA}', "/news/", art, pimg)
 
     # 자재 백과
     lst = "".join(f'<a class="mc" href="/jajae/{m["slug"]}.html"><b>{m["name"]}</b><small>{" · ".join(m["where"][:2])}</small></a>' for m in MATS)
@@ -244,14 +251,15 @@ def build():
 <section class="wrap sec"><h2>{m['name']} 시공·사용 영상</h2>{vid}</section>{CTA}"""
         page(f"jajae/{m['slug']}.html", f"{m['kw']} — {m['name']} 용도·기준가 | 대전 월드건축자재",
              f"{m['name']} 용도와 인테리어 효과, 규격별 소매 기준가, 시공 영상. 대전 유성 월드건축자재 매장에서 즉석 재단.", body, "/jajae/",
-             {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq})
+             {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq},
+             (ph[0]["img"] if ph else (f"https://i.ytimg.com/vi/{vs[0]['id']}/hqdefault.jpg" if vs else None)))
 
     # 전체 자재 (쇼핑몰 자재 사진 목록)
     cnt = {c: sum(1 for p in PROD if c in p["tops"]) for c, *_ in JCAT}
     thumb = {c: next((p["img"] for p in PROD if c in p["tops"]), "") for c, *_ in JCAT}
     jl = "".join(f'<a class="pd" href="/jaryo/{sl}.html"><span class="pi"><img loading="lazy" src="{E(thumb[c])}" alt="{n}"></span><b>{n}</b><small>{d} · {cnt[c]}종</small></a>' for c, sl, n, d in JCAT if cnt[c])
     page("jaryo/index.html", f"전체 자재 사진 {len([p for p in PROD if p['tops']])}종 — 목재·합판·데크·사이딩·철물 | 대전 월드건축자재", "대전 월드건축자재(영진목재) 매장 취급 자재를 사진으로 확인하세요. 각재, 합판, 집성판, 데크, 마루, 내장재, 타일, 사이딩, 철물, 스테인.",
-         f'<section class="wrap sec"><h1>전체 자재</h1><p class="lead">매장에서 취급하는 자재를 사진으로 모았습니다. 실물은 대전 매장에서 보고, 원하는 사이즈로 재단해 가세요. 가격은 <a href="/price.html">기준가</a> 또는 매장에서 안내합니다.</p><div class="pg">{jl}</div></section>{CTA}', "/jaryo/")
+         f'<section class="wrap sec"><h1>전체 자재</h1><p class="lead">매장에서 취급하는 자재를 사진으로 모았습니다. 실물은 대전 매장에서 보고, 원하는 사이즈로 재단해 가세요. 가격은 <a href="/price.html">기준가</a> 또는 매장에서 안내합니다.</p><div class="pg">{jl}</div></section>{CTA}', "/jaryo/", None, thumb.get("24"))
     for c, sl, n, d in JCAT:
         ps = [p for p in PROD if c in p["tops"]]
         if not ps: continue
@@ -265,7 +273,9 @@ def build():
             secs += f'<h2 id="s{(sb or "x").split("/")[-1] or "x"}">{E(title)} <small class="muted">{len(g)}종</small></h2><div class="pg">{"".join(pcard(p) for p in g)}</div>'
         toc = " · ".join(f'<a href="#s{(sb or "x").split("/")[-1] or "x"}">{E(MCAT.get(sb or "", "") or "기타")}</a>' for sb in subs)
         page(f"jaryo/{sl}.html", f"{n} 종류 사진 {len(ps)}종 — {d} | 대전 월드건축자재", f"{n} 종류를 사진으로 확인하세요: {d}. 대전 유성 월드건축자재(영진목재) 매장 취급, 즉석 재단.",
-             f'<section class="wrap sec"><p class="crumb"><a href="/jaryo/">전체 자재</a> › {n}</p><h1>{n} <small class="muted">{len(ps)}종</small></h1><p class="lead">{d}. 사진을 누르면 상세 사진이 열립니다. 실물 확인·재단은 대전 매장에서 합니다.</p><p class="small">{toc}</p>{secs}</section>{CTA}', "/jaryo/")
+             f'<section class="wrap sec"><p class="crumb"><a href="/jaryo/">전체 자재</a> › {n}</p><h1>{n} <small class="muted">{len(ps)}종</small></h1><p class="lead">{d}. 사진을 누르면 상세 사진이 열립니다. 실물 확인·재단은 대전 매장에서 합니다.</p><p class="small">{toc}</p>{secs}</section>{CTA}', "/jaryo/",
+             {"@context": "https://schema.org", "@type": "ItemList", "name": f"{n} 종류", "numberOfItems": len(ps),
+              "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": p["name"], "image": p["img"]} for i, p in enumerate(ps[:100])]}, ps[0]["img"])
 
     # 영상
     vl = "".join(f'<a class="uc" href="/video/{c}.html"><b>{n}</b><small>{d} · {sum(1 for v in V if v["cat"]==c)}편</small></a>' for c, n, d in CATS)
@@ -274,7 +284,9 @@ def build():
     for c, n, d in CATS:
         vs = top(lambda v: v["cat"] == c, 40)
         page(f"video/{c}.html", f"{n} 영상 — {d} | 월드건축자재DIY 대전", f"{n} 관련 시공·DIY 영상 모음({d}). 영상에 나온 자재는 대전 월드건축자재 매장에서.",
-             f'<section class="wrap sec"><p class="crumb"><a href="/video/">영상</a> › {n}</p><h1>{n}</h1><p class="lead">{d}</p><div class="vg">{"".join(vcard(v) for v in vs)}</div><p><a href="{YT}">더 많은 영상은 유튜브에서 →</a></p></section>{CTA}', "/video/")
+             f'<section class="wrap sec"><p class="crumb"><a href="/video/">영상</a> › {n}</p><h1>{n}</h1><p class="lead">{d}</p><div class="vg">{"".join(vcard(v) for v in vs)}</div><p><a href="{YT}">더 많은 영상은 유튜브에서 →</a></p></section>{CTA}', "/video/",
+             {"@context": "https://schema.org", "@type": "ItemList", "name": f"{n} 영상", "itemListElement": [{"@type": "ListItem", "position": i + 1, "url": vurl(v), "name": v["title"]} for i, v in enumerate(vs)]},
+             f"https://i.ytimg.com/vi/{vs[0]['id']}/hqdefault.jpg" if vs else None)
 
     # 기준가
     groups = {}
