@@ -56,27 +56,35 @@ JCAT = [("23", "gakjae", "각재·구조재", "다루끼·구조재·방부목·
         ("32", "hardware", "철물", "건축철물·타카·인테리어철물·공학목재철물"), ("35", "paint", "페인트·스테인", "오일스테인·페인트·작업도구"),
         ("37", "sopum", "소품·부자재", "정원가구·목재소품·철제가구·공구·접착제")]
 JTOP = {c for c, *_ in JCAT}
-JEXC = {"24": r"본드|프라이머|실리콘|석고|아이소|스티로|에이스|도깨비|페인트", "27": r"프라이머|도깨비|페인트",
-        "28": r"세라픽스|멘트"}
+JEXC = {"23": r"루바|사이딩|판재|우드블럭|데크|후로링|마루|래티스|클립|엠보",
+        "24": r"본드|프라이머|실리콘|석고|아이소|스티로|에이스|도깨비|페인트|부식|산화제",
+        "27": r"프라이머|도깨비|페인트|부식|산화제", "28": r"세라픽스|멘트|드라이픽스|시공사례", "31": r"코르크", "32": r"프라이머"}
+# 이름으로 분류를 바로잡는 규칙 (쇼핑몰 분류 대신 사용)
+JFORCE = [(r"^석고보드$", ["27/166"]), (r"시공사례", ["54/375"]), (r"본드|실리콘(?!건)|파워멘트|세라픽스|드라이픽스|백시멘트", ["37/400"]),
+          (r"프라이머|도깨비|규조토 페인트|부식 (산화제|마감제)", ["35/356"])]
 for p in PROD:
+    for rx, cs in JFORCE:
+        if re.search(rx, p["name"]) and not re.search(r"실리콘건", p["name"]): p["cats"] = cs; break
     tops = [c.split("/")[0] for c in p["cats"]]
     p["top"] = next((t for t in tops if t in JTOP), None)
     if not p["top"] and not any(t in ("54", "59") for t in tops):  # 매출탑·세일 분류에만 있는 자재는 이름으로 분류
-        for rx, t in (("집성", "53"), ("루바|코코넛", "27"), ("데크|난간|핸드레일", "25"), ("철물|프라이머", "32")):
-            if re.search(rx, p["name"]): p["top"] = t; break
+        for rx, c in (("집성", "53/349"), ("루바", "27/156"), ("코코넛", "27/160"), ("핸드레일", "23/136"), ("데크|난간", "25/146"), ("철물", "32/333")):
+            if re.search(rx, p["name"]): p["top"] = c.split("/")[0]; p["cats"].append(c); break
     p["tops"] = [t for t in dict.fromkeys(tops) if t in JTOP] or ([p["top"]] if p["top"] else [])
     # 쇼핑몰에서 엉뚱한 분류에 같이 들어간 것 정리 (예: 본드가 합판/MDF에)
     ok = [t for t in p["tops"] if not (t in JEXC and re.search(JEXC[t], p["name"]))]
     if ok != p["tops"]:
-        p["tops"] = ok or ["30" if re.search(r"석고|아이소|스티로|에이스|단열", p["name"]) else "37"]
-        p["top"] = p["tops"][0]
-        if p["top"] == "30" and "30" not in [c.split("/")[0] for c in p["cats"]]: p["cats"].append("30/183")
+        if not ok:
+            for rx, c in ((r"사이딩", "31/186"), (r"마루|후로링", "26/148"), (r"루바", "27/156"), (r"데크|클립", "25/147"), (r"판재|엠보", "24/318"),
+                          (r"석고|아이소|스티로|에이스|단열", "30/183"), (r".", "37/397")):
+                if re.search(rx, p["name"]): p["cats"].append(c); ok = [c.split("/")[0]]; break
+        p["tops"] = ok; p["top"] = ok[0]
     p["sub"] = next((c for c in p["cats"] if c.split("/")[0] == p["top"] and c.split("/")[1]), None)
 def subof(p, top): return next((c for c in p["cats"] if c.split("/")[0] == top and c.split("/")[1]), None)
 # 자재 백과 사진: slug → (쇼핑몰 분류, 이름 정규식, 제외 정규식)
 MPHOTO = {"hapan": (["24/140"], "합판|판넬|보드", "OSB|O\\.S\\.B|M\\.?D\\.?F|석고|아이소|스티로|본드|실리콘|프라이머|에이스|문$"), "osb": ([], "OSB|O\\.S\\.B|스마트랩", None),
-          "mdf": ([], "M\\.?D\\.?F", None), "gujo": (["23/134"], ".", None), "bangbu": (["23/135", "25/144"], ".", None),
-          "hapdeck": (["25/146"], ".", None), "jipseong": (["53/349", "24/141"], "집성", None), "hinoki": (["23/137", "27/156"], "히노끼|삼목|스기|향목|편백|오비스기", None),
+          "mdf": ([], "M\\.?D\\.?F", None), "gujo": (["23/134"], ".", None), "bangbu": (["23/135", "25/144"], ".", "주춧돌"),
+          "hapdeck": (["25/146"], ".", "주춧돌|핸드레일"), "jipseong": (["53/349", "24/141"], "집성", None), "hinoki": (["23/137", "27/156"], "히노끼|삼목|스기|향목|편백|오비스기", None),
           "gypsum": ([], "석고보드|불연", "본드"), "siding": (["31/186"], ".", None), "insul": (["30/183"], ".", None), "stain": (["35/206", "25/249"], ".", None),
           "hardware": (["32/332", "32/333"], ".", None), "maru": (["26/247", "26/148", "26/149", "26/315"], ".", None), "film": ([], None, None),
           "molding": (["27/381"], ".", None), "chimmok": (["23/314"], "침목|우드빔|탄화|SYP", None), "tile": (["28/168", "28/167"], ".", None), "sound": (["30/182", "27/322"], ".", None)}
