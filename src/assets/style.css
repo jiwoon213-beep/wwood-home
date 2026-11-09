@@ -54,3 +54,10 @@ nav{gap:12px;font-size:14px;overflow-x:auto;flex-wrap:nowrap;width:100%;padding-
 .pd b{display:block;font-size:14px;line-height:1.35;padding:8px 10px 2px}
 .pd small{display:block;font-size:12px;color:#777;padding:0 10px 10px}
 @media(max-width:600px){.pg{grid-template-columns:repeat(2,1fr);gap:10px}}
+/* 영상·사진 크기 조정: PC에서 영상 최대 720px, 사진 카드 작게 */
+.emb{max-width:720px}
+.g2 .emb,.post .emb{max-width:100%}
+.post .emb{max-width:720px}
+.pg{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.pd b{font-size:13px}
+@media(max-width:600px){.pg{grid-template-columns:repeat(2,1fr);gap:10px}}
