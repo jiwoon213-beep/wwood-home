@@ -110,3 +110,5 @@ th small{font-weight:400;color:#a59e95}
 .psec{display:none}.psec.on{display:block}.psec h2{margin-top:10px}
 body.psearch .chips,body.psearch .pnav,body.psearch .swipe-hint{display:none}
 .swipe-hint{text-align:center;margin-top:12px}@media(min-width:901px){.swipe-hint{display:none}}
+body.psearch .pboard{display:none}
+.ptsec .srch.ptop{margin-top:4px}

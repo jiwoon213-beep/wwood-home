@@ -344,8 +344,8 @@ def build():
           "사이딩": "사이딩", "각재": "각재", "공구": "공구"}
     order = sorted([k for k in groups if k not in skip], key=lambda k: -max(p["qty"] for p in groups[k]))
     chips = "".join(f'<button type="button" class="chip{" on" if i == 0 else ""}" data-k="{i}">{E(GN.get(k, k))} <small>{len(groups[k])}</small></button>' for i, k in enumerate(order))
-    secs = (f'<div class="srch"><span class="si">🔍</span><input id="pq" type="search" placeholder="품목 검색 (예: 9.5T, 투바이, 경첩, OSB)" autocomplete="off" aria-label="기준가 품목 검색"><p id="pqn" class="small muted"></p></div>'
-            f'<div class="chips" id="pchips">{chips}</div><div class="pnav"><button type="button" id="pprev">◀ 이전</button><span id="pcur"></span><button type="button" id="pnext">다음 ▶</button></div>'
+    psearch = '<div class="srch ptop"><span class="si">🔍</span><input id="pq" type="search" placeholder="품목 검색 (예: 9.5T, 투바이, 경첩, OSB)" autocomplete="off" aria-label="기준가 품목 검색"><p id="pqn" class="small muted"></p></div>'
+    secs = (f'<div class="chips" id="pchips">{chips}</div><div class="pnav"><button type="button" id="pprev">◀ 이전</button><span id="pcur"></span><button type="button" id="pnext">다음 ▶</button></div>'
             + '<div id="psecs">' + "".join(f'<div class="psec{" on" if i == 0 else ""}" data-k="{i}" data-n="{E(GN.get(k, k))}"><h2>{E(GN.get(k, k))} <small class="muted">{len(groups[k])}개</small></h2><div class="tw"><table class="pt">{th}<tbody>'
                                          + "".join(row(p) for p in groups[k]) + "</tbody></table></div></div>" for i, k in enumerate(order)) + '</div>'
             + '<p class="small muted swipe-hint">← 옆으로 밀면 다음 분류로 넘어갑니다 →</p>')
@@ -354,9 +354,9 @@ def build():
     board = (f'<div class="card pb2"><h2>많이 찾는 자재 TOP 10</h2><p class="small muted">매장 판매 순위 기준 · 기준가 갱신일 {E(PMETA.get("updated",""))} · '
              f'지난 갱신 대비 <span class="up">▲ 오른 품목 {upn}</span> · <span class="dn">▼ 내린 품목 {dnn}</span></p><div class="tw"><table class="pt">{th}<tbody>'
              + "".join(row(p, f'<span class="rk">{i+1}</span>') for i, p in enumerate(top10)) + "</tbody></table></div></div>")
-    secs = board + secs
+    secs = psearch + '<div class="pboard">' + board + '</div>' + secs
     page("price.html", "목재·건축자재 소매 기준가 — 합판·MDF·구조재·방부목·석고보드 | 대전 월드건축자재", "대전 월드건축자재(영진목재) 소매 기준가. 부가세 별도, 결제·재단은 매장에서.",
-         f'<section class="wrap sec"><h1>소매 기준가</h1><p class="lead">자주 찾는 자재의 소매 기준가입니다(부가세 별도). 규격·수량에 따라 달라지며 재단비·운임은 매장에서 계산합니다. 도매가는 <a href="/dome.html">도매회원</a> 로그인 후 확인하세요.</p>{secs}</section>{CTA}', "/price.html")
+         f'<section class="wrap sec ptsec"><h1>소매 기준가</h1><p class="lead">자주 찾는 자재의 소매 기준가입니다(부가세 별도). 규격·수량에 따라 달라지며 재단비·운임은 매장에서 계산합니다. 도매가는 <a href="/dome.html">도매회원</a> 로그인 후 확인하세요.</p>{secs}</section>{CTA}', "/price.html")
 
     # 도매
     page("dome.html", "건축자재 도매·현장 납품 — 인테리어 업체·목수 도매회원 | 대전 월드건축자재", "인테리어 업체·목수·시공사 도매회원. 사업자등록증·명함 확인 후 승인, 회원가 적용, 현장 납품, 세금계산서 월 1회.",
