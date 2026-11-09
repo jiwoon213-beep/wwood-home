@@ -3,7 +3,7 @@ XRIj-0DB2pE	L	332	greenhouse		온실하우스 완공편 | 마당에 직접 지�
 AdCLGij_jWA	S	21	deck	bangbu	데크시공 간격 | 쪽이 안 맞을 땐 스킬로! 방부목 데크 깔끔하게 맞추는 법
 XfO8Vd21Swo	L	204	greenhouse	hinoki	목조비닐하우스짓기 완결편 | 모서리 샌딩부터 히노끼 문틀·빨간 문·차광막 설치까지 (비닐하우스 문만들기)
 d5KR88aKPyI	S	1214	deck	bangbu/stain	방부목 데크 관리 | 안 썩게 하려면 이것만! 끝 고정 + 오일스테인 2회
-fmiEtB3RLLM	S	1209	wall	hardware	목공 배우기 | 피스 길이, 두께 따라 이렇게 고르세요 (32mm vs 6×50)
+fmiEtB3RLLM	S	1209	tool	hardware	목공 배우기 | 피스 길이, 두께 따라 이렇게 고르세요 (32mm vs 6×50)
 zmiNfkYP_0g	L	308	electric		외부전선연결 | 비닐하우스 전기 공사, 배전함 연결부터 외부 전선관(CD관) 매립·콘센트 설치까지 (전기선 연장 1·2탄)
 2Kq4X4Lmulo	S	1310	greenhouse		목조주택 지붕시공 | 나무로 짓는 비닐하우스, 트러스 지붕 올리는 날!
 hRgMyOrEvKs	L	322	greenhouse		온실만들기 4편 | 바닥 데크부터 선반·개폐 창문까지, 휘지 않게 만드는 법 (목조온실하우스)
@@ -16,7 +16,7 @@ E3a4_padJ-c	S	1186	greenhouse		목조온실짓기 | 나무로 직접 짓는 비�
 hMTFTvldwBY	L	414	greenhouse		비닐하우스짓기 | 목조 비닐하우스 1·2편 몰아보기, 바닥 프레임부터 기둥·목상까지 무너지지 않는 골조 (목조온실만들기)
 EMrn9Ve_Vr8	S	231	furniture		가구 틀어지지 않게, 이것만 재세요
 ZasgN2mGWnM	L	232	furniture	gujo	파티션 만들기 | 원목 파티션 돈 주고 사지 마세요, 스프러스 구조재로 공간분리 DIY (드릴 하나면 끝)
-CqSu2k1Qlkw	S	1080	material	hardware	원목 평상, 피스만 박으면 끝!
+CqSu2k1Qlkw	S	1080	furniture	hardware	원목 평상, 피스만 박으면 끝!
 il-XDxYIgIM	L	310	furniture		나무박스만들기 | 원목 사과박스 직접 조립하는 법, 틀어지지 않는 순서 (수납·캠핑)
 JvVk1Wl7uhY	S	1251	tool	hardware	피스 박을 때 이것만 지키세요
 hPEPtcMAaQY	L	155	furniture		나무간판만들기 | 가게 입간판 비싸게 사지 마세요, 셀프로 만드는 법 (실내·실외용)
@@ -39,30 +39,30 @@ ujyDvERoP18	L	264	furniture		이동식 테이블 만들기 | 이제 테이블 �
 ggRyCx4PvZw	L	202	material	hapan	목재재단 판매 | 합판 원하는 사이즈로 잘라서 집까지 배송, 인터넷 재단 주문 방법 3분 정리
 Kzrwjim2j38	S	986	kitchen		싱크대 통째로 바꾸지 마세요… 문짝만 갈았더니 이렇게 됩니다
 9QBiFpnsQr4	L	220	kitchen	hardware	싱크대셀프교체 | 싱크대 통째로 바꾸지 마세요, 문짝만 갈았더니 새 싱크대 됐습니다 (경첩 유격 조절까지)
-DeMMRHIAM5A	L	250	finish	film	반셀프인테리어 현장 관리 | 현장 갈 때마다 생수 3병 두세요, 기술자가 알아서 꼼꼼해지는 비법 & 필름 하자 대처법
+DeMMRHIAM5A	L	250	tips	film	반셀프인테리어 현장 관리 | 현장 갈 때마다 생수 3병 두세요, 기술자가 알아서 꼼꼼해지는 비법 & 필름 하자 대처법
 i3f6kwnwEkU	S	161	finish	film	#3 “제발 셀프로 하지 마세요” 인테리어 필름 전문가가 뜯어말리는 이유
 4285byZMG24	S	981	finish	film	#2 메탈릭 필름 붙였다가 전부 뜯어냈습니다… 밑작업 3단계 안 하면 생기는 대참사
-TwsifLn75os	L	132	material		인테리어비용줄이기 | 업체 안 쓰고 30% 싸게 끝내는 법, 자재 직접 사야 할 것 vs 맡겨야 할 것 (이거 모르면 손해)
+TwsifLn75os	L	132	tips		인테리어비용줄이기 | 업체 안 쓰고 30% 싸게 끝내는 법, 자재 직접 사야 할 것 vs 맡겨야 할 것 (이거 모르면 손해)
 TNoskSmLP_8	L	124	wall		반셀프인테리어 | 안 해도 되는 공사로 100만 원 버리지 마세요, 문틀·천장 셀프로 하면 비용 2배 드는 이유
 Zvd0rPdnK1o	S	2422	exterior		샤시 단창 시공할 때 프레임 완벽하게 맞추는 법 ㄷㄷ
 _m4kQ6jsmRE	L	191	tips		"진짜 목수 구별법 | ""숨고에서 목수 불렀다가 망했습니다"" 현직자가 밝히는 A급 목수 vs 잡기능공 고르는 법"
 dgbT0k4-87I	S	1718	wall	sound	층간소음 잡는 천연 방음재 목모보드의 정체
-mQVMtjWVYQQ	L	45	tool		"인테리어사기 안당하는법 | ""현장 못 가볼 거면 하지 마세요"" 과다견적·목공비 뻥튀기, 업자 사기 이것만 확인하세요"
+mQVMtjWVYQQ	L	45	tips		"인테리어사기 안당하는법 | ""현장 못 가볼 거면 하지 마세요"" 과다견적·목공비 뻥튀기, 업자 사기 이것만 확인하세요"
 uRVxQdgEsOM	S	1172	material	gujo/bangbu	방부각재 2x2, 2x4, 2x6 차이? 이것 모르면 데크 다 썩습니다! 😱 ㄷㄷ ㄷㄷ
-gmMGzyreTMo	L	34	material		"목재소 배달부에서 대표가 되기까지 | ""자재를 알아야 사기 안 당합니다"" 전신 화상을 이겨낸 월드건축자재 이야기"
+gmMGzyreTMo	L	34	tips		"목재소 배달부에서 대표가 되기까지 | ""자재를 알아야 사기 안 당합니다"" 전신 화상을 이겨낸 월드건축자재 이야기"
 VJCC4iP1ruM	S	3570	deck	hapdeck	합성데크 앞뒤 거꾸로 깔면 생기는 일! 12초 안에 확인하세요!
 FYFmoWtEpPQ	L	204	finish	maru	도배장판 순서 | 도배 먼저? 장판 먼저? 순서 틀리면 300만 원 날립니다, 반셀프 인테리어 마감 정답
 W0ZmNCnvB0k	S	1548	tips		성인 남성도 포기한 '기름 튀긴 나무'의 정체 ㄷㄷ ㄷㄷ
 mLHt4kPDiXY	L	156	finish	film	인테리어필름 싱크대·문틀 | 뜯지 마세요! 교체 비용 300만 원 아끼는 필름 시공의 비밀, 도배 전에 꼭 보세요
-KUHjBGZ3_MY	S	3836	greenhouse	hapan/osb	목조주택에 ‘이 합판’ 안 쓰면 손해? OSB의 비밀
+KUHjBGZ3_MY	S	3836	material	hapan/osb	목조주택에 ‘이 합판’ 안 쓰면 손해? OSB의 비밀
 2g8GGS0kxjQ	L	124	floor	maru	강마루시공 | 싱크대 먼저? 마루 먼저? 순서 틀리면 돈 날립니다, 강화마루시공·아일랜드 식탁까지 주방 인테리어 순서
 ujObIldRahc	S	2482	material	chimmok	1명이 절대 못 드는 '철도 침목' 무게 실화냐?
 SrHYgkCg314	L	75	floor	gypsum/tile	타일시공 | 욕실 타일이 자꾸 떨어지는 진짜 이유, 바인더·방수 석고보드부터 졸리컷 단점까지 전문가만 아는 1%
 _XuBvEvBNsg	S	1688	wall	gypsum	석고보드 1장만 붙이면 벽이 무너진다? 😱 하부 시공의 비밀 ㄷㄷ ㄷㄷ
 g-SBSN0j3xU	S	2071	greenhouse	roof	시골집 지붕이 다 '이것'인 진짜 이유! 가성비 끝판왕 지붕재
 N0Itecesyfs	S	1165	tips		인테리어 할 때 '이것' 순서 바뀌면 철거비 2배 듭니다 😱 ㄷㄷ ㄷㄷ
-egZ-vdRYoKQ	L	62	tool		배관설비공사 | 설비 잘못하면 아랫집 물바다 됩니다, 아파트 인테리어 망치는 1순위 누수 막는 법 (방수 노하우)
-__EjM77-M_I	S	1500	finish		조명 설치, 도배 전에 하면 무조건 후회합니다 깔끔한 마감의 비밀
+egZ-vdRYoKQ	L	62	floor		배관설비공사 | 설비 잘못하면 아랫집 물바다 됩니다, 아파트 인테리어 망치는 1순위 누수 막는 법 (방수 노하우)
+__EjM77-M_I	S	1500	electric		조명 설치, 도배 전에 하면 무조건 후회합니다 깔끔한 마감의 비밀
 Xs7ZNlGZj4U	S	489	electric		조명 먼저 달았다가 벽지 다 찢어집니다 (실패 없는 시공 순서)
 V13lafVE6aQ	S	493	electric		“조명 설치, 도배 끝나고 해야 공사 기간이 반으로 줄어듭니다”
 y8LywNQqJ98	S	454	electric		“조명 설치, 미리 하면 무조건 손해입니다 (실패 없는 인테리어 순서)”
@@ -90,7 +90,7 @@ gRVKWJVNrRU	S	463	tips		인테리어에 1억 써도 돈 버리는 이유? 결국
 98g_jPf1GpE	L	172	wall	gujo	인테리어비용줄이기 | 이거 모르면 집 망합니다, 공사비 2배 아끼는 반셀프 목공의 비밀 (덴조·가베·다루끼)
 2IrIiBMmVqU	S	270	tips		“인테리어 한 달 안에 끝내주세요” 이 말이 위험한 이유 (공사비 2배 아끼는 법)
 iVB69qqR81E	S	454	finish	maru	“도배랑 장판 같이 하면 안 되나요?” 인테리어 순서 모르면 인건비 2배로 날립니다
-5bFjOC3uwOc	S	1903	exterior		“베란다 확장 그냥 하면 원상복구?” 허가 없이 공사했다가 돈만 날리는 3가지 이유 ㄷㄷ
+5bFjOC3uwOc	S	1903	tips		“베란다 확장 그냥 하면 원상복구?” 허가 없이 공사했다가 돈만 날리는 3가지 이유 ㄷㄷ
 Og4WdgwLMAk	S	451	tips		“인테리어 업체 따로 부르지 마세요” 모르면 공사비 2배로 깨지는 결정적 실수
 bunNfxbsctM	S	424	exterior		“브랜드 샤시가 정답일까요?” 이름값에 속지 않고 200만 원 아끼는 인테리어 비밀
 4R0f0KLz9Yw	S	373	exterior		“비싼 유리 껴도 추운 이유?” 샤시 교체할 때 유리보다 ‘이것’ 두께가 10배 더 중요합니다
@@ -98,7 +98,7 @@ V5Gt0wZTVhg	S	414	exterior		“이거 안 하면 집 망합니다” 샤시 바�
 TGFgFo5HvPU	S	1535	tips		“모르면 무조건 손해!” 인테리어 철거 전 안 물어보면 100% 후회하는 것 ㄷㄷ
 Q9NT92KdSFg	S	483	tips		“이거 안 하면 집 망합니다” 철거 업체 부르기 전 모르면 공사비 2배 날리는 결정적 실수
 qsxkCwHDz8I	S	640	exterior		“이거 안 하면 집 망합니다” 철거할 때 샤시 업체 안 부르면 생기는 일 ㄷㄷ
-YbL8yGTBnQs	L	128	tool		반셀프인테리어 철거 | 철거 잘못하면 공사비 2배! 업자도 안 알려주는 철거·샷시 순서로 500만 원 아끼는 법
+YbL8yGTBnQs	L	128	tips		반셀프인테리어 철거 | 철거 잘못하면 공사비 2배! 업자도 안 알려주는 철거·샷시 순서로 500만 원 아끼는 법
 Y4RXilkheJE	S	1816	tips		“이거 안 하면 집 망합니다” 인테리어 다 하고도 집이 좁아 보이는 결정적인 이유 ㄷㄷ
 Hmznwo5D90I	S	987	finish	maru	500만 원 아끼는 인테리어 공식, '도배와 장판'만 제대로 해도 집이 바뀝니다 ㄷㄷ
 QMC97WgwTOA	S	1704	floor	tile	이거 안 하면 집 망합니다 화장실 타일 철거 없이 100만 원 아끼는 비밀
@@ -119,30 +119,30 @@ c1U2UcY5o08	S	2030	wall		“이거 안 하면 집 망합니다” 천장 철거 
 lxcCHFW7oyc	S	492	tips		“인테리어 순서 모르면 100% 후회합니다” 18초 만에 끝내는 공정 마스터
 JS5MGXiUVtU	S	2078	tips		“이거 모르면 집 망합니다” 인테리어 순서 틀려서 공사비 2배 날리는 최악의 실수 1위 ㄷㄷ
 hc7d89LmIwg	S	2305	tips		“인테리어 순서만 바꿔도 공사비가 반으로 줄어듭니다” ㄷㄷ
-OEw8qWg-Fec	S	467	exterior		“예뻐서 덥석 했다간 집 다 망합니다! 베란다 탄성코트 시공 전 ‘이것’ 모르면 100% 후회합니다”
+OEw8qWg-Fec	S	467	finish		“예뻐서 덥석 했다간 집 다 망합니다! 베란다 탄성코트 시공 전 ‘이것’ 모르면 100% 후회합니다”
 tMqvSkzDn-4	S	2167	wall		“순서 틀리면 다 뜯어야 합니다” 인테리어 망하기 싫으면 목공부터 하세요 ㄷㄷ
 4BEpf_FKkQY	S	1757	tips		“이거 모르면 인테리어 다 뜯습니다!” 전문가가 말하는 공사 순서 1순위의 비밀 ㄷㄷ
 Cye0VAgl0LQ	S	469	tips		“이거 안 뽑으면 공사 망합니다” 인테리어 철거할 때 99%가 놓치는 실수
 qTx9qk5wmTI	S	2182	tips		인테리어 사기 안 당하는 법? 딱 '이것' 하나만 확인하면 끝납니다 ㄷㄷ
 WEQFrik4GGY	S	2518	material	mdf	“이거 모르고 시공하면 백퍼 후회합니다” 현직 목수들이 절대 얇은 MDF 안 쓰는 진짜 이유 ㄷㄷ
-IYTMzBkPOxo	L	191	floor	maru	반셀프인테리어 순서 | 공정 순서 모르면 쌩돈 2,000만 원 날립니다, 철거부터 바닥재까지 셀프인테리어 순서 총정리
+IYTMzBkPOxo	L	191	tips	maru	반셀프인테리어 순서 | 공정 순서 모르면 쌩돈 2,000만 원 날립니다, 철거부터 바닥재까지 셀프인테리어 순서 총정리
 XbDRdVBzyjY	S	1734	wall	gypsum/insul	“석고보드만 붙이면 100% 곰팡이 생깁니다” 목수들은 절대 말 안 해주는 완벽 단열의 비밀 ㄷㄷ
 EbMWvmRrY1E	S	211	furniture		“가구 닦을 때 제발 ‘이것’ 좀 쓰지 마세요! 집 망가지는 지름길입니다”
-KcnddSGyRXg	S	362	wall		“인테리어 업체도 말 안 해줍니다” 공사 순서 모르면 쌩돈 1,000만 원 날리는 이유 (목공·전기 필수 가이드)
+KcnddSGyRXg	S	362	tips		“인테리어 업체도 말 안 해줍니다” 공사 순서 모르면 쌩돈 1,000만 원 날리는 이유 (목공·전기 필수 가이드)
 xfAi5yUFuQo	S	2191	furniture		가구 샀는데 ‘이것’ 모르면 100% 손해! 전문가가 알려주는 가구 등급 구별법 ㄷㄷ
 J4pGDaJT1s4	S	2147	material		“모르면 무조건 손해 봅니다” 전문가가 절대 안 쓰는 나쁜 목재 고르는 법 ㄷㄷ
-UqufB7Is4uA	S	2071	tips		모르면 집 망합니다! 좋은 나무 1초 만에 구별하는 전문가의 비밀 ㄷㄷ
+UqufB7Is4uA	S	2071	material		모르면 집 망합니다! 좋은 나무 1초 만에 구별하는 전문가의 비밀 ㄷㄷ
 6y-xHYOVnro	S	828	floor	ruba	화장실에 이거 쓰면 망합니다 90%가 실수하는 템바보드 시공의 진실
 n2eMYQK-LAE	S	4438	finish	mdf	이거 모르고 칠하면 돈 다 버립니다 전문가가 MDF에 절대 페인트를 안 쓰는 진짜 이유
 aNSVnaPY8hQ	S	1224	tips		"인테리어 시작 전 ""이것"" 확인하셨나요? 모르면 무조건 손해 보는 핵심 비결 ㄷㄷ"
 Gu-BycMFxDE	S	2399	furniture	mdf	“이거 안 하면 집 망합니다” 우리집 가구에서 1급 발암물질이? 친환경 MDF의 진실 ㄷㄷ
 GLjbh3ZrQlg	S	1576	tips		“이거 안 하면 집 망합니다” 인테리어 할 때 목수가 ‘이 공법’ 절대 안 쓰는 진짜 이유 ㄷㄷ
-lnAzck36S9o	S	3123	wall	hapan/gypsum	인테리어 업자만 아는 ‘합판 vs 석고보드’의 충격적 차이 (모르면 쌩돈 날립니다)
+lnAzck36S9o	S	3123	material	hapan/gypsum	인테리어 업자만 아는 ‘합판 vs 석고보드’의 충격적 차이 (모르면 쌩돈 날립니다)
 4TRvz4BSb_M	S	2396	tips		30년 된 낡은 집이 4,000만 원으로 호텔이 된 비결 (이거 안 하면 무조건 후회합니다) ㄷㄷ
 ucOoUq7XhfQ	S	2047	tips		“인테리어 업자도 90%가 속습니다! 비싼 돈 쓰고 집 망치는 최악의 실수 (모르면 평생 후회)” ㄷㄷ
 -YuP5q4htb0	S	1749	electric	insul	단열재 사이에 ‘이것’ 만들면 집 다 망가집니다… 90%가 모르는 곰팡이 안 생기게 하
 KwI7bP1Tlkg	S	536	tips		“1억 넘게 썼는데...” 인테리어 공사 시작 전 ‘이것’ 모르면 돈 날리고 집 망합니다 ㄷㄷ
-Absxxudtthw	S	479	tips	gujo	“인테리어 업체도 잘 모르는 ‘투바이’의 진실, 이거 모르면 공사 망칩니다”
+Absxxudtthw	S	479	material	gujo	“인테리어 업체도 잘 모르는 ‘투바이’의 진실, 이거 모르면 공사 망칩니다”
 Up0GsmIItOM	L	167	material	hapan	건축자재 사기 안 당하는 법 | 건축업자도 숨기는 '가성비 합판'의 진실, 모르면 견적부터 속습니다
 gY1vOXB3owo	S	1731	tips		“버려진 창고의 반전” 단돈 00만원으로 만든 역대급 아지트 공개 (전문가도 놀람) ㄷㄷ
 a5LkpRmVep4	S	1969	kitchen		“이거 하나로 주방 급이 바뀝니다” 10년 써도 후회 없는 주방 인테리어 필수 체크리스트 ㄷㄷ
@@ -163,7 +163,7 @@ SPqn9_kdgtE	S	1755	exterior		“우리 집 샷시가 언제 떨어질지 모릅�
 fwXehBBIuGs	L	214	tips		주차장공사비용 | 노는 땅 그냥 두지 마세요, 230평 주차장 4일 만에 수익형으로 바꾼 아스콘포장 현장 (공사비 전부 공개)
 -Zmz7OwOsMY	L	493	deck	bangbu	방부목화분만들기 | 화분 하나에 수십만 원? 사지 마세요, 단돈 만 원으로 평생 쓰는 텃밭 화분 DIY
 aCk4UDTjYz0	S	3426	tips		이거 모르면 집 망합니다 인테리어 공사비 2배 아끼는 자재 산출 비밀
-VyifRQDOSoA	L	160	tool		아파트리모델링 전후 | 업체 잘못 쓰면 망합니다, 20년 된 38평 구축아파트 리모델링으로 신축급 만든 비결
+VyifRQDOSoA	L	160	tips		아파트리모델링 전후 | 업체 잘못 쓰면 망합니다, 20년 된 38평 구축아파트 리모델링으로 신축급 만든 비결
 QMMgPEdCnm8	S	1732	exterior	insul	“이거 모르면 겨울에 얼어 죽습니다” 샷시보다 중요한 단열문의 정체 ㄷㄷ
 huh3itS2al8	S	2437	furniture		“이거 안 하면 집 망합니다” DIY 계단 만들다 병원 실려가는 진짜 이유 ㄷㄷ
 QRjXqQE4pIM	L	270	material	jipseong	집성판 종류 | 비싼 돈 주고 쓰레기 사지 마세요, 탑핑거·사이드핑거·솔리드 차이부터 수종별 규격까지 완벽 정리
@@ -181,20 +181,20 @@ Zz8zeM_jwa4	S	1426	tool		목수들만 조용히 써먹는 비법 측정 도구 �
 o_vd-c5n6RQ	S	727	material		“비싼 돈 주고 산 원목 가구, ‘이거’ 모르면 1년도 못 쓰고 다 갈라집니다” ㄷㄷ
 z2_oFV86tTs	S	3462	furniture		“이걸 몰라서 다 망합니다” 선반 만들 때 90%가 놓치는 결정적 차이 ㄷㄷ
 HwJ2vSQRthk	S	4341	tool		공구통만들기 | 트럭·캠핑카 공구통 직접 만들면 공간 활용이 확 달라집니다
-E3fCSxBDJHQ	S	1296	material		“이거 안 하면 집 망합니다” 모르고 만들면 바로 벌어지는 원목 결합의 비밀 ㄷㄷ
+E3fCSxBDJHQ	S	1296	furniture		“이거 안 하면 집 망합니다” 모르고 만들면 바로 벌어지는 원목 결합의 비밀 ㄷㄷ
 jmIrBhnAeVk	L	135	deck	bangbu/hardware	방부목데크 끝마감 | 이거 모르면 1년 뒤 다 썩습니다, 클립 vs 피스 고정법과 수명 늘리는 데크 마감 비법
 klJzqsuRtZo	S	1658	furniture		“내 차에 이런 공간이 있었다고? 5분 만에 '호텔 침대' 만드는 역대급 꿀팁” ㄷㄷ
 FtUyxfgkcnA	S	2282	furniture		“허리 끊어지는 차박은 끝났습니다” 단돈 몇 만원으로 올뉴투싼을 호텔 침대로 만드는 역대급 평탄화 비결 ㄷㄷ
 Rh6DD-_ozC4	S	1272	tips		1억 써도 집이 구린 이유? 결국 ‘이것’ 하나 몰라서 돈 다 버리는 겁니다 ㄷㄷ
 3WxPzkvdBPU	S	2587	deck		“이거 모르고 데크 깔면 100% 무너집니다” 내 집 망치기 전에 꼭 봐야 할 영상 ㄷㄷ
-Va9SU9F3z_o	S	1529	tool		“차박 가서 잠 못 잡니다” 평탄화할 때 ‘이것’ 모르면 100% 후회합니다 (목수도 쉬쉬하는 비밀) ㄷㄷ
+Va9SU9F3z_o	S	1529	furniture		“차박 가서 잠 못 잡니다” 평탄화할 때 ‘이것’ 모르면 100% 후회합니다 (목수도 쉬쉬하는 비밀) ㄷㄷ
 tbHjkOeDotk	S	3276	furniture		“이거 안 하면 집 망합니다” 흔들리는 가구 10배 튼튼하게 만드는 목공 기술 ㄷㄷ
 E91FeAJeWIg	S	1639	furniture		“이건 목수들도 잘 안 알려줘요” 90%가 실수하는 90도 직각 맞추기 비법 (가구 만들기 필수 시청) ㄷㄷ
 W3EpnNZCLSA	S	905	furniture		목수가 평생 안 가르쳐주는 수납장 제작 비법? 이 '공구' 하나면 초보자도 10분 만에 명품 가구 만듭니다 ㄷㄷ
 ZpshT7JQguw	S	4285	furniture		셀프 간판만들기 | 야외 입간판은 더 위험합니다, 나무 다리 이렇게 고정하세요
-uYqNmdVWgdA	S	1669	tips		“이거 안 하면 집 망합니다” 흔한 나무 토막이 역대급 인테리어 소품으로 변하는 과정 ㄷㄷ
+uYqNmdVWgdA	S	1669	furniture		“이거 안 하면 집 망합니다” 흔한 나무 토막이 역대급 인테리어 소품으로 변하는 과정 ㄷㄷ
 KIMsNhd_I_U	L	2210	deck	bangbu/stain	목조온실 바닥 데크 만들기 | 비닐하우스 바닥 이렇게 안 하면 다 썩습니다 (방부목 오
-EdW3yN4Dk6U	S	1180	material		망치질만 할 줄 알면 누구나 만듭니다! 3만 원으로 완성하는 명품 원목 아기 책상 1분 비법 ㄷㄷ
+EdW3yN4Dk6U	S	1180	furniture		망치질만 할 줄 알면 누구나 만듭니다! 3만 원으로 완성하는 명품 원목 아기 책상 1분 비법 ㄷㄷ
 UbKOyu9roN4	S	1566	furniture		침대 살 때 ‘이것’ 모르면 자다가 무너집니다 (가구 사장님은 절대 안 알려주는 비밀) ㄷㄷ
 2W9Gk-eSIS4	S	1748	furniture		“침대 살 때 ‘이것’ 모르면 무조건 흔들립니다! 10년 써도 끄떡없는 비밀” ㄷㄷ
 xoEXFqeiEVs	S	2377	deck	bangbu	“이거 안 하면 집 망합니다” 마당에 방부목 화분 놓을 때 90%가 놓치는 치명적 실수 ㄷㄷ
@@ -259,7 +259,7 @@ TUU9wPeAgps	S	1837	material		“계단 만들 때 제발 조심하세요” 자�
 1cvmB8zxOis	L	262	material	mdf/gujo/gypsum	각재 종류 | MDF 가구 절대 사지 마세요, 99%가 속고 있는 인테리어 기초 자재 3대장 (다루끼·석고보드·MDF) 4분 정리
 ynyCqeBpK4Q	S	1371	tips		“인테리어 업체가 절대 안 알려주는 비밀! 바쁘다는 핑계로 '이것' 안 하면 100% 사기당합니다” ㄷㄷ
 UuWsQ3-hCTU	S	1815	material		“모르면 집 망합니다” 인테리어 할 때 절대 쓰면 안 되는 최악의 자재 ㄷㄷ
-woD06QOCKW0	S	1507	tips		“이거 안 하면 집 망합니다” 자꾸 문이 혼자 닫히나요? 우리집 무너지기 전 '이것' 꼭 확인하세요 ㄷㄷ
+woD06QOCKW0	S	1507	wall		“이거 안 하면 집 망합니다” 자꾸 문이 혼자 닫히나요? 우리집 무너지기 전 '이것' 꼭 확인하세요 ㄷㄷ
 qiAkmHt-wac	S	13004	material	hapan	합판종류 | 베트남·중국·인도네시아 합판, 옆면만 보면 품질 등급이 보입니다
 lseyqm_UeOU	S	1949	electric		이거 안 하면 집 망합니다 인테리어 공사 전 ‘전기선’ 무조건 잘라야 하는 이유
 j-v1O-6wnG4	S	2118	finish	film	돈 버리고 몸 고생합니다 인테리어 필름 시공 전 ‘이거’ 모르면 무조건 망합니다
@@ -310,13 +310,13 @@ FvGtJ6YL31Y	S	6252	material	mdf	MDF | 인테리어 벽체 12mm vs 15mm, 두께 �
 sjnitExb4hY	S	3763	exterior	siding	“집 다 망가집니다” 세라믹 사이딩 할 때 이거 모르면 무조건 후회합니다 ㄷㄷ
 bWuwPqK47aI	S	2978	tips		“이거 안 하면 집 망합니다” 가림막 썩어서 버리기 전에 꼭 보세요! 99%가 모르는 PVC 레티스의 비밀 ㄷㄷ
 JwDiPg_jKM4	S	1893	tips		“이거 하나 안 썼다가 집이 안에서부터 썩어버렸습니다” ㄷㄷ
-Yf2EccAw5FQ	L	152	furniture	molding	커튼박스 시공 | 이거 놓치면 인테리어 다 망칩니다, 마이너스 몰딩·커튼박스 만들기·블라인드 셀프 서재 3가지 핵심
+Yf2EccAw5FQ	L	152	wall	molding	커튼박스 시공 | 이거 놓치면 인테리어 다 망칩니다, 마이너스 몰딩·커튼박스 만들기·블라인드 셀프 서재 3가지 핵심
 JyZxfLs8E4s	S	2520	material	hapan	“이거 안 하면 집 망합니다” 물 곰팡이 완벽 차단하는 코팅 합판의 충격적인 위력 ㄷㄷ
 bjnPihXQjdw	S	3804	greenhouse	roof	아스팔트슁글 | 목조주택 지붕 마감, 이것 모르면 비 올 때마다 샙니다
 DVKDNIx7KZ8	S	1843	exterior	siding	“이거 모르고 시공하면 100% 후회합니다” 전원주택 외벽 가치 2배 올리는 세라믹 사이딩 선택법 ㄷㄷ
 XrIYovSgYb4	S	3710	deck		“이거 모르고 울타리 만들면 100% 썩습니다” 평생 관리 필요 없는 마법의 자재 ㄷㄷ
 CRkqgGmPAkQ	S	2105	wall	gypsum	“나중에 집 천장 무너질 수도 있습니다” 90%가 모른 채 지나치는 석고보드 선택의 치명적 실수 ㄷㄷ
-Ix3YYxJR8bw	L	713	wall	gujo	다루끼 선반 만들기 | 무심코 만들면 집 다 망가집니다, 300상 목상부터 샷시 아래 창가 선반까지
+Ix3YYxJR8bw	L	713	furniture	gujo	다루끼 선반 만들기 | 무심코 만들면 집 다 망가집니다, 300상 목상부터 샷시 아래 창가 선반까지
 Rc3JVDIYwyE	S	4890	greenhouse	roof	썬라이트 지붕 | 모르고 사면 돈 날립니다, 1mm 플라스틱 지붕재 고르기 전 확인할
 NXZqOs3gLIQ	S	3688	tips		절대 쓰지 마세요! 물 한 방울에 집 망가지는 최악의 인테리어 자재
 0ZUg5Haa_sA	S	2640	greenhouse		“10만 원 아끼다 1억 날립니다” 지붕 덮기 전 무조건 확인해야 할 것 ㄷㄷ
@@ -335,7 +335,7 @@ SLqvPYfiYgU	S	4341	tips		에어비앤비 인테리어 | 20년 된 낡은 빌라,
 1Tui6bpK0_A	S	2150	tips		“20년 된 빌라의 기적” 인테리어 업자가 절대 안 알려주는 180도 변신 비결 ㄷㄷ
 PEFg0TgEw6k	L	177	tips		빌라인테리어 | 다 죽어가던 20년 빌라가 한옥 감성 에어비앤비로, 비용 아끼는 리모델링 비법 대공개
 _qYbv6-4wIw	L	138	tips		에어비앤비 리모델링 | 곰팡이 가득한 20년 된 빌라가 호텔로? 폐가를 숙소로 바꾼 셀프 인테리어의 기적
-QQUH7x-RYdk	S	3449	tips		“이거 안 하면 집 망합니다” 비싼 나무 샀는데 결국 다 버리게 되는 이유 ㄷㄷ
+QQUH7x-RYdk	S	3449	material		“이거 안 하면 집 망합니다” 비싼 나무 샀는데 결국 다 버리게 되는 이유 ㄷㄷ
 PHBi3MEibyc	S	742	material	hapan	“싸다고 샀다가 큰일 납니다” 인테리어할 때 ‘이 합판’ 쓰면 집이 통째로 휩니다 ㄷㄷ
 GEtNsGu7FAk	L	91	deck	gujo/bangbu	방부데크 | 데크 나무 그냥 사면 100% 썩습니다, 방부목 각재·데크재 규격 총정리 (15T vs 21T vs 25T)
 A-3n2NeG760	L	439	furniture		책장 만들기 | 가구점 가기 전에 꼭 보세요, 10만 원으로 100만 원 가치 내는 안 휘어지는 맞춤 책장 DIY
@@ -349,24 +349,24 @@ KNPgnuYqSwg	L	249	kitchen		싱크대상부장교체 | 낡은 싱크대 문짝 �
 oIi1xLqE5w4	L	441	kitchen	molding	싱크대 교체 전에 꼭 보세요 | 싱크대 버리지 마세요! 몇만 원으로 교체비 50% 아끼는 싱크대 리폼 (하부장·문짝·몰딩)
 9JBJ5lYv9Bw	L	582	kitchen	hardware	싱크대문짝교체 | 싱크대 리폼 3만원으로 새것처럼, LPM 문짝 만들기부터 경첩 수평 맞추기까지
 KiIG6XNIvLM	L	2033	kitchen		아일랜드식탁 제작 | 업체 견적 300만 원 vs 직접 하면 42만 원 (인조대리석 상판 셀프 시공)
-e6vRSvhn_2Q	S	2260	tips		“새 문인데 왜 이래?” 인테리어 업자가 절대 말 안 해주는 문 설치 하자의 비밀 ㄷㄷ
+e6vRSvhn_2Q	S	2260	wall		“새 문인데 왜 이래?” 인테리어 업자가 절대 말 안 해주는 문 설치 하자의 비밀 ㄷㄷ
 DFdLbDbILF0	L	674	material	hapan/osb/mdf	합판종류 완벽 정리 | MDF·미송합판·OSB 차이, 이거 모르면 돈 버립니다 (인테리
 upSlLKcLD2I	S	1307	wall		천장에 '이런 금' 보이면 당장 대피하세요! 무시했다가 집 무너지고 수리비 폭탄 맞습니다 ㄷㄷ
 jZyhM2_JCb8	L	1878	kitchen		싱크대 상부장 수리 | 싱크대 전체 바꾸지 마세요, 문짝만 교체해서 200만 원 아끼는 법
 bn5c6SJ5Oq0	S	1412	wall		“이거 하나로 집안 정리가 끝납니다” 좁은 집 2배 넓게 쓰는 0원 목공 가이드 ㄷㄷ
 7bue2iBopyc	S	1267	floor		“이거 안 하면 집 망합니다” 턴키 인테리어 바닥 시공 전 무조건 확인해야 할 한 가지 ㄷㄷ
-k81UagYe58g	S	116	tips		“우리 집 벽에 물이 흐른다면? '결로' 방치하면 집 무너집니다”
+k81UagYe58g	S	116	electric		“우리 집 벽에 물이 흐른다면? '결로' 방치하면 집 무너집니다”
 zHVrUesVcoU	S	1348	floor		“이거 안 하면 집 망합니다” 우리집 바닥이 울렁거리는 소름 돋는 이유, ‘이것’ 모르면 바닥 싹 다 뜯어내야 합니다 ㄷㄷ
 ebrjHgB7M-k	S	1892	tips		“전문가도 속을 뻔했습니다” 인테리어 하자로 생돈 날리기 전에 ‘이것’만은 꼭 보세요 ㄷㄷ
 c-KMb6jO5wg	S	1068	floor	tile	“절대 방치하지 마세요” 타일 줄눈 갈라짐, 이 방법 모르면 나중에 100배 더 듭니다 ㄷㄷ
 hEFdlBU2Usw	S	984	finish	film	“인테리어 필름 함부로 하지 마세요” 90%가 겪는다는 '벽이 우는 현상'의 충격적인 진실 ㄷㄷ
-My8Lo64eB8o	S	939	tips		“중문 설치하고 이거 보이면 망한 겁니다” 시공업체가 절대 말해주지 않는 판별법 ㄷㄷ
+My8Lo64eB8o	S	939	wall		“중문 설치하고 이거 보이면 망한 겁니다” 시공업체가 절대 말해주지 않는 판별법 ㄷㄷ
 pTYDaRKJPrI	S	1258	exterior		샷시 브랜드 고민할 시간에 ‘이것’부터 확인하세요. 200만 원 아끼는 법 ㄷㄷ
 Es7AwyqMIxk	S	1080	tips		화이트 인테리어 망하고 싶지 않으면 필독! 99%가 뒤늦게 피눈물 흘리며 후회하는 '색깔'의 비밀 ㄷㄷ
 e-awJFCuRoc	S	868	finish		“집 망치고 돈 버리는 길입니다” 도배 끝난 후 90%가 놓치는 치명적인 실수 ㄷㄷ
 hvmEjBTLsh8	S	1181	floor		바닥 공사하고 며칠 뒤에 무조건 터집니다! 90%가 후회하는 '이것' 안 해서 생기는 참사 ㄷㄷ
 CrsSb2scbXc	S	1381	tips		“이거 안 하면 집 망합니다” 시공 업체가 ‘원래 그렇다’며 속여온 우리집 하자의 진짜 정체 ㄷㄷ
-g9AOalUKkwU	S	1046	tips		“문이 안 닫힌다구요?” 이사할 때 ‘이것’ 확인 안 하면 수리비만 수백 깨집니다 ㄷㄷ
+g9AOalUKkwU	S	1046	wall		“문이 안 닫힌다구요?” 이사할 때 ‘이것’ 확인 안 하면 수리비만 수백 깨집니다 ㄷㄷ
 WYC7zX0-kBM	S	2140	finish		이거 안 하면 집 망합니다 도배 새로 해도 금방 들뜨고 곰팡이 피는 진짜 이유
 IHQAXvjUBjQ	S	1469	wall		“화장실 천장에 물줄기 생겼나요? 절대 업체부터 부르지 마세요! 쌩돈 날리기 전 필독” ㄷㄷ
 ESDJ0YBXpzI	S	1142	finish		“실리콘 하나 때문에 집 다 썩습니다” 90%가 놓치고 후회하는 실리콘 시공의 정석 ㄷㄷ
@@ -378,7 +378,7 @@ K7g44P_ysKM	S	1316	tips		인테리어 끝났는데 벽지가 불룩하다고요?
 gEA6i-VSujw	S	1642	exterior		“우리집 창문에 물방울 맺힌다면?” 전문가가 작정하고 공개하는 결로 완벽 차단법 ㄷㄷ
 wOiL1Dpzgt8	S	1444	tips		“신축 입주할 때 모르면 전재산 날립니다” 건설사가 절대 안 알려주는 충격적인 하자 실태 ㄷㄷ
 sXs5W8zCXqk	S	1420	tips		“이거 안 하면 집 망합니다” 이사 후 발견된 하자, ‘이것’ 모르면 내 돈 수백만 원 날아갑니다 ㄷㄷ
-q0J8Csej7Bw	S	1051	tips		“비 온 뒤 우리 집 벽을 눌러보세요. 만약 '말랑'하다면 당장 대피해야 합니다! (역대급 하자 사례)” ㄷㄷ
+q0J8Csej7Bw	S	1051	electric		“비 온 뒤 우리 집 벽을 눌러보세요. 만약 '말랑'하다면 당장 대피해야 합니다! (역대급 하자 사례)” ㄷㄷ
 QFfSUwNC10w	S	2704	tips		“인테리어 끝났다고 돈 다 주면 평생 후회합니다” 전문가가 작정하고 공개하는 마감 확인법 ㄷㄷ
 Ffpp_SphYRw	S	1613	tips		“이거 모르면 집 망합니다” 다 끝난 인테리어가 5개월 뒤에 터져버린 충격적인 이유 ㄷㄷ
 riwcuXDY7o4	S	175	tips		“이거 고치려다 집 날려 먹습니다” 인테리어 하자 직접 손댔다가 공사비 1,000만 원 깨지는 이유
@@ -407,9 +407,9 @@ HbmIo8RUMAg	S	2422	tips		인테리어 업체 부르기 전 이 영상 안 보면
 GGJRU-M9bTU	S	1261	wall		“절대 그냥 두지 마세요” 자다가 천장 무너져 내리는 신호! 모르면 진짜 큰일 납니다 ㄷㄷ
 nA36Za8957I	S	1850	tips		“이거 안 하면 집 망합니다” 공사 다 끝났다고 잔금부터 주면 100% 후회하는 이유 ㄷㄷ
 n5zy3t4fKJY	S	1949	tips		“이거 안 하면 집 망합니다” 공사 끝났다고 잔금부터 주면 100% 후회하는 이유 ㄷㄷ
-XVt_XQYFIKs	S	7108	tips		냉장고장 리폼 | 이 틈이 하자가 아니라고요? 냉장고장 인테리어 전에 꼭 확인할 것
+XVt_XQYFIKs	S	7108	kitchen		냉장고장 리폼 | 이 틈이 하자가 아니라고요? 냉장고장 인테리어 전에 꼭 확인할 것
 qELMJ7kvDeA	S	980	tool		순식간에 손 나갑니다 99%가 실수하는 체인톱 쓸 때 절대 하면 안 되는 행동
-Rkyt6qV5EwE	S	7841	wall		목공사고 | 원형톱 킥백 걸리면 끝, 이 각도에서 나무가 튕겨 나옵니다
+Rkyt6qV5EwE	S	7841	tool		목공사고 | 원형톱 킥백 걸리면 끝, 이 각도에서 나무가 튕겨 나옵니다
 hoSce0Y_Xg0	S	2558	electric		“이거 안 하면 집 망합니다” 전기선 하나 잘못 넣었다가 샤시 다 뜯어내야 하는 이유 ㄷㄷ
 wLct076-hPI	S	1457	material		“비싼 돈 주고 산 나무가 ‘휘고 갈라지는’ 이유? 목재 살 때 ‘이것’ 모르면 무조건 손해입니다” ㄷㄷ
 FNylPstDD4I	S	6128	material	hapan	합판규격 | 이찌부·니부·삼부? 현장에서 합판 두께 부르는 법 (2.7mm~11.5mm)
@@ -420,7 +420,7 @@ ibKPJ7FmFnE	S	5379	deck	window	데크시공방법 | 모서리 따내기 실패�
 iN6rzhKZZjc	S	389	exterior		“샤시 공사하셨나요?” 수평 하나 잘못 잡으면 집 전체가 망가지는 이유
 T4qzj1UOwS0	S	1015	wall		“문이 왜 이렇게 작아졌죠?” 인테리어 업자도 잘 모르는 ABS 도어 시공의 비밀 ㄷㄷ
 MLVLOogani0	S	1351	tips		“제발 그냥 걸지 마세요” 인테리어 고수가 장식할 때 ‘이것’부터 확인하는 이유 (모르면 100% 손해) ㄷㄷ
-CntBhh4AICw	S	6268	furniture		나무창문만들기 | 창문이 '탁!' 붙는 이유, 자석+철판 하나면 덜컹거림 끝
+CntBhh4AICw	S	6268	greenhouse		나무창문만들기 | 창문이 '탁!' 붙는 이유, 자석+철판 하나면 덜컹거림 끝
 8wYyhtRdlzs	S	6438	deck	bangbu/window	방부목데크시공 | 샷시 단차 1:1 안 맞추면 생기는 하자 (21mm H3등급)
 4srSVdCRFpo	S	18759	greenhouse		버드마우스 기법 | 서까래·나무창문틀 튼튼하게 잡는 목조 결합법, 온실 만들기에도 필수
 i_2kTLjzfyY	S	2919	tips		“이거 안 하면 집 망합니다” 새집 지었는데 물 새는 진짜 이유 (모르면 100% 후회함) ㄷㄷ
@@ -461,7 +461,7 @@ XBUTo-1AEi8	S	31646	wall	sound	차음재 목모보드 | 카페 인테리어에 �
 vdCXLDZjIY8	S	4706	exterior		창문 외풍 차단 | 오래된 나무 창틀 버리지 마세요, 단창 하나 추가로 살리는 법
 Tf2vkPEFwzE	S	1622	furniture		“가구 살 때 모르면 무조건 당합니다! 실패 없는 원목 자재 고르는 법” ㄷㄷ
 gsQ3y0yefj0	S	24093	material	hapan/mdf	MDF 3mm | 얇은 MDF합판 특징과 벽면 시공·모양 작업 활용 팁
-GL5Zg3t1v4c	S	2720	tips		“이거 안 하면 집 망합니다” 기초 공사할 때 폴대 제대로 안 박으면 생기는 일 ㄷㄷ
+GL5Zg3t1v4c	S	2720	greenhouse		“이거 안 하면 집 망합니다” 기초 공사할 때 폴대 제대로 안 박으면 생기는 일 ㄷㄷ
 -ljGAeWTz9Q	S	8011	exterior	window	샷시 셀프 교체 | 문틀 안 뜯고 샷시만 바꾸는 법, 라왕 문틀 살려서 비용 절약
 Q9srBTgWM5Y	S	12081	deck		인조잔디 시공 | 전용 본드 대충 바르면 들뜹니다, 바닥 청소부터 이음새까지 시공방법
 1sG6zD9xeug	S	5554	exterior	window	창호교체 | 오래된 주택 나무창 철거부터, 이거 모르고 바꾸면 물 새고 곰팡이 핍니다
@@ -477,31 +477,31 @@ Lza4A-Vc52s	S	1817	furniture	jipseong	가구 만들 때 이거 모르면 무조�
 J1kmCBauIrk	S	3866	material	jipseong	집성판 종류 | 탑핑거·사이드핑거·솔리드, 3가지 차이 모르면 손해봅니다
 fAUpa9dnjfg	S	8601	floor	hapan/maru	셀프인테리어 바닥 | 단상 완성! 합판 깔고 실리콘 고정, 마루 시공까지 리얼 공개
 6mGkDXhofmE	S	4848	wall		목공 시공 | 단상 프레임 연결·보강, 이렇게 해야 안 흔들립니다
-IBeSfUh4dC4	S	16726	deck	gujo	단상제작 | 2x4 구조재로 장선 고정하고 다리발 만들기, 목조 온실·바닥 데크 하지작
-CIyzZl5sTFc	S	36458	furniture		단상만들기 | 흔들림 없는 단상 프레임, 다리 고정과 보강목 시공 현장
+IBeSfUh4dC4	S	16726	floor	gujo	단상제작 | 2x4 구조재로 장선 고정하고 다리발 만들기, 목조 온실·바닥 데크 하지작
+CIyzZl5sTFc	S	36458	floor		단상만들기 | 흔들림 없는 단상 프레임, 다리 고정과 보강목 시공 현장
 J6fL7HJq_3A	S	11303	floor		바닥 하지작업 | 올라가도 끄떡없는 복층 단상, 다리발 연결과 사선 찰대 보강법
-4a-PeGGOS3U	S	7984	tips		수평계 사용법 | 레벨이 생명! 단상 프레임 다리 높이 맞추는 법, 이거 대충 하면 다
+4a-PeGGOS3U	S	7984	floor		수평계 사용법 | 레벨이 생명! 단상 프레임 다리 높이 맞추는 법, 이거 대충 하면 다
 swuVVtzMCrU	S	14143	floor	hardware	목공기술 | 단상 프레임 바닥 고정, ST45 타카 + 실리콘으로 흔들림 없이 잡는 법
 w1AxuEPWjA4	S	4268	floor	tile	목공 붙이기 | 타일 위에 나무 프레임 고정하는 법, 이렇게 해야 안 밀립니다
-6izwoOP5y58	S	3677	tips		목수만 아는 시공 비밀, 3M 구조목 연장 안 하면 나중에 큰일 납니다
-MVKXYyqW5Rg	S	2977	tips		“이거 안 하면 집 망합니다” 평생 써먹는 수평 잡기 비밀 (모르면 공사 망쳐요) ㄷㄷ
-deUY0U0jgEA	S	3376	tips		“이거 안 하면 집 망합니다” 단상 시공할 때 수평 안 맞으면 생기는 일 ㄷㄷ
+6izwoOP5y58	S	3677	floor		목수만 아는 시공 비밀, 3M 구조목 연장 안 하면 나중에 큰일 납니다
+MVKXYyqW5Rg	S	2977	floor		“이거 안 하면 집 망합니다” 평생 써먹는 수평 잡기 비밀 (모르면 공사 망쳐요) ㄷㄷ
+deUY0U0jgEA	S	3376	floor		“이거 안 하면 집 망합니다” 단상 시공할 때 수평 안 맞으면 생기는 일 ㄷㄷ
 dR9xdww-jQw	S	2980	furniture		“이거 안 하면 집 망합니다” 흔들리는 테이블, 10초 만에 완벽하게 고치는 비결! ㄷㄷ
 CCzOV04137A	S	1644	furniture		“이거 안 하면 집 망합니다” 강아지가 집보다 더 좋아하는 1석 2조 가구의 비밀 ㄷㄷ
 95cnixHKhwc	S	1038	tips		“주차장 들어갈 때마다 스트레스?” 사고 나고 후회하기 전에 ‘이것’부터 바꿔야 합니다 ㄷㄷ
 gn0d48ob7-8	S	1341	tips		“이거 안 하면 집 망합니다” 주차장 아스콘 포장할 때 모르면 무조건 손해 보는 것 ㄷㄷ
 vi-OsafJwos	S	1029	tips		“내 땅 함부로 쓰지 마세요” 주차장 휀스 하나로 불법 주차 스트레스 싹 없애는 법 ㄷㄷ
-gpSu_z2tra4	S	2192	floor		주차장 바닥 다 깨집니다 업자가 절대 안 알려주는 부실 공사 100% 막는 법
+gpSu_z2tra4	S	2192	tips		주차장 바닥 다 깨집니다 업자가 절대 안 알려주는 부실 공사 100% 막는 법
 t9kJO9tKQNQ	S	887	tips		“내 땅에 주차하지 마세요” 주차장 만들 때 돈 낭비 안 하고 100% 성공하는 비결 ㄷㄷ
 uiHVCfbf_E8	S	1389	tips		“절대 그냥 깔지 마세요” 주차장에 파쇄석부터 부으면 생돈 수백만 원 날립니다 (전문가만 아는 공정 순서) ㄷㄷ
 x6YPu-BxF4k	S	3373	tips		“이거 안 하면 집 망합니다” 주차장 공사 비용 2배 아끼는 포크레인 작업의 비밀 ㄷㄷ
-Tfef7pcrTCc	S	15085	furniture		주차장바닥공사 | 물 고이는 주차장 파쇄석 평탄화, 라인 로프 교체와 카트 통로 아스콘
-D4MU_12dPxM	S	1182	floor		“콘크리트 치지 마세요” 주차장 바닥 공사, 이 방법 모르면 평생 후회합니다 ㄷㄷ
+Tfef7pcrTCc	S	15085	tips		주차장바닥공사 | 물 고이는 주차장 파쇄석 평탄화, 라인 로프 교체와 카트 통로 아스콘
+D4MU_12dPxM	S	1182	tips		“콘크리트 치지 마세요” 주차장 바닥 공사, 이 방법 모르면 평생 후회합니다 ㄷㄷ
 snPozzZEzls	S	3259	tips		“이거 안 하면 집 망합니다” 노는 땅에 무인 주차장 만들어서 매달 월세 받는 법 ㄷㄷ
 uiGWmYOYRto	S	1540	floor	maru	이거 모르고 원목마루 깔면 집 망합니다! 인테리어 전문가가 절대 말 안 해주는 바닥재의
 LiWuqObTjdA	S	1170	tips		“잠자리가 바뀌면 인생이 바뀝니다” 아직도 아무 벽지나 쓰세요? 몸이 안 좋다면 ‘이것’부터 확인해 보세요 ㄷㄷ
 n4HYklXo7OI	S	1042	tips		“인테리어 업체가 절대 안 알려줍니다” 단돈 몇 천 원으로 집안 분위기 명품 만드는 판재 활용법 ㄷㄷ
-TH5PFN-kG_c	S	1058	tool	jipseong	“나무 잘못 고르면 가구 다 휘어집니다” 10년 써도 끄떡없는 집성판 고르는 법 ㄷㄷ
+TH5PFN-kG_c	S	1058	material	jipseong	“나무 잘못 고르면 가구 다 휘어집니다” 10년 써도 끄떡없는 집성판 고르는 법 ㄷㄷ
 Mq9q2Eci3Y8	S	1223	tips		“이거 모르고 계약하면 호구 됩니다” 인테리어 마감재로 1,000만 원 아끼는 비결 ㄷㄷ
 NYXQqswjwSM	S	525	wall		“인테리어 업체는 절대 안 알려주는 ‘천장 마감’의 비밀! ‘이것’ 하나로 집안 분위기가 180도 바뀝니다”
 jthR6QpaLdY	S	2001	material		“업자들만 아는 가성비 끝판왕” 요즘 유행하는 원목 인테리어, 10만 원대로 끝내는 법 ㄷㄷ
@@ -514,7 +514,7 @@ b-TN1hgTvmM	S	5478	material	bangbu/gujo	방부목각재 | 기둥용 목재 총�
 ZU3K5Cyz5H0	S	38104	deck	bangbu/gujo	데크시공 자재 | 방부목 각재 2x2부터 2x12까지, 테라스 데크 규격별 용도 정리
 r7NXYFK5BpM	S	290719	deck	chimmok	침목 | 기찻길 아래 그 나무, 조경·계단·인테리어 용도와 규격 총정리
 1rTxZAm4oqA	S	6423	material	hinoki/jipseong	적삼목 | 라왕·오비스기와 뭐가 다를까? 원목 vs 집성각 한 번에 구별하는 법
-a7EBJZ6dSLs	S	1306	tips		“이거 모르면 집 망합니다” 목수들이 SPF 보드만 고집하는 진짜 이유 ㄷㄷ
+a7EBJZ6dSLs	S	1306	material		“이거 모르면 집 망합니다” 목수들이 SPF 보드만 고집하는 진짜 이유 ㄷㄷ
 AWqCXsr5hx4	S	3269	material		“이거 안 하면 집 망합니다” SPF 목재 사이즈 모르면 돈 날리는 이유 ㄷㄷ
 GvLhY6DchvQ	S	6847	material	gujo/hinoki	각재 종류 | 적삼목 vs 멀바우 원목 차이 완전정리, 가구 만들기 전 꼭 보세요
 MR10Ch82MEw	S	4022	furniture	jipseong	원목가구 | 전 세계 목재 집성각 비교, 가구 만들기 전에 나무부터 고르세요
@@ -543,7 +543,7 @@ ccMOxZeE7os	S	1184	furniture		“이거 하나로 집 분위기 싹 바뀝니다
 rpbePrtpcWU	S	5684	furniture	hapan	책장 만들기 | 공간 맞춤 책장, 합판으로 반값에 직접 만드는 법
 eooZOA530ws	S	1018	furniture		“백화점에서 50만원 하는 명품 가구, 단돈 3만원으로 ‘똑같이’ 만드는 법 (업계 비밀 공개)” ㄷㄷ
 gnTCZUC0F1U	S	8728	furniture		원목 책상만들기 | 버리는 자투리 나무로 만든 감성 원목 테이블, 재료비 0원 셀프목공
-NBb6HeZ5YEg	S	303	wall		다이소보다 퀄리티 좋은 3,500원 목공 아이템? 안 보면 무조건 손해입니다
+NBb6HeZ5YEg	S	303	tool		다이소보다 퀄리티 좋은 3,500원 목공 아이템? 안 보면 무조건 손해입니다
 yqPBPfB7GRo	S	1013	furniture		“좁은 방이 2배로 넓어집니다” 가구 하나 바꿨을 뿐인데 삶의 질 폭발하는 마법 같은 공간 활용법 ㄷㄷ
 PxwMmeKTZj8	S	882	tips		인테리어 업체 부르기 전 이 영상 안 보면 최소 500만 원 날리는 겁니다 ㄷㄷ
 NQNCc1k_NpA	S	1534	furniture		“좁은 집이 2배 넓어집니다” 2만원으로 만드는 평생 쓰는 변신 가구 ㄷㄷ
@@ -554,18 +554,18 @@ vn0YTqJW3Pw	S	1508	tool	hardware	“철물점 사장님도 놀란 기술” 피�
 j4Lcz0hIw8Q	S	804	furniture		“이걸 직접 만들었다고요?” 가구점 사장님 당황하게 만드는 럭셔리 원목 테이블 ㄷㄷ
 5OjJ0ncaGy4	S	1697	furniture		“이걸 직접 만들었다고요?” 가구점에서 수백만 원 하는 원목 테이블을 단돈 몇 만 원으로 만드는 법 ㄷㄷ
 RO9k5DbpP2g	S	891	material		“현관 입구가 호텔처럼 바뀝니다” 5분 만에 끝내는 원목 인테리어 꿀템 제작법 ㄷㄷ
-jLrPtqI61-w	S	1399	tips		“버려지는 나무 조각의 변신! 30만원짜리 디자인 체어 공짜로 만드는 법” ㄷㄷ
+jLrPtqI61-w	S	1399	furniture		“버려지는 나무 조각의 변신! 30만원짜리 디자인 체어 공짜로 만드는 법” ㄷㄷ
 LY4IRzQhYe4	S	1397	furniture		“이건 목수들도 잘 안 알려줍니다” 식탁 하나로 거실 넓게 쓰는 기적의 가구 제작법 ㄷㄷ
-0k0hGbjRUm0	S	1678	tips		“나무 막대기 몇 개로 이런 게 가능해? 평생 쓰는 역대급 인테리어 비법” ㄷㄷ
+0k0hGbjRUm0	S	1678	furniture		“나무 막대기 몇 개로 이런 게 가능해? 평생 쓰는 역대급 인테리어 비법” ㄷㄷ
 _TKV-O9rdXA	S	1260	furniture		수백만 원 아꼈습니다! 비싼 가구 사지 말고 ‘이것’ 하나로 집안 수납 고민 한 방에 해결하세요 ㄷㄷ
 pB_hJRDk4RY	S	835	furniture		“가구점에 속지 마세요” 100만원 아끼는 맞춤형 수납장 1시간 만에 만드는 법 ㄷㄷ
-J2pNZX8nO_Q	S	995	material		우리 강아지 기절초풍?! 남는 자재로 만들었더니 백화점 명품 의자 부럽지 않은 역대급 결과물 ㄷㄷ
+J2pNZX8nO_Q	S	995	furniture		우리 강아지 기절초풍?! 남는 자재로 만들었더니 백화점 명품 의자 부럽지 않은 역대급 결과물 ㄷㄷ
 eNJlbhHzfWY	S	656	furniture		“가구점에 돈 버리지 마세요” 단돈 3,500원으로 수입 명품 감성 만드는 역대급 방법 ㄷㄷ
--QB4q7ofB2E	S	210	tips		“테라스에 ‘이거’ 안 만들면 평생 후회합니다! 3만원으로 집 가치 2배 올리는 역대급 꿀팁”
+-QB4q7ofB2E	S	210	deck		“테라스에 ‘이거’ 안 만들면 평생 후회합니다! 3만원으로 집 가치 2배 올리는 역대급 꿀팁”
 ZErlffrlI78	S	1042	tips		업자들도 쉬쉬하는 인테리어 비용 0원으로 만드는 치트키 공개 ㄷㄷ
-UOpn-FLEuOI	S	424	material		“이걸 아직도 사서 쓰세요?” 3만원으로 끝내는 럭셔리 원목 주방 선반 만들기
+UOpn-FLEuOI	S	424	furniture		“이걸 아직도 사서 쓰세요?” 3만원으로 끝내는 럭셔리 원목 주방 선반 만들기
 mkBKozftDQ0	S	1329	floor		“이거 안 하면 집 망합니다” 우리집 바닥이 갑자기 ‘울렁’거릴 때 반드시 확인해야 할 소름 돋는 이유 ㄷㄷ
-SX-Nb6-sQWw	S	1711	material	stain	이거 안 하면 집 망합니다 비싼 나무 다 썩게 만드는 오일스테인 최악의 실수
+SX-Nb6-sQWw	S	1711	finish	stain	이거 안 하면 집 망합니다 비싼 나무 다 썩게 만드는 오일스테인 최악의 실수
 fzYxDjcV1sQ	S	1398	deck		“마당에 평상 깔지 마세요” 1년 만에 썩어서 다 부서지는 이유 (업자만 아는 비밀) ㄷㄷ
 l--FTlrNjng	S	2172	furniture		“이거 안 하면 집 망합니다” 좁은 집도 2배 넓어지는 4단 선반 시공의 치명적 비밀 ㄷㄷ
 aK3m-fVQKFc	S	1439	tips		“이거 안 하면 집 망합니다” 단돈 5천 원으로 우리집 거실에 '무한 우물' 만드는 신기한 방법 ㄷㄷ
@@ -576,15 +576,15 @@ Smg6YhPqAgI	S	7313	furniture	hapan	적재함 만들기 | 트럭 공구함, 기�
 yO0ptVp2i3Y	S	1383	furniture		“비싼 가구 이제 사지 마세요! 3만원으로 30만원짜리 명품 정리함 만드는 기막힌 방법” ㄷㄷ
 41xhArNNILU	S	828	furniture		“가구 살 필요 없습니다! 3만 원으로 평생 쓰는 '명품 수납 의자' 만들기” ㄷㄷ
 oIooqDd-Z9c	S	799	furniture		“이거 하나로 집안 지저분한 짐 싹 정리했습니다” 평생 써먹는 만능 수납박스 5분 만에 만드는 법 ㄷㄷ
-KVHYKTWXeAY	S	2281	tips		“이거 안 하면 집 망합니다” 좁은 차에서 꿀잠 자는 1등 비결 (코나 차박 평탄화) ㄷㄷ
-j1zdwrPrLzc	S	3486	tips		“이거 안 하면 차 망합니다” 단돈 5만원으로 차박 평탄화 100% 종결합니다 ㄷㄷ
+KVHYKTWXeAY	S	2281	furniture		“이거 안 하면 집 망합니다” 좁은 차에서 꿀잠 자는 1등 비결 (코나 차박 평탄화) ㄷㄷ
+j1zdwrPrLzc	S	3486	furniture		“이거 안 하면 차 망합니다” 단돈 5만원으로 차박 평탄화 100% 종결합니다 ㄷㄷ
 020sLVxWFdg	S	1831	tips		“이거 모르고 공사하면 100% 후회합니다” 전문가가 작정하고 공개하는 절대 실패 없는 시공 비결 ㄷㄷ
-8yiygayyPX4	S	1146	tips		아직도 비싼 돈 주고 사세요? 단돈 3천 원으로 거북목 탈출하는 역대급 가성비 꿀템 제작기 ㄷㄷ
+8yiygayyPX4	S	1146	furniture		아직도 비싼 돈 주고 사세요? 단돈 3천 원으로 거북목 탈출하는 역대급 가성비 꿀템 제작기 ㄷㄷ
 0RkYrIpcwL8	S	863	tips		인테리어 업체가 숨기는 공사비 반값으로 줄이는 시공의 기술 ㄷㄷ
 a6obasjLpNw	S	1197	deck		남는 마당 '이것' 하나로 카페가 됩니다! 목수가 절대 안 알려주는 데크 무한 확장 1분 비법 ㄷㄷ
 cDa-IEU1akE	S	891	furniture		“책상에 '이것' 하나만 세우세요” 1만 원으로 삶의 질과 집중력이 200% 폭발하는 마법 같은 공간 분리법 ㄷㄷ
 ox4U0rJKJhY	S	1742	furniture		“이거 안 하면 집 망합니다” 좁은 공간 2배 넓게 쓰는 360도 회전 테이블의 비밀 ㄷㄷ
-9fgyJWoMbII	S	730	material		“다이소 가지 마세요” 5천원으로 평생 쓰는 명품 원목 박스 만들기 ㄷㄷ
+9fgyJWoMbII	S	730	furniture		“다이소 가지 마세요” 5천원으로 평생 쓰는 명품 원목 박스 만들기 ㄷㄷ
 3boE_uKgq04	S	3155	furniture		“이거 안 하면 집 망합니다” 돈 안 들이고 나만의 간판 만드는 법 ㄷㄷ
 t4jJ2T6YPTI	S	957	tips		인테리어 업체가 절대 안 알려주는 ‘공사비 반값’으로 줄이는 비밀 ㄷㄷ
 cDm6-rDlSUk	S	1408	furniture		“비싼 아기 가구 사지 마세요! 전문가가 1시간 만에 뚝딱 만드는 역대급 아기 책상” ㄷㄷ
@@ -592,15 +592,15 @@ cDm6-rDlSUk	S	1408	furniture		“비싼 아기 가구 사지 마세요! 전문�
 t-XoUkSTEuQ	S	7165	furniture		침대프레임만들기 | 좁은 방 2배 넓게 쓰는 조립식 수납 침대 DIY, 침실 수납 고민
 rinBBzOiJCY	S	2590	deck		“이거 하나로 집 분위기 싹 바뀝니다” 화분 하나 만들었을 뿐인데 와이프가 난리 난 이유 ㄷㄷ
 _Zc0cYbY0xc	S	937	electric	insul	“이거 안 하면 집 망합니다” 단열 공사 벽 전체 다 하면 돈 낭비인 이유 ㄷㄷ
-moPiCGiuBQk	S	1243	material		인테리어 시작 전 '이것' 모르면 수천만 원 날립니다! 전문가만 아는 최저가 고퀄리티 자재 고르는 법 ㄷㄷ
+moPiCGiuBQk	S	1243	tips		인테리어 시작 전 '이것' 모르면 수천만 원 날립니다! 전문가만 아는 최저가 고퀄리티 자재 고르는 법 ㄷㄷ
 oNG55Kuo2_A	S	1229	tips		인테리어 업체가 절대 알려주지 않는 ‘공사비 반값’으로 줄이는 방법 ㄷㄷ
 Aq2Q6lSoTDc	L	131	exterior	insul	샷시교체 주의사항 | 하이샷시 vs 알루미늄 샷시, 잘못 바꾸면 10년 고생합니다 (40년 전문가의 단열·결로·브랜드 비교)
-6aN0oGtRmf8	S	1053	material		“인테리어 가성비 끝판왕” 수백만 원 아끼는 자재 선택과 시공의 한 끗 차이 ㄷㄷ
-GdVMtxEz9wQ	S	3034	tips		“인테리어 다 망칩니다” 티크 고재 쓸 때 99%가 후회하는 결정적 실수 ㄷㄷ
-sUOxznE2BSU	S	955	material		“싸구려 자재 썼다가 1년 뒤에 피눈물 흘립니다” 전문가가 알려주는 100년 가는 명품 자재 고르는 법 ㄷㄷ
+6aN0oGtRmf8	S	1053	tips		“인테리어 가성비 끝판왕” 수백만 원 아끼는 자재 선택과 시공의 한 끗 차이 ㄷㄷ
+GdVMtxEz9wQ	S	3034	material		“인테리어 다 망칩니다” 티크 고재 쓸 때 99%가 후회하는 결정적 실수 ㄷㄷ
+sUOxznE2BSU	S	955	tips		“싸구려 자재 썼다가 1년 뒤에 피눈물 흘립니다” 전문가가 알려주는 100년 가는 명품 자재 고르는 법 ㄷㄷ
 dv2ZDwaX0sU	S	1475	material		“이것 하나로 집값이 바뀝니다” 인테리어 고수들이 마감재로 원목만 고집하는 진짜 이유 ㄷㄷ
 fw_BOD9zH3k	S	1114	material		“원목 계단 그냥 깔면 다 터집니다” 나중에 수백만 원 깨지기 싫으면 꼭 보세요! ㄷㄷ
-DBo7THIe1Pg	S	3116	material		“모르면 생돈 날리고 집까지 망가집니다” 전문가가 작정하고 공개하는 자재 선택의 비밀 ㄷㄷ
+DBo7THIe1Pg	S	3116	tips		“모르면 생돈 날리고 집까지 망가집니다” 전문가가 작정하고 공개하는 자재 선택의 비밀 ㄷㄷ
 CwbBNZ3IUSA	S	822	material		“모르면 집 지을 때 눈탱이 맞습니다” 건축비 수천만 원 아껴주는 ‘목재 자재’의 비밀 ㄷㄷ
 rKAkp3Wh1ww	S	844	furniture		비싼 가구 샀는데 금방 뒤틀리는 이유? 목수들만 아는 '진짜 좋은 나무' 고르는 1분 비결 ㄷㄷ
 SMQlshf6isQ	S	10405	material	hapan	인테리어 자재 종류 | 전 세계 합판 13종 총정리, 어디에 뭘 써야 하는지 합판 사용
@@ -609,7 +609,7 @@ cowG4rbgy9c	S	9989	material	hapan	벽 인테리어 합판 | 합판으로 인테�
 F3Mh8jOKxf8	S	10900	material	hapan	인테리어합판 고르는 법 | 인도네시아·중국·베트남산 차이, 겉모양에 속지 마세요
 clCOIT43ZJA	S	17208	material	mdf/film	MDF 페인트 칠하기 전 필수 | 밀도별 MDF 종류와 필름·페인트 작업 활용법
 GZUM6yO__AI	S	6946	material	hapan	목재의 종류 | 합판으로 리모델링 진짜 가능할까? 평생 써먹는 합판·목재 구별법
-mwkMdwJS3lE	S	22858	greenhouse	hapan/osb	합판 인테리어 | OSB합판이란? 목조주택 구조용부터 가구 제작까지 용도 정리
+mwkMdwJS3lE	S	22858	material	hapan/osb	합판 인테리어 | OSB합판이란? 목조주택 구조용부터 가구 제작까지 용도 정리
 W3EHsAEJ-_E	L	525	exterior		샷시교체비용 | 브랜드만 믿다 집 망합니다, 40년 베테랑이 알려주는 창호교체 견적·시공 불량 체크법
 8m1QEjm0WRk	S	753	kitchen		“수리비 10만원 아꼈습니다” 싱크대 물 샐 때 사람 부르기 전 ‘이것’부터 확인하세요 ㄷㄷ
 dzZRc4uf83Y	S	3110	kitchen		“이거 안 하면 집 망합니다” 싱크대 교체에 ‘수백만 원’ 버리지 마세요 ㄷㄷ
@@ -618,7 +618,7 @@ wxYRK5XKItU	S	1292	tips		인테리어에 1억 써도 집이 좁아 보이는 진
 tqCvyGr7JPY	S	3139	kitchen		“업체 부르면 200만 원?” 단돈 42만 원으로 명품 아일랜드 식탁 만드는 법 ㄷㄷ
 5lnT6y35J88	S	1505	kitchen		“식탁 절대 사지 마세요! 100만원 아끼고 명품 주방 만드는 역대급 비결” ㄷㄷ
 E4FbSAAd0Qw	S	1155	electric		“사람 부르면 수십만 원입니다” 전기 셀프 시공하다 집 태워 먹는 사람들의 특징 ㄷㄷ
-op1AU035HNI	S	7404	wall	gypsum	셀프페인트칠 | 비싼 돈 주고 사람 부르지 마세요, 석고보드 1장 + 페인트로 끝내는
+op1AU035HNI	S	7404	finish	gypsum	셀프페인트칠 | 비싼 돈 주고 사람 부르지 마세요, 석고보드 1장 + 페인트로 끝내는
 yteGSuRh3P4	S	10758	kitchen	gypsum	가벽 셀프 시공 | 주방 구조 변경, 업체 없이 직접 해봤습니다 (목공 가벽부터 석고보
 vI8XGNys8hc	S	11356	kitchen		가벽만들기 | 안 쓰는 주방, 목상 가벽으로 재탄생! 바닥 배관 안 깨는 고정법
 pSrgx9Da3m4	S	1118	kitchen		싱크대 교체에 200만 원 쓰지 마세요! 단돈 2만 원으로 새집 만드는 업계 비밀 대공개 ㄷㄷ
@@ -627,28 +627,28 @@ gvuMdBiBXAs	S	911	material		“비싼 자재 다 썩힙니다” 장마철 건�
 pLDNiUJiE14	S	800	tips		인테리어 업자가 절대 안 알려주는 '가성비 10배' 올리는 비밀 ㄷㄷ
 zbMeO3_XPG0	S	8493	finish		실리콘 쏘는법 | 코킹 마감 이 각도 모르면 지저분해집니다, 빈틈 없이 깔끔하게 쏘는
 C0jt3v4prcs	S	1632	wall	molding	인테리어 사장님도 잘 안 알려주는 '마이너스 몰딩' 실패 안 하는 법
-yzYb28ZVHds	S	2066	tips		“이거 안 하면 집 망합니다” 서재 인테리어할 때 블라인드 모르면 생기는 일 ㄷㄷ
-aEV9NeYc7XE	S	5142	tips		포인트벽 인테리어 | 라왕 나무로 평범한 벽 변신, 간격 섞어주는 게 핵심
+yzYb28ZVHds	S	2066	wall		“이거 안 하면 집 망합니다” 서재 인테리어할 때 블라인드 모르면 생기는 일 ㄷㄷ
+aEV9NeYc7XE	S	5142	wall		포인트벽 인테리어 | 라왕 나무로 평범한 벽 변신, 간격 섞어주는 게 핵심
 fycBMCFssvA	S	4497	floor	tile	데코타일 셀프시공 | 처음 깔아봤는데 결과는? 업체도 잘 안 알려주는 양생 10분의 비
 GxkB8zYk1W4	S	8187	electric		간접조명 셀프시공 | 단돈 15,000원 T5 조명 설치로 서재 분위기 호텔처럼 바꾸기
 nCMtHZNPVY0	S	827	tips		99%가 모르는 인테리어의 진실, ‘이것’ 하나로 인생이 바뀝니다 ㄷㄷ
 pyeEVyElxNY	L	67	electric		에어컨청소업체 | 싼 게 비지떡? 가격만 보고 부르면 100% 속습니다, 진짜 전문가 고르는 법과 에어컨청소비용 진실
 RPWnOgMnpfE	S	2419	tips	sound	아파트 인테리어 할 때 목수가 절대 안 알려주는 ‘방염 타공판’의 충격적인 위력
-nBmE8YcKcP0	S	749	tips		“1만 원 아끼려다 가족 다 죽을 뻔했습니다” 소방관도 제발 꼭 설치하라는 ‘이것’의 정체 ㄷㄷ
+nBmE8YcKcP0	S	749	electric		“1만 원 아끼려다 가족 다 죽을 뻔했습니다” 소방관도 제발 꼭 설치하라는 ‘이것’의 정체 ㄷㄷ
 e84qyvV_fmc	S	4754	finish		스티커벽지 셀프도배 | 아직도 사람 부르세요? 똥손도 10분이면 끝나는 벽지 붙이기 (
 s4DGY-WhaMw	S	7037	finish		페인트칠 잘하는법 | 25년 고수의 마감 비법, 칠하기 전 '이것' 모르면 다 뜨고 갈
-QDBz7NTGweY	S	6495	furniture	mdf	셀프 선반만들기 | 수평 안 맞는 창틀, 목상과 MDF로 완벽한 창가 선반 마감하는 법
-xHtVIavApK8	S	5163	material	mdf/film	MDF 필름시공 | 필름 붙이기 전 꼭 해야 할 작업, 문선 MDF로 먼저 잡는 법
-S37Guy3yqCI	S	6429	furniture	mdf	벽만들기 | 서재 벽면 목상 대고 MDF 붙이기, 셀프로 끝까지 완성
+QDBz7NTGweY	S	6495	wall	mdf	셀프 선반만들기 | 수평 안 맞는 창틀, 목상과 MDF로 완벽한 창가 선반 마감하는 법
+xHtVIavApK8	S	5163	finish	mdf/film	MDF 필름시공 | 필름 붙이기 전 꼭 해야 할 작업, 문선 MDF로 먼저 잡는 법
+S37Guy3yqCI	S	6429	wall	mdf	벽만들기 | 서재 벽면 목상 대고 MDF 붙이기, 셀프로 끝까지 완성
 m5Rv7n9u-VI	S	970	electric		형광등 아직도 그냥 쓰세요? 1분 만에 전기세 반값으로 줄이는 'LED 교체' 역대급 꿀팁 ㄷㄷ
 Q7Q62SOybBk	S	1663	electric		“이거 모르고 꽂으면 집 불납니다!” 콘센트 연결할 때 90%가 하는 치명적인 실수 ㄷㄷ
 msP85ovXgx8	S	1100	electric		“절대 대충 하지 마세요” 전선 연결할 때 이거 모르면 진짜 불납니다 ㄷㄷ
 mThRwFlPQ0E	S	6165	wall	gypsum	석고보드 | 1장 vs 2장 차이, 마감 품질이 완전히 달라지는 이유
 lQfE0IMS76o	S	1622	tips		“이거 모르면 집 다 무너집니다” 목수가 절대 안 알려주는 튼튼한 벽 만드는 비밀 ㄷㄷ
-kIGfg_Ca2po	S	1218	tool		집 짓기 전 '이것' 계산 못 하면 생돈 수백만 원 날립니다! 목수도 안 알려주는 자재비 아끼는 1분 비법 ㄷㄷ
+kIGfg_Ca2po	S	1218	tips		집 짓기 전 '이것' 계산 못 하면 생돈 수백만 원 날립니다! 목수도 안 알려주는 자재비 아끼는 1분 비법 ㄷㄷ
 FrVu6SeotYg	S	1517	furniture		“인테리어 업체 부르지 마세요” 반값으로 완성하는 남자의 로망 서재 만들기 ㄷㄷ
 OQP2WZ8mV48	S	773	greenhouse		“집값 2배 오릅니다” 낡은 정원을 유럽 감성 온실로 바꾸는 역대급 방법 (안 보면 100% 후회) ㄷㄷ
-sMMWA5v_17M	S	2198	deck		집 마당에 이런 게?! 목수들도 감탄한 역대급 목조온실 문틀 만들기 ㄷㄷ
+sMMWA5v_17M	S	2198	greenhouse		집 마당에 이런 게?! 목수들도 감탄한 역대급 목조온실 문틀 만들기 ㄷㄷ
 M0BOMGdGPWE	S	1376	deck		“삭막했던 마당이 ‘감성 호텔’로? 돈 안 들이고 평범한 집을 명품 주택으로 바꾸는 조경 꿀팁” ㄷㄷ
 XInm4mVu_Nc	S	1186	greenhouse		“나무에 ‘이것’ 안 하면 다 썩습니다” 수백만 원 아끼는 온실 시공의 절대 원칙 ㄷㄷ
 XOPawe5YRHM	S	1543	deck		마당에 ‘이것’ 깔면 평생 후회합니다 (업자들도 쉬쉬하는 화강석 시공 비밀) ㄷㄷ
@@ -660,19 +660,19 @@ IzFPL90zCFc	S	1328	furniture		좁은 집이 2배 넓어지는 기적: 가구 배
 B6t8sllbPzA	S	812	electric		“전기 공사 절대 그냥 맡기지 마세요” 집 태워 먹기 딱 좋은 ‘이것’의 정체 ㄷㄷ
 ASRoD0DPpqI	S	1299	tips		“이거 안 하면 집 망합니다” 좁은 집 2배 넓게 쓰는 공간 활용의 비밀 ㄷㄷ
 fQY5IVZoq8M	S	1893	greenhouse		“이거 안 바르면 집 무너집니다” 목조주택 수명을 20년 늘려주는 전문가의 관리 치트키 ㄷㄷ
-eVs6Z-ycP4c	V	2053	wall	hapan	CNC 목공 | 자작나무 합판으로 맥주 캐리어 만들기, 3D 도면부터 본드·못 없는 끼워맞춤 조립까지 (라이브)
+eVs6Z-ycP4c	V	2053	furniture	hapan	CNC 목공 | 자작나무 합판으로 맥주 캐리어 만들기, 3D 도면부터 본드·못 없는 끼워맞춤 조립까지 (라이브)
 lMiMoYjCpoE	S	1846	tips		“이거 안 하면 집 망합니다” 돈 들여 공사하고 평생 후회하는 결정적 이유 ㄷㄷ
 RB8F1fOybSY	S	1763	deck		“이거 모르면 돈 버립니다” 업자도 안 알려주는 데크 시공 300만원 아끼는 법 ㄷㄷ
 icW6YkmPnAk	S	3215	deck	bangbu	“이거 모르고 시공했다가 집 다 썩었습니다” 전문가가 절대 안 가르쳐주는 방부데크 시공 꿀팁 ㄷㄷ
 R88XmO_-aOc	S	2097	deck		전원주택 데크 1년 만에 썩기 싫으면 이 영상 '무조건' 보세요 (업자들은 안 알려주는 진실) ㄷㄷ
 BSHL2Dlj90c	S	2467	greenhouse		“이거 안 하면 집 망합니다” 평생 안 무너지는 지붕 골조의 비밀 ㄷㄷ
 LOzbCAHRBNA	S	1289	greenhouse		목수들도 잘 모르는 '이거' 하나 차이로 집 수명이 바뀝니다! 99%가 놓치는 목조주택 시공의 비밀 ㄷㄷ
-SEH97gE8wXk	S	1438	tips		“절대 그냥 만들지 마세요” 기초 수평 안 맞추면 1년 뒤 집 전체가 무너집니다 ㄷㄷ
-5gABapbervQ	S	2217	material		“이거 안 보면 집 망합니다” 인테리어 고수들만 몰래 가는 일본 역대급 자재 백화점의 정체 ㄷㄷ
+SEH97gE8wXk	S	1438	greenhouse		“절대 그냥 만들지 마세요” 기초 수평 안 맞추면 1년 뒤 집 전체가 무너집니다 ㄷㄷ
+5gABapbervQ	S	2217	tips		“이거 안 보면 집 망합니다” 인테리어 고수들만 몰래 가는 일본 역대급 자재 백화점의 정체 ㄷㄷ
 0d2AUe1FSoE	S	1989	exterior		“1,000만 원 넘는 샷시, 브랜드만 믿고 샀다간 '이것' 때문에 평생 후회합니다” ㄷㄷ
-aNVsR7yVIY8	S	1201	tips		“제발 멀티탭 이렇게 쓰지 마세요” 자다가 불나서 집 다 태워 먹는 사람들의 공통점 ㄷㄷ
+aNVsR7yVIY8	S	1201	electric		“제발 멀티탭 이렇게 쓰지 마세요” 자다가 불나서 집 다 태워 먹는 사람들의 공통점 ㄷㄷ
 8jyeAnQom0E	L	103	electric		에어컨설치비용 | 제발 그냥 사지 마세요, 시스템 vs 스탠드 설치비 3배 차이 나는 이유 (설치기사 수입·보일러 비교까지)
-q4_-SpQqxbk	S	768	electric		“전기기사 하면 돈 번다? 현실은 이렇습니다... 기술직 시작 전 필수 시청” ㄷㄷ
+q4_-SpQqxbk	S	768	tips		“전기기사 하면 돈 번다? 현실은 이렇습니다... 기술직 시작 전 필수 시청” ㄷㄷ
 X4frs5B4lQE	S	1588	finish	film	인테리어 필름 시공, 업체 말만 믿고 했다가 집 다 망가지는 결정적 이유
 tn4rC1fU83A	S	2924	exterior	siding	“가성비 좋다고 막 썼다간 집 다 썩습니다” 전문가가 폭로하는 메탈 사이딩의 충격적인 진실 ㄷㄷ
 UIIcG7n3etg	S	4535	material	hapan	내장재 종류 | 합판 종류 총정리, 이거 보면 끝 (친환경 등급까지 초보자용)
@@ -687,26 +687,26 @@ h5tsSmAJcjU	S	1206	tips		“인테리어에 수천만 원 쓰지 마세요” �
 hlK5Ye9Qoa0	S	2042	material	jipseong/hapan/mdf	이거 모르고 쓰면 집 다 망가집니다 합판·MDF·집성목 쓸 때 반드시 알아야 할 차이점
 hCUoaLFMlxg	S	1741	kitchen		“주방 공사하고 후회하기 싫으면 ‘이것’만은 제발 꼭 확인하세요!” ㄷㄷ
 Mb_w3qjgU-o	S	1510	floor	tile	타일 공사 ‘망하기’ 싫으면 딱 이것만 보세요! 업자도 조용히 쓰는 꿀팁
-fBlo41NpMpI	S	1032	tips		“인테리어 업체도 안 알려주는 ‘설비 공사’ 비용 2배 아끼는 법 (모르면 수백만 원 날립니다)” ㄷㄷ
+fBlo41NpMpI	S	1032	floor		“인테리어 업체도 안 알려주는 ‘설비 공사’ 비용 2배 아끼는 법 (모르면 수백만 원 날립니다)” ㄷㄷ
 pLZEOOLX5O0	S	327	electric		“인테리어 할 때 '이 순서' 모르면 생돈 날립니다! 전기공사 하기 전 필수 시청”
 uLDt1Yf4CAA	S	2901	tips		“이거 안 하면 집 망합니다” 목수도 안 알려주는 재료비 절반 아끼는 법 ㄷㄷ
 Ci5PA0MIMAU	S	973	tips		“철거 업체 부르지 마세요” 이거 하나 몰라서 생돈 날리고 집 망가지는 분들 너무 많습니다 ㄷㄷ
 T8ymPvlU3Zk	S	1720	tips		“인테리어 1000만원 넘게 쓰면 바보? 돈 2배 아끼는 리모델링의 비밀” ㄷㄷ
 yO_Pz1vhCI8	S	2382	tips		“이거 안 하면 집 망합니다” 1,500만 원 넘으면 불법? 인테리어 사기 안 당하는 법 ㄷㄷ
 LN50l0LQuOs	S	2517	exterior	siding	“이거 안 하면 집 망합니다” 외벽 공사비 2배 아끼는 세라믹 사이딩의 비밀 ㄷㄷ
-xpot0MMssU4	S	2064	tips		강아지집 사지 말고 ‘이것’ 하세요! 10만 원으로 5성급 호텔 보금자리 만드는 비밀 ㄷㄷ
+xpot0MMssU4	S	2064	furniture		강아지집 사지 말고 ‘이것’ 하세요! 10만 원으로 5성급 호텔 보금자리 만드는 비밀 ㄷㄷ
 yrtLO49jcvg	L	291	electric		전기일당 | 일당 80만 원의 함정, 인테리어 전기공사 기술자가 절대 말 안 해주는 현실과 셀프 가능 범위
-wVsBJDGuncU	S	1652	tips		“우리 집 강아지가 구토하는 진짜 이유” 밥그릇 하나 바꿨더니 생긴 일 ㄷㄷ
-glK_BQZ59_s	S	3522	tips		“이거 안 하면 집 망합니다” 강아지 계단 직접 만들 때 절대 실수하면 안 되는 이유 ㄷㄷ
+wVsBJDGuncU	S	1652	furniture		“우리 집 강아지가 구토하는 진짜 이유” 밥그릇 하나 바꿨더니 생긴 일 ㄷㄷ
+glK_BQZ59_s	S	3522	furniture		“이거 안 하면 집 망합니다” 강아지 계단 직접 만들 때 절대 실수하면 안 되는 이유 ㄷㄷ
 hORmhcIvjAY	S	2405	wall		인테리어 업자도 안 알려주는 '문틀 리폼'의 비밀 (이거 하나로 집이 바뀝니다)
-c4-lXqefz0s	S	1835	tips		“나사 하나 없이 조립 끝?!” 10만 원대로 완성하는 역대급 데스크테리어 꿀템 ㄷㄷ
-eT4CLih-K1c	S	151	tips		“다이소보다 쌉니다” 단돈 3,500원으로 집안 분위기 싹 바꾸는 역대급 꿀템
+c4-lXqefz0s	S	1835	furniture		“나사 하나 없이 조립 끝?!” 10만 원대로 완성하는 역대급 데스크테리어 꿀템 ㄷㄷ
+eT4CLih-K1c	S	151	furniture		“다이소보다 쌉니다” 단돈 3,500원으로 집안 분위기 싹 바꾸는 역대급 꿀템
 B0LTwCOLdbQ	S	4334	wall		사무실인테리어 | 좁은 사무실 공간 분리, 가벽 하나로 완전히 바뀝니다 (셀프 리모델링
 RV8ryJ0oY7w	S	4014	wall		방 가벽만들기 | 방 하나를 2개로 나누는 가장 쉬운 방법, 목공 가벽 설치
 DqcG0eHzL_s	S	1789	exterior	siding	“이거 안 하면 집 망합니다” 40년 된 집도 새집처럼 만드는 세라믹 사이딩의 비밀 ㄷㄷ
 -CTq7xJtw7s	S	12087	floor	maru/molding	장판 셀프 시공 | 재단부터 걸레받이 모양 따기, 실리콘 마감까지 장판시공방법
 ZGfmGfGiM9Y	S	1537	tips		“이거 모르면 평생 후회합니다” 업자들이 절대 안 알려주는 인테리어 마감의 충격적인 비밀 ㄷㄷ
-39AWxBMeT1c	V	627	material	gujo	3D CNC 가공 | 각재 하나로 나무 야구배트 만들기, 2D와 3D 입체 가공은 시간이 4배 차이 (라이브)
+39AWxBMeT1c	V	627	furniture	gujo	3D CNC 가공 | 각재 하나로 나무 야구배트 만들기, 2D와 3D 입체 가공은 시간이 4배 차이 (라이브)
 dhQqJzHpuKU	S	1681	finish	film	이거 모르고 시공하면 집 다 망칩니다 인테리어 필름 고를 때 90%가 하는 치명적인 실
 TuYoWf_XwA0	S	6496	wall	gypsum	석고보드시공 | 벽 투플라이 5단계로 끝내는 법, 이 순서 모르면 1년도 못 가서 금
 H-9Xhgjk9RA	S	4442	wall		목상작업 | 셀프 목공 목상 만들기, 자재 잘못 고르면 후회합니다
@@ -719,17 +719,17 @@ EkLh5bzSQ_U	L	135	finish	film	필름지 추천 | 아직도 비싼 게 좋은 줄
 Orzuz7ecaRQ	S	441	wall	gypsum	“이것만 알면 인테리어비 수백만 원 아낍니다” 목수들도 안 알려주는 벽면 석고보드 셀프 시공법
 n1dCmb7kJ-A	S	1886	wall		“가벽 뜯었더니 집이 썩어있네요” 인테리어 할 때 ‘이것’ 확인 안 하면 진짜 망합니다 ㄷㄷ
 hW3I7DfOMP0	S	3601	tips		이거 안 하면 집 망합니다 인테리어 계약 전 모르면 무조건 사기당하는 법
-aSMOtbMUu6U	S	1258	material		“막노동꾼이라 무시당했습니다” 건축자재 하나로 연 매출 100억 찍고 인생 역전한 비결 ㄷㄷ
+aSMOtbMUu6U	S	1258	tips		“막노동꾼이라 무시당했습니다” 건축자재 하나로 연 매출 100억 찍고 인생 역전한 비결 ㄷㄷ
 jq0amqTbkDQ	L	391	finish	film	필름견적 | 인테리어 필름 그냥 맡기지 마세요, 평수보다 중요한 필름시공비용 기준과 진짜 전문가 고르는 법
 -RzLjW4PKBY	V	539	furniture	gujo	나무 야구배트 만들기 2편 | 3D CNC 회전축으로 각재가 배트가 되는 순간, 수동 목선반 vs CNC 비교 (라이브)
-cyxL1a8d2VQ	L	105	material		"저렴한 리모델링 | ""대기업 자재라고 다 좋을까?"" 브랜드 거품에 속지 않고 인테리어 비용 아끼는 4단계 (도면·계약서 필수)"
+cyxL1a8d2VQ	L	105	tips		"저렴한 리모델링 | ""대기업 자재라고 다 좋을까?"" 브랜드 거품에 속지 않고 인테리어 비용 아끼는 4단계 (도면·계약서 필수)"
 ajS-aYo-6ok	L	605	wall		반셀프인테리어 목공 | 업체가 절대 안 알려주는 '돈 아끼면 망하는' 3곳, 인테리어 사기 피하는 법
 MjPvHw4GjYs	V	1025	furniture	jipseong	각티슈 케이스 만들기 | CNC로 미송 집성목 6조각 가공, 본드 없이 끼워맞춤 조립 (일반형 vs 슬라이딩)
 xflAVQvqP5o	L	249	tips		인테리어목수 일당 | 목수 월급이 대기업 임원급? 연봉 1억 목수가 밝히는 인테리어목수 현실과 목수인건비
 XcLcpieQHz4	V	982	furniture		타공판 만들기 | CNC로 자작나무 벽걸이 타공판 가공, 본드·못 없이 끼워맞춤 조립 (라이브)
 bDs59n3k3YY	L	419	tips		인테리어 사기 안 당하는 법 | 업체가 가장 무서워하는 영상, 모르면 수천만 원 날리는 계약 전 체크리스트
 ayy-aGGYKUk	V	920	furniture		나무 야구배트 만들기 3편(완성) | 3D CNC로 깎은 커스텀 배트 공개 + 자작나무 트레이 가공 (라이브)
-FUG0a0hCyB4	L	224	material		"건축자재 창업 | ""죽다 살아났습니다"" 화상 흉터 딛고 목재 배달원에서 연매출 대박 낸 건재상 대표의 반전 인생"
+FUG0a0hCyB4	L	224	tips		"건축자재 창업 | ""죽다 살아났습니다"" 화상 흉터 딛고 목재 배달원에서 연매출 대박 낸 건재상 대표의 반전 인생"
 I2sZPibbvsY	V	662	furniture	mdf	나무 지도 만들기 | CNC 조각기로 MDF에 대한민국 지도 새기기, 독도·울릉도까지 21분 완성 (라이브)
 5rXLNfVaHFA	V	579	furniture		냄비받침 만들기 | CNC로 멀바우 원목 가공, 본드 없이 끼워맞춤 조립하는 하드우드 소품 (라이브)
 RmKmC0LTFzE	L	2595	exterior	siding	메탈사이딩 장단점 | 외벽 공사 전 필독! 세라믹사이딩 vs 메탈사이딩 가성비 승자는?
@@ -738,7 +738,7 @@ ERa78WCmyrQ	L	6430	material	hapan/mdf	모르면 돈 버리는 합판 종류 완�
 -ncqTli2F3M	V	355	furniture	hapan	캠핑 수납함 만들기 | CNC로 자작나무 합판 모듈 가구 가공, 본드 없이 1분 조립 + 랜턴걸이 활용 (라이브)
 SdY38CyMCo0	L	271	material	jipseong	집성목 종류 | 비싼 원목 가구 그냥 샀다간 100% 후회합니다, 아카시아·고무나무 집성판 종류와 휨 막는 법
 JcNY4iXX1oA	V	372	furniture		컵홀더 만들기 | CNC로 자작나무 컵홀더 3종 가공, 종이컵부터 1L 대용량 컵까지 + 캠핑용 종이컵 고정 (라이브)
-n3cSv0i-WX0	L	208	furniture	hinoki	원목가구 진짜와 가짜 | 절대 그냥 사지 마세요, 편백 히노끼 국산 vs 중국산 구별법
+n3cSv0i-WX0	L	208	material	hinoki	원목가구 진짜와 가짜 | 절대 그냥 사지 마세요, 편백 히노끼 국산 vs 중국산 구별법
 VFslGYSE7Yk	V	411	furniture		자작나무 모니터받침대 | CNC로 키보드 수납되는 모니터 받침대 가공, 본드·못 없이 끼워맞춤 조립 (라이브)
 wbjShBp4M5w	L	1511	material	jipseong	집성목 고르는 법 | 90%가 속는 원목가구의 진실, 소프트우드 vs 하드우드 모르면 돈 버립니다
 wIZ5Aj7f96c	L	1359	exterior	siding	메탈사이딩 가격·종류 총정리 | 써모·IM·알루미늄 사이딩 뭐가 다를까? 외장재 잘못 고르면 수천만 원 날립니다
@@ -753,13 +753,13 @@ NYih3YUAx0c	L	204	floor	maru	강마루 강화마루 차이 | 싱크대 먼저? �
 AkK6Q3Dw3_g	V	380	furniture		발받침대 만들기 | CNC로 레드파인 원목 발받침대 가공, 허리 편한 각도 설계 + 본드·못 없이 망치 조립 (라이브)
 U2O49xTKpx8	L	154	floor	tile	타일공사 | 절대로 그냥 맡기지 마세요, 99%가 후회하는 타일공사 시공순서와 시공 전 필수 체크리스트 (졸리컷·방수·샌딩)
 w3Xrvk3QhYY	V	374	furniture		낚싯대 거치대 만들기 | CNC로 미송 원목 가공, 본드·못 없이 망치질 3번에 끝나는 끼워맞춤 조립 (라이브)
-emoIWuMNAcA	L	173	tool		인테리어 설비공사 | 잘못하면 아랫집 물어줘야 합니다, 25년 현직자가 밝히는 배관공사 순서와 초보자 실수 1위
+emoIWuMNAcA	L	173	floor		인테리어 설비공사 | 잘못하면 아랫집 물어줘야 합니다, 25년 현직자가 밝히는 배관공사 순서와 초보자 실수 1위
 mC2J6cVcan4	L	267	electric		인테리어전기공사 | 순서 모르면 100% 불납니다, 목공 전에 꼭 해야 할 인테리어 전기 시공 순서와 비용 아끼는 법
 jcqTf-1G5mA	L	531	wall	insul	반셀프인테리어 목공 4편 | 목공 비용 50% 아끼는 법, 업체가 절대 안 알려주는 목공 용어·단열·등박스 꿀팁
 ouLkGQAjAj8	L	623	exterior		샷시교체비용 100만 원 아끼는 법 | 이거 모르고 샷시 뜯지 마세요, 철거비 2번 내는 이유 (반셀프 필수)
-xl-e4tk-LyY	L	558	finish	maru	1000만원인테리어 | 반셀프인테리어 비용 반으로 줄이는 법, 철거부터 도배·장판·화장실까지 가성비 리모델링
-ijBRb5SBZlo	L	346	finish		인테리어공정순서 | 업체 부르기 전 모르면 2천만 원 날립니다, 철거부터 도배까지 돈 안 버리는 반셀프 8단계
-QP6xGUA9dro	L	356	wall	gujo	다루끼 종류 | 이거 모르고 인테리어 하면 집 다 썩습니다, 목수가 절대 안 쓰는 자재와 좋은 다루끼 고르는 법
+xl-e4tk-LyY	L	558	tips	maru	1000만원인테리어 | 반셀프인테리어 비용 반으로 줄이는 법, 철거부터 도배·장판·화장실까지 가성비 리모델링
+ijBRb5SBZlo	L	346	tips		인테리어공정순서 | 업체 부르기 전 모르면 2천만 원 날립니다, 철거부터 도배까지 돈 안 버리는 반셀프 8단계
+QP6xGUA9dro	L	356	material	gujo	다루끼 종류 | 이거 모르고 인테리어 하면 집 다 썩습니다, 목수가 절대 안 쓰는 자재와 좋은 다루끼 고르는 법
 yxbRPO_PZpE	L	6028	exterior	siding	판넬외벽 리모델링 | 세라믹사이딩 잘못 고르면 집 망합니다, 헌 집이 신축 된 외벽마감
 B4gwgzd2JxQ	L	316	furniture		강아지집만들기 | 아직도 돈 주고 사세요? 자작나무로 만든 원목 애견집이 시중 제품보다 100배 좋은 이유
 NgdQia0eYAI	L	198	furniture		강아지밥그릇만들기 | 강아지 구토의 숨겨진 원인은 밥그릇 높이였습니다, 레드파인 원목 밥그릇 받침대 10분 DIY
@@ -776,11 +776,11 @@ qKib7i8_OzU	L	1957	floor	maru	장판 셀프 시공 | 강마루 vs 장판 고민 
 GDwqq3yH36o	L	1658	wall	molding	걸레받이 몰딩 셀프시공 | 이거 안 하면 집 망합니다, 틈새 없는 몰딩시공방법 (사선
 tuGFpn9Wt2U	L	1221	wall	mdf/gypsum	석고보드 투플라이(2P) 시공 | 한 장만 붙이면 집 망합니다, 원장 마감부터 MDF 테두리까지
 LpekDB8yzpA	L	382	exterior	siding	상가외벽리모델링 | 이거 모르고 세라믹사이딩 시공하면 100% 실패합니다, 스토코·징크 조합 대전 현장 공개
-tWrycXuOFbk	L	3202	greenhouse	gypsum/hardware	석고보드 시공 | 목상 자재 잘못 고르면 집 망합니다, 재단부터 피스박기까지 셀프 목공
+tWrycXuOFbk	L	3202	wall	gypsum/hardware	석고보드 시공 | 목상 자재 잘못 고르면 집 망합니다, 재단부터 피스박기까지 셀프 목공
 4ZUM_Btf-5Y	L	2204	wall	gypsum	목상작업 & 가벽만들기 | 석고보드 붙이기 전 '이 작업' 안 하면 벽 다 뒤틀립니다 (셀프 목공 기초)
-O13xwLq0HSQ	L	836	material		일본 카인즈(CAINZ) 투어 | 일본여행 가면 꼭 가보세요, 역대급 건축자재·DIY 매장 (500원 자투리 목재까지)
+O13xwLq0HSQ	L	836	tips		일본 카인즈(CAINZ) 투어 | 일본여행 가면 꼭 가보세요, 역대급 건축자재·DIY 매장 (500원 자투리 목재까지)
 CsZFG2VXR9o	L	660	wall		철거 전 주의사항 | 함부로 부수면 집 망합니다, 썩은 벽 판별법부터 투플 목공까지 (셀프 인테리어 필수)
-7JzGNU-WKD0	L	992	wall	hardware	목공 도구 총정리 | 초보 필수 목공공구, 이거 모르고 사면 돈 날립니다 (임팩드릴·타카·컴프레셔·스킬)
+7JzGNU-WKD0	L	992	tool	hardware	목공 도구 총정리 | 초보 필수 목공공구, 이거 모르고 사면 돈 날립니다 (임팩드릴·타카·컴프레셔·스킬)
 igzoHZg8F30	L	4486	floor		화장실 리모델링 배관 | 절대 이렇게 하지 마세요! 욕실 수리비 수백만 원 아끼는 배관
 exYgJsomB5I	L	3142	tips		노후주택 리모델링 1편 | 50년 된 폐가, 부수지 않고 살려냈습니다 (반셀프인테리어 철거부터)
 njHUwHMg654	L	2485	greenhouse		목조 온실하우스 완공편 | 마당에 '이것' 하나 지었더니 집값이 달라졌습니다 (비닐하우스의 변신)
@@ -794,28 +794,28 @@ jBN2jqyjYbM	L	8332	kitchen	molding	싱크대 하부장 교체 & 몰딩 셀프시
 80O1CrdIBEg	L	35122	kitchen	hardware	싱크대 문짝 달기 & 경첩 조절 | 통째로 바꾸지 마세요, 1만 원대로 주방 리모델링
 LLG2hzQUOLg	L	6572	kitchen	hardware	싱크대리폼 셀프로 하는 법 | 업체 맡기지 마세요, 초보자도 10분 만에 새 집 (문짝
 yt2bIh4uXs8	L	7111	kitchen		아일랜드식탁 만들기 | 42만 원으로 주방 분위기 싹 바꿨습니다 (인조대리석 상판 DI
-aUFiGpgDn8M	L	1381	material	hapan	합판으로 가구만들기 | 100만 원짜리 아일랜드식탁, 42만 원으로 똑같이 (LPM 재단·엣지 마감 도면 공개)
+aUFiGpgDn8M	L	1381	furniture	hapan	합판으로 가구만들기 | 100만 원짜리 아일랜드식탁, 42만 원으로 똑같이 (LPM 재단·엣지 마감 도면 공개)
 hOuaWjTHQ8w	L	806	electric		3구 스위치교체 & 주방 콘센트 설치 | 전기 공사 업체 부르지 마세요, 초보도 실패 없는 셀프 교체법
 Rha-Ln47ceo	L	489	finish		셀프페인트칠 | 업체 300만 원 견적, 직접 하면 10배 아낍니다! 주방 페인트칠하기 준비물부터 롤러 기술까지
 ZKoqBOS9e5Q	L	213	furniture		책보관함 만들기 | 수납장 사려다 돈 굳었습니다, 2만 원으로 10분 만에 만드는 레드파인 원목 책 보관함
 WOnQABL8N4c	L	345	tips		구독자 1만 명 감사 이벤트 | 제주도 감귤 체험 현장에서 직접 딴 귤 나눔 (이벤트 종료)
-RUXVrrSzev8	L	80681	tips		방문 문짝교체 셀프로 하는 법 | 30년 된 문 하나 바꿨더니 집이 달라졌습니다
+RUXVrrSzev8	L	80681	wall		방문 문짝교체 셀프로 하는 법 | 30년 된 문 하나 바꿨더니 집이 달라졌습니다
 NZqQcDpaJBg	L	994	wall	gypsum	방수석고보드 시공 | 가벽 이렇게 만들지 마세요! 주방인테리어 2편, 행잉 신발장 & 간접조명 마감
 zRIxQ2Gdlf8	L	1587	furniture	hapdeck	야외테이블 조립 2편 | 비 맞아도 평생 안 썩는 합성목재 테이블세트, 이거 안 하면
 D70Y8pWDwJc	L	956	furniture	hapdeck	야외테이블 가격 보고 직접 만들었습니다 | 비 맞아도 평생 안 썩는 합성목 테이블 & 의자 세트 1편
-1J_LdMw_nFo	L	485	material	jipseong	원목테이블만들기 | 고무나무 집성판 3장으로 끝내는 서재 책상, 돈 주고 사지 마세요 (다리 설계부터 조립까지)
+1J_LdMw_nFo	L	485	furniture	jipseong	원목테이블만들기 | 고무나무 집성판 3장으로 끝내는 서재 책상, 돈 주고 사지 마세요 (다리 설계부터 조립까지)
 FfWHrCJWkUA	L	32247	exterior	siding	세라믹사이딩 시공 | 40년 된 흉가가 새집이 됐습니다 (외벽 리모델링 전 과정)
 zOa4RgpWMPc	L	6296	greenhouse		비닐하우스 짓기 3편 | 목조 기둥 그냥 세우면 무너집니다, 10년 가는 기둥 보강법
 SE6J7oITxtU	L	803	furniture	hinoki	수납장 추천, 사지 말고 조립하세요 | 앞뒤 다 쓰는 리버서블 삼나무 수납장, 집안 수
 dKY06oNiTgQ	L	15962	exterior	siding	세라믹사이딩 하지작업 2편 | 40년 노후건물 외벽 리모델링, 이거 모르면 수천만 원
 5I2iazs6Jlo	L	735	greenhouse		비닐하우스 전등설치 | 이거 안 하면 집 망합니다, 습기 막는 배선 & 소켓 마감 (목조온실 전기 3탄)
-DhLMywDY0GM	L	523	electric		몰탈시멘트 사용법 | 몰탈 물 배합 비율부터 시멘트미장까지, 전기공사 후 뚫린 바닥 5천 원으로 메우기
+DhLMywDY0GM	L	523	floor		몰탈시멘트 사용법 | 몰탈 물 배합 비율부터 시멘트미장까지, 전기공사 후 뚫린 바닥 5천 원으로 메우기
 iHNUpMKq7PA	L	17280	exterior	siding/tile	세라믹사이딩 1편 | 40년 된 외벽타일 그냥 뒀다가 생기는 대참사 (외벽 리모델링 시
 BGApwECo3Tg	L	1115	deck	hapdeck	컨테이너수영장 만들기 | 전문가도 쉬쉬하는 합성데크 시공의 진실, 마당 수영장 제작 비
 UFQVwv3PNU4	L	260	electric	insul	단열재 시공 방법 | 집 망치기 싫으면 제발 멈추세요, 스티로폼보다 50배 강한 아이소
 S51o5Dcqsqw	L	2575	deck	hapdeck/hardware	합성데크시공방법 | 이거 모르고 데크 깔면 무조건 후회합니다, 10년 가는 클립시공의
-8PJdXPPbCJU	L	201	material		원목 사다리 만들기 | 사다리 사지 마세요, 모르면 100% 손해 보는 레드파인 2단 감성 사다리 DIY
-yU9ZLticfbI	L	4481	greenhouse		CD관 매립 야외 전기 배선 | 절대 그냥 묻지 마세요! 비닐하우스 전기 공사 (전선
+8PJdXPPbCJU	L	201	furniture		원목 사다리 만들기 | 사다리 사지 마세요, 모르면 100% 손해 보는 레드파인 2단 감성 사다리 DIY
+yU9ZLticfbI	L	4481	electric		CD관 매립 야외 전기 배선 | 절대 그냥 묻지 마세요! 비닐하우스 전기 공사 (전선
 fBY56k8EKd8	L	184	furniture		정리함 만들기 | 다용도 수납함 사지 마세요, 1만 원으로 끝내는 미송 원목 정리함 (전문가만 아는 제작 비법)
 sDgeLJirPQ4	L	136	furniture	hapan/hardware	뚜껑 수납함 만들기 | 돈 주고 사지 마세요, 12T 미송 합판으로 10분 만에 만드는 경첩 수납함 (자재 로스 줄이는 재단법)
 VvFUyynbCjg	L	2027	electric		전기선 연장 & 정리 방법 | 일반인은 절대 모르는 전기 공사 대참사 피하는 법 (비닐하우스 전기 1탄)
@@ -824,17 +824,17 @@ WtZUt-Vb6Rk	L	2664	greenhouse		목조온실 문틀 만들기 | 90%가 실수하�
 jNCc5oMCjIU	L	1035	kitchen		주방인테리어 셀프 1편 | 가벽세우기, 모르면 집 망합니다 (싱크대 리폼 + 홈바 테이블 준비)
 YRf8tGgZv5M	L	236	furniture	hinoki	책상만들기 | 가구점에 돈 쓰지 마세요, 기성품보다 튼튼한 삼나무 원목 책상 5만 원에
 L1GsvMPoJM0	L	290	furniture		변신가구 | 사다리 의자 사지 말고 만드세요, 1초 만에 의자가 사다리로 바뀌는 원목 트랜스포머 체어 DIY
-2IHeAdLrZcI	L	859	material	stain	나무오일 안 바르면 다 썩습니다 | 1분 만에 보는 오일스테인 효과, 나무 수명 10배
+2IHeAdLrZcI	L	859	finish	stain	나무오일 안 바르면 다 썩습니다 | 1분 만에 보는 오일스테인 효과, 나무 수명 10배
 D2_qBFomX-c	L	1565	greenhouse		비닐하우스 샌딩 안 하면 진짜 망합니다 | 목조온실 모서리 샌딩, 비닐 찢어짐 막는 밑작업
 dkDRC2kj02k	L	3903	deck		데크시공방법 | 데크 깔고 1년 만에 썩었습니다, 돈 날리기 싫다면 '이것'만은 꼭 (셀프 데크만들기)
 dL-0Qnn_V7k	L	2092	deck	bangbu/hardware	데크시공 피스 박는 법 2편 | 방부목 데크 대충 깔면 다 들뜹니다, 90%가 놓치는 결정적 실수
 b4p4zAEeL6E	L	2487	deck	bangbu	방부목데크시공방법 1편 | 이거 안 하면 집 망합니다, 데크 골조 공사 절대 하면 안 되는 실수
 h6YnyT2CBVc	L	601	furniture	gypsum	벽선반 만들기 & 설치방법 | 돈 주고 사지 마세요, 석고보드 벽도 OK! 자작나무 타공 선반 DIY
-z8xQbZidKnU	L	5047	tips		서재인테리어 셀프로 100만 원 | 오래된 방, 이거 안 하면 망합니다 (셀프인테리어
+z8xQbZidKnU	L	5047	wall		서재인테리어 셀프로 100만 원 | 오래된 방, 이거 안 하면 망합니다 (셀프인테리어
 z6mCzhFgwyw	L	2614	deck		화분에 대파심기 | 대파 제발 사지 마세요! 원목 화분 하나로 집에서 무한 리필
 r2lAnl8YbLE	L	1395	finish		실리콘 쏘는법 | 이거 모르면 집 망합니다, 초보도 전문가처럼 깔끔한 실리콘 코킹 마감
 vvd44E_ekz0	L	303	wall		블라인드설치방법 | 천장 무너지기 싫으면 꼭 보세요, 천장 블라인드 셀프 설치 시 집 박살 내는 치명적 실수
-xGoVUzQGE24	L	1558	furniture	molding	천장몰딩 셀프 & 커튼박스 만들기 | 인테리어 업자도 안 알려주는 마이너스 몰딩 시공의
+xGoVUzQGE24	L	1558	wall	molding	천장몰딩 셀프 & 커튼박스 만들기 | 인테리어 업자도 안 알려주는 마이너스 몰딩 시공의
 r_8lC9oOmEA	L	1964	furniture		수납장 만들기 | 기성품보다 훨씬 낫네요! 10만 원 아끼는 아카시아 원목 티비다이 DIY
 2e2CSkOop28	L	4319	greenhouse		비닐하우스 짓기 지붕편 | 골조 잘못 만들면 무너집니다, 목조 트러스 지붕 시공 DIY
 CKFwMtXKlZY	L	708	deck		전원주택 조경공사, 업체 부르지 마세요 | 단돈 몇만 원으로 마당이 완전히 달라지는 돌다리 DIY
@@ -844,7 +844,7 @@ oZrAMGlXEEU	L	888	furniture	hapan	책장 만들기 | 기성품 책장 사지 마
 9uahVGxOvIQ	L	407	furniture		침대협탁만들기 | 침대 협탁 비싸게 사지 마세요, 목수들이 자기 집에 쓰는 라왕 원목 협탁테이블 DIY
 1IeVfPL3p9g	L	2713	wall		아트월 셀프시공 | 밋밋한 벽, 라왕 원목으로 호텔처럼 바꾸는 법 (셀프 벽인테리어 DIY)
 q3XDyJrOyV0	L	3463	furniture		테이블 만들기 | 버려지던 자투리 나무로 30만 원짜리 원목 테이블 완성 (가구만들기 기초)
-e8j-18MNvs8	L	555	electric	hardware	회전선반만들기 | 360도 돌아가는 원목 벽선반, 돈 주고 사지 마세요 (나비경첩 하나로 무한변신)
+e8j-18MNvs8	L	555	furniture	hardware	회전선반만들기 | 360도 돌아가는 원목 벽선반, 돈 주고 사지 마세요 (나비경첩 하나로 무한변신)
 eNJQU1ztn4U	L	604	electric		T5조명 설치 셀프로 2만 원 | 전기 공사 없이 간접등 셀프 시공, 집안 분위기 180도 바뀝니다
 LMow-F0FU_k	L	503	wall	sound	타공판 인테리어 | 방음벽 셀프시공 3만원으로 끝, 멀바우 타공판 달 때 초보가 100
 -7LtmMIEBVE	L	21458	greenhouse		비닐하우스 짓기 1편 | 목조 비닐하우스 만들기, 무너지지 않는 골조의 정석
@@ -852,30 +852,30 @@ lwUdovxF03k	L	493	floor	tile	데코타일 셀프시공 | 베테랑도 처음 해
 RVB1mrq5g9I	L	3603	finish	film	인테리어필름 시공방법 | 셀프로 했다가 다 뜨는 이유, 기술자처럼 마감하는 1가지 비결
 _2tf4aQllt4	L	171	furniture		티비다이 만들기 | 업체 부르면 100만 원? 5만 원으로 거실 분위기 싹 바꾸는 미송 헤링본 TV 거실장 DIY
 WaUs0lH5-AQ	L	533	furniture		캠핑테이블 만들기 | 멀바우 원목 접이식 좌식테이블 DIY, 다리가 사라지는 히든 테이블 10년 넘게 씁니다
-WS7Gaezi4uA	L	157	material	hinoki	휴지보관함 | 화장실 좁을 때 제발 사지 마세요, 두루마리 휴지 7개 쏙 들어가는 삼나무 원목 휴지보관함 10분 완성
-5rDWiPylBTE	L	419	material		원목의자만들기 | 사면 100만원, 만들면 5만원? 당기면 침대로 변하는 원목 벤치 의자만들기 DIY
-LQNGtbLFGO4	L	5140	tips		화재경보기 설치방법 | 설마 우리 집은 아니겠지? 하다가 다 태워 먹습니다 (1분 셀프
-dl3cv96BjBo	L	5480	wall		스티커벽지 붙이는 방법 | 이거 안 하면 집 망합니다, 셀프도배 전 필수 체크리스트 (
+WS7Gaezi4uA	L	157	furniture	hinoki	휴지보관함 | 화장실 좁을 때 제발 사지 마세요, 두루마리 휴지 7개 쏙 들어가는 삼나무 원목 휴지보관함 10분 완성
+5rDWiPylBTE	L	419	furniture		원목의자만들기 | 사면 100만원, 만들면 5만원? 당기면 침대로 변하는 원목 벤치 의자만들기 DIY
+LQNGtbLFGO4	L	5140	electric		화재경보기 설치방법 | 설마 우리 집은 아니겠지? 하다가 다 태워 먹습니다 (1분 셀프
+dl3cv96BjBo	L	5480	finish		스티커벽지 붙이는 방법 | 이거 안 하면 집 망합니다, 셀프도배 전 필수 체크리스트 (
 zWYeFzlKwGA	L	243	furniture		공간박스 만들기 | 가구 사기 전에 꼭 보세요, 기성품보다 3배 튼튼한 원목 공간박스 10분 만에 집에서 가구만들기
-xcIDqnqyLl4	L	163	material		악세사리보관함 | 화장대 정리 끝판왕, 길이 조절되는 아카시아 원목 정리함 사지 말고 만드세요
+xcIDqnqyLl4	L	163	furniture		악세사리보관함 | 화장대 정리 끝판왕, 길이 조절되는 아카시아 원목 정리함 사지 말고 만드세요
 rZr8RkrM44U	L	285	finish		인테리어페인트시공 | 이걸 모르면 페인트 다 망합니다, 25년 고수가 처음 공개하는 붓자국 없는 마감 비법
 DzH-qMUIQQQ	L	1049	furniture	mdf	창가 선반 만들기 | 잘못 만들면 집 망합니다, 수평 안 맞는 벽에 MDF 목상으로 홈바 선반 DIY
-n9MO6kswE0Y	L	455	material		월드건축자재DIY 새해 인사 | 구독자 여러분 덕분에 행복했습니다, 더 쉽고 가까운 DIY로 찾아가겠습니다
+n9MO6kswE0Y	L	455	tips		월드건축자재DIY 새해 인사 | 구독자 여러분 덕분에 행복했습니다, 더 쉽고 가까운 DIY로 찾아가겠습니다
 HpguUKWK97g	L	2320	wall	mdf/film	문틀 필름시공 전 필수 | 이거 안 하면 집 망합니다, MDF 문선 작업으로 단차 없애
 dqGtWyMXipU	L	6134	electric		콘센트 추가 설치 | 멀티탭 이렇게 쓰면 불납니다, 4구 콘센트 증설·배선 안전하게 하
-N5ygafezMJk	L	2108	material	mdf	MDF 벽시공 | 100만 원 아끼는 가벽 목상 비밀, '이것' 모르면 무조건 후회합니다 (전문가 실전 팁)
+N5ygafezMJk	L	2108	wall	mdf	MDF 벽시공 | 100만 원 아끼는 가벽 목상 비밀, '이것' 모르면 무조건 후회합니다 (전문가 실전 팁)
 dhwWq3U61zY	L	1216	furniture		무한거울 무드등 만들기 | 5천 원으로 끝내는 '무한 탄광' DIY, 사지 말고 만드세요 (인피니티 미러)
 SvlNmgN5bWs	L	923	electric		LED등 교체방법 | 이거 안 하면 불납니다, 방등 LED 교체 & 스위치교체 셀프로 (전원 차단부터)
 GK-y8nnGEf8	L	4657	electric		콘센트 교체방법 | 전기 전문가도 경악한 최악의 배선, 불 안 난 게 다행입니다 (접지
 xLXNMrNWFaI	L	1013	wall	gypsum/sound	석고보드 페인트칠 전 필수 | 1장만 붙였다가 100% 후회합니다, 원룸 방음 잡는 투
-Z43bSQHOXjI	L	970	material	jipseong/hardware	원목가구 만들기 | 철물 0원! 레일 없는 미서기문 TV 수납장, 미송 무절 집성판으로 직접 만드세요
+Z43bSQHOXjI	L	970	furniture	jipseong/hardware	원목가구 만들기 | 철물 0원! 레일 없는 미서기문 TV 수납장, 미송 무절 집성판으로 직접 만드세요
 7bfvPX3WxAE	L	1722	wall	gypsum	석고보드 원플라이 시공 | 이거 안 하면 집 망합니다, 하자 없는 벽면 인테리어 1일차 (상 걸기부터)
 _vfjR8KHPHo	L	1306	furniture		수납함 만들기 | 사지 마세요! 아카시아 원목 소품 정리 테이블, 15분 만에 3단 레일까지
-G-EzrbMYWvg	L	567	material	gujo/gypsum	자재산출 방법 | 목공 자재산출 실패 없는 공식, 석고보드·다루끼 수량 계산으로 수십만 원 아끼기
+G-EzrbMYWvg	L	567	wall	gujo/gypsum	자재산출 방법 | 목공 자재산출 실패 없는 공식, 석고보드·다루끼 수량 계산으로 수십만 원 아끼기
 ZqQqkUttga0	L	853	furniture		고양이스크래쳐 만들기 | 돈 주고 사지 마세요! 원목 스크래쳐, 노끈만 갈면 평생 리필 걱정 끝 (DIY)
-31XGlGnR7Rk	L	4738	furniture	molding	셀프인테리어 철거 1편 | 체리색 몰딩, 사람 부르지 마세요! 혼자서 100만 원 아끼
+31XGlGnR7Rk	L	4738	tips	molding	셀프인테리어 철거 1편 | 체리색 몰딩, 사람 부르지 마세요! 혼자서 100만 원 아끼
 VmHKn7id29Y	L	938	furniture	hardware	카운터만들기 | 가게 인테리어 맡기지 마세요, 멀바우 상판 하나로 카페 바테이블 완성 (타카 자국 없는 법)
-LRWIhDEhXJI	L	627	material		행거 옷장, 돈 주고 사지 마세요 | 레드파인 원목 모듈 행거 DIY, 5분 완성 옷걸이부터 무한 확장까지
+LRWIhDEhXJI	L	627	furniture		행거 옷장, 돈 주고 사지 마세요 | 레드파인 원목 모듈 행거 DIY, 5분 완성 옷걸이부터 무한 확장까지
 eALs4_dgH1s	L	444	furniture		우산꽂이 만들기 | 현관 앞 젖은 우산 그냥 두면 100% 후회합니다, 미송 원목 우산꽂이 돈 주고 사지 마세요
 MtF103R0fns	L	394	furniture		벤치만들기 | 벤치 의자 돈 주고 사지 마세요, 자투리 나무로 80kg도 끄떡없는 원목 벤치 DIY
 ET_mjhHximc	L	316	furniture	hardware	좌탁만들기 | 비싼 원목 테이블 사지 마세요, 철물 없이 늘어나는 멀바우 확장형 테이블 직접 만드는 법
@@ -886,7 +886,7 @@ xu2OnR_clq8	L	364	furniture	hapan	진열장 만들기 | 가구 업체 부르지 
 8tvWCEZ3cnY	L	256	furniture		강아지식탁의자 | 무릎 아픈 우리 강아지 제발 바닥에서 밥 먹이지 마세요, 원목 애견 식탁 10분 만에 만드는 법 (도면 공개)
 Nri8fqxxM5w	L	1306	furniture		바테이블 만들기 | 50만 원짜리 고무나무 원목 테이블 & 의자 세트, 5만 원으로 직접 만드세요
 l2zExMBlB_0	L	1403	furniture		야외벤치 만들기 | 비 맞아도 안 썩는 원목 벤치, 업체 맡기지 말고 42만 원으로 직접 만드세요
-dbsc7bNpfUs	L	177	material		슬리퍼 거치대 | 아직도 돈 주고 사세요? 단돈 몇천 원으로 현관 분위기 바꾸는 미송 원목 실내화 선반
+dbsc7bNpfUs	L	177	furniture		슬리퍼 거치대 | 아직도 돈 주고 사세요? 단돈 몇천 원으로 현관 분위기 바꾸는 미송 원목 실내화 선반
 JdK98TWbw2k	L	481	furniture		전자렌지 수납장 만들기 | 3단 렌지대 돈 주고 사지 마세요, 3만원으로 평생 쓰는 원목 전자레인지 선반
 O8Mbws13qas	L	6633	deck	bangbu	데크 난간대 만들기 | 방부목 기둥 이렇게 세우면 100% 썩습니다 (평생 가는 시공법
 ucRSE-A0yck	L	6203	finish	stain	오일스테인 칠하기 | 아무거나 바르지 마세요, 유성 vs 수성 선택법과 1회 vs 2회
@@ -897,10 +897,10 @@ OksQ9LVvmyM	L	783	furniture		무한거울 테이블 만들기 | 99%가 처음 �
 QkkXKlwWtD8	L	235	furniture		매거진랙 만들기 | 아직도 돈 주고 사세요? 목수가 만든 아카시아 원목 잡지꽂이, 벽에 기대기만 하면 끝
 rxEdt_m1-08	L	609	deck	hardware	화분선반 만들기 | 2단 선반 돈 주고 사지 마세요, 피스 8개면 끝나는 원목 다육이선반 DIY
 vFT_T-gBnKw	L	1613	tool		공구통 만들기 | 사지 마세요! 30만 원대 트럭 적재함 공구보관함, 목재로 직접 만들었습니다
-Yimx9A6pcok	L	324	material		원목 정리함 만들기 | 30만 원짜리를 3만 원에? 평생 쓰는 수납함 칸 정리함, 돈 주고 사지 말고 이렇게 만드세요
+Yimx9A6pcok	L	324	furniture		원목 정리함 만들기 | 30만 원짜리를 3만 원에? 평생 쓰는 수납함 칸 정리함, 돈 주고 사지 말고 이렇게 만드세요
 1fovxpau3Jo	L	526	furniture		수납함 만들기 | 수납의자 돈 주고 사지 마세요, 원목 3단 수납 가구 초보도 5분 조립 DIY
-ZgUHboG1r4M	L	2651	material		원목 보관함 만들기 | 공간박스 돈 주고 사지 마세요, 높이 바뀌는 3단 수납함 DIY (목공 박스만들기)
-bQvcdjVXcs0	L	1406	tips		평탄화키트로 코나 하이브리드 차박 끝 | 10만 원대 평탄화, 이거 안 하면 차박 망합니다
+ZgUHboG1r4M	L	2651	furniture		원목 보관함 만들기 | 공간박스 돈 주고 사지 마세요, 높이 바뀌는 3단 수납함 DIY (목공 박스만들기)
+bQvcdjVXcs0	L	1406	furniture		평탄화키트로 코나 하이브리드 차박 끝 | 10만 원대 평탄화, 이거 안 하면 차박 망합니다
 C6bsO1_IY9g	L	3403	furniture		코나 차박 평탄화 | 업체 맡기면 100만 원? 5만 원으로 끝냈습니다 (평탄화보드 만들기 DIY)
 bGl8Dl2SMaY	L	13513	furniture	hapan	투싼 평탄화 작업 | 50만 원짜리 평탄화보드, 합판으로 직접 만들었습니다 (차박 DI
 m1y37d_AJ34	L	608	deck	bangbu	방부목 데크 관리 | 10년 쓸 데크가 1년 만에 썩는 이유, 수명 10배 늘리는 '2회 도장' 원칙
@@ -909,19 +909,19 @@ nSvRS3oClHg	L	1478	deck		데크만들기 셀프로 끝내기 | 업자 부르지 
 aARW3C9C840	L	857	deck	bangbu	방부데크 시공 2편 | 모르고 만들면 1년도 못 가 썩습니다, 600각 유닛 연결로 현관 데크 완성
 UP0k5ezXveY	L	474	furniture		다육이선반 만들기 | 원목 선반 나무 종류별 총정리, 싸다고 샀다가 1년 만에 버리는 선반 사지 마세요
 nhSwr7uz5kY	L	9709	material	gujo	각재 종류 총정리 | 육송 각재, 집 짓다 기둥 뽑히기 싫다면 아무거나 쓰지 마세요
-_odKmPYO2dI	L	16872	tips		빈티지인테리어 끝판왕, 티크 고재 | 이거 모르고 사면 100% 돈 날립니다 (진짜 구
-Zctpb3srwCA	L	1584	material		원목 파티션 만들기 | 돈 주고 사지 마세요, 공간분리 확 되는 스프러스 파티션 DIY
+_odKmPYO2dI	L	16872	material		빈티지인테리어 끝판왕, 티크 고재 | 이거 모르고 사면 100% 돈 날립니다 (진짜 구
+Zctpb3srwCA	L	1584	furniture		원목 파티션 만들기 | 돈 주고 사지 마세요, 공간분리 확 되는 스프러스 파티션 DIY
 l_w2BXi4OyQ	L	323	material		내장재 종류 2편 | 이거 모르고 나무 사면 집 망합니다, 고무나무·티크·멀바우 원목 판재 8가지 마감재 종류 비교
 sW03D2Xm9e4	L	588	wall		내장재 종류 1편 | 아트월 인테리어 판재 6가지 완벽 비교, PSL보드·탄화목·엠보 판재 모르면 후회합니다
-hLbOPzvcxrM	L	39050	furniture		계단판 종류와 시공 | 원목 계단, 이거 모르면 나중에 다 뜯어야 합니다
+hLbOPzvcxrM	L	39050	material		계단판 종류와 시공 | 원목 계단, 이거 모르면 나중에 다 뜯어야 합니다
 5dKej0K0H08	L	8197	deck	bangbu/hapdeck	방부목 데크 vs 합성목재 데크 | 시공 3년 만에 다 썩었습니다, 이 자재만큼은 쓰지
-_AF0nMCjvwQ	L	2898	greenhouse	gujo	구조재 종류 총정리 | 원바이·투바이 잘못 쓰면 100% 후회합니다 (목조주택 목재 규
+_AF0nMCjvwQ	L	2898	material	gujo	구조재 종류 총정리 | 원바이·투바이 잘못 쓰면 100% 후회합니다 (목조주택 목재 규
 mbNMn6fqxOQ	L	2416	material	jipseong	집성판 종류 10가지 완벽 비교 | 이거 모르고 사면 돈 버립니다 (멀바우·애쉬·월넛·
 1ylRHnh1mBI	L	16709	material	hapan	합판 인테리어, 아무거나 샀다간 후회합니다 | 합판종류 13가지 완벽 비교
 Bp8DAS4u6DU	L	68203	kitchen		싱크대 문짝 교체 비용 90% 아끼는 법 | 업체 부르면 100만 원, 직접 주문하면?
 prD4XnfX07c	L	389009	kitchen		싱크대 문짝 교체 | 싱크대 교체 대신 문짝만 바꿔도 새집 됩니다 (셀프 리폼 방법)
 NKY98ZXohVs	L	345	furniture		식탁만들기 | 이제 식탁 사지 마세요, 자투리 나무로 '100만 원짜리' 원목 식탁 직접 만드는 법
-KzNccCR0A2M	L	1257	wall		목공 박스만들기 | 아직도 사서 쓰세요? 버려지는 자투리 나무로 0원 원목 사과박스 완성
+KzNccCR0A2M	L	1257	furniture		목공 박스만들기 | 아직도 사서 쓰세요? 버려지는 자투리 나무로 0원 원목 사과박스 완성
 F7BSvIO9Ias	L	1303	furniture		나무간판 만들기 | 간판 비싸게 사지 마세요! 셀프로 끝내는 고퀄리티 가게 간판 DIY (비용 절감)
 SJvRHtNtV0c	L	755	furniture		쓰레기통 만들기 | 이걸 왜 사요? 남는 나무로 5분 만에 만든 원목 휴지통이 기성품보다 낫습니다
 xPsUVr7exLU	L	181579	material		대전 목재소·건축자재 백화점 3000평 투어 | 집 짓기 전 여기 안 오면 손해입니다
@@ -937,4 +937,4 @@ juiChHoe754	L	12554	tips		모르면 눈뜨고 코 베입니다! 전문가가 작
 o08DAx0nR6Q	L	1488	material	hapan	좋은 합판 고르는 법 | 절대 사면 안 되는 합판 구별법, 인도네시아 vs 중국 vs 베트남 원산지 비교
 xeVNOIIW7DM	L	925	material	mdf/hapan	MDF 등급 모르면 100% 후회합니다 | 고밀도 vs 중밀도 vs 저밀도, mdf합판 사기 전 30초 정리
 GGm4laQFUMg	L	481	material	hapan	"인테리어 현장용어 | ""니부 합판 주세요"" 정확히 몇 mm? 목수 현장용어 모르면 자재 주문부터 막힙니다"
-e08qpEHtBRI	L	722	greenhouse	hapan/osb	OSB합판 모르고 사면 100% 후회합니다 | 목조주택 뼈대부터 빈티지 인테리어까지 3
+e08qpEHtBRI	L	722	material	hapan/osb	OSB합판 모르고 사면 100% 후회합니다 | 목조주택 뼈대부터 빈티지 인테리어까지 3
