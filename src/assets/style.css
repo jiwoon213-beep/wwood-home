@@ -89,3 +89,4 @@ nav a{white-space:nowrap;flex-shrink:0}
 .srch input:focus{border-color:var(--red);outline:none;box-shadow:0 0 0 4px rgba(214,45,32,.12)}
 #jqn{margin:10px 2px 0;font-size:15px}
 @media(max-width:600px){.srch input{font-size:18px;padding:16px 14px 16px 50px}.srch .si{left:15px;font-size:20px}}
+a.pl{color:var(--ink);text-decoration:none;border-bottom:1px dashed #b9b2a8}a.pl:hover,a.pl:active{color:var(--red);border-bottom-color:var(--red)}a.pl::after{content:" ›";color:#b9b2a8}
