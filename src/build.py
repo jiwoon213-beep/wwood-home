@@ -12,6 +12,8 @@ PREVIEW = bool(PREFIX)
 MALL = "https://wwood.kr/home/mall/"
 DOME = "https://wwood.kr/home/sub06/menu03.php"  # 도매회원 쇼핑몰 연결 주소(사장님 지정)
 YT = "https://www.youtube.com/@월드건축자재DIY"
+YT2 = "https://www.youtube.com/@worlddoor"
+BLOG = "https://blog.naver.com/swr4083"
 TEL = "042-545-2900"
 ADDR = "대전 유성대로 44, 1층"
 HOURS = "월~토 08:00~18:00"
@@ -161,7 +163,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <main>{body}</main>
 <footer><div class="wrap">월드건축자재 · 영진종합목재 | {ADDR} | {TEL} | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>
-유튜브 <a href="{YT}">@월드건축자재DIY</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer>
+유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 네이버 블로그 <a href="{BLOG}">swr4083</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
 <script src="/assets/site.js" defer></script></body></html>"""
     if PREFIX: doc = doc.replace('href="/', f'href="{PREFIX}/').replace('src="/', f'src="{PREFIX}/')
@@ -196,7 +198,7 @@ CTA = f"""<section class="cta"><div class="wrap g2"><div><h2>실물 보고, 원�
 
 BIZ = {"@context": "https://schema.org", "@type": "HardwareStore", "name": "월드건축자재(영진종합목재)",
        "telephone": "+82-42-545-2900", "address": {"@type": "PostalAddress", "streetAddress": "유성대로 44, 1층", "addressLocality": "대전", "addressCountry": "KR"},
-       "openingHours": "Mo-Sa 08:00-18:00", "url": BASE + "/", "sameAs": [YT, MALL], "alternateName": ["영진종합목재", "월드건축자재", "영진목재"],
+       "openingHours": "Mo-Sa 08:00-18:00", "url": BASE + "/", "sameAs": [YT, YT2, BLOG, MALL], "alternateName": ["영진종합목재", "월드건축자재", "영진목재"],
        "image": "https://i.ytimg.com/vi/xPsUVr7exLU/hqdefault.jpg", "priceRange": "₩", "areaServed": ["대전", "세종"]}
 
 # ---------- pages ----------
