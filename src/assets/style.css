@@ -61,3 +61,6 @@ nav{gap:12px;font-size:14px;overflow-x:auto;flex-wrap:nowrap;width:100%;padding-
 .pg{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
 .pd b{font-size:13px}
 @media(max-width:600px){.pg{grid-template-columns:repeat(2,1fr);gap:10px}}
+.ch{white-space:nowrap;font-size:13px;color:#999}.up,.ch.up{color:#d62d20}.dn,.ch.dn{color:#1a5fd6}
+.bd{display:inline-block;font-size:11px;padding:1px 6px;border-radius:4px;background:#f1ece4;color:#7a5c3a;margin-left:4px;vertical-align:middle}.bd.hot{background:#d62d20;color:#fff}
+.pb2{margin-bottom:24px}

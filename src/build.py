@@ -27,6 +27,16 @@ for r in csv.reader(open(f"{ROOT}/data/videos.tsv", encoding="utf-8"), delimiter
 P = [dict(cat=r["cat"], name=r["name"], price=int(float(r["price"])), qty=float(r["qty"] or 0))
      for r in csv.DictReader(open(f"{ROOT}/data/prices.csv", encoding="utf-8"))]
 CATN = {c: n for c, n, _ in CATS}
+# 가격 변동 표시: data/prices_prev.csv(지난 기준가)와 비교해 실제로 바뀐 품목만 ▲▼ (가격 갱신 시 이전 파일을 prices_prev.csv로 남김)
+PREV = {r["name"]: int(float(r["price"])) for r in csv.DictReader(open(f"{ROOT}/data/prices_prev.csv", encoding="utf-8"))} if os.path.exists(f"{ROOT}/data/prices_prev.csv") else {}
+PMETA = json.load(open(f"{ROOT}/data/price_meta.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/price_meta.json") else {}
+RANK = {p["name"]: i + 1 for i, p in enumerate(sorted(P, key=lambda p: -p["qty"]))}
+def chg(p):
+    o = PREV.get(p["name"])
+    if not o or o == p["price"]: return '<td class="r ch">-</td>'
+    d = p["price"] - o; pc = d / o * 100
+    return f'<td class="r ch {"up" if d > 0 else "dn"}">{"▲" if d > 0 else "▼"} {abs(d):,}원 ({pc:+.1f}%)</td>'
+def badge(p): return '<span class="bd hot">인기 TOP10</span>' if RANK.get(p["name"], 999) <= 10 else ('<span class="bd">많이 찾는</span>' if RANK.get(p["name"], 999) <= 50 else "")
 
 # 소식·정보 글: data/posts/YYYY-MM-DD-slug.html, 첫 줄 <!--{"title","desc","date","videos":[]}--> 다음 본문 HTML
 POSTS = []
@@ -293,8 +303,16 @@ def build():
     for p in sorted(P, key=lambda p: -p["qty"]):
         groups.setdefault(p["cat"], []).append(p)
     skip = {"-호차 영림", "문", "문틀", "가공"}
-    secs = "".join(f'<h2 id="{E(k)}">{E(k)}</h2><div class="tw"><table><tbody>' + "".join(f"<tr><td>{E(clean_name(p['name']))}</td><td class=r><b>{won(p['price'])}</b></td></tr>" for p in g[:25]) + "</tbody></table></div>"
+    row = lambda p: f"<tr><td>{E(clean_name(p['name']))} {badge(p)}</td><td class=r><b>{won(p['price'])}</b></td>{chg(p)}</tr>"
+    th = '<thead><tr><th>품목·규격</th><th class=r>소매 기준가</th><th class=r>지난 갱신 대비</th></tr></thead>'
+    secs = "".join(f'<h2 id="{E(k)}">{E(k)}</h2><div class="tw"><table>{th}<tbody>' + "".join(row(p) for p in g[:25]) + "</tbody></table></div>"
                    for k, g in sorted(groups.items()) if k not in skip)
+    top10 = sorted(P, key=lambda p: -p["qty"])[:10]
+    upn = sum(1 for p in P if PREV.get(p["name"]) and PREV[p["name"]] < p["price"]); dnn = sum(1 for p in P if PREV.get(p["name"]) and PREV[p["name"]] > p["price"])
+    board = (f'<div class="card pb2"><h2>많이 찾는 자재 TOP 10</h2><p class="small muted">매장 판매 순위 기준 · 기준가 갱신일 {E(PMETA.get("updated",""))} · '
+             f'지난 갱신 대비 <span class="up">▲ 오른 품목 {upn}</span> · <span class="dn">▼ 내린 품목 {dnn}</span></p><div class="tw"><table>{th}<tbody>'
+             + "".join(f"<tr><td><b>{i+1}</b> {E(clean_name(p['name']))}</td><td class=r><b>{won(p['price'])}</b></td>{chg(p)}</tr>" for i, p in enumerate(top10)) + "</tbody></table></div></div>")
+    secs = board + secs
     page("price.html", "목재·건축자재 소매 기준가 — 합판·MDF·구조재·방부목·석고보드 | 대전 월드건축자재", "대전 월드건축자재(영진목재) 소매 기준가. 부가세 별도, 결제·재단은 매장에서.",
          f'<section class="wrap sec"><h1>소매 기준가</h1><p class="lead">자주 찾는 자재의 소매 기준가입니다(부가세 별도). 규격·수량에 따라 달라지며 재단비·운임은 매장에서 계산합니다. 도매가는 <a href="/dome.html">도매회원</a> 로그인 후 확인하세요.</p>{secs}</section>{CTA}', "/price.html")
 
