@@ -62,7 +62,7 @@ JCAT = [("23", "gakjae", "각재·구조재", "다루끼·구조재·방부목·
         ("53", "jipseong", "우드슬랩·집성판", "고무나무·아카시아·멀바우·히노끼 집성판"), ("25", "deck", "데크재", "방부데크·천연데크·합성데크·탄화데크·데크철물"),
         ("26", "maru", "마루·후로링", "원목후로링·강마루·강화마루·바닥도료"), ("27", "naejang", "내장재", "루바·고재·월판넬·아트월·천정재·몰딩·타공판"),
         ("28", "stone", "스톤·타일", "스톤·북유럽타일·파벽돌·조약돌"), ("31", "siding", "외장재·사이딩", "사이딩·지붕재·기와·타이벡"),
-        ("29", "door", "도어·창호", "실내용 도어·주택 창호"), ("30", "insul", "방음·단열·방수", "방음·흡음·단열·보온·방수·환기"),
+        ("29", "door", "실내 도어·문틀", "ABS도어·유리도어·문틀·합판문"), ("29w", "window", "주택 창호", "수입 주택창호·파티오도어·고정창"), ("30", "insul", "방음·단열·방수", "방음·흡음·단열·보온·방수·환기"),
         ("32", "hardware", "철물", "건축철물·타카·인테리어철물·공학목재철물"), ("35", "paint", "페인트·스테인", "오일스테인·페인트·작업도구"),
         ("37", "sopum", "소품·부자재", "정원가구·목재소품·철제가구·공구·접착제")]
 JTOP = {c for c, *_ in JCAT}
@@ -72,7 +72,10 @@ JEXC = {"23": r"루바|사이딩|판재|우드블럭|데크|후로링|마루|래
 # 이름으로 분류를 바로잡는 규칙 (쇼핑몰 분류 대신 사용)
 JFORCE = [(r"^석고보드$", ["27/166"]), (r"시공사례", ["54/375"]), (r"본드|실리콘(?!건)|파워멘트|세라픽스|드라이픽스|백시멘트", ["37/400"]),
           (r"프라이머|도깨비|규조토 페인트|부식 (산화제|마감제)", ["35/356"])]
+MCAT["29w/367"] = MCAT.get("29/367", "주택창호(수입)"); MCAT["29w/"] = "주택 창호"
 for p in PROD:
+    p["cats"] = ["29w/367" if c == "29/367" else c for c in p["cats"]]
+    if p["name"] == "합판문": p["cats"].append("29/274")
     for rx, cs in JFORCE:
         if re.search(rx, p["name"]) and not re.search(r"실리콘건", p["name"]): p["cats"] = cs; break
     tops = [c.split("/")[0] for c in p["cats"]]
@@ -97,7 +100,7 @@ MPHOTO = {"hapan": (["24/140"], "합판|판넬|보드", "OSB|O\\.S\\.B|M\\.?D\\.
           "hapdeck": (["25/146"], ".", "주춧돌|핸드레일"), "jipseong": (["53/349", "24/141"], "집성", None), "hinoki": (["23/137", "27/156"], "히노끼|삼목|스기|향목|편백|오비스기", None),
           "gypsum": ([], "석고보드|불연", "본드"), "siding": (["31/186"], ".", None), "insul": (["30/183"], ".", None), "stain": (["35/206", "25/249"], ".", None),
           "hardware": (["32/332", "32/333"], ".", None), "maru": (["26/247", "26/148", "26/149", "26/315"], ".", None), "film": ([], None, None),
-          "molding": (["27/381"], ".", None), "chimmok": (["23/314"], "침목|우드빔|탄화|SYP", None), "tile": (["28/168", "28/167"], ".", None), "sound": (["30/182", "27/322"], ".", None)}
+          "molding": (["27/381"], ".", None), "chimmok": (["23/314"], "침목|우드빔|탄화|SYP", None), "tile": (["28/168", "28/167"], ".", None), "sound": (["30/182", "27/322"], ".", None), "door": (["29/274"], ".", None)}
 def mat_photos(slug):
     cats, inc, exc = MPHOTO.get(slug, ([], None, None))
     if not inc: return []
@@ -311,7 +314,7 @@ def build():
     groups = {}
     for p in sorted(P, key=lambda p: -p["qty"]):
         groups.setdefault(p["cat"], []).append(p)
-    skip = {"-호차 영림", "문", "문틀", "가공"}
+    skip = {"-호차 영림", "가공"}
     row = lambda p: f"<tr><td>{E(clean_name(p['name']))} {badge(p)}</td><td class=r><b>{won(p['price'])}</b></td>{chg(p)}</tr>"
     th = '<thead><tr><th>품목·규격</th><th class=r>소매 기준가</th><th class=r>지난 갱신 대비</th></tr></thead>'
     secs = "".join(f'<h2 id="{E(k)}">{E(k)}</h2><div class="tw"><table>{th}<tbody>' + "".join(row(p) for p in g[:25]) + "</tbody></table></div>"
