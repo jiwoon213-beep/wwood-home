@@ -1,0 +1,28 @@
+name: 사이트 자동 빌드
+on:
+  push:
+    branches: [main]
+    paths: ['src/**']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: { group: build, cancel-in-progress: false }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: build
+        run: |
+          cd src && python3 build.py https://www.wwood.co.kr && cp -r out/. .. && rm -rf out && cd ..
+          test -f CNAME && test -f .nojekyll && test -f googlebdb67d0a828cfb44.html && test -f naverba93ea476932b627cd632929e26465dd.html
+      - name: commit
+        run: |
+          git config user.name "wwood-build-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "자동 빌드 (src 변경 반영)"
+          git pull --rebase && git push
