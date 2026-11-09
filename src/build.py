@@ -167,9 +167,17 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
     SITEMAP.append(canon)
 
 def vcard(v, big=False):
-    return f"""<a class="vc{' big' if big else ''}" href="{vurl(v)}" target="_blank" rel="noopener" data-yt="{v['id']}">
+    return f"""<a class="vc{' big' if big else ''}{' sh' if v['type']=='S' else ''}" href="{vurl(v)}" target="_blank" rel="noopener" data-yt="{v['id']}">
 <span class="th"><img loading="lazy" src="https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg" alt="{E(vshort(v['title']))}"><i class="play"></i>{'<em>쇼츠</em>' if v['type']=='S' else '<em>라이브</em>' if v['type']=='V' else ''}</span>
 <b>{E(v['title'])}</b><small>조회 {views(v['n'])}</small></a>"""
+
+def vsplit(vs, hl="h2", nl=None, ns=None):
+    """일반 영상(라이브 포함)과 쇼츠를 나눠서 표시"""
+    L = [v for v in vs if v["type"] != "S"][:nl]; S = [v for v in vs if v["type"] == "S"][:ns]
+    out = ""
+    if L: out += f'<{hl} class="vh">▶ 영상 <small class="muted">{len(L)}편</small></{hl}><div class="vg">{"".join(vcard(v) for v in L)}</div>'
+    if S: out += f'<{hl} class="vh">⚡ 쇼츠 <small class="muted">{len(S)}편</small></{hl}><div class="sg">{"".join(vcard(v) for v in S)}</div>'
+    return out
 
 def embed(v):
     return f'<div class="emb"><iframe loading="lazy" src="https://www.youtube.com/embed/{v["id"]}" title="{E(vshort(v["title"]))}" allowfullscreen></iframe></div>'
@@ -199,9 +207,9 @@ def build():
     tour = byid.get("xPsUVr7exLU")
     use = "".join(f'<a class="uc" href="/video/{c}.html"><b>{n}</b><small>{d}</small></a>' for c, n, d in CATS)
     mats = "".join(f'<a class="mc" href="/jajae/{m["slug"]}.html"><b>{m["name"]}</b><small>{m["where"][0]}</small></a>' for m in MATS)
-    hot = "".join(vcard(v) for v in top(lambda v: v["id"] != "xPsUVr7exLU", 8))
+    hot = vsplit(top(lambda v: v["id"] != "xPsUVr7exLU", 10**6), "h3", 8, 6)
     newv = [byid[i] for i in LATEST if i in byid][:4]
-    newsec = (f'<section class="wrap sec"><h2>새로 올라온 영상</h2><div class="vg">{"".join(vcard(v) for v in newv)}</div></section>' if newv else "")
+    newsec = (f'<section class="wrap sec"><h2>새로 올라온 영상</h2>{vsplit(newv, "h3")}</section>' if newv else "")
     plist = lambda ps: "".join(f'<a class="pc" href="/news/{p["slug"]}.html"><small>{E(p.get("date",""))}</small><b>{E(p["title"])}</b><span>{E(p.get("desc",""))}</span></a>' for p in ps)
     postsec = (f'<section class="wrap sec"><h2>소식·자재 정보</h2><div class="pl">{plist(POSTS[:6])}</div><p><a href="/news/">전체 글 보기 →</a></p></section>' if POSTS else "")
     base8 = [("합판","일반 4×8 · 8.5mm(베트남)",22800),("OSB합판","T&G 4×8 · 18.3mm",35200),("MDF","4×8 · 9mm",14800),("구조재 2×4","38×89 · 12ft",10700),
@@ -219,7 +227,7 @@ def build():
 <section class="wrap sec"><h2>무엇을 만들고 싶으세요?</h2><p class="muted">고르면 그 용도의 자재와 시공 영상이 한 번에 나옵니다.</p><div class="ug">{use}</div></section>
 <section class="wrap sec"><h2>자재 백과 — 이 나무, 어디에 쓰나요?</h2><p class="muted">용도·인테리어 효과·기준가·관련 영상을 자재별로 정리했습니다.</p><div class="mg">{mats}</div></section>
 {postsec}{newsec}
-<section class="wrap sec"><h2>많이 본 영상</h2><div class="vg">{hot}</div><p><a href="{YT}" target="_blank" rel="noopener">유튜브 채널 전체 보기 →</a></p></section>
+<section class="wrap sec"><h2>많이 본 영상</h2>{hot}<p><a href="{YT}" target="_blank" rel="noopener">유튜브 채널 전체 보기 →</a></p></section>
 <section class="wrap sec g2"><div class="card"><h2>기본 자재 기준가</h2><p class="muted small">부가세 별도 · 규격·수량에 따라 달라집니다</p>
 <div class="tw"><table><thead><tr><th>자재</th><th>규격</th><th class=r>기준가</th></tr></thead><tbody>{bt}</tbody></table></div>
 <p class="small">재단비·운임·수량 할인은 매장에서 계산 · 고재·수입목·특수목은 매장 문의 · 도매가는 회원 로그인 후</p><a href="/price.html">기준가 전체 보기 →</a></div>
@@ -243,11 +251,12 @@ def build():
     page("jajae/index.html", "자재 백과 — 합판·MDF·방부목·석고보드 용도와 가격 | 월드건축자재 대전", "자재별 용도, 인테리어 효과, 소매 기준가, 시공 영상을 한 번에. 대전 월드건축자재(영진목재).",
          f'<section class="wrap sec"><h1>자재 백과</h1><p class="lead">손님들이 가장 헷갈리는 "이 자재 어디에 쓰나요?"를 자재별로 정리했습니다.</p><div class="mg">{lst}</div></section>{CTA}', "/jajae/")
     for m in MATS:
-        vs = top(lambda v: m["tag"] in v["mats"], 9)
+        vs = top(lambda v: m["tag"] in v["mats"], 10**6)
         rel = [x for x in MATS if x is not m][:0]
         where = "".join(f"<li>{E(w)}</li>" for w in m["where"])
         tips = "".join(f"<li>{E(t)}</li>" for t in m["tips"])
-        vid = (embed(vs[0]) + '<div class="vg">' + "".join(vcard(v) for v in vs[1:]) + "</div>") if vs else f'<p><a href="{YT}">유튜브 채널에서 보기</a></p>'
+        lf = [v for v in vs if v["type"] != "S"]
+        vid = ((embed(lf[0]) if lf else "") + vsplit([v for v in vs if not lf or v is not lf[0]], "h3")) if vs else f'<p><a href="{YT}">유튜브 채널에서 보기</a></p>'
         faq = [{"@type": "Question", "name": f"{m['name']}은(는) 어디에 쓰나요?", "acceptedAnswer": {"@type": "Answer", "text": ", ".join(m["where"])}},
                {"@type": "Question", "name": f"대전에서 {m['name']}을(를) 어디서 사나요?", "acceptedAnswer": {"@type": "Answer", "text": f"월드건축자재(영진종합목재), {ADDR}, {TEL}. {HOURS}. 원하는 사이즈로 재단해 드립니다."}}]
         ph = mat_photos(m["slug"])
@@ -294,7 +303,7 @@ def build():
     for c, n, d in CATS:
         vs = top(lambda v: v["cat"] == c, 10**6)
         page(f"video/{c}.html", f"{n} 영상 — {d} | 월드건축자재DIY 대전", f"{n} 관련 시공·DIY 영상 모음({d}). 영상에 나온 자재는 대전 월드건축자재 매장에서.",
-             f'<section class="wrap sec"><p class="crumb"><a href="/video/">영상</a> › {n}</p><h1>{n}</h1><p class="lead">{d}</p><div class="vg">{"".join(vcard(v) for v in vs)}</div><p><a href="{YT}">더 많은 영상은 유튜브에서 →</a></p></section>{CTA}', "/video/",
+             f'<section class="wrap sec"><p class="crumb"><a href="/video/">영상</a> › {n}</p><h1>{n}</h1><p class="lead">{d}</p>{vsplit(vs)}<p><a href="{YT}">더 많은 영상은 유튜브에서 →</a></p></section>{CTA}', "/video/",
              {"@context": "https://schema.org", "@type": "ItemList", "name": f"{n} 영상", "itemListElement": [{"@type": "ListItem", "position": i + 1, "url": vurl(v), "name": v["title"]} for i, v in enumerate(vs)]},
              f"https://i.ytimg.com/vi/{vs[0]['id']}/hqdefault.jpg" if vs else None)
 
@@ -325,18 +334,18 @@ def build():
 <a class="b r" href="{DOME}">도매회원 쇼핑몰(wwood.kr)로 가기</a></section>{CTA}""", "/dome.html")
 
     # 시공
-    sv = "".join(vcard(v) for v in top(lambda v: v["cat"] in ("exterior", "greenhouse", "deck") and v["n"] > 3000, 12))
-    tips = "".join(vcard(v) for v in top(lambda v: v["cat"] == "tips", 8))
+    sv = vsplit(top(lambda v: v["cat"] in ("exterior", "greenhouse", "deck"), 10**6), "h3", 12, 6)
+    tips = vsplit(top(lambda v: v["cat"] == "tips", 10**6), "h3", 8, 6)
     case = [p for p in PROD if any(c.split("/")[0] in ("54", "59") for c in p["cats"]) and not re.search(r"company|INC", p["name"], re.I)]
     casesec = f'<section class="wrap sec"><h2>시공 사례 사진 <small class="muted">{len(case)}건</small></h2><div class="pg">{"".join(pcard(p) for p in case)}</div></section>' if case else ""
     page("sigong.html", "대전·세종 인테리어 시공 — 외벽·샷시·데크·리모델링 | 월드아키텍쳐(실내건축공사업)", f"월드아키텍쳐 {LIC}. 대전·세종 외벽 사이딩, 샷시 교체, 데크, 실내 인테리어 시공. 관급·대기업 공사 수행. 전화 {TEL}.",
          f"""<section class="hero dark"><div class="wrap"><span class="chip red">월드아키텍쳐 · {LIC}</span><h1>직접 하기 어렵다면,<br>자재 파는 저희가 시공까지 합니다</h1>
 <p class="lead">자재를 가장 잘 아는 목재상이 직접 시공합니다. 관급·대기업 공사를 수행하는 시공팀이 작업하고, 모든 시공 현장은 유튜브에 그대로 공개합니다.</p>
 <div class="row"><a class="b r" href="tel:{TEL.replace('-','')}">시공 상담 전화 {TEL}</a></div><p class="small">시공 지역: 대전·세종 전 공종 · 관급·대기업·전국 공사는 전화 문의</p></div></section>
-<section class="wrap sec"><h2>시공 현장 영상</h2><div class="vg">{sv}</div></section>{casesec}
+<section class="wrap sec"><h2>시공 현장 영상</h2>{sv}</section>{casesec}
 <section class="wrap sec g2"><div class="card"><h2>상담 순서</h2><ol><li>전화 상담 {TEL}</li><li>현장 방문 · 실측</li><li>견적서</li><li>시공 (현장은 유튜브 공개)</li></ol></div>
 <div class="card"><h2>업체 고르기 전에 꼭 보세요</h2><p>면허 확인, 하자 예방, 견적 보는 법 영상을 모았습니다. 월드아키텍쳐는 실내건축공사업 등록 업체입니다.</p><a href="/video/tips.html">업체 고르는 법 영상 모음 →</a></div></section>
-<section class="wrap sec"><div class="vg">{tips}</div></section>{CTA}""", "/sigong.html")
+<section class="wrap sec">{tips}</section>{CTA}""", "/sigong.html")
 
     # 매장
     page("visit.html", "대전 목재소 위치 — 월드건축자재(영진목재) 유성대로 44 | 영업시간·재단", f"월드건축자재(영진종합목재) {ADDR}. {HOURS}. 3000평 매장, 즉석 재단, 대전·세종 배송. {TEL}.",
