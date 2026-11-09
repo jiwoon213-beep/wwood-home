@@ -28,6 +28,20 @@ P = [dict(cat=r["cat"], name=r["name"], price=int(float(r["price"])), qty=float(
      for r in csv.DictReader(open(f"{ROOT}/data/prices.csv", encoding="utf-8"))]
 CATN = {c: n for c, n, _ in CATS}
 
+# 소식·정보 글: data/posts/YYYY-MM-DD-slug.html, 첫 줄 <!--{"title","desc","date","videos":[]}--> 다음 본문 HTML
+POSTS = []
+_pd = f"{ROOT}/data/posts"
+for fn in sorted(os.listdir(_pd) if os.path.isdir(_pd) else [], reverse=True):
+    if not fn.endswith(".html"): continue
+    raw = open(f"{_pd}/{fn}", encoding="utf-8").read()
+    m = re.match(r"\s*<!--(\{.*?\})-->\s*", raw, re.S)
+    if not m: continue
+    meta = json.loads(m.group(1)); meta["slug"] = fn[:-5]; meta["body"] = raw[m.end():]
+    POSTS.append(meta)
+POSTS.sort(key=lambda p: (p.get("date", ""), p["slug"]), reverse=True)
+# 최신 영상: data/latest.txt (영상 ID, 최신이 위)
+LATEST = [l.strip() for l in open(f"{ROOT}/data/latest.txt", encoding="utf-8")] if os.path.exists(f"{ROOT}/data/latest.txt") else []
+
 def vurl(v): return f"https://www.youtube.com/{'shorts/' if v['type']=='S' else 'watch?v='}{v['id']}"
 def vshort(t):
     p = [x.strip() for x in t.split("|")]
@@ -53,7 +67,7 @@ def mat_prices(m, k=10):
     return sorted(rows, key=lambda p: -p["qty"])[:k]
 
 # ---------- layout ----------
-NAV = [("/jajae/", "자재 백과"), ("/video/", "영상"), ("/price.html", "기준가"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/visit.html", "매장 안내")]
+NAV = [("/jajae/", "자재 백과"), ("/video/", "영상"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/visit.html", "매장 안내")]
 
 def page(path, title, desc, body, active="", jsonld=None):
     canon = BASE + ("/" + path if path != "index.html" else "/").replace("index.html", "")
@@ -112,6 +126,10 @@ def build():
     use = "".join(f'<a class="uc" href="/video/{c}.html"><b>{n}</b><small>{d}</small></a>' for c, n, d in CATS)
     mats = "".join(f'<a class="mc" href="/jajae/{m["slug"]}.html"><b>{m["name"]}</b><small>{m["where"][0]}</small></a>' for m in MATS)
     hot = "".join(vcard(v) for v in top(lambda v: v["id"] != "xPsUVr7exLU", 8))
+    newv = [byid[i] for i in LATEST if i in byid][:4]
+    newsec = (f'<section class="wrap sec"><h2>새로 올라온 영상</h2><div class="vg">{"".join(vcard(v) for v in newv)}</div></section>' if newv else "")
+    plist = lambda ps: "".join(f'<a class="pc" href="/news/{p["slug"]}.html"><small>{E(p.get("date",""))}</small><b>{E(p["title"])}</b><span>{E(p.get("desc",""))}</span></a>' for p in ps)
+    postsec = (f'<section class="wrap sec"><h2>소식·자재 정보</h2><div class="pl">{plist(POSTS[:6])}</div><p><a href="/news/">전체 글 보기 →</a></p></section>' if POSTS else "")
     base8 = [("합판","일반 4×8 · 8.5mm(베트남)",22800),("OSB합판","T&G 4×8 · 18.3mm",35200),("MDF","4×8 · 9mm",14800),("구조재 2×4","38×89 · 12ft",10700),
              ("방부목 데크재","20×120 · 12자",10500),("석고보드","3×6 · 9.5T",5200),("합성데크","20×140 · 3000",21500),("다루끼(소송)","1.0×1.0 · 12자 · 12개",42400)]
     bt = "".join(f"<tr><td>{a}</td><td>{b}</td><td class=r><b>{won(c)}</b></td></tr>" for a, b, c in base8)
@@ -126,6 +144,7 @@ def build():
 <div><b>소매 + 도매</b><small>셀프 고객부터 현장 납품까지</small></div><div><b>직접 시공</b><small>월드아키텍쳐 · {LIC}</small></div></div></section>
 <section class="wrap sec"><h2>무엇을 만들고 싶으세요?</h2><p class="muted">고르면 그 용도의 자재와 시공 영상이 한 번에 나옵니다.</p><div class="ug">{use}</div></section>
 <section class="wrap sec"><h2>자재 백과 — 이 나무, 어디에 쓰나요?</h2><p class="muted">용도·인테리어 효과·기준가·관련 영상을 자재별로 정리했습니다.</p><div class="mg">{mats}</div></section>
+{postsec}{newsec}
 <section class="wrap sec"><h2>많이 본 영상</h2><div class="vg">{hot}</div><p><a href="{YT}" target="_blank" rel="noopener">유튜브 채널 전체 보기 →</a></p></section>
 <section class="wrap sec g2"><div class="card"><h2>기본 자재 기준가</h2><p class="muted small">부가세 별도 · 규격·수량에 따라 달라집니다</p>
 <div class="tw"><table><thead><tr><th>자재</th><th>규격</th><th class=r>기준가</th></tr></thead><tbody>{bt}</tbody></table></div>
@@ -133,6 +152,15 @@ def build():
 <div class="card dark"><h2>직접 하기 어렵다면, 시공까지</h2><p>자재를 가장 잘 아는 목재상이 직접 시공합니다. 월드아키텍쳐({LIC})가 대전·세종 전 공종을 시공하고, 모든 현장은 유튜브에 공개합니다.</p>
 <a class="b r" href="/sigong.html">시공 사례 보기</a></div></section>{CTA}"""
     page("index.html", "대전 목재소·건축자재 월드건축자재(영진목재) | 합판·방부목·데크·재단", "대전 3000평 목재·건축자재 매장. 합판·OSB·MDF·구조재·방부목·데크 기준가와 사용법 영상, 즉석 재단, 대전·세종 시공(월드아키텍쳐).", body, "", BIZ)
+
+    # 소식·정보
+    page("news/index.html", "소식·자재 정보 — 목재·건축자재 가격, 시공 팁 | 대전 월드건축자재", "대전 월드건축자재(영진목재)의 자재 정보, 기준가, 시공 사례, 새 영상 소식.",
+         f'<section class="wrap sec"><h1>소식·자재 정보</h1><p class="lead">자재 고르는 법, 기준가, 시공 사례와 새 영상 소식을 매일 올립니다.</p><div class="pl">{plist(POSTS)}</div></section>{CTA}', "/news/")
+    for p in POSTS:
+        vids = "".join(embed(byid[i]) if i in byid else f'<div class="emb"><iframe loading="lazy" src="https://www.youtube.com/embed/{E(i)}" allowfullscreen></iframe></div>' for i in p.get("videos", [])[:2])
+        art = {"@context": "https://schema.org", "@type": "Article", "headline": p["title"], "datePublished": p.get("date", ""), "author": {"@type": "Organization", "name": "월드건축자재(영진종합목재)"}, "publisher": {"@type": "Organization", "name": "월드건축자재(영진종합목재)"}}
+        page(f"news/{p['slug']}.html", f"{p['title']} | 대전 월드건축자재", p.get("desc", p["title"]),
+             f'<article class="wrap sec post"><p class="crumb"><a href="/news/">소식·정보</a> › {E(p.get("date",""))}</p><h1>{E(p["title"])}</h1>{vids}<div class="pb">{p["body"]}</div></article>{CTA}', "/news/", art)
 
     # 자재 백과
     lst = "".join(f'<a class="mc" href="/jajae/{m["slug"]}.html"><b>{m["name"]}</b><small>{" · ".join(m["where"][:2])}</small></a>' for m in MATS)
