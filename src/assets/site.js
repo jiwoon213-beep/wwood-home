@@ -75,3 +75,14 @@ document.addEventListener("click", function (e) {
   s.addEventListener("scroll", function () { clearTimeout(s._t); s._t = setTimeout(upd, 80); }, { passive: true });
   document.querySelectorAll(".tdots .tb").forEach(function (b) { b.onclick = function () { s.scrollBy({ left: s.clientWidth * +b.dataset.d, behavior: "smooth" }); }; });
 })();
+
+/* 휴대폰이면 쇼핑몰 상품을 모바일 페이지로 바로 연결 */
+(function () {
+  if (!/Mobi|Android|iPhone|iPod|iPad/i.test(navigator.userAgent)) return;
+  function fix(a) {
+    if (a && a.href && a.href.indexOf("/home/mall/shoplist.php") > -1 && a.href.indexOf("pmode=view") > -1)
+      a.href = a.href.replace("/home/mall/shoplist.php", "/home/mobile/shoplist.php");
+  }
+  document.querySelectorAll('a[href*="/home/mall/shoplist.php"]').forEach(fix);
+  document.addEventListener("click", function (e) { fix(e.target.closest && e.target.closest("a")); }, true);
+})();
