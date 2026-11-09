@@ -56,6 +56,8 @@ JCAT = [("23", "gakjae", "각재·구조재", "다루끼·구조재·방부목·
         ("32", "hardware", "철물", "건축철물·타카·인테리어철물·공학목재철물"), ("35", "paint", "페인트·스테인", "오일스테인·페인트·작업도구"),
         ("37", "sopum", "소품·부자재", "정원가구·목재소품·철제가구·공구·접착제")]
 JTOP = {c for c, *_ in JCAT}
+JEXC = {"24": r"본드|프라이머|실리콘|석고|아이소|스티로|에이스|도깨비|페인트", "27": r"프라이머|도깨비|페인트",
+        "28": r"세라픽스|멘트"}
 for p in PROD:
     tops = [c.split("/")[0] for c in p["cats"]]
     p["top"] = next((t for t in tops if t in JTOP), None)
@@ -63,6 +65,12 @@ for p in PROD:
         for rx, t in (("집성", "53"), ("루바|코코넛", "27"), ("데크|난간|핸드레일", "25"), ("철물|프라이머", "32")):
             if re.search(rx, p["name"]): p["top"] = t; break
     p["tops"] = [t for t in dict.fromkeys(tops) if t in JTOP] or ([p["top"]] if p["top"] else [])
+    # 쇼핑몰에서 엉뚱한 분류에 같이 들어간 것 정리 (예: 본드가 합판/MDF에)
+    ok = [t for t in p["tops"] if not (t in JEXC and re.search(JEXC[t], p["name"]))]
+    if ok != p["tops"]:
+        p["tops"] = ok or ["30" if re.search(r"석고|아이소|스티로|에이스|단열", p["name"]) else "37"]
+        p["top"] = p["tops"][0]
+        if p["top"] == "30" and "30" not in [c.split("/")[0] for c in p["cats"]]: p["cats"].append("30/183")
     p["sub"] = next((c for c in p["cats"] if c.split("/")[0] == p["top"] and c.split("/")[1]), None)
 def subof(p, top): return next((c for c in p["cats"] if c.split("/")[0] == top and c.split("/")[1]), None)
 # 자재 백과 사진: slug → (쇼핑몰 분류, 이름 정규식, 제외 정규식)
