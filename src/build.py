@@ -223,7 +223,13 @@ def build():
     use = "".join(f'<a class="uc" href="/video/{c}.html"><b>{n}</b><small>{d}</small></a>' for c, n, d in CATS)
     mats = "".join(f'<a class="mc" href="/jajae/{m["slug"]}.html"><b>{m["name"]}</b><small>{m["where"][0]}</small></a>' for m in MATS)
     hot = vsplit(top(lambda v: v["id"] != "xPsUVr7exLU", 10**6), "h3", 8, 6)
-    newv = [byid[i] for i in LATEST if i in byid][:4]
+    ids = LATEST
+    if not ids and os.path.exists(f"{ROOT}/data/yt_all.tsv"):
+        rows = [l.rstrip("\n").split("\t") for l in open(f"{ROOT}/data/yt_all.tsv", encoding="utf-8") if l.strip()]
+        rows = [r for r in rows if len(r) > 3 and r[3].isdigit()]
+        rows.sort(key=lambda r: -int(r[3]))
+        ids = [r[0] for r in rows if r[1] != "S"][:4] + [r[0] for r in rows if r[1] == "S"][:4]
+    newv = [byid[i] for i in ids if i in byid][:8]
     newsec = (f'<section class="wrap sec"><h2>새로 올라온 영상</h2>{vsplit(newv, "h3")}</section>' if newv else "")
     plist = lambda ps: "".join(f'<a class="pc" href="/news/{p["slug"]}.html"><small>{E(p.get("date",""))}</small><b>{E(p["title"])}</b><span>{E(p.get("desc",""))}</span></a>' for p in ps)
     postsec = (f'<section class="wrap sec"><h2>소식·자재 정보</h2><div class="pl">{plist(POSTS[:6])}</div><p><a href="/news/">전체 글 보기 →</a></p></section>' if POSTS else "")
