@@ -335,7 +335,7 @@ def build():
     for p in sorted(P, key=lambda p: -p["qty"]):
         groups.setdefault(p["cat"], []).append(p)
     skip = {"-호차 영림", "가공"}
-    row = lambda p, rk="": f"<tr><td class=pn>{rk}<a class=pl href=\"{plink(p)}\">{E(clean_name(p['name']))}<i>›</i></a>{"" if rk else badge(p)}</td><td class=pp><b>{won(p['price'])}</b>{chg(p)}</td></tr>"
+    row = lambda p, rk="": f"<tr><td class=pn>{rk}<a class=plk href=\"{plink(p)}\">{E(clean_name(p['name']))}<i>›</i></a>{"" if rk else badge(p)}</td><td class=pp><b>{won(p['price'])}</b>{chg(p)}</td></tr>"
     th = '<thead><tr><th>품목·규격 <small>(누르면 자재 안내)</small></th><th class=r>소매 기준가</th></tr></thead>'
     GN = {"문": "도어(문짝)", "문틀": "문틀", "문제": "문 부속·레일", "진열": "인테리어 철물", "부재": "부자재", "엠디": "MDF", "합성": "합성데크",
           "오일": "오일스테인", "목재": "다루끼·각재", "구조": "구조재", "방부": "방부목", "석고": "석고보드", "단열": "단열재", "가든": "침목·조경",
