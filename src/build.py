@@ -171,7 +171,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><b>영진종합목재 (월드건축자재)</b><small>· 충청권 최대규모 목재상</small></a>
 <nav>{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) | {ADDR} | {TEL} | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> | {ADDR} | {TEL} | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
@@ -254,7 +254,7 @@ def build():
 <p class="small">재단비·운임·수량 할인은 매장에서 계산 · 고재·수입목·특수목은 매장 문의 · 도매가는 회원 로그인 후</p><a href="/price.html">기준가 전체 보기 →</a></div>
 <div class="card dark"><h2>직접 하기 어렵다면, 시공까지</h2><p>자재를 가장 잘 아는 목재상이 직접 시공합니다. 월드아키텍쳐({LIC})가 대전·세종 전 공정을 시공하고, 모든 현장은 유튜브에 공개합니다.</p>
 <a class="b r" href="/sigong.html">시공 사례 보기</a></div></section>{CTA}"""
-    page("index.html", "대전 목재소·건축자재 월드건축자재(영진목재) | 합판·방부목·데크·재단", "영진목재(영진종합목재·월드건축자재) — 대전 3000평 목재·건축자재 매장. 합판·OSB·MDF·구조재·방부목·데크 기준가와 사용법 영상, 즉석 재단, 대전·세종 시공(월드아키텍쳐).", body, "", BIZ)
+    page("index.html", "대전 목재·세종 목재 영진목재(월드건축자재) | 목재소·합판·방부목·재단", "대전 목재·세종 목재는 영진목재(영진종합목재·월드건축자재) — 대전 3000평 목재·건축자재 매장. 합판·OSB·MDF·구조재·방부목·데크 기준가와 사용법 영상, 즉석 재단, 대전·세종 시공(월드아키텍쳐).", body, "", BIZ)
 
     # 소식·정보
     page("news/index.html", "소식·자재 정보 — 목재·건축자재 가격, 시공 팁 | 대전 월드건축자재", "대전 월드건축자재(영진목재)의 자재 정보, 기준가, 시공 사례, 새 영상 소식.",
@@ -393,6 +393,26 @@ def build():
 <div class="tw"><table><tbody><tr><th>주소</th><td>{ADDR} 월드건축자재(영진목재)</td></tr><tr><th>영업</th><td>{HOURS}</td></tr><tr><th>전화</th><td><a href="tel:{TEL.replace('-','')}">{TEL}</a></td></tr>
 <tr><th>재단</th><td>원하는 사이즈로 즉석 재단</td></tr><tr><th>배송</th><td>대전·세종 배송 · 현장 납품</td></tr><tr><th>도매</th><td>사업자등록증·명함 확인 후 도매회원 승인</td></tr><tr><th>시공</th><td>월드아키텍쳐 · 대전·세종 · 전화 상담</td></tr></tbody></table></div>
 <div class="row"><a class="b g" href="https://map.naver.com/p/search/{ADDR.replace(' ','%20')}%20월드건축자재" target="_blank" rel="noopener">네이버 지도로 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div></div></section>""", "/visit.html", BIZ)
+
+    # 지역 안내 (대전 목재 / 세종 목재)
+    matlinks = "".join(f'<a class="mc" href="/jajae/{m["slug"]}.html"><b>{m["name"]}</b><small>{m["where"][0]}</small></a>' for m in MATS)
+    for slug, area, t, lead, extra in [
+        ("daejeon", "대전", "대전 목재 — 영진목재(월드건축자재) 3000평 목재소 | 합판·구조재·방부목·재단",
+         "대전에서 목재를 찾으신다면 유성대로 44의 영진목재(영진종합목재·월드건축자재)로 오세요. 충청권 최대규모 3000평 매장에 합판·OSB·MDF·구조재·다루끼·방부목·합성데크·석고보드·몰딩·도어까지 한곳에 있고, 원하는 사이즈로 바로 재단해 드립니다.",
+         "<li>대전 전 지역(유성·서구·중구·동구·대덕) 배송·현장 납품</li><li>DIY 소량 구매부터 인테리어·건축 현장 자재까지</li><li>대전 인테리어·데크·샷시 시공은 월드아키텍쳐(실내건축공사업 등록)</li>"),
+        ("sejong", "세종", "세종 목재 — 대전 유성 영진목재에서 재단·세종 배송 | 합판·구조재·방부목",
+         "세종에서 목재가 필요하시면 대전 유성대로 44의 영진목재(영진종합목재·월드건축자재)를 이용하세요. 3000평 매장에서 합판·OSB·MDF·구조재·방부목·데크재·석고보드를 원하는 사이즈로 재단해 세종까지 배송·현장 납품합니다.",
+         "<li>세종시 전 지역 배송·현장 납품 (수량·위치에 따라 전화 상담)</li><li>세종 신축·리모델링 현장 자재 일괄 납품</li><li>세종 인테리어·데크 시공은 월드아키텍쳐(실내건축공사업 등록)</li>"),
+    ]:
+        page(f"{slug}.html", t, lead[:150],
+             f"""<section class="wrap sec"><h1>{area} 목재 · 건축자재 — 영진목재</h1><p class="lead">{lead}</p>
+<div class="row"><a class="b g" href="/visit.html">매장 위치·영업시간</a><a class="b d" href="tel:{TEL.replace('-','')}">전화 {TEL}</a></div></section>
+<section class="wrap sec g2"><div class="card"><h2>{area} 목재 구매 안내</h2><ul><li>매장: {ADDR} 영진목재(월드건축자재)</li><li>영업: {HOURS}</li><li>원하는 사이즈 즉석 재단</li>{extra}<li>사업자는 도매회원 가입(사업자등록증·명함 확인)</li></ul></div>
+<div class="card"><h2>가격은 어떻게 보나요</h2><p>자주 찾는 목재·자재의 소매 기준가(부가세 별도)를 공개해 두었습니다. 규격·수량에 따라 달라지니 매장이나 전화로 확인해 주세요.</p><a href="/price.html">{area} 목재 기준가 보기 →</a><br><a href="/jaryo/">전체 자재 사진 보기 →</a></div></section>
+<section class="wrap sec"><h2>{area}에서 많이 찾는 목재·자재</h2><div class="mg">{matlinks}</div></section>
+<section class="wrap sec"><h2>자주 묻는 질문</h2><p><b>Q. {area}에서 목재 소량도 사나요?</b><br>A. 네, 한 장·한 개부터 구매하실 수 있고 원하는 크기로 재단해 드립니다.</p>
+<p><b>Q. {area} 현장으로 배송되나요?</b><br>A. 대전·세종 배송과 현장 납품을 합니다. 수량과 위치를 알려 주시면 안내해 드립니다({TEL}).</p>
+<p><b>Q. 시공도 맡길 수 있나요?</b><br>A. 월드아키텍쳐가 대전·세종 인테리어·데크·샷시 시공을 직접 합니다. 모든 현장은 유튜브에 공개합니다.</p></section>{CTA}""", f"/{slug}.html", BIZ)
 
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
