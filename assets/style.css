@@ -90,3 +90,13 @@ nav a{white-space:nowrap;flex-shrink:0}
 #jqn{margin:10px 2px 0;font-size:15px}
 @media(max-width:600px){.srch input{font-size:18px;padding:16px 14px 16px 50px}.srch .si{left:15px;font-size:20px}}
 a.pl{color:var(--ink);text-decoration:none;border-bottom:1px dashed #b9b2a8}a.pl:hover,a.pl:active{color:var(--red);border-bottom-color:var(--red)}a.pl::after{content:" ›";color:#b9b2a8}
+/* 기준가 표 정리 */
+table.pt{table-layout:fixed}table.pt th:last-child,table.pt td.pp{width:118px;text-align:right}
+table.pt td{padding:13px 12px;vertical-align:middle;line-height:1.45}
+td.pn{word-break:keep-all}td.pp{white-space:nowrap}td.pp b{font-size:16px}
+a.pl{color:var(--ink);text-decoration:none;border:0}a.pl::after{content:none}a.pl i{font-style:normal;color:#b9b2a8;margin-left:4px}a.pl:hover,a.pl:active{color:var(--red)}a.pl:hover i{color:var(--red)}
+.rk{display:inline-block;min-width:22px;height:22px;line-height:22px;margin-right:8px;border-radius:6px;background:var(--ink);color:#fff;font-size:12px;font-weight:800;text-align:center;vertical-align:1px}
+.ch{display:block;font-size:12px;margin-top:2px}
+.bd{margin-left:6px}
+th small{font-weight:400;color:#a59e95}
+@media(max-width:600px){table.pt{font-size:15px}table.pt td{padding:12px 8px}table.pt th:last-child,table.pt td.pp{width:96px}td.pp b{font-size:15px}.bd{display:inline-block;margin:4px 0 0 0}th small{display:none}}

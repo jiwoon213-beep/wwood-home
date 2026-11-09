@@ -35,9 +35,9 @@ PMETA = json.load(open(f"{ROOT}/data/price_meta.json", encoding="utf-8")) if os.
 RANK = {p["name"]: i + 1 for i, p in enumerate(sorted(P, key=lambda p: -p["qty"]))}
 def chg(p):
     o = PREV.get(p["name"])
-    if not o or o == p["price"]: return '<td class="r ch">-</td>'
+    if not o or o == p["price"]: return ''
     d = p["price"] - o; pc = d / o * 100
-    return f'<td class="r ch {"up" if d > 0 else "dn"}">{"▲" if d > 0 else "▼"} {abs(d):,}원 ({pc:+.1f}%)</td>'
+    return f'<span class="ch {"up" if d > 0 else "dn"}">{"▲" if d > 0 else "▼"} {abs(d):,}원 ({pc:+.1f}%)</span>'
 PLINK = {"문": "/jajae/door.html", "문틀": "/jajae/door.html", "문제": "/jajae/door.html", "몰딩": "/jajae/molding.html", "내장": "/jaryo/naejang.html",
          "진열": "/jajae/hardware.html", "피스": "/jajae/hardware.html", "타카": "/jajae/hardware.html", "철물": "/jajae/hardware.html",
          "합판": "/jajae/hapan.html", "엠디": "/jajae/mdf.html", "부재": "/jaryo/sopum.html", "본드": "/jaryo/sopum.html", "공구": "/jaryo/sopum.html",
@@ -335,15 +335,15 @@ def build():
     for p in sorted(P, key=lambda p: -p["qty"]):
         groups.setdefault(p["cat"], []).append(p)
     skip = {"-호차 영림", "가공"}
-    row = lambda p: f"<tr><td><a class=pl href=\"{plink(p)}\">{E(clean_name(p['name']))}</a> {badge(p)}</td><td class=r><b>{won(p['price'])}</b></td>{chg(p)}</tr>"
-    th = '<thead><tr><th>품목·규격</th><th class=r>소매 기준가</th><th class=r>지난 갱신 대비</th></tr></thead>'
-    secs = "".join(f'<h2 id="{E(k)}">{E(k)}</h2><div class="tw"><table>{th}<tbody>' + "".join(row(p) for p in g[:25]) + "</tbody></table></div>"
+    row = lambda p, rk="": f"<tr><td class=pn>{rk}<a class=pl href=\"{plink(p)}\">{E(clean_name(p['name']))}<i>›</i></a>{badge(p)}</td><td class=pp><b>{won(p['price'])}</b>{chg(p)}</td></tr>"
+    th = '<thead><tr><th>품목·규격 <small>(누르면 자재 안내)</small></th><th class=r>소매 기준가</th></tr></thead>'
+    secs = "".join(f'<h2 id="{E(k)}">{E(k)}</h2><div class="tw"><table class="pt">{th}<tbody>' + "".join(row(p) for p in g[:25]) + "</tbody></table></div>"
                    for k, g in sorted(groups.items()) if k not in skip)
     top10 = sorted(P, key=lambda p: -p["qty"])[:10]
     upn = sum(1 for p in P if PREV.get(p["name"]) and PREV[p["name"]] < p["price"]); dnn = sum(1 for p in P if PREV.get(p["name"]) and PREV[p["name"]] > p["price"])
     board = (f'<div class="card pb2"><h2>많이 찾는 자재 TOP 10</h2><p class="small muted">매장 판매 순위 기준 · 기준가 갱신일 {E(PMETA.get("updated",""))} · '
-             f'지난 갱신 대비 <span class="up">▲ 오른 품목 {upn}</span> · <span class="dn">▼ 내린 품목 {dnn}</span></p><div class="tw"><table>{th}<tbody>'
-             + "".join(f"<tr><td><b>{i+1}</b> <a class=pl href=\"{plink(p)}\">{E(clean_name(p['name']))}</a></td><td class=r><b>{won(p['price'])}</b></td>{chg(p)}</tr>" for i, p in enumerate(top10)) + "</tbody></table></div></div>")
+             f'지난 갱신 대비 <span class="up">▲ 오른 품목 {upn}</span> · <span class="dn">▼ 내린 품목 {dnn}</span></p><div class="tw"><table class="pt">{th}<tbody>'
+             + "".join(row(p, f'<span class="rk">{i+1}</span>') for i, p in enumerate(top10)) + "</tbody></table></div></div>")
     secs = board + secs
     page("price.html", "목재·건축자재 소매 기준가 — 합판·MDF·구조재·방부목·석고보드 | 대전 월드건축자재", "대전 월드건축자재(영진목재) 소매 기준가. 부가세 별도, 결제·재단은 매장에서.",
          f'<section class="wrap sec"><h1>소매 기준가</h1><p class="lead">자주 찾는 자재의 소매 기준가입니다(부가세 별도). 규격·수량에 따라 달라지며 재단비·운임은 매장에서 계산합니다. 도매가는 <a href="/dome.html">도매회원</a> 로그인 후 확인하세요.</p>{secs}</section>{CTA}', "/price.html")
