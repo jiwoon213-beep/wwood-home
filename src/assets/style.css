@@ -81,3 +81,11 @@ nav a{white-space:nowrap;flex-shrink:0}
 }
 @media(max-width:360px){nav{font-size:13px}nav a{padding:8px 0}}
 .srch{margin:18px 0 6px}.srch input{width:100%;max-width:560px;padding:14px 16px;font-size:17px;border:2px solid var(--ink);border-radius:10px;background:#fff;outline:none}.srch input:focus{border-color:var(--red)}
+/* 자재 검색창 크게 */
+.srch{position:relative;margin:22px 0 10px;max-width:760px}
+.srch .si{position:absolute;left:18px;top:50%;transform:translateY(-50%);font-size:22px;pointer-events:none}
+.srch input{width:100%;max-width:none;box-sizing:border-box;padding:18px 18px 18px 56px;font-size:20px;font-weight:600;border:2px solid var(--ink);border-radius:14px;background:#fff;-webkit-appearance:none;appearance:none;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.srch input::placeholder{color:#9a948c;font-weight:500}
+.srch input:focus{border-color:var(--red);outline:none;box-shadow:0 0 0 4px rgba(214,45,32,.12)}
+#jqn{margin:10px 2px 0;font-size:15px}
+@media(max-width:600px){.srch input{font-size:18px;padding:16px 14px 16px 50px}.srch .si{left:15px;font-size:20px}}

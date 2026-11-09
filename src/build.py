@@ -156,7 +156,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <title>{E(title)}</title><meta name="description" content="{E(desc)}">
 <link rel="canonical" href="{canon}"><meta name="naver-site-verification" content="a59ff6921fc90666c920da00bf9a23ecb0ba3514"><meta property="og:type" content="website"><meta property="og:title" content="{E(title)}">
 <meta property="og:description" content="{E(desc)}"><meta property="og:url" content="{canon}"><meta property="og:image" content="{E(img or "https://i.ytimg.com/vi/xPsUVr7exLU/hqdefault.jpg")}"><meta property="og:site_name" content="영진종합목재 (월드건축자재)"><meta property="og:locale" content="ko_KR"><meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="/assets/style.css">{'<meta name="robots" content="noindex,nofollow">' if PREVIEW else ''}{ld}</head><body>
+<link rel="stylesheet" href="/assets/style.css?v={ASSET_V}">{'<meta name="robots" content="noindex,nofollow">' if PREVIEW else ''}{ld}</head><body>
 <div class="top"><div class="wrap row sb"><span>{HOURS} · {ADDR}</span><span><a href="/dome.html">업체·도매회원</a> <a href="/visit.html">매장 길찾기</a></span></div></div>
 <header><div class="wrap row sb hd"><a class="logo" href="/"><b>영진종합목재 (월드건축자재)</b><small>· 충청권 최대규모 목재상</small></a>
 <nav>{nav}</nav></div></header>
@@ -165,7 +165,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 네이버 블로그 <a href="{BLOG}">swr4083</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
-<script src="/assets/site.js" defer></script></body></html>"""
+<script src="/assets/site.js?v={ASSET_V}" defer></script></body></html>"""
     if PREFIX: doc = doc.replace('href="/', f'href="{PREFIX}/').replace('src="/', f'src="{PREFIX}/')
     fp = os.path.join(OUT, path); os.makedirs(os.path.dirname(fp), exist_ok=True)
     open(fp, "w", encoding="utf-8").write(doc)
@@ -284,7 +284,7 @@ def build():
            for p in PROD if p["tops"]]
     os.makedirs(f"{OUT}/assets", exist_ok=True)
     json.dump(idx, open(f"{OUT}/assets/jaryo.json", "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
-    SEARCH = ('<div class="srch"><input id="jq" type="search" placeholder="자재 검색 (예: 히노끼, OSB, 경첩, 데크, 타일)" autocomplete="off" aria-label="자재 검색">'
+    SEARCH = ('<div class="srch"><span class="si">🔍</span><input id="jq" type="search" placeholder="자재 이름으로 찾기 (예: 히노끼, OSB, 경첩)" autocomplete="off" aria-label="자재 검색">'
               '<p id="jqn" class="small muted"></p></div><div id="jsr" class="pg"></div>')
     # 전체 자재 (쇼핑몰 자재 사진 목록)
     cnt = {c: sum(1 for p in PROD if c in p["tops"]) for c, *_ in JCAT}
@@ -375,5 +375,7 @@ def build():
         "".join(f"<url><loc>{u}</loc><lastmod>{today}</lastmod></url>\n" for u in SITEMAP) + "</urlset>\n")
     print(len(SITEMAP), "pages →", OUT)
 
+import hashlib
+ASSET_V = hashlib.md5((open(f"{ROOT}/assets/style.css","rb").read()+open(f"{ROOT}/assets/site.js","rb").read())).hexdigest()[:8]
 SITEMAP = []
 build()
