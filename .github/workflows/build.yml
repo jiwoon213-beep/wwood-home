@@ -16,6 +16,7 @@ jobs:
         with: { python-version: '3.12' }
       - name: build
         run: |
+          if ls src/data/new_videos/*.tsv >/dev/null 2>&1; then cat src/data/new_videos/*.tsv src/data/yt_all.tsv | awk -F'\t' '!seen[$1]++' > /tmp/y && mv /tmp/y src/data/yt_all.tsv && rm -f src/data/new_videos/*.tsv && (cd src && python3 merge_videos.py data/yt_all.tsv); fi
           cd src && python3 build.py https://www.wwood.co.kr && cp -r out/. .. && rm -rf out && cd ..
           test -f CNAME && test -f .nojekyll && test -f googlebdb67d0a828cfb44.html && test -f naverba93ea476932b627cd632929e26465dd.html
       - name: commit
