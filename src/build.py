@@ -171,7 +171,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><b>영진종합목재 (월드건축자재)</b><small>· 충청권 최대규모 목재상</small></a>
 <nav>{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재 | {ADDR} | {TEL} | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) | {ADDR} | {TEL} | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
@@ -254,7 +254,7 @@ def build():
 <p class="small">재단비·운임·수량 할인은 매장에서 계산 · 고재·수입목·특수목은 매장 문의 · 도매가는 회원 로그인 후</p><a href="/price.html">기준가 전체 보기 →</a></div>
 <div class="card dark"><h2>직접 하기 어렵다면, 시공까지</h2><p>자재를 가장 잘 아는 목재상이 직접 시공합니다. 월드아키텍쳐({LIC})가 대전·세종 전 공정을 시공하고, 모든 현장은 유튜브에 공개합니다.</p>
 <a class="b r" href="/sigong.html">시공 사례 보기</a></div></section>{CTA}"""
-    page("index.html", "대전 목재소·건축자재 월드건축자재(영진목재) | 합판·방부목·데크·재단", "대전 3000평 목재·건축자재 매장. 합판·OSB·MDF·구조재·방부목·데크 기준가와 사용법 영상, 즉석 재단, 대전·세종 시공(월드아키텍쳐).", body, "", BIZ)
+    page("index.html", "대전 목재소·건축자재 월드건축자재(영진목재) | 합판·방부목·데크·재단", "영진목재(영진종합목재·월드건축자재) — 대전 3000평 목재·건축자재 매장. 합판·OSB·MDF·구조재·방부목·데크 기준가와 사용법 영상, 즉석 재단, 대전·세종 시공(월드아키텍쳐).", body, "", BIZ)
 
     # 소식·정보
     page("news/index.html", "소식·자재 정보 — 목재·건축자재 가격, 시공 팁 | 대전 월드건축자재", "대전 월드건축자재(영진목재)의 자재 정보, 기준가, 시공 사례, 새 영상 소식.",
