@@ -158,7 +158,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 
 def vcard(v, big=False):
     return f"""<a class="vc{' big' if big else ''}" href="{vurl(v)}" target="_blank" rel="noopener" data-yt="{v['id']}">
-<span class="th"><img loading="lazy" src="https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg" alt="{E(vshort(v['title']))}"><i class="play"></i>{'<em>쇼츠</em>' if v['type']=='S' else ''}</span>
+<span class="th"><img loading="lazy" src="https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg" alt="{E(vshort(v['title']))}"><i class="play"></i>{'<em>쇼츠</em>' if v['type']=='S' else '<em>라이브</em>' if v['type']=='V' else ''}</span>
 <b>{E(v['title'])}</b><small>조회 {views(v['n'])}</small></a>"""
 
 def embed(v):
@@ -280,9 +280,9 @@ def build():
     # 영상
     vl = "".join(f'<a class="uc" href="/video/{c}.html"><b>{n}</b><small>{d} · {sum(1 for v in V if v["cat"]==c)}편</small></a>' for c, n, d in CATS)
     page("video/index.html", "시공·DIY 영상 모음 — 데크·온실·가구·외벽·인테리어 | 월드건축자재DIY", "월드건축자재DIY 유튜브 영상을 용도별로 정리했습니다. 데크, 목조 온실, 원목가구, 싱크대, 외벽, 바닥, 전기.",
-         f'<section class="wrap sec"><h1>영상으로 찾기</h1><p class="lead">유튜브 「월드건축자재DIY」 영상을 용도별로 모았습니다. 새 영상은 계속 추가됩니다.</p><div class="ug">{vl}</div><p><a href="{YT}">유튜브 채널 바로가기 →</a></p></section>{CTA}', "/video/")
+         f'<section class="wrap sec"><h1>영상으로 찾기</h1><p class="lead">유튜브 「월드건축자재DIY」 공개 영상 {len(V)}편(일반·쇼츠·라이브)을 용도별로 모두 모았습니다. 새 영상은 자동으로 추가됩니다.</p><div class="ug">{vl}</div><p><a href="{YT}">유튜브 채널 바로가기 →</a></p></section>{CTA}', "/video/")
     for c, n, d in CATS:
-        vs = top(lambda v: v["cat"] == c, 40)
+        vs = top(lambda v: v["cat"] == c, 10**6)
         page(f"video/{c}.html", f"{n} 영상 — {d} | 월드건축자재DIY 대전", f"{n} 관련 시공·DIY 영상 모음({d}). 영상에 나온 자재는 대전 월드건축자재 매장에서.",
              f'<section class="wrap sec"><p class="crumb"><a href="/video/">영상</a> › {n}</p><h1>{n}</h1><p class="lead">{d}</p><div class="vg">{"".join(vcard(v) for v in vs)}</div><p><a href="{YT}">더 많은 영상은 유튜브에서 →</a></p></section>{CTA}', "/video/",
              {"@context": "https://schema.org", "@type": "ItemList", "name": f"{n} 영상", "itemListElement": [{"@type": "ListItem", "position": i + 1, "url": vurl(v), "name": v["title"]} for i, v in enumerate(vs)]},
