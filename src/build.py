@@ -337,8 +337,18 @@ def build():
     skip = {"-호차 영림", "가공"}
     row = lambda p, rk="": f"<tr><td class=pn>{rk}<a class=pl href=\"{plink(p)}\">{E(clean_name(p['name']))}<i>›</i></a>{"" if rk else badge(p)}</td><td class=pp><b>{won(p['price'])}</b>{chg(p)}</td></tr>"
     th = '<thead><tr><th>품목·규격 <small>(누르면 자재 안내)</small></th><th class=r>소매 기준가</th></tr></thead>'
-    secs = "".join(f'<h2 id="{E(k)}">{E(k)}</h2><div class="tw"><table class="pt">{th}<tbody>' + "".join(row(p) for p in g[:25]) + "</tbody></table></div>"
-                   for k, g in sorted(groups.items()) if k not in skip)
+    GN = {"문": "도어(문짝)", "문틀": "문틀", "문제": "문 부속·레일", "진열": "인테리어 철물", "부재": "부자재", "엠디": "MDF", "합성": "합성데크",
+          "오일": "오일스테인", "목재": "다루끼·각재", "구조": "구조재", "방부": "방부목", "석고": "석고보드", "단열": "단열재", "가든": "침목·조경",
+          "데크": "원목 마루재", "특수": "적삼목·특수목", "내장": "내장재", "외장": "외장재", "본드": "본드·접착제", "필름": "인테리어필름", "계단": "계단재",
+          "피스": "피스", "타카": "타카핀", "철물": "건축 철물", "몰딩": "몰딩", "루바": "루바", "마루": "마루", "집성판": "집성판", "합판": "합판",
+          "사이딩": "사이딩", "각재": "각재", "공구": "공구"}
+    order = sorted([k for k in groups if k not in skip], key=lambda k: -max(p["qty"] for p in groups[k]))
+    chips = "".join(f'<button type="button" class="chip{" on" if i == 0 else ""}" data-k="{i}">{E(GN.get(k, k))} <small>{len(groups[k])}</small></button>' for i, k in enumerate(order))
+    secs = (f'<div class="srch"><span class="si">🔍</span><input id="pq" type="search" placeholder="품목 검색 (예: 9.5T, 투바이, 경첩, OSB)" autocomplete="off" aria-label="기준가 품목 검색"><p id="pqn" class="small muted"></p></div>'
+            f'<div class="chips" id="pchips">{chips}</div><div class="pnav"><button type="button" id="pprev">◀ 이전</button><span id="pcur"></span><button type="button" id="pnext">다음 ▶</button></div>'
+            + '<div id="psecs">' + "".join(f'<div class="psec{" on" if i == 0 else ""}" data-k="{i}" data-n="{E(GN.get(k, k))}"><h2>{E(GN.get(k, k))} <small class="muted">{len(groups[k])}개</small></h2><div class="tw"><table class="pt">{th}<tbody>'
+                                         + "".join(row(p) for p in groups[k]) + "</tbody></table></div></div>" for i, k in enumerate(order)) + '</div>'
+            + '<p class="small muted swipe-hint">← 옆으로 밀면 다음 분류로 넘어갑니다 →</p>')
     top10 = sorted(P, key=lambda p: -p["qty"])[:10]
     upn = sum(1 for p in P if PREV.get(p["name"]) and PREV[p["name"]] < p["price"]); dnn = sum(1 for p in P if PREV.get(p["name"]) and PREV[p["name"]] > p["price"])
     board = (f'<div class="card pb2"><h2>많이 찾는 자재 TOP 10</h2><p class="small muted">매장 판매 순위 기준 · 기준가 갱신일 {E(PMETA.get("updated",""))} · '

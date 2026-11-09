@@ -33,3 +33,37 @@ document.addEventListener("click", function (e) {
   var t; q.addEventListener("input", function () { clearTimeout(t); t = setTimeout(run, 150); });
   q.addEventListener("focus", function () { load(function () {}); });
 })();
+// 기준가: 분류 탭·좌우 넘기기·검색
+(function () {
+  var secs = document.querySelectorAll(".psec"); if (!secs.length) return;
+  var chips = document.querySelectorAll("#pchips .chip"), cur = document.getElementById("pcur"), q = document.getElementById("pq"), qn = document.getElementById("pqn"), i = 0, n = secs.length;
+  function show(k) {
+    i = (k + n) % n;
+    secs.forEach(function (s, j) { s.classList.toggle("on", j === i); });
+    chips.forEach(function (c, j) { c.classList.toggle("on", j === i); if (j === i) c.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" }); });
+    cur.textContent = (i + 1) + " / " + n + " · " + secs[i].dataset.n;
+  }
+  chips.forEach(function (c) { c.addEventListener("click", function () { show(+c.dataset.k); }); });
+  document.getElementById("pprev").onclick = function () { show(i - 1); };
+  document.getElementById("pnext").onclick = function () { show(i + 1); };
+  var box = document.getElementById("psecs"), x0 = null, y0 = null;
+  box.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  box.addEventListener("touchend", function (e) {
+    if (x0 === null || document.body.classList.contains("psearch")) return;
+    var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) show(i + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+  var norm = function (s) { return (s || "").toLowerCase().replace(/[\s·×x*\-_.,()]/g, ""); };
+  q.addEventListener("input", function () {
+    var v = norm(q.value), hit = 0;
+    document.body.classList.toggle("psearch", !!v);
+    secs.forEach(function (s) {
+      var any = 0;
+      s.querySelectorAll("tbody tr").forEach(function (tr) { var ok = !v || norm(tr.textContent + s.dataset.n).indexOf(v) >= 0; tr.style.display = ok ? "" : "none"; if (ok) any++; });
+      s.style.display = v ? (any ? "block" : "none") : ""; if (v) hit += any;
+    });
+    qn.textContent = v ? (hit ? "검색 결과 " + hit + "개" : "검색 결과가 없습니다. 매장(042-545-2900)에 문의하세요.") : "";
+    if (!v) show(i);
+  });
+  show(0);
+})();
