@@ -39,6 +39,47 @@ for fn in sorted(os.listdir(_pd) if os.path.isdir(_pd) else [], reverse=True):
     meta = json.loads(m.group(1)); meta["slug"] = fn[:-5]; meta["body"] = raw[m.end():]
     POSTS.append(meta)
 POSTS.sort(key=lambda p: (p.get("date", ""), p["slug"]), reverse=True)
+# 쇼핑몰(wwood.kr) 자재 목록: data/products.tsv  (# 줄 = 분류코드, 나머지 = id, 이름, 사진, 분류들) — 가격 없음
+MCAT, PROD = {}, []
+for line in open(f"{ROOT}/data/products.tsv", encoding="utf-8") if os.path.exists(f"{ROOT}/data/products.tsv") else []:
+    r = line.rstrip("\n").split("\t")
+    if r[0] == "#": MCAT[r[1]] = r[2]; continue
+    if len(r) < 4 or not r[1].strip(): continue
+    img = r[2].replace("@", "/common/ezs_data/product/", 1) if r[2].startswith("@") else r[2].replace("!", "/modules/shop/files/", 1) if r[2].startswith("!") else r[2]
+    PROD.append(dict(id=r[0], name=r[1].strip(), img="https://www.wwood.kr" + img, cats=[c for c in r[3].split(",") if c]))
+# 홈페이지 전체 자재 분류 (쇼핑몰 대분류 코드 → 주소)
+JCAT = [("23", "gakjae", "각재·구조재", "다루끼·구조재·방부목·히노끼·탄화목·침목"), ("24", "panjae", "판재·합판", "합판·MDF·OSB·집성판·고재판재·임가공판재"),
+        ("53", "jipseong", "우드슬랩·집성판", "고무나무·아카시아·멀바우·히노끼 집성판"), ("25", "deck", "데크재", "방부데크·천연데크·합성데크·탄화데크·데크철물"),
+        ("26", "maru", "마루·후로링", "원목후로링·강마루·강화마루·바닥도료"), ("27", "naejang", "내장재", "루바·고재·월판넬·아트월·천정재·몰딩·타공판"),
+        ("28", "stone", "스톤·타일", "스톤·북유럽타일·파벽돌·조약돌"), ("31", "siding", "외장재·사이딩", "사이딩·지붕재·기와·타이벡"),
+        ("29", "door", "도어·창호", "실내용 도어·주택 창호"), ("30", "insul", "방음·단열·방수", "방음·흡음·단열·보온·방수·환기"),
+        ("32", "hardware", "철물", "건축철물·타카·인테리어철물·공학목재철물"), ("35", "paint", "페인트·스테인", "오일스테인·페인트·작업도구"),
+        ("37", "sopum", "소품·부자재", "정원가구·목재소품·철제가구·공구·접착제")]
+JTOP = {c for c, *_ in JCAT}
+for p in PROD:
+    tops = [c.split("/")[0] for c in p["cats"]]
+    p["top"] = next((t for t in tops if t in JTOP), None)
+    if not p["top"] and not any(t in ("54", "59") for t in tops):  # 매출탑·세일 분류에만 있는 자재는 이름으로 분류
+        for rx, t in (("집성", "53"), ("루바|코코넛", "27"), ("데크|난간|핸드레일", "25"), ("철물|프라이머", "32")):
+            if re.search(rx, p["name"]): p["top"] = t; break
+    p["tops"] = [t for t in dict.fromkeys(tops) if t in JTOP] or ([p["top"]] if p["top"] else [])
+    p["sub"] = next((c for c in p["cats"] if c.split("/")[0] == p["top"] and c.split("/")[1]), None)
+def subof(p, top): return next((c for c in p["cats"] if c.split("/")[0] == top and c.split("/")[1]), None)
+# 자재 백과 사진: slug → (쇼핑몰 분류, 이름 정규식, 제외 정규식)
+MPHOTO = {"hapan": (["24/140"], "합판|판넬|보드", "OSB|O\\.S\\.B|M\\.?D\\.?F|석고|아이소|스티로|본드|실리콘|프라이머|에이스|문$"), "osb": ([], "OSB|O\\.S\\.B|스마트랩", None),
+          "mdf": ([], "M\\.?D\\.?F", None), "gujo": (["23/134"], ".", None), "bangbu": (["23/135", "25/144"], ".", None),
+          "hapdeck": (["25/146"], ".", None), "jipseong": (["53/349", "24/141"], "집성", None), "hinoki": (["23/137", "27/156"], "히노끼|삼목|스기|향목|편백|오비스기", None),
+          "gypsum": ([], "석고보드|불연", "본드"), "siding": (["31/186"], ".", None), "insul": (["30/183"], ".", None), "stain": (["35/206", "25/249"], ".", None),
+          "hardware": (["32/332", "32/333"], ".", None), "maru": (["26/247", "26/148", "26/149", "26/315"], ".", None), "film": ([], None, None),
+          "molding": (["27/381"], ".", None), "chimmok": (["23/314"], "침목|우드빔|탄화|SYP", None), "tile": (["28/168", "28/167"], ".", None), "sound": (["30/182", "27/322"], ".", None)}
+def mat_photos(slug):
+    cats, inc, exc = MPHOTO.get(slug, ([], None, None))
+    if not inc: return []
+    return [p for p in PROD if (not cats or any(c in p["cats"] for c in cats)) and re.search(inc, p["name"]) and not (exc and re.search(exc, p["name"]))]
+def pcard(p):
+    sub = MCAT.get(p["sub"] or "", "")
+    return (f'<a class="pd" href="https://wwood.kr/home/mall/shoplist.php?idx={p["id"]}&amp;pmode=view" target="_blank" rel="noopener">'
+            f'<span class="pi"><img loading="lazy" src="{E(p["img"])}" alt="{E(p["name"])}"></span><b>{E(p["name"])}</b>{f"<small>{E(sub)}</small>" if sub else ""}</a>')
 # 최신 영상: data/latest.txt (영상 ID, 최신이 위)
 LATEST = [l.strip() for l in open(f"{ROOT}/data/latest.txt", encoding="utf-8")] if os.path.exists(f"{ROOT}/data/latest.txt") else []
 
@@ -67,7 +108,7 @@ def mat_prices(m, k=10):
     return sorted(rows, key=lambda p: -p["qty"])[:k]
 
 # ---------- layout ----------
-NAV = [("/jajae/", "자재 백과"), ("/video/", "영상"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/visit.html", "매장 안내")]
+NAV = [("/jajae/", "자재 백과"), ("/jaryo/", "전체 자재"), ("/video/", "영상"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/visit.html", "매장 안내")]
 
 def page(path, title, desc, body, active="", jsonld=None):
     canon = BASE + ("/" + path if path != "index.html" else "/").replace("index.html", "")
@@ -174,15 +215,39 @@ def build():
         vid = (embed(vs[0]) + '<div class="vg">' + "".join(vcard(v) for v in vs[1:]) + "</div>") if vs else f'<p><a href="{YT}">유튜브 채널에서 보기</a></p>'
         faq = [{"@type": "Question", "name": f"{m['name']}은(는) 어디에 쓰나요?", "acceptedAnswer": {"@type": "Answer", "text": ", ".join(m["where"])}},
                {"@type": "Question", "name": f"대전에서 {m['name']}을(를) 어디서 사나요?", "acceptedAnswer": {"@type": "Answer", "text": f"월드건축자재(영진종합목재), {ADDR}, {TEL}. {HOURS}. 원하는 사이즈로 재단해 드립니다."}}]
+        ph = mat_photos(m["slug"])
+        gal = (f'<section class="wrap sec"><h2>{m["name"]} 사진으로 보기 <small class="muted">매장 취급 {len(ph)}종</small></h2><div class="pg">{"".join(pcard(p) for p in ph[:12])}</div>'
+               + (f'<p class="small muted">사진을 누르면 상세 사진이 열립니다 · 전체 {len(ph)}종 중 {min(12,len(ph))}종 표시 · <a href="/jaryo/">전체 자재 보기 →</a></p>' if ph else '') + '</section>') if ph else ""
         body = f"""<section class="wrap sec"><p class="crumb"><a href="/jajae/">자재 백과</a> › {m['name']}</p>
 <h1>{m['name']} — {m['kw']}</h1><p class="lead">{E(m['lead'])}</p>
-<div class="row"><span class="chip">사용 장소: {E(m['place'])}</span><span class="chip">셀프 난이도: {E(m['diy'])}</span></div></section>
+<div class="row"><span class="chip">사용 장소: {E(m['place'])}</span><span class="chip">셀프 난이도: {E(m['diy'])}</span></div></section>{gal}
 <section class="wrap sec g2"><div class="card"><h2>어디에 쓰나요?</h2><ul>{where}</ul><h3>인테리어 효과</h3><p>{E(m['effect'])}</p><h3>고를 때 알아둘 것</h3><ul>{tips}</ul></div>
 <div class="card"><h2>{m['name']} 소매 기준가</h2>{ptable(mat_prices(m))}<a href="/price.html">전체 기준가 →</a></div></section>
 <section class="wrap sec"><h2>{m['name']} 시공·사용 영상</h2>{vid}</section>{CTA}"""
         page(f"jajae/{m['slug']}.html", f"{m['kw']} — {m['name']} 용도·기준가 | 대전 월드건축자재",
              f"{m['name']} 용도와 인테리어 효과, 규격별 소매 기준가, 시공 영상. 대전 유성 월드건축자재 매장에서 즉석 재단.", body, "/jajae/",
              {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq})
+
+    # 전체 자재 (쇼핑몰 자재 사진 목록)
+    cnt = {c: sum(1 for p in PROD if c in p["tops"]) for c, *_ in JCAT}
+    thumb = {c: next((p["img"] for p in PROD if c in p["tops"]), "") for c, *_ in JCAT}
+    jl = "".join(f'<a class="pd" href="/jaryo/{sl}.html"><span class="pi"><img loading="lazy" src="{E(thumb[c])}" alt="{n}"></span><b>{n}</b><small>{d} · {cnt[c]}종</small></a>' for c, sl, n, d in JCAT if cnt[c])
+    page("jaryo/index.html", f"전체 자재 사진 {len([p for p in PROD if p['tops']])}종 — 목재·합판·데크·사이딩·철물 | 대전 월드건축자재", "대전 월드건축자재(영진목재) 매장 취급 자재를 사진으로 확인하세요. 각재, 합판, 집성판, 데크, 마루, 내장재, 타일, 사이딩, 철물, 스테인.",
+         f'<section class="wrap sec"><h1>전체 자재</h1><p class="lead">매장에서 취급하는 자재를 사진으로 모았습니다. 실물은 대전 매장에서 보고, 원하는 사이즈로 재단해 가세요. 가격은 <a href="/price.html">기준가</a> 또는 매장에서 안내합니다.</p><div class="pg">{jl}</div></section>{CTA}', "/jaryo/")
+    for c, sl, n, d in JCAT:
+        ps = [p for p in PROD if c in p["tops"]]
+        if not ps: continue
+        subs = []
+        for p in ps:
+            if subof(p, c) not in subs: subs.append(subof(p, c))
+        secs = ""
+        for sb in subs:
+            g = [p for p in ps if subof(p, c) == sb]
+            title = MCAT.get(sb or "", "") or "기타"
+            secs += f'<h2 id="s{(sb or "x").split("/")[-1] or "x"}">{E(title)} <small class="muted">{len(g)}종</small></h2><div class="pg">{"".join(pcard(p) for p in g)}</div>'
+        toc = " · ".join(f'<a href="#s{(sb or "x").split("/")[-1] or "x"}">{E(MCAT.get(sb or "", "") or "기타")}</a>' for sb in subs)
+        page(f"jaryo/{sl}.html", f"{n} 종류 사진 {len(ps)}종 — {d} | 대전 월드건축자재", f"{n} 종류를 사진으로 확인하세요: {d}. 대전 유성 월드건축자재(영진목재) 매장 취급, 즉석 재단.",
+             f'<section class="wrap sec"><p class="crumb"><a href="/jaryo/">전체 자재</a> › {n}</p><h1>{n} <small class="muted">{len(ps)}종</small></h1><p class="lead">{d}. 사진을 누르면 상세 사진이 열립니다. 실물 확인·재단은 대전 매장에서 합니다.</p><p class="small">{toc}</p>{secs}</section>{CTA}', "/jaryo/")
 
     # 영상
     vl = "".join(f'<a class="uc" href="/video/{c}.html"><b>{n}</b><small>{d} · {sum(1 for v in V if v["cat"]==c)}편</small></a>' for c, n, d in CATS)
@@ -214,11 +279,13 @@ def build():
     # 시공
     sv = "".join(vcard(v) for v in top(lambda v: v["cat"] in ("exterior", "greenhouse", "deck") and v["n"] > 3000, 12))
     tips = "".join(vcard(v) for v in top(lambda v: v["cat"] == "tips", 8))
+    case = [p for p in PROD if any(c.split("/")[0] in ("54", "59") for c in p["cats"]) and not re.search(r"company|INC", p["name"], re.I)]
+    casesec = f'<section class="wrap sec"><h2>시공 사례 사진 <small class="muted">{len(case)}건</small></h2><div class="pg">{"".join(pcard(p) for p in case)}</div></section>' if case else ""
     page("sigong.html", "대전·세종 인테리어 시공 — 외벽·샷시·데크·리모델링 | 월드아키텍쳐(실내건축공사업)", f"월드아키텍쳐 {LIC}. 대전·세종 외벽 사이딩, 샷시 교체, 데크, 실내 인테리어 시공. 관급·대기업 공사 수행. 전화 {TEL}.",
          f"""<section class="hero dark"><div class="wrap"><span class="chip red">월드아키텍쳐 · {LIC}</span><h1>직접 하기 어렵다면,<br>자재 파는 저희가 시공까지 합니다</h1>
 <p class="lead">자재를 가장 잘 아는 목재상이 직접 시공합니다. 관급·대기업 공사를 수행하는 시공팀이 작업하고, 모든 시공 현장은 유튜브에 그대로 공개합니다.</p>
 <div class="row"><a class="b r" href="tel:{TEL.replace('-','')}">시공 상담 전화 {TEL}</a></div><p class="small">시공 지역: 대전·세종 전 공종 · 관급·대기업·전국 공사는 전화 문의</p></div></section>
-<section class="wrap sec"><h2>시공 현장 영상</h2><div class="vg">{sv}</div></section>
+<section class="wrap sec"><h2>시공 현장 영상</h2><div class="vg">{sv}</div></section>{casesec}
 <section class="wrap sec g2"><div class="card"><h2>상담 순서</h2><ol><li>전화 상담 {TEL}</li><li>현장 방문 · 실측</li><li>견적서</li><li>시공 (현장은 유튜브 공개)</li></ol></div>
 <div class="card"><h2>업체 고르기 전에 꼭 보세요</h2><p>면허 확인, 하자 예방, 견적 보는 법 영상을 모았습니다. 월드아키텍쳐는 실내건축공사업 등록 업체입니다.</p><a href="/video/tips.html">업체 고르는 법 영상 모음 →</a></div></section>
 <section class="wrap sec"><div class="vg">{tips}</div></section>{CTA}""", "/sigong.html")
