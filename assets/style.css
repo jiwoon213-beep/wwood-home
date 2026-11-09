@@ -70,3 +70,13 @@ nav{gap:12px;font-size:14px;overflow-x:auto;flex-wrap:nowrap;width:100%;padding-
 .vc.sh .th{aspect-ratio:9/16}.vc.sh b{font-size:13px}
 @media(max-width:900px){.sg{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:600px){.sg{grid-template-columns:repeat(2,1fr);gap:10px}}
+/* 메뉴 정리: 글자 줄바꿈 금지, 모바일은 4칸×2줄 버튼 */
+nav a{white-space:nowrap;flex-shrink:0}
+@media(max-width:900px){
+ .hd{gap:8px}
+ nav{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;overflow:visible;padding:4px 0 8px;font-size:14px}
+ nav a{display:block;text-align:center;padding:9px 2px;border:1px solid var(--line);border-radius:8px;background:#faf8f5;letter-spacing:-.3px}
+ nav a.on{background:var(--red);color:#fff;border-color:var(--red)}
+ .logo b{font-size:21px}
+}
+@media(max-width:360px){nav{font-size:13px}nav a{padding:8px 0}}
