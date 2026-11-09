@@ -67,3 +67,11 @@ document.addEventListener("click", function (e) {
   });
   show(0);
 })();
+// TOP10 슬라이드
+(function () {
+  var s = document.getElementById("tslide"); if (!s) return;
+  var dot = document.getElementById("tdot");
+  function upd() { var p = Math.round(s.scrollLeft / s.clientWidth); dot.textContent = p ? "◀ 1–5위 / 6–10위" : "1–5위 / 6–10위 ▶ 옆으로 밀기"; }
+  s.addEventListener("scroll", function () { clearTimeout(s._t); s._t = setTimeout(upd, 80); }, { passive: true });
+  document.querySelectorAll(".tdots .tb").forEach(function (b) { b.onclick = function () { s.scrollBy({ left: s.clientWidth * +b.dataset.d, behavior: "smooth" }); }; });
+})();

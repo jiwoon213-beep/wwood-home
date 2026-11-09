@@ -112,3 +112,8 @@ body.psearch .chips,body.psearch .pnav,body.psearch .swipe-hint{display:none}
 .swipe-hint{text-align:center;margin-top:12px}@media(min-width:901px){.swipe-hint{display:none}}
 body.psearch .pboard{display:none}
 .ptsec .srch.ptop{margin-top:4px}
+/* TOP10 5개씩 옆으로 */
+.tslide{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:0}.tslide::-webkit-scrollbar{display:none}
+.tpage{flex:0 0 100%;scroll-snap-align:start}
+.tdots{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px;font-size:13px;color:var(--mut);font-weight:700}
+.tb{width:34px;height:34px;border:1px solid var(--line);border-radius:50%;background:#fff;font-size:12px;cursor:pointer}
