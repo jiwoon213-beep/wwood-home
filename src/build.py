@@ -335,7 +335,7 @@ def build():
     for p in sorted(P, key=lambda p: -p["qty"]):
         groups.setdefault(p["cat"], []).append(p)
     skip = {"-호차 영림", "가공"}
-    row = lambda p, rk="": f"<tr><td class=pn>{rk}<a class=pl href=\"{plink(p)}\">{E(clean_name(p['name']))}<i>›</i></a>{badge(p)}</td><td class=pp><b>{won(p['price'])}</b>{chg(p)}</td></tr>"
+    row = lambda p, rk="": f"<tr><td class=pn>{rk}<a class=pl href=\"{plink(p)}\">{E(clean_name(p['name']))}<i>›</i></a>{"" if rk else badge(p)}</td><td class=pp><b>{won(p['price'])}</b>{chg(p)}</td></tr>"
     th = '<thead><tr><th>품목·규격 <small>(누르면 자재 안내)</small></th><th class=r>소매 기준가</th></tr></thead>'
     secs = "".join(f'<h2 id="{E(k)}">{E(k)}</h2><div class="tw"><table class="pt">{th}<tbody>' + "".join(row(p) for p in g[:25]) + "</tbody></table></div>"
                    for k, g in sorted(groups.items()) if k not in skip)
