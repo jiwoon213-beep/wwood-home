@@ -80,3 +80,4 @@ nav a{white-space:nowrap;flex-shrink:0}
  .logo b{font-size:21px}
 }
 @media(max-width:360px){nav{font-size:13px}nav a{padding:8px 0}}
+.srch{margin:18px 0 6px}.srch input{width:100%;max-width:560px;padding:14px 16px;font-size:17px;border:2px solid var(--ink);border-radius:10px;background:#fff;outline:none}.srch input:focus{border-color:var(--red)}

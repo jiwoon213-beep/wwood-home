@@ -278,12 +278,20 @@ def build():
              {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq},
              (ph[0]["img"] if ph else (f"https://i.ytimg.com/vi/{vs[0]['id']}/hqdefault.jpg" if vs else None)))
 
+    # 전체 자재 검색용 목록
+    jname = {c: n for c, sl, n, d in JCAT}; jslug = {c: sl for c, sl, n, d in JCAT}
+    idx = [{"n": p["name"], "i": p["img"], "c": " · ".join(jname[t] for t in p["tops"] if t in jname), "s": MCAT.get(p["sub"] or "", ""), "u": jslug.get(p["top"], "")}
+           for p in PROD if p["tops"]]
+    os.makedirs(f"{OUT}/assets", exist_ok=True)
+    json.dump(idx, open(f"{OUT}/assets/jaryo.json", "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
+    SEARCH = ('<div class="srch"><input id="jq" type="search" placeholder="자재 검색 (예: 히노끼, OSB, 경첩, 데크, 타일)" autocomplete="off" aria-label="자재 검색">'
+              '<p id="jqn" class="small muted"></p></div><div id="jsr" class="pg"></div>')
     # 전체 자재 (쇼핑몰 자재 사진 목록)
     cnt = {c: sum(1 for p in PROD if c in p["tops"]) for c, *_ in JCAT}
     thumb = {c: next((p["img"] for p in PROD if c in p["tops"]), "") for c, *_ in JCAT}
     jl = "".join(f'<a class="pd" href="/jaryo/{sl}.html"><span class="pi"><img loading="lazy" src="{E(thumb[c])}" alt="{n}"></span><b>{n}</b><small>{d} · {cnt[c]}종</small></a>' for c, sl, n, d in JCAT if cnt[c])
     page("jaryo/index.html", f"전체 자재 사진 {len([p for p in PROD if p['tops']])}종 — 목재·합판·데크·사이딩·철물 | 대전 월드건축자재", "대전 월드건축자재(영진목재) 매장 취급 자재를 사진으로 확인하세요. 각재, 합판, 집성판, 데크, 마루, 내장재, 타일, 사이딩, 철물, 스테인.",
-         f'<section class="wrap sec"><h1>전체 자재</h1><p class="lead">매장에서 취급하는 자재를 사진으로 모았습니다. 실물은 대전 매장에서 보고, 원하는 사이즈로 재단해 가세요. 가격은 <a href="/price.html">기준가</a> 또는 매장에서 안내합니다.</p><div class="pg">{jl}</div></section>{CTA}', "/jaryo/", None, thumb.get("24"))
+         f'<section class="wrap sec"><h1>전체 자재</h1><p class="lead">매장에서 취급하는 자재를 사진으로 모았습니다. 실물은 대전 매장에서 보고, 원하는 사이즈로 재단해 가세요. 가격은 <a href="/price.html">기준가</a> 또는 매장에서 안내합니다.</p>{SEARCH}<div class="pg jall">{jl}</div></section>{CTA}', "/jaryo/", None, thumb.get("24"))
     for c, sl, n, d in JCAT:
         ps = [p for p in PROD if c in p["tops"]]
         if not ps: continue
@@ -297,7 +305,7 @@ def build():
             secs += f'<h2 id="s{(sb or "x").split("/")[-1] or "x"}">{E(title)} <small class="muted">{len(g)}종</small></h2><div class="pg">{"".join(pcard(p) for p in g)}</div>'
         toc = " · ".join(f'<a href="#s{(sb or "x").split("/")[-1] or "x"}">{E(MCAT.get(sb or "", "") or "기타")}</a>' for sb in subs)
         page(f"jaryo/{sl}.html", f"{n} 종류 사진 {len(ps)}종 — {d} | 대전 월드건축자재", f"{n} 종류를 사진으로 확인하세요: {d}. 대전 유성 월드건축자재(영진목재) 매장 취급, 즉석 재단.",
-             f'<section class="wrap sec"><p class="crumb"><a href="/jaryo/">전체 자재</a> › {n}</p><h1>{n} <small class="muted">{len(ps)}종</small></h1><p class="lead">{d}. 사진을 누르면 상세 사진이 열립니다. 실물 확인·재단은 대전 매장에서 합니다.</p><p class="small">{toc}</p>{secs}</section>{CTA}', "/jaryo/",
+             f'<section class="wrap sec"><p class="crumb"><a href="/jaryo/">전체 자재</a> › {n}</p><h1>{n} <small class="muted">{len(ps)}종</small></h1><p class="lead">{d}. 사진을 누르면 상세 사진이 열립니다. 실물 확인·재단은 대전 매장에서 합니다.</p>{SEARCH}<div class="jall"><p class="small">{toc}</p>{secs}</div></section>{CTA}', "/jaryo/",
              {"@context": "https://schema.org", "@type": "ItemList", "name": f"{n} 종류", "numberOfItems": len(ps),
               "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": p["name"], "image": p["img"]} for i, p in enumerate(ps[:100])]}, ps[0]["img"])
 
