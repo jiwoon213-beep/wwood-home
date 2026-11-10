@@ -118,3 +118,6 @@ body.psearch .pboard{display:none}
 .tdots{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px;font-size:13px;color:var(--mut);font-weight:700}
 .tb{width:34px;height:34px;border:1px solid var(--line);border-radius:50%;background:#fff;font-size:12px;cursor:pointer}
 details.faq{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;background:#fff}details.faq summary{font-weight:700;cursor:pointer}details.faq p{margin:8px 0 2px}
+.fqs{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.fqs::-webkit-scrollbar{display:none}
+.fq{flex:0 0 86%;max-width:420px;scroll-snap-align:start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-sizing:border-box}.fq b{display:block;font-size:16px;line-height:1.45}.fq p{margin:8px 0 0;line-height:1.6}
+.fqh{margin:4px 0 0;text-align:right}@media(min-width:900px){.fq{flex-basis:32%}.fqh{display:none}}
