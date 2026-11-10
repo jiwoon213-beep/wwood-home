@@ -129,6 +129,9 @@ def faqslide(items):
 MFAQ = json.load(open(f"{ROOT}/data/mat_faq.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/mat_faq.json") else {}
 LATEST = [l.strip() for l in open(f"{ROOT}/data/latest.txt", encoding="utf-8")] if os.path.exists(f"{ROOT}/data/latest.txt") else []
 
+import gzip as _gz
+VD = {k: x for k, x in (json.loads(_gz.open(f"{ROOT}/data/vdesc.json.gz").read()) if os.path.exists(f"{ROOT}/data/vdesc.json.gz") else {}).items() if len(x[0]) >= 120}  # 설명이 충분한 영상만 개별 페이지(얇은 페이지 방지)
+def vpage(v): return f"/v/{v['id']}.html" if v["id"] in VD else vurl(v)
 def vurl(v): return f"https://www.youtube.com/{'shorts/' if v['type']=='S' else 'watch?v='}{v['id']}"
 def vshort(t):
     p = [x.strip() for x in t.split("|")]
@@ -189,7 +192,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
     SITEMAP.append(canon)
 
 def vcard(v, big=False):
-    return f"""<a class="vc{' big' if big else ''}{' sh' if v['type']=='S' else ''}" href="{vurl(v)}" target="_blank" rel="noopener" data-yt="{v['id']}">
+    return f"""<a class="vc{' big' if big else ''}{' sh' if v['type']=='S' else ''}" href="{vpage(v)}"{'' if v['id'] in VD else ' target="_blank" rel="noopener"'} data-yt="{v['id']}">
 <span class="th"><img loading="lazy" src="https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg" alt="{E(vshort(v['title']))}"><i class="play"></i>{'<em>쇼츠</em>' if v['type']=='S' else '<em>라이브</em>' if v['type']=='V' else ''}</span>
 <b>{E(v['title'])}</b><small>조회 {views(v['n'])}</small></a>"""
 
@@ -612,6 +615,46 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 <section class="wrap sec"><h2>다른 자재 비교</h2>{cmpnav(c["slug"])}</section>{CTA}""", "/jajae/")
     page("bigyo/index.html", "자재 비교 — 합판·사이딩·단열재·바닥재·도어·루바 종류별 차이 | 영진목재", "헷갈리는 건축 자재를 종류별로 비교했습니다. 합판 vs OSB vs MDF, 세라믹·메탈·비닐 사이딩, 단열재, 바닥재, 실내 도어, 루바, 집성판, 각재, 방음·흡음재.",
          '<section class="wrap sec"><p class="crumb"><a href="/jajae/">자재 백과</a> › 자재 비교</p><h1>자재 비교</h1><p class="lead">비슷해 보여도 쓰는 곳이 다른 자재들을 한눈에 비교했습니다.</p><div class="pl">' + "".join(f'<a class="pc" href="/bigyo/{c["slug"]}.html"><small>자재 비교</small><b>{E(c["short"])}</b><span>{E(c["desc"][:70])}…</span></a>' for c in CMP) + f'</div></section>{CTA}', "/jajae/")
+
+    # 영상 개별 페이지 (data/vdesc.json.gz — 유튜브 설명·길이·게시일)
+    import datetime as _dt
+    matname3 = {m["slug"]: m["name"] for m in MATS}
+    def vbody(d, vid):
+        out, lis, chk = [], [], []
+        for line in d.split("\n"):
+            t = line.strip()
+            if not t: continue
+            m = re.match(r"^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(.*)$", t)
+            if m:
+                sec = (int(m.group(1)) * 60 + int(m.group(2))) if not m.group(3) else int(m.group(1)) * 3600 + int(m.group(2)) * 60 + int(m.group(3))
+                lis.append(f'<li><a href="https://www.youtube.com/watch?v={vid}&amp;t={sec}s" target="_blank" rel="noopener">{E(t.split()[0])}</a> {E(m.group(4))}</li>'); continue
+            if t.startswith("✔"): chk.append(f"<li>{E(t.lstrip('✔ ').strip())}</li>"); continue
+            out.append(f"<p>{E(t)}</p>")
+        h = "".join(out)
+        if chk: h += "<h2>이 영상에서 알 수 있는 것</h2><ul>" + "".join(chk) + "</ul>"
+        if lis: h += "<h2>영상 목차</h2><ul class=\"toc\">" + "".join(lis) + "</ul>"
+        return h
+    for v in V:
+        if v["id"] not in VD: continue
+        d, ln, ts = VD[v["id"]]
+        st = vshort(v["title"])
+        first = re.split(r"(?<=[.!?다요])\s", d.replace("\n", " "), maxsplit=1)[0] if d else v["title"]
+        rel = [x for x in V if x["cat"] == v["cat"] and x["id"] != v["id"]]
+        rel = sorted(rel, key=lambda x: -x["n"])[:8]
+        ml = " · ".join(f'<a href="/jajae/{m}.html">{matname3[m]} 용도·기준가</a>' for m in v["mats"] if m in matname3)
+        ld = {"@context": "https://schema.org", "@type": "VideoObject", "name": v["title"][:100], "description": (d or v["title"])[:300],
+              "thumbnailUrl": f"https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg", "embedUrl": f"https://www.youtube.com/embed/{v['id']}",
+              "contentUrl": vurl(v)}
+        if ts: ld["uploadDate"] = _dt.datetime.fromtimestamp(ts, _dt.timezone(_dt.timedelta(hours=9))).isoformat()
+        if ln: ld["duration"] = f"PT{ln // 60}M{ln % 60}S"
+        cn = CATN.get(v["cat"], "영상")
+        page(f"v/{v['id']}.html", f"{st} — 영상 | 대전 영진목재", (first or st)[:80],
+             f"""<section class="wrap sec"><p class="crumb"><a href="/video/">영상</a> › <a href="/video/{v['cat']}.html">{E(cn)}</a></p><h1 class="vt1">{E(v['title'])}</h1>
+<div class="{'emb sh1' if v['type']=='S' else 'emb'}"><iframe loading="lazy" src="https://www.youtube.com/embed/{v['id']}" title="{E(st)}" allowfullscreen></iframe></div>
+<p class="small muted">조회 {views(v['n'])}{' · 쇼츠' if v['type']=='S' else ''} · <a href="{vurl(v)}" target="_blank" rel="noopener">유튜브에서 보기</a></p>
+<div class="vdesc">{vbody(d, v['id'])}</div>
+{f'<p>👉 영상에 나온 자재: {ml}</p>' if ml else ''}<p>👉 <a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장에서 재단해 가기</a></p></section>
+{f'<section class="wrap sec"><h2>비슷한 영상</h2>{vsplit(rel, "h3")}</section>' if rel else ''}{CTA}""", f"/video/", ld, f"https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg")
 
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
