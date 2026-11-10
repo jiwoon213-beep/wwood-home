@@ -16,7 +16,7 @@ YT2 = "https://www.youtube.com/@worlddoor"
 BLOG = "https://blog.naver.com/swr4083"
 TEL = "042-545-2900"
 ADDR = "대전 유성대로 44, 1층"
-HOURS = "월~토 08:00~18:00"
+HOURS = "평일 07:00~18:00 · 토·일 07:00~15:00 · 공휴일 07:00~16:00"
 LIC = "실내건축공사업 대전서구24-나-19"
 E = html.escape
 
@@ -218,7 +218,7 @@ CTA = f"""<section class="cta"><div class="wrap g2"><div><h2>실물 보고, 원�
 
 BIZ = {"@context": "https://schema.org", "@type": "HardwareStore", "name": "월드건축자재(영진종합목재)",
        "telephone": "+82-42-545-2900", "address": {"@type": "PostalAddress", "streetAddress": "유성대로 44, 1층", "addressLocality": "대전", "addressCountry": "KR"},
-       "openingHours": "Mo-Sa 08:00-18:00", "url": BASE + "/", "sameAs": [YT, YT2, MALL], "alternateName": ["영진종합목재", "월드건축자재", "영진목재"],
+       "openingHours": ["Mo-Fr 07:00-18:00", "Sa-Su 07:00-15:00"], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "07:00", "closes": "18:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday", "Sunday"], "opens": "07:00", "closes": "15:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "PublicHolidays", "opens": "07:00", "closes": "16:00"}], "url": BASE + "/", "sameAs": [YT, YT2, MALL], "alternateName": ["영진종합목재", "월드건축자재", "영진목재"],
        "image": "https://i.ytimg.com/vi/xPsUVr7exLU/hqdefault.jpg", "priceRange": "₩", "areaServed": ["대전", "세종", "공주", "계룡", "논산", "금산", "옥천"]}
 
 # ---------- pages ----------
