@@ -157,6 +157,10 @@ def mat_prices(m, k=10):
 NAV = [("/jajae/", "자재 백과"), ("/jaryo/", "전체 자재"), ("/video/", "영상"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/calc.html", "계산기"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/visit.html", "매장 안내")]
 
 def page(path, title, desc, body, active="", jsonld=None, img=None):
+    if len(desc) > 80:  # 네이버 권장: 설명 80자 이내 — 문장·쉼표 경계에서 자름
+        cut = desc[:80]; k = cut.rfind(".")
+        if k < 40: k = cut.rfind(", ")
+        desc = (cut[:k + 1] if k >= 40 else cut[:79] + "…").rstrip(" ,")
     canon = BASE + ("/" + path if path != "index.html" else "/").replace("index.html", "")
     nav = "".join(f'<a href="{h}"{" class=on" if active==h else ""}>{t}</a>' for h, t in NAV)
     lds = jsonld if isinstance(jsonld, list) else ([jsonld] if jsonld else [])
