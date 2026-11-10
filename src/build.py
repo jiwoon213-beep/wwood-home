@@ -450,8 +450,38 @@ def build():
 <div class="row"><a class="b g" href="/visit.html">매장 위치·영업시간</a><a class="b d" href="tel:{TEL.replace('-','')}">전화 {TEL}</a></div></section>
 <section class="wrap sec g2"><div class="card"><h2>{area} 목재 구매 안내</h2><ul><li>매장: {ADDR} 영진목재(월드건축자재)</li><li>영업: {HOURS}</li><li>원하는 사이즈 즉석 재단</li>{extra}<li>사업자는 도매회원 가입(사업자등록증·명함 확인)</li></ul></div>
 <div class="card"><h2>가격은 어떻게 보나요</h2><p>자주 찾는 목재·자재의 소매 기준가(부가세 별도)를 공개해 두었습니다. 규격·수량에 따라 달라지니 매장이나 전화로 확인해 주세요.</p><a href="/price.html">{area} 목재 기준가 보기 →</a><br><a href="/jaryo/">전체 자재 사진 보기 →</a></div></section>
-<section class="wrap sec"><h2>{area}에서 많이 찾는 목재·자재</h2><div class="mg">{matlinks}</div></section>
+<section class="wrap sec"><h2>{area}에서 많이 찾는 목재·자재</h2><div class="mg m2">{"".join(f'<a class="mc" href="/{slug}/{m["slug"]}.html"><b>{area} {m["name"]}</b><small>{m["where"][0]}</small></a>' for m in MATS)}</div></section>
 <section class="wrap sec"><h2>자주 묻는 질문</h2>{faqslide([(area+"에서 목재 소량도 사나요?","네, 한 장·한 개부터 구매하실 수 있고 원하는 크기로 재단해 드립니다."),(area+" 현장으로 배송되나요?","네, 대전·세종·공주·계룡·논산·금산·옥천은 배송과 현장 납품을 합니다. 수량과 위치를 알려 주시면 안내해 드립니다("+TEL+")."),("시공도 맡길 수 있나요?","월드아키텍쳐가 대전·세종 인테리어·데크·샷시 시공을 직접 합니다. 모든 현장은 유튜브에 공개합니다.")])}</section>{area_cases(slug)}{areanav}{CTA}""", f"/{slug}.html", BIZ)
+
+    # 지역×자재 페이지 (대전 합판, 세종 방부목 …) — 구매·재단·배송 중심
+    CASES_ = CASES
+    RA = {"daejeon": ("대전", {"yuseong", "seogu", "junggu-donggu", "daedeok"}, "대전 전 지역(유성·서구·중구·동구·대덕)으로 배송·현장 납품합니다. 매장에서 직접 고르고 바로 재단해 가져가셔도 됩니다."),
+          "sejong": ("세종", {"sejong-sinsi", "sejong-eupmyeon"}, "세종시 신도심·조치원·읍면 현장까지 배송·납품합니다(수량·위치에 따라 전화 상담). 대전 유성 매장에서 고르고 재단해 바로 가져가셔도 됩니다.")}
+    for rs, (ra, rset, rdel) in RA.items():
+        for m in MATS:
+            nm = m["name"]
+            vs = top(lambda v: m["tag"] in v["mats"], 10**6)
+            ph = mat_photos(m["slug"])
+            cs = [c for c in CASES_ if c.get("area") in rset and m["slug"] in c.get("mats", [])][:4]
+            csec = (f'<section class="wrap sec"><h2>{ra} {nm} 시공 사례</h2><ul>' + "".join(f'<li><a href="/sigong/{c["slug"]}.html">{E(c["title"])}</a></li>' for c in cs) + '</ul></section>') if cs else ""
+            gal = f'<section class="wrap sec"><h2>매장에 있는 {nm} <small class="muted">{len(ph)}종</small></h2><div class="pg hrow">{"".join(pcard(x) for x in ph[:10])}</div></section>' if ph else ""
+            lf = [v for v in vs if v["type"] != "S"]
+            vsec = f'<section class="wrap sec"><h2>{nm} 영상</h2>{vsplit(vs[:12], "h3")}</section>' if vs else ""
+            fq = [(f"{ra}에서 {nm} 어디서 사나요?", f"대전 유성대로 44(유성구 원내동) 영진목재(영진종합목재·월드건축자재) 3000평 매장에서 사실 수 있습니다. {HOURS}. 전화 {TEL}."),
+                  (f"{nm} 원하는 사이즈로 잘라 주나요?", "네, 매장에서 원하는 치수로 즉석 재단해 드립니다. 도면이나 치수 메모를 가져오시면 빠릅니다."),
+                  (f"{ra} 현장으로 {nm} 배송되나요?", rdel),
+                  (f"{nm} 한 장(한 개)도 살 수 있나요?", "네, 소량 DIY 구매도 됩니다. 사업자는 도매회원 가입(사업자등록증·명함 확인) 후 회원가로 구매하실 수 있습니다.")]
+            body = f"""<section class="wrap sec"><p class="crumb"><a href="/{rs}.html">{ra} 목재</a> › {nm}</p>
+<h1>{ra} {nm} — 파는 곳·기준가·재단·배송</h1><p class="lead">{ra}에서 {nm}{"이" if (ord(nm[-1])-0xAC00)%28 else "가"} 필요하시면 영진목재(월드건축자재) 매장에서 실물을 보고 고르세요. {E(m['lead'])} 원하는 사이즈로 바로 재단하고, {rdel}</p>
+<div class="row"><a class="b g" href="/visit.html">매장 위치·영업시간</a><a class="b d" href="tel:{TEL.replace('-','')}">전화 {TEL}</a></div></section>{gal}
+<section class="wrap sec g2"><div class="card"><h2>{nm} 소매 기준가</h2>{ptable(mat_prices(m))}<p class="small muted">부가세 별도 · 규격·수량에 따라 다릅니다.</p><a href="/price.html">전체 기준가 →</a></div>
+<div class="card"><h2>{ra}에서 {nm} 쓰는 곳</h2><ul>{"".join(f"<li>{E(w)}</li>" for w in m["where"])}</ul><p><a href="/jajae/{m['slug']}.html">{nm} 용도·고르는 법 자세히 →</a> · <a href="/calc.html">필요한 양 계산</a></p></div></section>
+{csec}{vsec}<section class="wrap sec"><h2>{ra} {nm} 자주 묻는 질문</h2>{faqslide(fq)}</section>
+<section class="wrap sec"><p class="small">{ra} 다른 자재: {" · ".join(f'<a href="/{rs}/{x["slug"]}.html">{x["name"]}</a>' for x in MATS if x is not m)}</p></section>{CTA}"""
+            page(f"{rs}/{m['slug']}.html", f"{ra} {nm} 파는 곳 — 기준가·즉석 재단·배송 | 영진목재",
+                 f"{ra} {nm} 구매는 대전 유성 영진목재(월드건축자재). 규격별 기준가, 원하는 사이즈 재단, {ra} 배송.", body, "",
+                 {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]},
+                 (ph[0]["img"] if ph else None))
 
     # 대전 구별 안내 — 동네마다 실제로 다른 정보만 (거리·소요시간 등 확인 안 된 숫자 금지)
     for slug, gu, t, lead, jobs, note in [
