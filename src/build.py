@@ -304,7 +304,7 @@ def build():
 
     # 전체 자재 검색용 목록
     jname = {c: n for c, sl, n, d in JCAT}; jslug = {c: sl for c, sl, n, d in JCAT}
-    idx = [{"n": p["name"], "i": p["img"], "c": " · ".join(jname[t] for t in p["tops"] if t in jname), "s": MCAT.get(p["sub"] or "", ""), "u": jslug.get(p["top"], "")}
+    idx = [{"n": p["name"], "i": p["img"], "c": " · ".join(jname[t] for t in p["tops"] if t in jname), "s": MCAT.get(p["sub"] or "", ""), "u": jslug.get(p["top"], ""), "d": p["id"]}
            for p in PROD if p["tops"]]
     os.makedirs(f"{OUT}/assets", exist_ok=True)
     json.dump(idx, open(f"{OUT}/assets/jaryo.json", "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
@@ -553,25 +553,27 @@ f"""<section class="wrap sec"><h1>자재 계산기</h1><p class="lead">필요한
 .cnav{{display:flex;justify-content:space-between;align-items:center;margin:6px 0 10px}}.cb{{padding:8px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;font-weight:700;cursor:pointer}}
 #cchips{{display:flex;gap:6px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}}#cchips .chip{{flex:0 0 auto;border:1px solid var(--line);background:#faf8f5;cursor:pointer;font-size:14px}}#cchips .chip.on{{background:var(--red);color:#fff;border-color:var(--red)}}
 .cg{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px;margin:10px 0}}@media(min-width:760px){{.cg{{grid-template-columns:repeat(4,minmax(0,1fr))}}}}.cg label{{display:flex;flex-direction:column;font-size:14px;gap:4px}}.cg input,.cg select{{font-size:16px;padding:9px;border:1px solid #ccc;border-radius:8px;width:100%;box-sizing:border-box}}
-.cr{{background:#fff7ed;border-radius:10px;padding:12px 14px;font-size:16px;line-height:1.7}}.cr b{{font-size:20px;color:#c2410c}}</style>
+.cr{{background:#fff7ed;border-radius:10px;padding:12px 14px;font-size:16px;line-height:1.7}}.cr b{{font-size:20px;color:#c2410c}}.ql{{color:#1d4ed8;font-weight:700;text-decoration:underline}}.qb{{margin-top:8px;font-size:14px;line-height:2}}.qb .ql{{display:inline-block;margin-right:8px;padding:2px 8px;border:1px solid #c7d2fe;border-radius:14px;background:#fff;text-decoration:none}}</style>
 <script>
 (function(){{var $=function(i){{return document.getElementById(i)}},v=function(i){{return parseFloat($(i).value)||0}},n=function(x){{return Math.ceil(x).toLocaleString()}};
+var Q=function(t,k){{return '<a class="ql" href="/jaryo/?q='+encodeURIComponent(k||t)+'">'+t+' ›</a>'}};
+var B=function(a){{return '<div class="qb">함께 필요한 부자재: '+a.map(function(x){{return Q(x[0],x[1])}}).join(' ')+'</div>'}};
 var C={{
 deck:function(){{var W=v('dw'),L=v('dl'),t=$('dt').value.split(','),bw=+t[0],bl=+t[1]/1000,J=+$('dj').value/1000,rows=Math.ceil(W/((bw+5)/1000)),per=Math.ceil(L/bl),boards=rows*per*1.1,joists=Math.floor(W/J)+1,jp=joists*L/3.6*1.1,sc=rows*per*joists/per*2*1.1;
- return '데크 면적 '+(W*L).toFixed(1)+'㎡ ('+(W*L/3.3058).toFixed(1)+'평)<br>데크재 <b>'+n(boards)+'장</b> · 장선 각재(3.6m) <b>'+n(jp)+'개</b> · 데크 피스 약 <b>'+n(sc)+'개</b>'}},
-gyp:function(){{var A=Math.max(0,v('gw')*v('gh')-v('go'));return '시공 면적 '+A.toFixed(1)+'㎡<br>석고보드 <b>'+n(A/parseFloat($('gs').value)*(+$('gp').value)*1.1)+'장</b>'}},
-ply:function(){{return '필요 장수 <b>'+n(v('pa')/parseFloat($('ps').value)*1.1)+'장</b>'}},
+ var dk=bw==140?'합성데크':'방부데크';return '데크 면적 '+(W*L).toFixed(1)+'㎡ ('+(W*L/3.3058).toFixed(1)+'평)<br>'+Q('데크재',dk)+' <b>'+n(boards)+'장</b> · '+Q('장선 각재(3.6m)','방부각재')+' <b>'+n(jp)+'개</b> · '+Q('피스','피스')+' 약 <b>'+n(sc)+'개</b>'+B([['오일스테인','스테인'],['방부원주목(기둥)','방부원주목'],['난간재','난간']])}},
+gyp:function(){{var A=Math.max(0,v('gw')*v('gh')-v('go'));return '시공 면적 '+A.toFixed(1)+'㎡<br>'+Q('석고보드')+' <b>'+n(A/parseFloat($('gs').value)*(+$('gp').value)*1.1)+'장</b>'+B([['석고본드'],['피스'],['타카핀'],['목상 각재','각재']])}},
+ply:function(){{return Q('합판·OSB·MDF','합판')+' <b>'+n(v('pa')/parseFloat($('ps').value)*1.1)+'장</b>'+B([['피스'],['타카핀'],['목공본드','본드']])}},
 mol:function(){{var per=2*(v('mw')+v('ml'))*Math.max(1,v('mr')),k=$('mk').value,p=parseFloat($('mp').value),ce=per,ba=Math.max(0,per-0.9*v('md')),out='방 둘레 '+per.toFixed(1)+'m<br>';
- if(k!='base')out+='천장몰딩 <b>'+n(ce*1.1/p)+'개</b> ';if(k!='ceil')out+='걸레받이 <b>'+n(ba*1.1/p)+'개</b>';return out+' <span class="small">('+p+'m 기준, 로스 10%)</span>'}},
-flo:function(){{var b=v('fb')||1;return '필요 면적 '+(v('fa')*parseFloat($('fl').value)).toFixed(1)+'㎡<br>바닥재 <b>'+n(v('fa')*parseFloat($('fl').value)/b)+'박스</b>'}},
-ins:function(){{return '단열재 <b>'+n(v('ia')/parseFloat($('is').value)*Math.max(1,v('il'))*1.1)+'장</b>'}},
+ if(k!='base')out+=Q('천장몰딩','몰딩')+' <b>'+n(ce*1.1/p)+'개</b> ';if(k!='ceil')out+=Q('걸레받이','몰딩')+' <b>'+n(ba*1.1/p)+'개</b>';return out+' <span class="small">('+p+'m 기준, 로스 10%)</span>'+B([['실타카핀','타카핀'],['실리콘'],['본드']])}},
+flo:function(){{var b=v('fb')||1;return '필요 면적 '+(v('fa')*parseFloat($('fl').value)).toFixed(1)+'㎡<br>'+Q('바닥재','마루')+' <b>'+n(v('fa')*parseFloat($('fl').value)/b)+'박스</b>'+B([['걸레받이·몰딩','몰딩'],['본드']])}},
+ins:function(){{return Q('단열재(아이소핑크)','아이소핑크')+' <b>'+n(v('ia')/parseFloat($('is').value)*Math.max(1,v('il'))*1.1)+'장</b>'+B([['우레탄폼','우레탄'],['아이소핑크본드','아이소핑크본드']])}},
 door:function(){{var m=$('om').value,W=v('ow'),H=v('oh'),F=v('of'),N=Math.max(1,v('on')),out='';
  if(m=='frame'){{var fw=W-10,fh=H-5;out+='문틀 바깥 크기 약 <b>'+Math.round(fw)+' × '+Math.round(fh)+'mm</b> · 문틀 폭 <b>'+Math.round(v('od'))+'mm</b>(벽 두께)<br>';W=fw-2*F;H=fh-F;out+='문틀 안쪽 약 '+Math.round(W)+' × '+Math.round(H)+'mm<br>'}}
  var dw=W-v('os'),dh=H-3-(+$('ot').value),hg=dh>2100?4:3;
- return out+'문짝 크기 약 <b>'+Math.round(dw)+' × '+Math.round(dh)+'mm</b><br>경첩 '+(hg*N)+'개 · 손잡이 '+N+'개'+(m=='frame'?' · 문틀 '+N+'세트':'')+' <span class="small">('+N+'짝 기준)</span>'}},
+ return out+Q('문짝','도어')+' 크기 약 <b>'+Math.round(dw)+' × '+Math.round(dh)+'mm</b><br>'+Q('경첩')+' '+(hg*N)+'개 · '+Q('손잡이')+' '+N+'개'+(m=='frame'?' · 문틀 '+N+'세트':'')+' <span class="small">('+N+'짝 기준)</span>'+B([['도어스토퍼'],['우레탄폼','우레탄'],['실리콘'],['피스']])}},
 jungmun:function(){{var n=+$('jt').value,W=v('jw'),H=v('jh'),F=v('jf'),O=v('jo'),fw=W-10,fh=H-5,iw=fw-2*F,ih=fh-F,pw=n==1?(iw+O):(iw+(n-1)*O)/n;
- return '중문 프레임 바깥 약 <b>'+Math.round(fw)+' × '+Math.round(fh)+'mm</b><br>프레임 안쪽 약 '+Math.round(iw)+' × '+Math.round(ih)+'mm<br>문짝 '+n+'장 · 1장 폭 약 <b>'+Math.round(pw)+'mm</b>'+(n==1?' <span class="small">(원슬라이딩은 벽 쪽 여유 공간 필요)</span>':'')}},
-pnt:function(){{var L=v('ta')*Math.max(1,v('tc'))/(v('tr')||1);return '필요량 약 <b>'+L.toFixed(1)+'L</b><br>18L 기준 '+n(L/18)+'통 또는 4L 기준 '+n(L/4)+'통'}}
+ return '중문 프레임 바깥 약 <b>'+Math.round(fw)+' × '+Math.round(fh)+'mm</b><br>프레임 안쪽 약 '+Math.round(iw)+' × '+Math.round(ih)+'mm<br>문짝 '+n+'장 · 1장 폭 약 <b>'+Math.round(pw)+'mm</b>'+(n==1?' <span class="small">(원슬라이딩은 벽 쪽 여유 공간 필요)</span>':'')+B([['실리콘'],['우레탄폼','우레탄'],['피스']])}},
+pnt:function(){{var L=v('ta')*Math.max(1,v('tc'))/(v('tr')||1);return Q('페인트·스테인','스테인')+' 약 <b>'+L.toFixed(1)+'L</b><br>18L 기준 '+n(L/18)+'통 또는 4L 기준 '+n(L/4)+'통'+B([['붓·롤러','롤러'],['마스킹테이프','테이프']])}}
 }};
 Object.keys(C).forEach(function(k){{var s=$(k);s.querySelectorAll('input,select').forEach(function(e){{e.addEventListener('input',function(){{$(k+'r').innerHTML=C[k]()}})}});$(k+'r').innerHTML=C[k]()}});
 $('yp').addEventListener('input',function(){{$('ym').value=(v('yp')*3.3058).toFixed(2)}});$('ym').addEventListener('input',function(){{$('yp').value=(v('ym')/3.3058).toFixed(2)}});

@@ -26,12 +26,13 @@ document.addEventListener("click", function (e) {
       all.forEach(function (e) { e.style.display = "none"; });
       cnt.textContent = r.length ? "검색 결과 " + r.length + "종" + (r.length > 120 ? " (앞 120종 표시)" : "") : "검색 결과가 없습니다. 매장(042-545-2900)에 문의하시면 취급 여부를 알려드립니다.";
       box.innerHTML = r.slice(0, 120).map(function (p) {
-        return '<a class="pd" href="/jaryo/' + esc(p.u) + '.html"><span class="pi"><img loading="lazy" src="' + esc(p.i) + '" alt="' + esc(p.n) + '"></span><b>' + esc(p.n) + "</b><small>" + esc(p.s || p.c) + "</small></a>";
+        return '<a class="pd" href="' + (p.d ? "https://wwood.kr/home/" + (/Mobi|Android|iPhone|iPod|iPad/i.test(navigator.userAgent) ? "mobile" : "mall") + "/shoplist.php?idx=" + p.d + "&pmode=view" : "/jaryo/" + esc(p.u) + ".html") + '" target="_blank" rel="noopener"><span class="pi"><img loading="lazy" src="' + esc(p.i) + '" alt="' + esc(p.n) + '"></span><b>' + esc(p.n) + "</b><small>" + esc(p.s || p.c) + "</small></a>";
       }).join("");
     });
   }
   var t; q.addEventListener("input", function () { clearTimeout(t); t = setTimeout(run, 150); });
   q.addEventListener("focus", function () { load(function () {}); });
+  var pq = new URLSearchParams(location.search).get("q"); if (pq) { q.value = pq; run(); setTimeout(function () { q.scrollIntoView({ block: "start" }); }, 50); }
 })();
 // 기준가: 분류 탭·좌우 넘기기·검색
 (function () {
