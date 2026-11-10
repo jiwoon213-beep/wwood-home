@@ -181,7 +181,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><b>영진종합목재 (월드건축자재)</b><small>· 충청권 최대규모 목재상</small></a>
 <nav>{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> | {ADDR} | {TEL} | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
@@ -280,7 +280,7 @@ def build():
     # 자재 백과
     lst = "".join(f'<a class="mc" href="/jajae/{m["slug"]}.html"><b>{m["name"]}</b><small>{" · ".join(m["where"][:2])}</small></a>' for m in MATS)
     page("jajae/index.html", "자재 백과 — 합판·MDF·방부목·석고보드 용도와 가격 | 월드건축자재 대전", "자재별 용도, 인테리어 효과, 소매 기준가, 시공 영상을 한 번에. 대전 월드건축자재(영진목재).",
-         f'<section class="wrap sec"><h1>자재 백과</h1><p class="lead">손님들이 가장 헷갈리는 "이 자재 어디에 쓰나요?"를 자재별로 정리했습니다.</p><p><a class="b o" href="/bigyo/">자재 비교 전체 보기 (14종)</a> <a class="b o" href="/calc.html">자재 계산기</a></p><div class="mg m2">{lst}</div></section>{CTA}', "/jajae/")
+         f'<section class="wrap sec"><h1>자재 백과</h1><p class="lead">손님들이 가장 헷갈리는 "이 자재 어디에 쓰나요?"를 자재별로 정리했습니다.</p><p><a class="b o" href="/bigyo/">자재 비교 전체 보기 (14종)</a> <a class="b o" href="/calc.html">자재 계산기</a> <a class="b o" href="/yongeo.html">현장 용어 사전</a></p><div class="mg m2">{lst}</div></section>{CTA}', "/jajae/")
     for m in MATS:
         vs = top(lambda v: m["tag"] in v["mats"], 10**6)
         rel = [x for x in MATS if x is not m][:0]
@@ -655,6 +655,27 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 <div class="vdesc">{vbody(d, v['id'])}</div>
 {f'<p>👉 영상에 나온 자재: {ml}</p>' if ml else ''}<p>👉 <a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장에서 재단해 가기</a></p></section>
 {f'<section class="wrap sec"><h2>비슷한 영상</h2>{vsplit(rel, "h3")}</section>' if rel else ''}{CTA}""", f"/video/", ld, f"https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg")
+
+    # 건축 현장 용어 사전
+    YG = json.load(open(f"{ROOT}/data/yongeo.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/yongeo.json") else []
+    if YG:
+        mn = {m["slug"]: m["name"] for m in MATS}
+        terms = [t for _, ts in YG for t in ts]
+        ygld = {"@context": "https://schema.org", "@type": "DefinedTermSet", "name": "건축·인테리어 현장 용어 사전", "hasDefinedTerm": [{"@type": "DefinedTerm", "name": t[0], "description": f"{t[1]}. {t[2]}"} for t in terms]}
+        toc = " · ".join(f'<a href="#t{i}">{E(t[0])}</a>' for i, t in enumerate(terms))
+        body = ""; i = 0
+        for g, ts in YG:
+            body += f'<h2>{E(g)}</h2><dl class="yg">'
+            for t in ts:
+                ln = f' <a class="small" href="/jajae/{t[3]}.html">{mn[t[3]]} 보기 ›</a>' if t[3] in mn else ""
+                body += f'<dt id="t{i}">{E(t[0])} <span class="muted">= {E(t[1])}</span></dt><dd>{E(t[2])}{ln}</dd>'; i += 1
+            body += "</dl>"
+        byid = {v["id"]: v for v in V}
+        yv = [byid[x] for x in ["GGm4laQFUMg", "FNylPstDD4I", "jcqTf-1G5mA"] if x in byid]
+        page("yongeo.html", "건축 현장 용어 사전 — 다루끼·덴조·가베·오사마리·하바끼 뜻 | 영진목재", "목수·인테리어 현장에서 쓰는 일본어 잔재 용어와 자재 용어의 뜻을 정리했습니다. 다루끼, 덴조, 가베, 오사마리, 하바끼, 나라시, 메지 등.",
+             f"""<section class="wrap sec"><h1>건축 현장 용어 사전</h1><p class="lead">현장에서 오가는 말을 알아야 자재 주문과 업체 상담이 쉬워집니다. 목수·인테리어 현장에서 자주 쓰는 용어 {len(terms)}개를 쉬운 말로 풀었습니다. 표준어로 바꿔 쓰는 것이 좋지만, 현장 소통을 위해 뜻은 알아 두세요.</p>
+<p class="small">바로가기: {toc}</p>{body}<p class="small muted">현장·지역마다 쓰는 뜻이 조금씩 다를 수 있습니다. 헷갈리는 자재는 매장(042-545-2900)에 물어보세요.</p></section>
+{f'<section class="wrap sec"><h2>관련 영상</h2>{vsplit(yv, "h3")}</section>' if yv else ''}{CTA}""", "/jajae/", ygld)
 
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
