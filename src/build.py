@@ -771,6 +771,14 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         except Exception: return ""
     items = "".join(f"<item><title>{html.escape(p['title'])}</title><link>{BASE}/news/{p['slug']}.html</link><guid>{BASE}/news/{p['slug']}.html</guid><pubDate>{_rfc(p.get('date',''))}</pubDate><description>{html.escape(p.get('desc',''))}</description><content:encoded><![CDATA[{p['body'].replace(']]>',']]&gt;').replace('href="/', 'href="'+BASE+'/').replace('src="/', 'src="'+BASE+'/')}]]></content:encoded></item>\n" for p in POSTS[:50])
     open(f"{OUT}/rss.xml", "w", encoding="utf-8").write(f'<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>영진종합목재 소식·자재 정보</title><link>{BASE}/news/</link><description>대전 영진종합목재(월드건축자재) 자재 정보와 시공 소식</description><language>ko</language>\n{items}</channel></rss>\n')
+    # wwood.kr(쇼핑몰) 상품 사이트맵 — 서치콘솔에서 두 사이트 모두 소유 확인되어 교차 제출 가능
+    _ids = []
+    for _p in open(ROOT + "/data/wwoodkr_products.txt").read().strip().split(","):
+        _a, _, _b = _p.partition("-"); _ids += range(int(_a), int(_b or _a) + 1)
+    _cats = "22,22-133,22-132,22-139,22-316,22-317,22-128,22-129,39-296,23,23-134,23-135,23-136,23-137,23-314,24,24-140,24-141,24-318,24-319,24-320,26,26-149,26-148,26-247,26-315,26-152,25,25-144,25-145,25-146,25-147,25-249,25-266,28,28-167,28-168,28-172,28-248,27,27-156,27-321,27-157,27-159,27-160,27-161,27-237,27-166,27-322,27-163,27-381,31,31-186,31-331,31-188,29,29-274,29-367,30,30-182,30-183,30-184,30-351,32,32-332,32-333,32-334,53,53-348,53-349,54,54-373,54-375,54-378,54-374,54-380,54-391,35,35-356,35-206,35-357,37,37-400,37-396,37-397,37-361,37-362,37-363,37-366,37-360,58,58-405,58-407,58-404,58-406,58-408,58-403,58-409,58-411,58-412,59,59-422,59-423,59-424,59-425".split(",")
+    _cu = [("https://wwood.kr/home/mall/shoplist.php?depth=1&amp;code1_idx=" + c) if "-" not in c else ("https://wwood.kr/home/mall/shoplist.php?depth=2&amp;code1_idx=%s&amp;code2_idx=%s" % tuple(c.split("-"))) for c in _cats]
+    _pu = ["https://wwood.kr/home/mall/shoplist.php?idx=%d&amp;pmode=view" % i for i in _ids]
+    open(f"{OUT}/wwoodkr-sitemap.xml", "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<url><loc>https://wwood.kr/home/mall/</loc></url>\n' + "".join(f"<url><loc>{u}</loc></url>\n" for u in _cu + _pu) + "</urlset>\n")
     open(f"{OUT}/robots.txt", "w").write(f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\nSitemap: {BASE}/rss.xml\n")
     today = datetime.date.today().isoformat()
     open(f"{OUT}/sitemap.xml", "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' +
