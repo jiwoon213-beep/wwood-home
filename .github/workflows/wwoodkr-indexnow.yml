@@ -1,0 +1,16 @@
+name: wwood.kr IndexNow 제출
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/scripts/indexnow_wwoodkr.py', '.github/workflows/wwoodkr-indexnow.yml']
+  schedule:
+    - cron: '23 22 * * 0'
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: python3 .github/scripts/indexnow_wwoodkr.py
