@@ -145,3 +145,17 @@ section.jall>p.small{margin:0 0 8px}
 .jchips{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin:8px 0 0}.jchips::-webkit-scrollbar{display:none}.jchips .chip{padding:6px 12px!important;font-size:13px!important;margin:0!important}
 .hx .sec{padding:22px 20px}.hx .sec>h2{margin:0 0 4px}.hx .sec>p.muted{margin:0 0 10px}
 .pg.hrow>.pd b{font-size:13px;padding:7px 9px 1px}.pg.hrow>.pd small{padding:0 9px 8px}
+/* 모바일 간격·비율 정리 */
+@media(max-width:760px){
+ .sec{padding:22px 18px}
+ .sec>h2,.hx .sec>h2{font-size:21px;margin:0 0 4px}
+ .sec>p.muted,.sec>p.small.muted{margin:0 0 10px;font-size:14px}
+ .vh{margin:12px 0 6px;font-size:16px}
+ .hx .ug>*,.hx .mg>*{flex-basis:46%;padding:14px}.hx .ug b,.hx .mg b{font-size:16px;line-height:1.35}.hx .ug small,.hx .mg small{font-size:13px;line-height:1.45}
+ .hx .vg>*{flex-basis:70%}.hx .pl>*{flex-basis:82%}.hx .pl .pc{padding:14px}.hx .pl .pc b{font-size:16px}
+ .sg>.vc{flex-basis:42%}
+ .vc b,.vc .vt{font-size:13px;line-height:1.4}
+ .hx .sec p:last-child{margin-bottom:0}
+ .hsh{display:none}
+ .fqs,.pl.hs,.pg.hrow,.sg{margin-top:6px}
+}
