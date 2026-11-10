@@ -677,6 +677,33 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 <p class="small">바로가기: {toc}</p>{body}<p class="small muted">현장·지역마다 쓰는 뜻이 조금씩 다를 수 있습니다. 헷갈리는 자재는 매장(042-545-2900)에 물어보세요.</p></section>
 {f'<section class="wrap sec"><h2>관련 영상</h2>{vsplit(yv, "h3")}</section>' if yv else ''}{CTA}""", "/jajae/", ygld)
 
+    # 제품 개별 페이지 (/p/<id>.html)
+    jn = {c: (sl, n, d) for c, sl, n, d in JCAT}
+    mname = {m["slug"]: m for m in MATS}
+    def pcard2(p):
+        sub = MCAT.get(subof(p, p["top"]) or "", "")
+        return (f'<a class="pd" href="/p/{p["id"]}.html"><span class="pi"><img loading="lazy" src="{E(p["img"])}" alt="{E(p["name"])}"></span><b>{E(p["name"])}</b>{f"<small>{E(sub)}</small>" if sub else ""}</a>')
+    for p in PROD:
+        if not p["tops"] or p["top"] not in jn: continue
+        sl, cn, cd = jn[p["top"]]
+        sb = subof(p, p["top"]); sname = MCAT.get(sb or "", "")
+        sim = [q for q in PROD if q is not p and q["tops"] and q["top"] == p["top"] and subof(q, q["top"]) == sb][:12]
+        if len(sim) < 6: sim += [q for q in PROD if q is not p and q not in sim and q["tops"] and q["top"] == p["top"]][:12 - len(sim)]
+        mt = None
+        for rx, ms in [(r"OSB", "osb"), (r"MDF", "mdf"), (r"합판", "hapan"), (r"다루끼|각재|구조재|투바이|2[xX×]4", "gujo"), (r"방부", "bangbu"), (r"합성데크|합성목|뉴데크|퀵데크|에코젠", "hapdeck"), (r"집성", "jipseong"),
+                       (r"히노끼|편백|삼나무|삼목|적삼목|루바", "hinoki"), (r"석고보드", "gypsum"), (r"사이딩|아이큐브", "siding"), (r"아이소핑크|단열", "insul"), (r"스테인|오일", "stain"),
+                       (r"피스|타카|경첩|철물|손잡이", "hardware"), (r"마루|후로링|장판", "maru"), (r"몰딩|걸레받이", "molding"), (r"침목", "chimmok"), (r"타일", "tile"), (r"도어|문틀|합판문", "door"), (r"흡음|방음|타공", "sound")]:
+            if re.search(rx, p["name"]): mt = mname.get(ms); break
+        use = (f'<h2>{E(mt["name"])} — 어디에 쓰나요?</h2><ul>' + "".join(f"<li>{E(w)}</li>" for w in mt["where"]) + f'</ul><p>{E(mt["effect"])}</p><p><a href="/jajae/{mt["slug"]}.html">{E(mt["name"])} 용도·기준가·시공 영상 자세히 ›</a></p>') if mt else ""
+        cat = f"{cn}{' · ' + sname if sname else ''}"
+        page(f"p/{p['id']}.html", f"{p['name']} — {cat} | 대전 영진목재", f"{p['name']} ({cat}) 사진. 대전 영진목재(월드건축자재) 매장 취급, 원하는 사이즈 재단·배송.",
+             f"""<section class="wrap sec"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/jaryo/{sl}.html">{E(cn)}</a>{f' › {E(sname)}' if sname else ''}</p>
+<div class="g2 pdet"><div><img class="pimg" src="{E(p['img'])}" alt="{E(p['name'])}"></div><div><h1>{E(p['name'])}</h1><p class="muted">{E(cat)}</p>
+<p>대전 유성 영진목재(월드건축자재) 3000평 매장에서 실물을 보고 고를 수 있습니다. 원하는 사이즈로 재단해 드리고 대전·세종·공주·계룡·논산·금산·옥천은 배송합니다. 가격·재고는 쇼핑몰이나 매장(042-545-2900)에서 확인하세요.</p>
+<div class="row"><a class="b r" href="https://wwood.kr/home/mall/shoplist.php?idx={p['id']}&amp;pmode=view" target="_blank" rel="noopener">쇼핑몰에서 가격 보기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화 문의</a></div>
+<p class="small"><a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장 위치</a> · <a href="/jaryo/{sl}.html">{E(cn)} 전체 보기</a></p></div></div>{use}</section>
+<section class="wrap sec"><h2>같은 분류 제품</h2><div class="pg hrow">{"".join(pcard2(q) for q in sim)}</div></section>{CTA}""", "/jaryo/", None, p["img"])
+
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
     open(f"{OUT}/robots.txt", "w").write(f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\n")
