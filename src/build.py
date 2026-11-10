@@ -547,9 +547,9 @@ def build():
 f"""<section class="wrap sec"><h1>자재 계산기</h1><p class="lead">필요한 양을 미리 계산해 오시면 매장에서 바로 재단해 드립니다. 결과는 참고용입니다(로스 포함).</p>
 <div class="chips" id="cchips">{chips}</div>
 <div class="cnav"><button class="cb" data-d="-1">◀ 이전</button><span id="cpos" class="small muted"></span><button class="cb" data-d="1">다음 ▶</button></div>
-<div class="cslider" id="cslider">{slides}</div></section>
-<section class="wrap sec"><h2>자주 묻는 질문</h2>{faqslide(CALC_FAQ)}</section>
-<style>.cslider{{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}}.cslider::-webkit-scrollbar{{display:none}}.cslide{{flex:0 0 100%;scroll-snap-align:start}}.cslide .card{{margin:0}}
+<div class="cslider" id="cslider">{slides}</div>
+<h2 class="cfaq">자주 묻는 질문</h2>{faqslide(CALC_FAQ)}</section>
+<style>.cslider{{display:flex;align-items:flex-start;transition:height .2s;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}}.cslider::-webkit-scrollbar{{display:none}}.cslide{{flex:0 0 100%;scroll-snap-align:start}}.cslide .card{{margin:0}}.cfaq{{margin:22px 0 10px;font-size:22px}}
 .cnav{{display:flex;justify-content:space-between;align-items:center;margin:6px 0 10px}}.cb{{padding:8px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;font-weight:700;cursor:pointer}}
 #cchips{{display:flex;gap:6px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}}#cchips .chip{{flex:0 0 auto;border:1px solid var(--line);background:#faf8f5;cursor:pointer;font-size:14px}}#cchips .chip.on{{background:var(--red);color:#fff;border-color:var(--red)}}
 .cg{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px;margin:10px 0}}@media(min-width:760px){{.cg{{grid-template-columns:repeat(4,minmax(0,1fr))}}}}.cg label{{display:flex;flex-direction:column;font-size:14px;gap:4px}}.cg input,.cg select{{font-size:16px;padding:9px;border:1px solid #ccc;border-radius:8px;width:100%;box-sizing:border-box}}
@@ -575,15 +575,16 @@ jungmun:function(){{var n=+$('jt').value,W=v('jw'),H=v('jh'),F=v('jf'),O=v('jo')
  return '중문 프레임 바깥 약 <b>'+Math.round(fw)+' × '+Math.round(fh)+'mm</b><br>프레임 안쪽 약 '+Math.round(iw)+' × '+Math.round(ih)+'mm<br>문짝 '+n+'장 · 1장 폭 약 <b>'+Math.round(pw)+'mm</b>'+(n==1?' <span class="small">(원슬라이딩은 벽 쪽 여유 공간 필요)</span>':'')+B([['실리콘'],['우레탄폼','우레탄'],['피스']])}},
 pnt:function(){{var L=v('ta')*Math.max(1,v('tc'))/(v('tr')||1);return Q('페인트·스테인','스테인')+' 약 <b>'+L.toFixed(1)+'L</b><br>18L 기준 '+n(L/18)+'통 또는 4L 기준 '+n(L/4)+'통'+B([['붓·롤러','롤러'],['마스킹테이프','테이프']])}}
 }};
-Object.keys(C).forEach(function(k){{var s=$(k);s.querySelectorAll('input,select').forEach(function(e){{e.addEventListener('input',function(){{$(k+'r').innerHTML=C[k]()}})}});$(k+'r').innerHTML=C[k]()}});
+Object.keys(C).forEach(function(k){{var s=$(k);s.querySelectorAll('input,select').forEach(function(e){{e.addEventListener('input',function(){{$(k+'r').innerHTML=C[k]();if(typeof fit=='function')fit()}})}});$(k+'r').innerHTML=C[k]()}});
 $('yp').addEventListener('input',function(){{$('ym').value=(v('yp')*3.3058).toFixed(2)}});$('ym').addEventListener('input',function(){{$('yp').value=(v('ym')/3.3058).toFixed(2)}});
 var sl=$('cslider'),ch=[].slice.call(document.querySelectorAll('#cchips .chip')),N=ch.length;
 function cur(){{return Math.round(sl.scrollLeft/sl.clientWidth)}}
-function upd(){{var i=cur();ch.forEach(function(c,j){{c.classList.toggle('on',i==j)}});$('cpos').textContent=(i+1)+' / '+N+' · 옆으로 밀어서 넘기기';var a=ch[i];if(a)a.scrollIntoView({{block:'nearest',inline:'center'}})}}
+function fit(){{var c=sl.children[cur()];if(c)sl.style.height=c.offsetHeight+'px'}}
+function upd(){{var i=cur();fit();ch.forEach(function(c,j){{c.classList.toggle('on',i==j)}});$('cpos').textContent=(i+1)+' / '+N+' · 옆으로 밀어서 넘기기';var a=ch[i];if(a)a.scrollIntoView({{block:'nearest',inline:'center'}})}}
 function go(i){{i=Math.max(0,Math.min(N-1,i));sl.scrollTo({{left:i*sl.clientWidth,behavior:'smooth'}})}}
 ch.forEach(function(c){{c.onclick=function(){{go(+c.dataset.i)}}}});document.querySelectorAll('.cnav .cb').forEach(function(b){{b.onclick=function(){{go(cur()+(+b.dataset.d))}}}});
 sl.addEventListener('scroll',function(){{clearTimeout(sl._t);sl._t=setTimeout(upd,80)}},{{passive:true}});
-var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(function(e){{return e.id==h}});if(ix>=0)setTimeout(function(){{sl.scrollLeft=ix*sl.clientWidth;upd()}},50)}}upd();
+var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(function(e){{return e.id==h}});if(ix>=0)setTimeout(function(){{sl.scrollLeft=ix*sl.clientWidth;upd()}},50)}}upd();window.addEventListener('resize',fit);
 }})();
 </script>{CTA}""", "/calc.html", faqld)
 
