@@ -151,7 +151,7 @@ def mat_prices(m, k=10):
     return sorted(rows, key=lambda p: -p["qty"])[:k]
 
 # ---------- layout ----------
-NAV = [("/jajae/", "자재 백과"), ("/jaryo/", "전체 자재"), ("/video/", "영상"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/visit.html", "매장 안내")]
+NAV = [("/jajae/", "자재 백과"), ("/jaryo/", "전체 자재"), ("/video/", "영상"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/calc.html", "계산기"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/visit.html", "매장 안내")]
 
 def page(path, title, desc, body, active="", jsonld=None, img=None):
     canon = BASE + ("/" + path if path != "index.html" else "/").replace("index.html", "")
