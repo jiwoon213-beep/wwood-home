@@ -748,6 +748,20 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 <p class="small"><a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장 위치</a> · <a href="/jaryo/{sl}.html">{E(cn)} 전체 보기</a></p></div></div>{use}</section>
 <section class="wrap sec"><h2>같은 분류 제품</h2><div class="pg hrow">{"".join(pcard2(q) for q in sim)}</div></section>{CTA}""", "/jaryo/", None, p["img"])
 
+    # 매장 카운터 QR 안내판이 여는 페이지(/r/) — 리뷰·채널 링크는 여기서만 바꾸면 됨(재인쇄 불필요)
+    RV_NAVER = "https://map.naver.com/p/search/%EC%98%81%EC%A7%84%EC%A2%85%ED%95%A9%EB%AA%A9%EC%9E%AC"
+    RV_GOOGLE = "https://www.google.com/maps/search/?api=1&query=%EC%98%81%EC%A7%84%EC%A2%85%ED%95%A9%EB%AA%A9%EC%9E%AC+%EB%8C%80%EC%A0%84+%EC%9C%A0%EC%84%B1%EB%8C%80%EB%A1%9C+44"
+    RV_KAKAOMAP = "https://map.kakao.com/?q=%EC%98%81%EC%A7%84%EC%A2%85%ED%95%A9%EB%AA%A9%EC%9E%AC"
+    rbtn = lambda href, bg, fg, t, sub: f'<a href="{href}" target="_blank" rel="noopener" style="display:block;background:{bg};color:{fg};border-radius:14px;padding:18px 20px;margin:12px 0;text-decoration:none;font-size:20px;font-weight:800">{t}<small style="display:block;font-size:14px;font-weight:500;opacity:.85;margin-top:4px">{sub}</small></a>'
+    page("r/index.html", "영진종합목재 리뷰·카톡 채널", "영진종합목재(월드건축자재) 방문 리뷰 남기기, 카카오톡 채널 추가, 자재 정보 보기.",
+         '<section class="wrap sec" style="max-width:520px"><h1 style="font-size:26px">방문해 주셔서 감사합니다</h1><p class="lead">리뷰 한 줄이 동네 손님들께 큰 도움이 됩니다.</p>'
+         + rbtn(RV_NAVER, "#03c75a", "#fff", "네이버 리뷰 쓰기", "지도에서 영진종합목재 → 리뷰 → 영수증 인증")
+         + rbtn(f"{KAKAO}/friend", "#fee500", "#191919", "카카오톡 채널 추가", "재고·가격 문의를 카톡으로 바로")
+         + rbtn(RV_GOOGLE, "#1a73e8", "#fff", "구글 리뷰 쓰기", "구글 지도 → 영진종합목재 → 리뷰 작성")
+         + rbtn(RV_KAKAOMAP, "#3b82f6", "#fff", "카카오맵 후기 쓰기", "카카오맵에서 영진종합목재 검색")
+         + rbtn("/jajae/", "#333", "#fff", "자재 사진·기준가 보기", "합판·각재·데크·사이딩 등 용도와 기준가")
+         + f'<p class="small muted">{ADDR} · {TEL} · {HOURS}</p></section>', "")
+    SITEMAP[:] = [u for u in SITEMAP if not u.endswith("/r/")]
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
     open(f"{OUT}/b4237bce57cfb60c93b64e5203857f41.txt", "w").write("b4237bce57cfb60c93b64e5203857f41")  # IndexNow 키(네이버·빙)
