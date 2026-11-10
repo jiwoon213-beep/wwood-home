@@ -1,3 +1,4 @@
+import re
 #!/usr/bin/env python3
 """월드건축자재 홍보 사이트 생성기. python3 build.py [BASE_URL]"""
 import csv, html, json, os, re, shutil, sys, datetime
@@ -297,12 +298,14 @@ def build():
         tips = "".join(f"<li>{E(t)}</li>" for t in m["tips"])
         lf = [v for v in vs if v["type"] != "S"]
         vid = ((embed(lf[0]) if lf else "") + vsplit([v for v in vs if not lf or v is not lf[0]], "h3")) if vs else f'<p><a href="{YT}">유튜브 채널에서 보기</a></p>'
-        faq = [{"@type": "Question", "name": f"{m['name']}은(는) 어디에 쓰나요?", "acceptedAnswer": {"@type": "Answer", "text": ", ".join(m["where"])}},
-               {"@type": "Question", "name": f"대전에서 {m['name']}을(를) 어디서 사나요?", "acceptedAnswer": {"@type": "Answer", "text": f"월드건축자재(영진종합목재), {ADDR}, {TEL}. {HOURS}. 원하는 사이즈로 재단해 드립니다."}}]
+        _jj = (ord(m["name"][-1])-0xAC00)%28 if "가"<=m["name"][-1]<="힣" else 1
+        faq = [{"@type": "Question", "name": f"{m['name']}{'은' if _jj else '는'} 어디에 쓰나요?", "acceptedAnswer": {"@type": "Answer", "text": ", ".join(m["where"])}},
+               {"@type": "Question", "name": f"대전에서 {m['name']}{'을' if _jj else '를'} 어디서 사나요?", "acceptedAnswer": {"@type": "Answer", "text": f"월드건축자재(영진종합목재), {ADDR}, {TEL}. {HOURS}. 원하는 사이즈로 재단해 드립니다."}}]
         cmpl = {"hapan":"hapan-types","osb":"hapan-osb-mdf","mdf":"hapan-osb-mdf","bangbu":"bangbu-hapdeck","hapdeck":"bangbu-hapdeck","gypsum":"gypsum-types","siding":"siding-types","insul":"insulation-types","maru":"floor-types","tile":"floor-types","door":"door-types","stain":"stain-oil-water","hinoki":"louver-types","jipseong":"jipseong-types","gujo":"gakjae-types","sound":"sound-types","film":"door-types"}.get(m["slug"])
         cmpln = f'<p>👉 <a href="/bigyo/{cmpl}.html">비슷한 자재와 비교해 보기</a> · <a href="/calc.html">필요한 양 계산하기</a></p>' if cmpl else (f'<p>👉 <a href="/calc.html#door">문짝·문틀 크기 계산하기</a></p>' if m["slug"] == "door" else '<p>👉 <a href="/calc.html">필요한 양 계산하기</a></p>')
         mf = MFAQ.get(m["slug"], []) + [(f"{m['name']} 지방(전국)으로도 배송되나요?", f"네, 전국 어디든 용달차로 보내 드립니다. 품목·수량·도착지를 알려 주시면 사무실에서 용달 운임 견적을 드리고, 입금 확인 후 바로 출고합니다. 대전·세종·공주·계룡·논산·금산·옥천은 직접 배송·현장 납품합니다. 문의 {TEL}")]
-        faq += [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in mf]
+        _seen = {re.sub(r"[^가-힣A-Za-z0-9]|은|는|을|를", "", q) for q, a in mf}
+        faq = [x for x in faq if re.sub(r"[^가-힣A-Za-z0-9]|은|는|을|를", "", x["name"]) not in _seen] + [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in mf]
         faqsec = (f'<section class="wrap sec"><h2>{m["name"]} 자주 묻는 질문</h2>' + faqslide(mf) + '</section>') if mf else ""
         ph = mat_photos(m["slug"])
         gal = (f'<section class="wrap sec"><h2>{m["name"]} 사진으로 보기 <small class="muted">매장 취급 {len(ph)}종</small></h2><div class="pg hrow">{"".join(pcard(p) for p in ph[:12])}</div>'
