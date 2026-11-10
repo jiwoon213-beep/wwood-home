@@ -171,7 +171,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><b>영진종합목재 (월드건축자재)</b><small>· 충청권 최대규모 목재상</small></a>
 <nav>{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> | {ADDR} | {TEL} | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> | {ADDR} | {TEL} | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
@@ -241,7 +241,7 @@ def build():
 <div><span class="chip red">영상으로 보고 · 매장에서 바로</span>
 <h1>어디에 쓰는 나무인지<br>영상으로 먼저 보고<br>매장에서 바로 가져가세요</h1>
 <p class="lead">현장 목수·기술자가 직접 쓰는 자재를 영상마다 정리했습니다. 대전 3000평 매장에서 실물 확인부터 원하는 사이즈 재단까지 그 자리에서 해드립니다.</p>
-<div class="row"><a class="b r" href="/visit.html">매장 길찾기</a><a class="b o" href="/price.html">기준가 보기</a><a class="b d" href="/dome.html">업체·도매회원</a></div></div>
+<div class="row"><a class="b r" href="/visit.html">매장 길찾기</a><a class="b o" href="/price.html">기준가 보기</a><a class="b o" href="/calc.html">자재 계산기</a><a class="b d" href="/dome.html">업체·도매회원</a></div></div>
 <div>{embed(tour) if tour else ''}<p class="small muted">대전 목재소·건축자재 백화점 3000평 투어 · 조회 18만회</p></div></div></section>
 <section class="stat"><div class="wrap g4"><div><b>구독 {ST["subs"]}명</b><small>유튜브 월드건축자재DIY</small></div><div><b>영상 {int(ST["videos"]):,}개</b><small>시공·DIY·자재 정보</small></div>
 <div><b>소매 + 도매</b><small>셀프 고객부터 현장 납품까지</small></div><div><b>직접 시공</b><small>월드아키텍쳐 · {LIC}</small></div></div></section>
@@ -491,6 +491,45 @@ def build():
 <div class="card"><h2>{gu} 구매·배송 안내</h2><ul><li>매장: {ADDR} 영진목재(월드건축자재)</li><li>영업: {HOURS}</li><li>원하는 사이즈 즉석 재단</li><li>{note}</li><li><a href="/price.html">자재 기준가 보기</a> · <a href="/jaryo/">전체 자재 사진</a></li></ul></div></section>
 <section class="wrap sec"><h2>많이 찾는 목재·자재</h2><div class="mg">{matlinks}</div></section>
 <section class="wrap sec"><h2>{gu} 시공 문의</h2><p>인테리어·데크·샷시·문 교체 시공은 월드아키텍쳐(실내건축공사업 등록 대전서구24-나-19)가 직접 합니다. 현장 실측 후 견적을 드리며 모든 현장은 유튜브에 공개합니다. <a href="/sigong.html">시공 안내 보기 →</a></p></section>{area_cases(slug)}{areanav}{CTA}""", f"/{slug}.html", BIZ)
+
+    # 자재 계산기
+    CALC_FAQ = [("데크 1평에 방부목 몇 장 들어가나요?","1평(약 3.3㎡)에 폭 120mm·길이 3.6m 데크재를 5mm 간격으로 깔면 약 7~8장, 로스 10%를 더하면 8~9장 정도입니다. 하지(장선) 각재는 별도입니다."),
+                ("석고보드 1장은 몇 ㎡인가요?","3×6(900×1800mm)은 1.62㎡, 3×8(900×2400mm)은 2.16㎡입니다. 2겹(2P) 시공이면 장수가 2배입니다."),
+                ("합판 1장은 몇 ㎡인가요?","4×8(1220×2440mm) 합판·OSB·MDF 1장은 약 2.98㎡입니다."),
+                ("1평은 몇 제곱미터인가요?","1평은 약 3.3058㎡입니다.")]
+    faqld = {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in CALC_FAQ]}
+    page("calc.html", "자재 계산기 — 데크 방부목·합성데크, 석고보드, 합판 몇 장? 평·㎡ 변환 | 영진목재", "데크 평수로 방부목·합성데크 장수와 장선 각재·피스, 벽 면적으로 석고보드 장수, 합판·OSB·MDF 장수, 평↔㎡ 변환을 바로 계산하세요. 대전 영진목재(월드건축자재) 재단·배송.",
+f"""<section class="wrap sec"><h1>자재 계산기</h1><p class="lead">필요한 장수를 미리 계산해 오시면 매장에서 바로 재단해 드립니다. 결과는 참고용이며 현장 구조·자재 규격에 따라 달라질 수 있습니다(로스 10% 포함).</p>
+<div class="chips" style="margin:8px 0 14px"><a class="chip" href="#deck">데크</a><a class="chip" href="#gyp">석고보드</a><a class="chip" href="#ply">합판·OSB·MDF</a><a class="chip" href="#py">평↔㎡</a></div></section>
+<section class="wrap sec" id="deck"><div class="card"><h2>데크 자재 계산 (방부목·합성데크)</h2>
+<div class="cg"><label>데크 가로(m)<input id="dw" type="number" step="0.1" value="4"></label><label>데크 세로(m)<input id="dl" type="number" step="0.1" value="3"></label>
+<label>데크재<select id="dt"><option value="120,3600">방부목 데크재 120mm × 3.6m(12자)</option><option value="140,3000">합성데크 140mm × 3.0m</option><option value="95,3600">방부목 95mm × 3.6m</option></select></label>
+<label>장선 간격<select id="dj"><option value="400">400mm (권장)</option><option value="450">450mm</option><option value="300">300mm (합성데크·하중 큰 곳)</option></select></label></div>
+<div class="cr" id="dr"></div><p class="small muted">데크재는 세로 방향으로 깔고 장선은 가로 방향 간격으로 계산했습니다. 기초·멍에·기둥은 현장마다 달라 따로 상담해 주세요.</p>
+<p><a href="/jajae/bangbu.html">방부목 용도·기준가</a> · <a href="/jajae/hapdeck.html">합성데크 용도·기준가</a> · <a href="/video/deck.html">데크 시공 영상</a></p></div></section>
+<section class="wrap sec" id="gyp"><div class="card"><h2>석고보드 장수 계산</h2>
+<div class="cg"><label>벽 길이 합계(m)<input id="gw" type="number" step="0.1" value="10"></label><label>벽 높이(m)<input id="gh" type="number" step="0.1" value="2.4"></label>
+<label>창·문 면적(㎡)<input id="go" type="number" step="0.1" value="2"></label>
+<label>규격<select id="gs"><option value="1.62">3×6 (900×1800)</option><option value="2.16">3×8 (900×2400)</option></select></label><label>겹수<select id="gp"><option value="1">1겹(1P)</option><option value="2">2겹(2P)</option></select></label></div>
+<div class="cr" id="gr"></div><p><a href="/jajae/gypsum.html">석고보드 종류·기준가</a> · <a href="/jajae/gujo.html">목상(각재)</a></p></div></section>
+<section class="wrap sec" id="ply"><div class="card"><h2>합판·OSB·MDF 장수 계산</h2>
+<div class="cg"><label>시공 면적(㎡)<input id="pa" type="number" step="0.1" value="20"></label><label>판재 규격<select id="ps"><option value="2.9768">4×8 (1220×2440)</option><option value="1.62">3×6 (900×1800)</option></select></label></div>
+<div class="cr" id="pr"></div><p><a href="/jajae/hapan.html">합판</a> · <a href="/jajae/osb.html">OSB</a> · <a href="/jajae/mdf.html">MDF</a> · <a href="/price.html">기준가</a></p></div></section>
+<section class="wrap sec" id="py"><div class="card"><h2>평 ↔ ㎡ 변환</h2>
+<div class="cg"><label>평<input id="yp" type="number" step="0.1" value="1"></label><label>㎡<input id="ym" type="number" step="0.1" value="3.31"></label></div></div></section>
+<section class="wrap sec"><h2>자주 묻는 질문</h2>{"".join(f"<p><b>Q. {q}</b><br>A. {a}</p>" for q,a in CALC_FAQ)}</section>
+<style>.cg{{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:10px 0}}.cg label{{display:flex;flex-direction:column;font-size:14px;gap:4px}}.cg input,.cg select{{font-size:16px;padding:9px;border:1px solid #ccc;border-radius:8px}}.cr{{background:#fff7ed;border-radius:10px;padding:12px 14px;font-size:16px;line-height:1.7}}.cr b{{font-size:20px;color:#c2410c}}</style>
+<script>
+(function(){{var $=function(i){{return document.getElementById(i)}},v=function(i){{return parseFloat($(i).value)||0}},n=function(x){{return Math.ceil(x).toLocaleString()}};
+function deck(){{var W=v('dw'),L=v('dl'),t=$('dt').value.split(','),bw=+t[0],bl=+t[1]/1000,J=+$('dj').value/1000;
+var rows=Math.ceil(W/((bw+5)/1000)),per=Math.ceil(L/bl),boards=rows*per*1.1,joists=Math.floor(W/J)+1,jm=joists*L,jp=jm/3.6*1.1,screws=rows*joists*2*1.1;
+$('dr').innerHTML='데크 면적 '+(W*L).toFixed(1)+'㎡ ('+(W*L/3.3058).toFixed(1)+'평)<br>데크재 <b>'+n(boards)+'장</b> · 장선 각재(3.6m) <b>'+n(jp)+'개</b> · 데크 피스 약 <b>'+n(screws)+'개</b>';}}
+function gyp(){{var A=Math.max(0,v('gw')*v('gh')-v('go')),c=A/parseFloat($('gs').value)*(+$('gp').value)*1.1;$('gr').innerHTML='시공 면적 '+A.toFixed(1)+'㎡<br>석고보드 <b>'+n(c)+'장</b>';}}
+function ply(){{var c=v('pa')/parseFloat($('ps').value)*1.1;$('pr').innerHTML='필요 장수 <b>'+n(c)+'장</b>';}}
+['dw','dl','dt','dj'].forEach(function(i){{$(i).addEventListener('input',deck)}});['gw','gh','go','gs','gp'].forEach(function(i){{$(i).addEventListener('input',gyp)}});['pa','ps'].forEach(function(i){{$(i).addEventListener('input',ply)}});
+$('yp').addEventListener('input',function(){{$('ym').value=(v('yp')*3.3058).toFixed(2)}});$('ym').addEventListener('input',function(){{$('yp').value=(v('ym')/3.3058).toFixed(2)}});
+deck();gyp();ply();}})();
+</script>{CTA}""", "/calc.html", faqld)
 
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
