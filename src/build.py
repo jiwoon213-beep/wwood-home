@@ -347,7 +347,7 @@ def build():
     PLS = [('PLFOIw225ouPo', '건축자재 종류 & 방부목 데크'), ('PLVA2J1KAJvsk', '목조 비닐하우스 짓기'), ('PLahzdcM8tSYQ', '목공 기초 & 원목 가구'), ('PLdOhbZ-KJAiQ', '싱크대 셀프 리폼'), ('PLSZCoKnD3ZJs', '세라믹사이딩 외벽 시공'), ('PLRSwZ8WxHpV8', '인테리어 필름 시공·견적'), ('PLbvlO5h0i7mo', '반셀프 인테리어 공정 순서'), ('PLfQ12jGtwTx0', '인테리어 견적 비교'), ('PLCMIh2xFaEFE', '주차장·토목 현장'), ('PLE3-sMP7uo2k', '건축자재 꿀팁 쇼츠'), ('PLEp1gBHSiHds', 'CNC 목공 라이브')]
     plh = "".join(f'<a href="https://www.youtube.com/playlist?list={i}" target="_blank" rel="noopener">▶ {n}</a>' for i, n in PLS)
     page("video/index.html", "시공·DIY 영상 모음 — 데크·온실·가구·외벽·인테리어 | 월드건축자재DIY", "월드건축자재DIY 유튜브 영상을 용도별로 정리했습니다. 데크, 목조 온실, 원목가구, 싱크대, 외벽, 바닥, 전기.",
-         f'<section class="wrap sec"><h1>영상으로 찾기</h1><p class="lead">유튜브 「월드건축자재DIY」·「월드도어」 공개 영상 {len(V)}편(일반·쇼츠·라이브)을 용도별로 모두 모았습니다. 새 영상은 자동으로 추가됩니다.</p><div class="ug">{vl}</div><h2>유튜브 재생목록</h2><div class="jchips">{plh}</div><p><a href="{YT}">유튜브 채널 바로가기 →</a></p></section>{CTA}', "/video/")
+         f'<section class="wrap sec"><h1>영상으로 찾기</h1><p class="lead">유튜브 「월드건축자재DIY」·「월드도어」 공개 영상 {len(V)}편(일반·쇼츠·라이브)을 용도별로 모두 모았습니다. 새 영상은 자동으로 추가됩니다.</p><div class="ug m2">{vl}</div><h2>유튜브 재생목록</h2><div class="jchips">{plh}</div><p><a href="{YT}">유튜브 채널 바로가기 →</a></p></section>{CTA}', "/video/")
     for c, n, d in CATS:
         vs = top(lambda v: v["cat"] == c, 10**6)
         page(f"video/{c}.html", f"{n} 영상 — {d} | 월드건축자재DIY 대전", f"{n} 관련 시공·DIY 영상 모음({d}). 영상에 나온 자재는 대전 월드건축자재 매장에서.",
