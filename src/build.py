@@ -124,6 +124,8 @@ def pcard(p):
 # 유튜브 채널 숫자: data/stats.json {"subs": "1.36만", "videos": 940, "date": "YYYY-MM-DD"} (하루 1번 자동 갱신)
 ST = json.load(open(f"{ROOT}/data/stats.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/stats.json") else {"subs": "1.3만", "videos": 900}
 # 최신 영상: data/latest.txt (영상 ID, 최신이 위)
+def faqslide(items):
+    return '<div class="fqs">' + "".join(f'<div class="fq"><b>Q. {E(q)}</b><p>{E(a)}</p></div>' for q, a in items) + '</div>' + ('<p class="small muted fqh">옆으로 밀어서 더 보기 ›</p>' if len(items) > 1 else "")
 MFAQ = json.load(open(f"{ROOT}/data/mat_faq.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/mat_faq.json") else {}
 LATEST = [l.strip() for l in open(f"{ROOT}/data/latest.txt", encoding="utf-8")] if os.path.exists(f"{ROOT}/data/latest.txt") else []
 
@@ -285,7 +287,7 @@ def build():
         cmpln = f'<p>👉 <a href="/bigyo/{cmpl}.html">비슷한 자재와 비교해 보기</a> · <a href="/calc.html">필요한 양 계산하기</a></p>' if cmpl else '<p>👉 <a href="/calc.html">필요한 양 계산하기</a></p>'
         mf = MFAQ.get(m["slug"], [])
         faq += [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in mf]
-        faqsec = (f'<section class="wrap sec"><h2>{m["name"]} 자주 묻는 질문</h2>' + "".join(f"<details class=\"faq\"><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in mf) + '</section>') if mf else ""
+        faqsec = (f'<section class="wrap sec"><h2>{m["name"]} 자주 묻는 질문</h2>' + faqslide(mf) + '</section>') if mf else ""
         ph = mat_photos(m["slug"])
         gal = (f'<section class="wrap sec"><h2>{m["name"]} 사진으로 보기 <small class="muted">매장 취급 {len(ph)}종</small></h2><div class="pg">{"".join(pcard(p) for p in ph[:12])}</div>'
                + (f'<p class="small muted">사진을 누르면 상세 사진이 열립니다 · 전체 {len(ph)}종 중 {min(12,len(ph))}종 표시 · <a href="/jaryo/">전체 자재 보기 →</a></p>' if ph else '') + '</section>') if ph else ""
@@ -438,9 +440,7 @@ def build():
 <section class="wrap sec g2"><div class="card"><h2>{area} 목재 구매 안내</h2><ul><li>매장: {ADDR} 영진목재(월드건축자재)</li><li>영업: {HOURS}</li><li>원하는 사이즈 즉석 재단</li>{extra}<li>사업자는 도매회원 가입(사업자등록증·명함 확인)</li></ul></div>
 <div class="card"><h2>가격은 어떻게 보나요</h2><p>자주 찾는 목재·자재의 소매 기준가(부가세 별도)를 공개해 두었습니다. 규격·수량에 따라 달라지니 매장이나 전화로 확인해 주세요.</p><a href="/price.html">{area} 목재 기준가 보기 →</a><br><a href="/jaryo/">전체 자재 사진 보기 →</a></div></section>
 <section class="wrap sec"><h2>{area}에서 많이 찾는 목재·자재</h2><div class="mg">{matlinks}</div></section>
-<section class="wrap sec"><h2>자주 묻는 질문</h2><p><b>Q. {area}에서 목재 소량도 사나요?</b><br>A. 네, 한 장·한 개부터 구매하실 수 있고 원하는 크기로 재단해 드립니다.</p>
-<p><b>Q. {area} 현장으로 배송되나요?</b><br>A. 네, 대전·세종은 배송과 현장 납품을 합니다. 수량과 위치를 알려 주시면 안내해 드립니다({TEL}).</p>
-<p><b>Q. 시공도 맡길 수 있나요?</b><br>A. 월드아키텍쳐가 대전·세종 인테리어·데크·샷시 시공을 직접 합니다. 모든 현장은 유튜브에 공개합니다.</p></section>{area_cases(slug)}{areanav}{CTA}""", f"/{slug}.html", BIZ)
+<section class="wrap sec"><h2>자주 묻는 질문</h2>{faqslide([(area+"에서 목재 소량도 사나요?","네, 한 장·한 개부터 구매하실 수 있고 원하는 크기로 재단해 드립니다."),(area+" 현장으로 배송되나요?","네, 대전·세종·공주·계룡·논산·금산·옥천은 배송과 현장 납품을 합니다. 수량과 위치를 알려 주시면 안내해 드립니다("+TEL+")."),("시공도 맡길 수 있나요?","월드아키텍쳐가 대전·세종 인테리어·데크·샷시 시공을 직접 합니다. 모든 현장은 유튜브에 공개합니다.")])}</section>{area_cases(slug)}{areanav}{CTA}""", f"/{slug}.html", BIZ)
 
     # 대전 구별 안내 — 동네마다 실제로 다른 정보만 (거리·소요시간 등 확인 안 된 숫자 금지)
     for slug, gu, t, lead, jobs, note in [
@@ -540,7 +540,7 @@ f"""<section class="wrap sec"><h1>자재 계산기</h1><p class="lead">필요한
 <div class="chips" id="cchips">{chips}</div>
 <div class="cnav"><button class="cb" data-d="-1">◀ 이전</button><span id="cpos" class="small muted"></span><button class="cb" data-d="1">다음 ▶</button></div>
 <div class="cslider" id="cslider">{slides}</div></section>
-<section class="wrap sec"><h2>자주 묻는 질문</h2>{"".join(f'<details class="faq"><summary>{q}</summary><p>{a}</p></details>' for q,a in CALC_FAQ)}</section>
+<section class="wrap sec"><h2>자주 묻는 질문</h2>{faqslide(CALC_FAQ)}</section>
 <style>.cslider{{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}}.cslider::-webkit-scrollbar{{display:none}}.cslide{{flex:0 0 100%;scroll-snap-align:start}}.cslide .card{{margin:0}}
 .cnav{{display:flex;justify-content:space-between;align-items:center;margin:6px 0 10px}}.cb{{padding:8px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;font-weight:700;cursor:pointer}}
 #cchips{{display:flex;gap:6px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}}#cchips .chip{{flex:0 0 auto;border:1px solid var(--line);background:#faf8f5;cursor:pointer;font-size:14px}}#cchips .chip.on{{background:var(--red);color:#fff;border-color:var(--red)}}
