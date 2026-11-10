@@ -168,8 +168,8 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
     nav = "".join(f'<a href="{h}"{" class=on" if active==h else ""}>{t}</a>' for h, t in NAV)
     lds = jsonld if isinstance(jsonld, list) else ([jsonld] if jsonld else [])
     lds = lds + [{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "홈", "item": BASE + "/"}] +
-                 ([{"@type": "ListItem", "position": 2, "name": dict(NAV).get(active, ""), "item": BASE + active}] if active and active != "/" else []) +
-                 ([{"@type": "ListItem", "position": 3 if active else 2, "name": title.split(" — ")[0].split(" | ")[0], "item": canon}] if canon.rstrip("/") != (BASE + active).rstrip("/") and path != "index.html" else [])}]
+                 ([{"@type": "ListItem", "position": 2, "name": dict(NAV)[active], "item": BASE + active}] if active in dict(NAV) and active != "/" else []) +
+                 ([{"@type": "ListItem", "position": 3 if (active in dict(NAV) and active != "/") else 2, "name": title.split(" — ")[0].split(" | ")[0], "item": canon}] if (canon.rstrip("/") != (BASE + active).rstrip("/") or active not in dict(NAV)) and path != "index.html" else [])}]
     ld = "".join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>' for x in lds)
     doc = f"""<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
