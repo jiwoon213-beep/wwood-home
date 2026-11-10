@@ -420,7 +420,7 @@ def build():
     page("visit.html", "대전 목재소 영진목재 위치·영업시간 — 유성대로 44, 즉석 재단", f"월드건축자재(영진종합목재) {ADDR}. {HOURS}. 3000평 매장, 즉석 재단, 대전·세종 배송. {TEL}.",
          f"""<section class="wrap sec g2"><div>{embed(tour) if tour else ''}</div><div><h1>매장 오시는 길</h1>
 <div class="tw"><table><tbody><tr><th>주소</th><td>{ADDR} 월드건축자재(영진목재)</td></tr><tr><th>영업</th><td>{HOURS}</td></tr><tr><th>전화</th><td><a href="tel:{TEL.replace('-','')}">{TEL}</a></td></tr>
-<tr><th>재단</th><td>원하는 사이즈로 즉석 재단</td></tr><tr><th>배송</th><td>대전·세종·공주·계룡·논산·금산·옥천 배송 · 현장 납품</td></tr><tr><th>도매</th><td>사업자등록증·명함 확인 후 도매회원 승인</td></tr><tr><th>시공</th><td>월드아키텍쳐 · 대전·세종 · 전화 상담</td></tr></tbody></table></div>
+<tr><th>재단</th><td>원하는 사이즈로 즉석 재단</td></tr><tr><th>배송</th><td>대전·세종·공주·계룡·논산·금산·옥천 배송 · 현장 납품 · 그 외 지역은 용달 배송(운임 별도, 전화 상담)</td></tr><tr><th>도매</th><td>사업자등록증·명함 확인 후 도매회원 승인</td></tr><tr><th>시공</th><td>월드아키텍쳐 · 대전·세종 · 전화 상담</td></tr></tbody></table></div>
 <div class="row"><a class="b g" href="https://map.naver.com/p/search/{ADDR.replace(' ','%20')}%20영진종합목재" target="_blank" rel="noopener">네이버 지도로 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a><a class="b" style="background:#fee500;color:#191919" href="{KAKAO}/chat" target="_blank" rel="noopener">카톡 문의</a></div></div></section>{"" if not os.path.exists(ROOT+"/data/store_photos.json") else '<section class="wrap sec"><h2>매장 사진</h2><div class="pg hrow">' + "".join(f'<a class="ph" href="/assets/store/{n}.jpg" target="_blank"><img loading="lazy" src="/assets/store/{n}.jpg" alt="{E(t)}"><small>{E(t)}</small></a>' for n, t in json.load(open(ROOT+"/data/store_photos.json", encoding="utf-8"))) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>'}""", "/visit.html", BIZ, BASE+"/assets/store/storefront.jpg")
 
     # 지역 시공 사례 (data/cases.json — 영상 설명에 지역이 확인된 실제 현장만)
@@ -460,7 +460,7 @@ def build():
 <section class="wrap sec g2"><div class="card"><h2>{area} 목재 구매 안내</h2><ul><li>매장: {ADDR} 영진목재(월드건축자재)</li><li>영업: {HOURS}</li><li>원하는 사이즈 즉석 재단</li>{extra}<li>사업자는 도매회원 가입(사업자등록증·명함 확인)</li></ul></div>
 <div class="card"><h2>가격은 어떻게 보나요</h2><p>자주 찾는 목재·자재의 소매 기준가(부가세 별도)를 공개해 두었습니다. 규격·수량에 따라 달라지니 매장이나 전화로 확인해 주세요.</p><a href="/price.html">{area} 목재 기준가 보기 →</a><br><a href="/jaryo/">전체 자재 사진 보기 →</a></div></section>
 <section class="wrap sec"><h2>{area}에서 많이 찾는 목재·자재</h2><div class="mg m2">{"".join(f'<a class="mc" href="/{slug}/{m["slug"]}.html"><b>{area} {m["name"]}</b><small>{m["where"][0]}</small></a>' for m in MATS)}</div></section>
-<section class="wrap sec"><h2>자주 묻는 질문</h2>{faqslide([(area+"에서 목재 소량도 사나요?","네, 한 장·한 개부터 구매하실 수 있고 원하는 크기로 재단해 드립니다."),(area+" 현장으로 배송되나요?","네, 대전·세종·공주·계룡·논산·금산·옥천은 배송과 현장 납품을 합니다. 수량과 위치를 알려 주시면 안내해 드립니다("+TEL+")."),("시공도 맡길 수 있나요?","월드아키텍쳐가 대전·세종 인테리어·데크·샷시 시공을 직접 합니다. 모든 현장은 유튜브에 공개합니다.")])}</section>{area_cases(slug)}{areanav}{CTA}""", f"/{slug}.html", BIZ)
+<section class="wrap sec"><h2>자주 묻는 질문</h2>{faqslide([(area+"에서 목재 소량도 사나요?","네, 한 장·한 개부터 구매하실 수 있고 원하는 크기로 재단해 드립니다."),(area+" 현장으로 배송되나요?","네, 대전·세종·공주·계룡·논산·금산·옥천은 배송과 현장 납품을 하고, 그 외 지역은 용달 배송(운임 별도)으로 보내 드립니다. 수량과 위치를 알려 주시면 안내해 드립니다("+TEL+")."),("시공도 맡길 수 있나요?","월드아키텍쳐가 대전·세종 인테리어·데크·샷시 시공을 직접 합니다. 모든 현장은 유튜브에 공개합니다.")])}</section>{area_cases(slug)}{areanav}{CTA}""", f"/{slug}.html", BIZ)
 
     # 지역×자재 페이지 (대전 합판, 세종 방부목 …) — 구매·재단·배송 중심
     CASES_ = CASES
@@ -533,11 +533,11 @@ def build():
         ("cheongju", "청주", "청주 목재·건축자재 — 대전 영진목재 3000평 목재소 | 합판·구조재·재단",
          "청주·오송·오창에서 대량 목재·건축자재가 필요한 인테리어·건축 현장이라면 충청권 최대규모(3000평) 목재상인 대전 영진목재(월드건축자재)를 비교해 보세요. 합판·OSB·MDF·구조재·석고보드·몰딩·도어를 한곳에서 구하고 원하는 사이즈로 재단합니다.",
          [("hapan","합판 종류·규격"),("osb","OSB합판"),("gypsum","석고보드"),("door","실내 도어·문틀")],
-         "배송은 대전·세종·공주·계룡·논산·금산·옥천까지 합니다. 매장으로 오시면 재단해 드리며, 사업자는 도매회원(사업자등록증·명함 확인)으로 회원가를 받으실 수 있습니다."),
+         "배송은 대전·세종·공주·계룡·논산·금산·옥천까지 하고, 청주·천안 등 그 외 지역은 용달 배송(운임 별도)으로 보내 드립니다. 매장으로 오시면 재단해 드리며, 사업자는 도매회원(사업자등록증·명함 확인)으로 회원가를 받으실 수 있습니다."),
         ("cheonan-asan", "천안·아산", "천안·아산 목재·건축자재 — 대전 영진목재 3000평 목재소 | 도매·재단",
          "천안·아산 지역 인테리어 업체·건축 현장에서 합판·구조재·석고보드·몰딩·데크재를 한 번에 구하신다면 충청권 최대규모(3000평) 대전 영진목재(월드건축자재)를 확인해 보세요. 자재 기준가와 사진을 홈페이지에서 미리 보고 전화로 수량을 상담하실 수 있습니다.",
          [("hapan","합판 종류·규격"),("gujo","구조재·각재"),("molding","몰딩·걸레받이"),("hapdeck","합성데크")],
-         "배송은 대전·세종·공주·계룡·논산·금산·옥천까지 합니다. 매장으로 오시면 재단해 드리며, 사업자는 도매회원(사업자등록증·명함 확인)으로 회원가를 받으실 수 있습니다."),
+         "배송은 대전·세종·공주·계룡·논산·금산·옥천까지 하고, 청주·천안 등 그 외 지역은 용달 배송(운임 별도)으로 보내 드립니다. 매장으로 오시면 재단해 드리며, 사업자는 도매회원(사업자등록증·명함 확인)으로 회원가를 받으실 수 있습니다."),
     ]:
         jl = "".join(f'<li><a href="/video/{c}.html">{n} 영상 보기</a></li>' if c not in [m["slug"] for m in MATS] else f'<li><a href="/jajae/{c}.html">{n} 자재 보기</a></li>' for c, n in jobs)
         page(f"{slug}.html", t, lead[:150],
@@ -740,7 +740,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         page(f"p/{p['id']}.html", f"{p['name']} — {cat} | 대전 영진목재", f"{p['name']} ({cat}) 사진. 대전 영진목재(월드건축자재) 매장 취급, 원하는 사이즈 재단·배송.",
              f"""<section class="wrap sec"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/jaryo/{sl}.html">{E(cn)}</a>{f' › {E(sname)}' if sname else ''}</p>
 <div class="g2 pdet"><div><img class="pimg" src="{E(p['img'])}" alt="{E(p['name'])}"></div><div><h1>{E(p['name'])}</h1><p class="muted">{E(cat)}</p>
-<p>대전 유성 영진목재(월드건축자재) 3000평 매장에서 실물을 보고 고를 수 있습니다. 원하는 사이즈로 재단해 드리고 대전·세종·공주·계룡·논산·금산·옥천은 배송합니다. 가격·재고는 쇼핑몰이나 매장(042-545-2900)에서 확인하세요.</p>
+<p>대전 유성 영진목재(월드건축자재) 3000평 매장에서 실물을 보고 고를 수 있습니다. 원하는 사이즈로 재단해 드리고 대전·세종·공주·계룡·논산·금산·옥천은 배송하고, 그 외 지역은 용달 배송(운임 별도)합니다. 가격·재고는 쇼핑몰이나 매장(042-545-2900)에서 확인하세요.</p>
 <div class="row"><a class="b r" href="https://wwood.kr/home/mall/shoplist.php?idx={p['id']}&amp;pmode=view" target="_blank" rel="noopener">쇼핑몰에서 가격 보기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화 문의</a></div>
 <p class="small"><a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장 위치</a> · <a href="/jaryo/{sl}.html">{E(cn)} 전체 보기</a></p></div></div>{use}</section>
 <section class="wrap sec"><h2>같은 분류 제품</h2><div class="pg hrow">{"".join(pcard2(q) for q in sim)}</div></section>{CTA}""", "/jaryo/", None, p["img"])
