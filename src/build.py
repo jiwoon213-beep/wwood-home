@@ -284,7 +284,7 @@ def build():
         faq = [{"@type": "Question", "name": f"{m['name']}은(는) 어디에 쓰나요?", "acceptedAnswer": {"@type": "Answer", "text": ", ".join(m["where"])}},
                {"@type": "Question", "name": f"대전에서 {m['name']}을(를) 어디서 사나요?", "acceptedAnswer": {"@type": "Answer", "text": f"월드건축자재(영진종합목재), {ADDR}, {TEL}. {HOURS}. 원하는 사이즈로 재단해 드립니다."}}]
         cmpl = {"hapan":"hapan-osb-mdf","osb":"hapan-osb-mdf","mdf":"hapan-osb-mdf","bangbu":"bangbu-hapdeck","hapdeck":"bangbu-hapdeck","gypsum":"gypsum-types"}.get(m["slug"])
-        cmpln = f'<p>👉 <a href="/bigyo/{cmpl}.html">비슷한 자재와 비교해 보기</a> · <a href="/calc.html">필요한 양 계산하기</a></p>' if cmpl else '<p>👉 <a href="/calc.html">필요한 양 계산하기</a></p>'
+        cmpln = f'<p>👉 <a href="/bigyo/{cmpl}.html">비슷한 자재와 비교해 보기</a> · <a href="/calc.html">필요한 양 계산하기</a></p>' if cmpl else (f'<p>👉 <a href="/calc.html#door">문짝·문틀 크기 계산하기</a></p>' if m["slug"] == "door" else '<p>👉 <a href="/calc.html">필요한 양 계산하기</a></p>')
         mf = MFAQ.get(m["slug"], [])
         faq += [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in mf]
         faqsec = (f'<section class="wrap sec"><h2>{m["name"]} 자주 묻는 질문</h2>' + faqslide(mf) + '</section>') if mf else ""
@@ -503,6 +503,7 @@ def build():
                 ("석고보드 1장은 몇 ㎡인가요?","3×6(900×1800mm)은 1.62㎡, 3×8(900×2400mm)은 2.16㎡입니다. 2겹(2P) 시공이면 장수가 2배입니다."),
                 ("합판 1장은 몇 ㎡인가요?","4×8(1220×2440mm) 합판·OSB·MDF 1장은 약 2.98㎡입니다."),
                 ("아이소핑크 1장은 몇 ㎡인가요?","900×1800mm 1장은 1.62㎡입니다. 두께는 필요한 단열 성능에 맞춰 고릅니다."),
+                ("문짝 크기는 어떻게 재나요?","문틀 안쪽 가로를 위·중간·아래, 세로를 좌·중간·우에서 재고 가장 작은 값을 기준으로 합니다. 문틀째 바꿀 때는 벽 구멍 크기와 벽 두께를 잽니다."),
                 ("1평은 몇 제곱미터인가요?","1평은 약 3.3058㎡입니다.")]
     faqld = {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in CALC_FAQ]}
     def fld(i, label, val, step="0.1"):
@@ -531,11 +532,14 @@ def build():
      ("pnt","페인트", "페인트 양",
       fld("ta","칠할 면적(㎡)",30)+fld("tc","칠 횟수",2,"1")+fld("tr","1L당 칠 면적(㎡, 1회)",8),
       '<a href="/jajae/stain.html">오일스테인·도료</a> · <a href="/video/finish.html">페인트 시공 영상</a>', "1L당 칠 면적은 제품·바탕면에 따라 다릅니다. 통에 적힌 값을 넣으세요."),
+     ("door","문짝·문틀", "문짝·문틀 크기 계산",
+      sel("om","교체 범위",[("leaf","문짝만 교체 (문틀 그대로)"),("frame","문틀째 교체 (벽 구멍 기준)")])+fld("ow","가로(mm)",780,"1")+fld("oh","세로(mm)",2050,"1")+fld("od","벽 두께(mm, 문틀째)",110,"1")+fld("of","문틀 두께(mm, 한쪽)",30,"1")+sel("ot","문 종류",[("10","방문 (하부 틈 10mm)"),("15","욕실문 (하부 틈 15mm)"),("5","기타 (하부 틈 5mm)")])+fld("os","문짝 좌우 틈 합계(mm)",6,"1")+fld("on","문 개수",1,"1"),
+      '<a href="/jajae/door.html">실내 도어·문틀</a> · <a href="/video/door.html">문 교체 영상</a>', "문짝만 교체: 문틀 안쪽 크기를, 문틀째 교체: 벽 구멍(개구부) 크기를 넣으세요. 위·중간·아래 여러 번 재서 가장 작은 값을 씁니다. 틈·문틀 두께는 제품·현장에 따라 달라 참고용이며, 주문 전 매장에서 실측 치수를 확인해 드립니다."),
      ("py","평↔㎡", "평 ↔ ㎡ 변환", fld("yp","평",1)+fld("ym","㎡",3.31), "", ""),
     ]
     chips = "".join(f'<button class="chip" data-i="{i}">{t}</button>' for i, (k, t, *_ ) in enumerate(CALCS))
     slides = "".join(f'<div class="cslide" id="{k}"><div class="card"><h2>{h}</h2><div class="cg">{inner}</div>' + ('' if k == "py" else f'<div class="cr" id="{k}r"></div>') + (f'<p class="small muted">{note}</p>' if note else "") + (f'<p class="small">{links}</p>' if links else "") + '</div></div>' for k, t, h, inner, links, note in CALCS)
-    page("calc.html", "자재 계산기 — 데크·석고보드·합판·몰딩·바닥재·단열재·페인트 몇 장? 평·㎡ 변환 | 영진목재", "데크 방부목·합성데크 장수, 석고보드·합판·단열재 장수, 몰딩·걸레받이 길이, 데코타일·강마루 박스 수, 페인트 양, 평↔㎡를 바로 계산하세요. 대전 영진목재(월드건축자재) 재단·배송.",
+    page("calc.html", "자재 계산기 — 데크·석고보드·합판·문짝·문틀·몰딩·바닥재·단열재·페인트, 평·㎡ | 영진목재", "데크 방부목·합성데크 장수, 석고보드·합판·단열재 장수, 몰딩·걸레받이 길이, 데코타일·강마루 박스 수, 페인트 양, 평↔㎡를 바로 계산하세요. 대전 영진목재(월드건축자재) 재단·배송.",
 f"""<section class="wrap sec"><h1>자재 계산기</h1><p class="lead">필요한 양을 미리 계산해 오시면 매장에서 바로 재단해 드립니다. 결과는 참고용입니다(로스 포함).</p>
 <div class="chips" id="cchips">{chips}</div>
 <div class="cnav"><button class="cb" data-d="-1">◀ 이전</button><span id="cpos" class="small muted"></span><button class="cb" data-d="1">다음 ▶</button></div>
@@ -557,6 +561,10 @@ mol:function(){{var per=2*(v('mw')+v('ml'))*Math.max(1,v('mr')),k=$('mk').value,
  if(k!='base')out+='천장몰딩 <b>'+n(ce*1.1/p)+'개</b> ';if(k!='ceil')out+='걸레받이 <b>'+n(ba*1.1/p)+'개</b>';return out+' <span class="small">('+p+'m 기준, 로스 10%)</span>'}},
 flo:function(){{var b=v('fb')||1;return '필요 면적 '+(v('fa')*parseFloat($('fl').value)).toFixed(1)+'㎡<br>바닥재 <b>'+n(v('fa')*parseFloat($('fl').value)/b)+'박스</b>'}},
 ins:function(){{return '단열재 <b>'+n(v('ia')/parseFloat($('is').value)*Math.max(1,v('il'))*1.1)+'장</b>'}},
+door:function(){{var m=$('om').value,W=v('ow'),H=v('oh'),F=v('of'),N=Math.max(1,v('on')),out='';
+ if(m=='frame'){{var fw=W-10,fh=H-5;out+='문틀 바깥 크기 약 <b>'+Math.round(fw)+' × '+Math.round(fh)+'mm</b> · 문틀 폭 <b>'+Math.round(v('od'))+'mm</b>(벽 두께)<br>';W=fw-2*F;H=fh-F;out+='문틀 안쪽 약 '+Math.round(W)+' × '+Math.round(H)+'mm<br>'}}
+ var dw=W-v('os'),dh=H-3-(+$('ot').value),hg=dh>2100?4:3;
+ return out+'문짝 크기 약 <b>'+Math.round(dw)+' × '+Math.round(dh)+'mm</b><br>경첩 '+(hg*N)+'개 · 손잡이 '+N+'개'+(m=='frame'?' · 문틀 '+N+'세트':'')+' <span class="small">('+N+'짝 기준)</span>'}},
 pnt:function(){{var L=v('ta')*Math.max(1,v('tc'))/(v('tr')||1);return '필요량 약 <b>'+L.toFixed(1)+'L</b><br>18L 기준 '+n(L/18)+'통 또는 4L 기준 '+n(L/4)+'통'}}
 }};
 Object.keys(C).forEach(function(k){{var s=$(k);s.querySelectorAll('input,select').forEach(function(e){{e.addEventListener('input',function(){{$(k+'r').innerHTML=C[k]()}})}});$(k+'r').innerHTML=C[k]()}});
