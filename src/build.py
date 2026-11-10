@@ -151,6 +151,14 @@ def clean_name(n):  # "합판- 일반 4*8 @ 8.5mm(베)" → "합판 일반 4×8 
     out = re.sub(r"(\d)\s*×\s*", r"\1×", out).replace("( ", "(")
     return out
 
+def prod_ld(rows, url, img=None):
+    if not rows: return []
+    return [{"@context": "https://schema.org", "@type": "Product", "name": clean_name(r["name"]), "category": r["cat"],
+             **({"image": img} if img else {}),
+             "offers": {"@type": "Offer", "price": int(r["price"]), "priceCurrency": "KRW", "url": url,
+                        "priceSpecification": {"@type": "UnitPriceSpecification", "price": int(r["price"]), "priceCurrency": "KRW", "valueAddedTaxIncluded": False},
+                        "seller": {"@type": "Organization", "name": "영진종합목재"}}} for r in rows]
+
 def mat_prices(m, k=10):
     cats, inc, exc = m["price"]
     if not cats: return []
@@ -307,7 +315,7 @@ def build():
 <section class="wrap sec"><h2>{m['name']} 시공·사용 영상</h2>{vid}</section>{faqsec}{CTA}"""
         page(f"jajae/{m['slug']}.html", f"{m['kw']} — 용도·기준가·시공 영상 | 대전 영진목재",
              f"{m['name']} 용도와 인테리어 효과, 규격별 소매 기준가, 시공 영상. 대전 유성 월드건축자재 매장에서 즉석 재단.", body, "/jajae/",
-             {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq},
+             [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq}] + prod_ld(mat_prices(m, 5), f"{BASE}/jajae/{m['slug']}.html", ph[0]["img"] if ph else None),
              (ph[0]["img"] if ph else (f"https://i.ytimg.com/vi/{vs[0]['id']}/hqdefault.jpg" if vs else None)))
 
     # 전체 자재 검색용 목록
