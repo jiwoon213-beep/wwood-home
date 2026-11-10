@@ -163,3 +163,4 @@ section.jall>p.small{margin:0 0 8px}
 @media(min-width:900px){.mg.m2{grid-auto-columns:23%}}
 .mg.m2>.mc{padding:12px 14px;min-height:0}.mg.m2 .mc b{font-size:16px}.mg.m2 .mc small{font-size:13px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .lead+p>.b,.lead+p>.b.o{display:inline-block;padding:7px 12px;font-size:14px;margin:0 6px 6px 0}
+.lead+p>.b{min-height:38px!important;flex:0 0 auto}
