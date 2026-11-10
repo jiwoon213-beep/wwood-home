@@ -127,3 +127,4 @@ details.faq{border:1px solid var(--line);border-radius:10px;padding:10px 14px;ma
 .sg{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;padding-bottom:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.sg::-webkit-scrollbar{display:none}
 .sg>.vc{flex:0 0 40%;max-width:200px;scroll-snap-align:start}@media(min-width:900px){.sg>.vc{flex-basis:15%}}
 .hsh{margin:2px 0 0;text-align:right;font-size:13px;color:var(--mut)}@media(min-width:900px){.hsh{display:none}}
+table.cmp{min-width:560px}table.cmp th:first-child{position:sticky;left:0;background:#faf8f5;z-index:1}table.cmp td,table.cmp th{vertical-align:top;font-size:14px;line-height:1.5}

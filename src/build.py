@@ -273,7 +273,7 @@ def build():
     # 자재 백과
     lst = "".join(f'<a class="mc" href="/jajae/{m["slug"]}.html"><b>{m["name"]}</b><small>{" · ".join(m["where"][:2])}</small></a>' for m in MATS)
     page("jajae/index.html", "자재 백과 — 합판·MDF·방부목·석고보드 용도와 가격 | 월드건축자재 대전", "자재별 용도, 인테리어 효과, 소매 기준가, 시공 영상을 한 번에. 대전 월드건축자재(영진목재).",
-         f'<section class="wrap sec"><h1>자재 백과</h1><p class="lead">손님들이 가장 헷갈리는 "이 자재 어디에 쓰나요?"를 자재별로 정리했습니다.</p><p>자재 비교: <a href="/bigyo/hapan-osb-mdf.html">합판 vs OSB vs MDF</a> · <a href="/bigyo/bangbu-hapdeck.html">방부목 vs 합성데크</a> · <a href="/bigyo/gypsum-types.html">석고보드 종류</a> · <a href="/calc.html">자재 계산기</a></p><div class="mg">{lst}</div></section>{CTA}', "/jajae/")
+         f'<section class="wrap sec"><h1>자재 백과</h1><p class="lead">손님들이 가장 헷갈리는 "이 자재 어디에 쓰나요?"를 자재별로 정리했습니다.</p><p><a class="b o" href="/bigyo/">자재 비교 전체 보기 (14종)</a> <a class="b o" href="/calc.html">자재 계산기</a></p><div class="mg">{lst}</div></section>{CTA}', "/jajae/")
     for m in MATS:
         vs = top(lambda v: m["tag"] in v["mats"], 10**6)
         rel = [x for x in MATS if x is not m][:0]
@@ -283,7 +283,7 @@ def build():
         vid = ((embed(lf[0]) if lf else "") + vsplit([v for v in vs if not lf or v is not lf[0]], "h3")) if vs else f'<p><a href="{YT}">유튜브 채널에서 보기</a></p>'
         faq = [{"@type": "Question", "name": f"{m['name']}은(는) 어디에 쓰나요?", "acceptedAnswer": {"@type": "Answer", "text": ", ".join(m["where"])}},
                {"@type": "Question", "name": f"대전에서 {m['name']}을(를) 어디서 사나요?", "acceptedAnswer": {"@type": "Answer", "text": f"월드건축자재(영진종합목재), {ADDR}, {TEL}. {HOURS}. 원하는 사이즈로 재단해 드립니다."}}]
-        cmpl = {"hapan":"hapan-osb-mdf","osb":"hapan-osb-mdf","mdf":"hapan-osb-mdf","bangbu":"bangbu-hapdeck","hapdeck":"bangbu-hapdeck","gypsum":"gypsum-types"}.get(m["slug"])
+        cmpl = {"hapan":"hapan-types","osb":"hapan-osb-mdf","mdf":"hapan-osb-mdf","bangbu":"bangbu-hapdeck","hapdeck":"bangbu-hapdeck","gypsum":"gypsum-types","siding":"siding-types","insul":"insulation-types","maru":"floor-types","tile":"floor-types","door":"door-types","stain":"stain-oil-water","hinoki":"louver-types","jipseong":"jipseong-types","gujo":"gakjae-types","sound":"sound-types","film":"door-types"}.get(m["slug"])
         cmpln = f'<p>👉 <a href="/bigyo/{cmpl}.html">비슷한 자재와 비교해 보기</a> · <a href="/calc.html">필요한 양 계산하기</a></p>' if cmpl else (f'<p>👉 <a href="/calc.html#door">문짝·문틀 크기 계산하기</a></p>' if m["slug"] == "door" else '<p>👉 <a href="/calc.html">필요한 양 계산하기</a></p>')
         mf = MFAQ.get(m["slug"], [])
         faq += [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in mf]
@@ -587,50 +587,24 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 }})();
 </script>{CTA}""", "/calc.html", faqld)
 
-    # 자재 비교
-    CMP = [
-     ("hapan-osb-mdf", "합판 vs OSB vs MDF 차이 — 용도·강도·물에 강한 정도 비교", "합판, OSB, MDF 무엇이 다를까요? 만드는 방식, 강도, 물에 강한 정도, 피스 고정력, 표면 마감, 쓰는 곳을 한눈에 비교했습니다.",
-      ["합판","OSB","MDF"],
-      [("만드는 방식","얇은 나무판을 결 방향 엇갈려 접착","나무 조각(스트랜드)을 방향 맞춰 압축","나무 섬유를 접착제와 고압 압축"),
-       ("강도·휨","강하고 잘 안 휨","구조 덮개로 쓸 만큼 강함","무겁고 무른 편, 긴 선반은 처짐"),
-       ("물·습기","일반은 보통, 방수합판은 강함","단면이 물 먹으면 부풂","약함(방수 MDF 따로 있음)"),
-       ("피스 고정력","좋음","좋음","모서리는 갈라지기 쉬움"),
-       ("표면","나뭇결(자작·낙엽송 등은 마감용)","거친 조각 무늬","매끈해 도장·필름에 좋음"),
-       ("주로 쓰는 곳","벽·바닥 바탕, 가구, 노출 마감","목조주택 벽·지붕 덮개, 창고, 빈티지 마감","몰딩, 가구 문짝, 아트월, 도장 벽")],
-      "튼튼한 바탕과 가구 몸체는 합판, 목조주택·창고 덮개와 거친 질감은 OSB, 매끈한 도장·몰딩·문짝은 MDF가 잘 맞습니다.",
-      ["hapan","osb","mdf"], r"합판|OSB|MDF"),
-     ("bangbu-hapdeck", "방부목 vs 합성데크 비교 — 수명·관리·비용·시공", "마당·옥상 데크, 방부목과 합성데크 중 무엇을 깔까요? 관리 방법, 질감, 시공 방식, 비용 차이를 비교했습니다.",
-      ["방부목 데크","합성데크"],
-      [("재료","방부 처리한 나무","나무 가루 + 수지 합성재"),
-       ("관리","1~2년마다 오일스테인 덧칠","오일 칠 필요 없음, 물청소"),
-       ("갈라짐·썩음","관리 안 하면 갈라지고 썩을 수 있음","썩거나 갈라지지 않음"),
-       ("질감","자연스러운 나무 느낌","균일한 색·무늬, 여름엔 표면이 뜨거워질 수 있음"),
-       ("고정 방식","피스로 위에서 고정","클립으로 숨겨 고정"),
-       ("초기 비용","낮은 편","높은 편")],
-      "처음 비용을 아끼고 나무 질감을 원하면 방부목, 관리 시간을 줄이고 오래 깔끔하게 쓰려면 합성데크가 좋습니다. 어느 쪽이든 하지(장선) 시공과 배수가 수명을 좌우합니다.",
-      ["bangbu","hapdeck","stain"], r"데크"),
-     ("gypsum-types", "석고보드 종류 비교 — 일반·방수·방화 석고보드 어디에 쓰나", "일반 석고보드, 방수 석고보드, 방화 석고보드의 차이와 쓰는 곳, 규격을 정리했습니다.",
-      ["일반 석고보드","방수 석고보드","방화 석고보드"],
-      [("쓰는 곳","거실·방 벽·천장","주방·욕실 주변, 습기 있는 벽","내화 성능이 필요한 벽·천장"),
-       ("특징","가볍고 시공이 쉬움","습기에 강하게 처리","불에 견디는 성능 보강"),
-       ("주의","물에 젖으면 약해짐","물이 직접 닿는 곳은 방수층 따로","현장 기준에 맞는 제품 확인"),
-       ("규격(예)","3×6, 3×8 / 9.5T 등","3×6, 3×8","3×6, 3×8")],
-      "보통 실내 벽은 일반, 물 쓰는 곳 주변은 방수, 법적·안전상 내화가 필요한 곳은 방화 석고보드를 씁니다. 1장 면적은 3×6이 1.62㎡, 3×8이 2.16㎡입니다.",
-      ["gypsum","gujo","sound"], r"석고보드"),
-    ]
+    # 자재 비교 (data/compare.json)
+    CMP = json.load(open(f"{ROOT}/data/compare.json", encoding="utf-8"))
     matname2 = {m["slug"]: m["name"] for m in MATS}
-    for slug, t, d, cols, rows, concl, mats, kw in CMP:
-        th = "<tr><th></th>" + "".join(f"<th>{c}</th>" for c in cols) + "</tr>"
-        tb = "".join("<tr><th>" + r[0] + "</th>" + "".join(f"<td>{x}</td>" for x in r[1:]) + "</tr>" for r in rows)
-        vs = top(lambda v, kw=kw: re.search(kw, v["title"]) is not None, 8)
-        ml = " · ".join(f'<a href="/jajae/{m}.html">{matname2[m]} 용도·기준가</a>' for m in mats if m in matname2)
-        page(f"bigyo/{slug}.html", t + " | 영진목재", d,
-             f"""<section class="wrap sec"><p class="crumb"><a href="/jajae/">자재 백과</a> › 자재 비교</p><h1>{t}</h1><p class="lead">{d}</p>
+    cmpnav = lambda cur: '<div class="pl hs">' + "".join(f'<a class="pc" href="/bigyo/{c["slug"]}.html"><small>자재 비교</small><b>{E(c["short"])}</b><span>{E(c["desc"][:60])}…</span></a>' for c in CMP if c["slug"] != cur) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p>'
+    for c in CMP:
+        th = "<tr><th></th>" + "".join(f"<th>{E(x)}</th>" for x in c["cols"]) + "</tr>"
+        tb = "".join("<tr><th>" + E(r[0]) + "</th>" + "".join(f"<td>{E(x)}</td>" for x in r[1:]) + "</tr>" for r in c["rows"])
+        vs = top(lambda v, kw=c["kw"]: re.search(kw, v["title"]) is not None, 8)
+        ml = " · ".join(f'<a href="/jajae/{m}.html">{matname2[m]} 용도·기준가</a>' for m in c["mats"] if m in matname2)
+        page(f"bigyo/{c['slug']}.html", c["title"] + " | 영진목재", c["desc"],
+             f"""<section class="wrap sec"><p class="crumb"><a href="/bigyo/">자재 비교</a> › {E(c["short"])}</p><h1>{E(c["title"])}</h1><p class="lead">{E(c["desc"])}</p>
 <div class="tw"><table class="cmp"><thead>{th}</thead><tbody>{tb}</tbody></table></div>
-<h2>정리하면</h2><p>{concl}</p><p>{ml} · <a href="/calc.html">자재 계산기</a></p>
+<h2>정리하면</h2><p>{E(c["concl"])}</p><p><a class="b o" href="/jaryo/?q={c['q']}">매장 취급 제품 사진 보기</a> <a class="b o" href="/calc.html">자재 계산기</a></p><p>{ml}</p>
 <p class="small muted">일반적인 특징을 정리한 것으로 제품·등급에 따라 다를 수 있습니다. 매장에서 실물을 비교해 보세요.</p></section>
 <section class="wrap sec"><h2>관련 영상</h2>{vsplit(vs, "h3")}</section>
-<section class="wrap sec"><h2>다른 자재 비교</h2><p>{" · ".join(f'<a href="/bigyo/{s2}.html">{t2.split(" — ")[0]}</a>' for s2, t2, *_ in CMP if s2 != slug)}</p></section>{CTA}""", "/jajae/")
+<section class="wrap sec"><h2>다른 자재 비교</h2>{cmpnav(c["slug"])}</section>{CTA}""", "/jajae/")
+    page("bigyo/index.html", "자재 비교 — 합판·사이딩·단열재·바닥재·도어·루바 종류별 차이 | 영진목재", "헷갈리는 건축 자재를 종류별로 비교했습니다. 합판 vs OSB vs MDF, 세라믹·메탈·비닐 사이딩, 단열재, 바닥재, 실내 도어, 루바, 집성판, 각재, 방음·흡음재.",
+         '<section class="wrap sec"><p class="crumb"><a href="/jajae/">자재 백과</a> › 자재 비교</p><h1>자재 비교</h1><p class="lead">비슷해 보여도 쓰는 곳이 다른 자재들을 한눈에 비교했습니다.</p><div class="pl">' + "".join(f'<a class="pc" href="/bigyo/{c["slug"]}.html"><small>자재 비교</small><b>{E(c["short"])}</b><span>{E(c["desc"][:70])}…</span></a>' for c in CMP) + f'</div></section>{CTA}', "/jajae/")
 
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
