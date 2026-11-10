@@ -128,3 +128,8 @@ details.faq{border:1px solid var(--line);border-radius:10px;padding:10px 14px;ma
 .sg>.vc{flex:0 0 40%;max-width:200px;scroll-snap-align:start}@media(min-width:900px){.sg>.vc{flex-basis:15%}}
 .hsh{margin:2px 0 0;text-align:right;font-size:13px;color:var(--mut)}@media(min-width:900px){.hsh{display:none}}
 table.cmp{min-width:560px}table.cmp th:first-child{position:sticky;left:0;background:#faf8f5;z-index:1}table.cmp td,table.cmp th{vertical-align:top;font-size:14px;line-height:1.5}
+.hx .ug,.hx .mg,.hx .vg,.hx .pl{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;padding:2px 2px 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.hx .ug::-webkit-scrollbar,.hx .mg::-webkit-scrollbar,.hx .vg::-webkit-scrollbar,.hx .pl::-webkit-scrollbar{display:none}
+.hx .ug>*,.hx .mg>*{flex:0 0 44%;scroll-snap-align:start}.hx .vg>*{flex:0 0 72%;scroll-snap-align:start}.hx .pl>*{flex:0 0 80%;max-width:360px;scroll-snap-align:start}
+@media(min-width:900px){.hx .ug>*,.hx .mg>*{flex-basis:22%}.hx .vg>*{flex-basis:30%}.hx .pl>*{flex-basis:31%}}
+.hx .sec>h2::after{content:"  ›";color:var(--mut);font-weight:400;font-size:.7em}
