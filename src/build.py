@@ -708,6 +708,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
+    open(f"{OUT}/b4237bce57cfb60c93b64e5203857f41.txt", "w").write("b4237bce57cfb60c93b64e5203857f41")  # IndexNow 키(네이버·빙)
     open(f"{OUT}/robots.txt", "w").write(f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\n")
     today = datetime.date.today().isoformat()
     open(f"{OUT}/sitemap.xml", "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
