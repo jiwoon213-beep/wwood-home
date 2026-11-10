@@ -119,6 +119,11 @@ def mat_photos(slug):
     cats, inc, exc = MPHOTO.get(slug, ([], None, None))
     if not inc: return []
     return [p for p in PROD if (not cats or any(c in p["cats"] for c in cats)) and re.search(inc, p["name"]) and not (exc and re.search(exc, p["name"]))]
+def mall_links(m):
+    cats = [c for c in MPHOTO.get(m["slug"], ([], None, None))[0] if "/" in c and MCAT.get(c)]
+    if not cats: return ""
+    lk = " · ".join(f'<a href="https://wwood.kr/home/mall/shoplist.php?depth=2&amp;code1_idx={c.split("/")[0]}&amp;code2_idx={c.split("/")[1]}" target="_blank" rel="noopener">{E(MCAT[c].replace("ㆍ","").strip())}</a>' for c in cats)
+    return f'<p class="small" style="margin-top:10px">🛒 쇼핑몰에서 {E(m["name"])} 상품 보기: {lk}</p>'
 def pcard(p):
     sub = MCAT.get(p["sub"] or "", "")
     return (f'<a class="pd" href="https://wwood.kr/home/mall/shoplist.php?idx={p["id"]}&amp;pmode=view" target="_blank" rel="noopener">'
@@ -314,7 +319,7 @@ def build():
 <h1>{m['name']} — {m['kw']}</h1><p class="lead">{E(m['lead'])}</p>
 <div class="row"><span class="chip">사용 장소: {E(m['place'])}</span><span class="chip">셀프 난이도: {E(m['diy'])}</span></div></section>{gal}
 <section class="wrap sec g2"><div class="card"><h2>어디에 쓰나요?</h2><ul>{where}</ul><h3>인테리어 효과</h3><p>{E(m['effect'])}</p><h3>고를 때 알아둘 것</h3><ul>{tips}</ul>{cmpln}</div>
-<div class="card"><h2>{m['name']} 소매 기준가</h2>{ptable(mat_prices(m))}<a href="/price.html">전체 기준가 →</a></div></section>
+<div class="card"><h2>{m['name']} 소매 기준가</h2>{ptable(mat_prices(m))}<a href="/price.html">전체 기준가 →</a>{mall_links(m)}</div></section>
 <section class="wrap sec"><h2>{m['name']} 시공·사용 영상</h2>{vid}</section>{faqsec}{CTA}"""
         page(f"jajae/{m['slug']}.html", f"{m['kw']} — 용도·기준가·시공 영상 | 대전 영진목재",
              f"{m['name']} 용도와 인테리어 효과, 규격별 소매 기준가, 시공 영상. 대전 유성 월드건축자재 매장에서 즉석 재단.", body, "/jajae/",
