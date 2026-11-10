@@ -396,7 +396,7 @@ def build():
 
     # 지역 안내 (대전 목재 / 세종 목재)
     matlinks = "".join(f'<a class="mc" href="/jajae/{m["slug"]}.html"><b>{m["name"]}</b><small>{m["where"][0]}</small></a>' for m in MATS)
-    AREAS = [("daejeon","대전 목재"),("sejong","세종 목재"),("yuseong","유성구"),("seogu","서구"),("daedeok","대덕구"),("junggu-donggu","중구·동구")]
+    AREAS = [("daejeon","대전 목재"),("sejong","세종 목재"),("yuseong","유성구"),("seogu","서구"),("daedeok","대덕구"),("junggu-donggu","중구·동구"),("sejong-sinsi","세종 신도심"),("sejong-eupmyeon","세종 조치원·읍면")]
     areanav = '<section class="wrap sec"><h2>지역별 목재·자재 안내</h2><p>' + " · ".join(f'<a href="/{a}.html">{n}</a>' for a, n in AREAS) + '</p></section>'
     for slug, area, t, lead, extra in [
         ("daejeon", "대전", "대전 목재 — 영진목재(월드건축자재) 3000평 목재소 | 합판·구조재·방부목·재단",
@@ -434,10 +434,18 @@ def build():
          "대전 중구(은행·대흥·문화·유천·태평 등)와 동구(가양·용전·판암·대동 등) 구도심의 노후주택·상가 수리에 필요한 문·문틀·몰딩·합판·석고보드를 영진목재(월드건축자재)에서 한곳에 구하세요.",
          [("door","방문·문틀 교체"),("exterior","샷시·외벽 보수"),("finish","도배·필름·페인트"),("tips","노후주택 리모델링 상식")],
          "오래된 집은 문틀·창틀 치수가 제각각이라 실측 치수를 알려 주시면 맞춰 재단해 드립니다."),
+        ("sejong-sinsi", "세종 신도심", "세종 신도심 목재·인테리어 자재 — 보람·도담·새롬·나성·고운 | 영진목재",
+         "세종 신도심(행복도시 — 보람·도담·새롬·다정·나성·종촌·고운·아름·반곡·해밀 등) 아파트·상가 인테리어에 필요한 합판·MDF·몰딩·문·석고보드·필름을 대전 유성 영진목재(월드건축자재)에서 재단해 세종 현장까지 배송합니다.",
+         [("door","방문·중문 교체"),("film","인테리어 필름"),("molding","몰딩·걸레받이"),("tips","아파트 인테리어 상식")],
+         "신도심 아파트·상가 현장 납품은 수량과 동·호수, 반입 조건을 알려 주시면 맞춰 드립니다(전화 상담)."),
+        ("sejong-eupmyeon", "세종 조치원·읍면", "세종 조치원·읍면 목재 — 전원주택 데크·창고·방부목 | 영진목재",
+         "세종 조치원읍과 연기·연동·연서·전의·전동·소정·부강·금남·장군면의 전원주택·농가 창고·마당 작업에 필요한 방부목·구조재·합판·데크재·침목을 대전 유성 영진목재(월드건축자재)에서 재단해 배송합니다.",
+         [("deck","전원주택 데크·마당"),("bangbu","방부목·데크재"),("greenhouse","목조 온실·창고 짓기"),("chimmok","침목 조경")],
+         "읍면 지역 배송은 위치와 수량에 따라 달라지니 전화로 먼저 확인해 주세요."),
     ]:
         jl = "".join(f'<li><a href="/video/{c}.html">{n} 영상 보기</a></li>' if c not in [m["slug"] for m in MATS] else f'<li><a href="/jajae/{c}.html">{n} 자재 보기</a></li>' for c, n in jobs)
         page(f"{slug}.html", t, lead[:150],
-             f"""<section class="wrap sec"><h1>대전 {gu} 목재 · 건축자재 — 영진목재</h1><p class="lead">{lead}</p>
+             f"""<section class="wrap sec"><h1>{"" if gu.startswith("세종") else "대전 "}{gu} 목재 · 건축자재 — 영진목재</h1><p class="lead">{lead}</p>
 <div class="row"><a class="b g" href="/visit.html">매장 위치·영업시간</a><a class="b d" href="tel:{TEL.replace('-','')}">전화 {TEL}</a></div></section>
 <section class="wrap sec g2"><div class="card"><h2>{gu}에서 자주 하는 작업</h2><ul>{jl}</ul></div>
 <div class="card"><h2>{gu} 구매·배송 안내</h2><ul><li>매장: {ADDR} 영진목재(월드건축자재)</li><li>영업: {HOURS}</li><li>원하는 사이즈 즉석 재단</li><li>{note}</li><li><a href="/price.html">자재 기준가 보기</a> · <a href="/jaryo/">전체 자재 사진</a></li></ul></div></section>
