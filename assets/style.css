@@ -121,3 +121,9 @@ details.faq{border:1px solid var(--line);border-radius:10px;padding:10px 14px;ma
 .fqs{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.fqs::-webkit-scrollbar{display:none}
 .fq{flex:0 0 86%;max-width:420px;scroll-snap-align:start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-sizing:border-box}.fq b{display:block;font-size:16px;line-height:1.45}.fq p{margin:8px 0 0;line-height:1.6}
 .fqh{margin:4px 0 0;text-align:right}@media(min-width:900px){.fq{flex-basis:32%}.fqh{display:none}}
+.pl.hs{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;padding:2px 2px 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.pl.hs::-webkit-scrollbar{display:none}
+.pl.hs>.pc{flex:0 0 78%;max-width:340px;scroll-snap-align:start;padding:0 0 14px;overflow:hidden}.pl.hs>.pc img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;margin-bottom:8px}.pl.hs>.pc>small,.pl.hs>.pc>b,.pl.hs>.pc>span{padding:0 14px}
+@media(min-width:900px){.pl.hs>.pc{flex-basis:30%}}
+.sg{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;padding-bottom:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.sg::-webkit-scrollbar{display:none}
+.sg>.vc{flex:0 0 40%;max-width:200px;scroll-snap-align:start}@media(min-width:900px){.sg>.vc{flex-basis:15%}}
+.hsh{margin:2px 0 0;text-align:right;font-size:13px;color:var(--mut)}@media(min-width:900px){.hsh{display:none}}
