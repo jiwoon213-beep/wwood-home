@@ -137,3 +137,11 @@ table.cmp{min-width:560px}table.cmp th:first-child{position:sticky;left:0;backgr
 .pg.hrow>.pd{flex:0 0 40%;max-width:220px;scroll-snap-align:start}@media(min-width:900px){.pg.hrow>.pd{flex-basis:16%}}
 .pd.more .pi{display:flex;align-items:center;justify-content:center;background:#f3efe9;font-size:22px;color:var(--red)}
 .jchips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.jchips .chip{text-decoration:none;border:1px solid var(--line);background:#faf8f5;color:var(--ink);font-size:14px}.jchips .chip small{color:var(--mut)}
+/* 옆으로 넘기기 줄 간격·비율 정리 */
+.pg.hrow,.pl.hs,.sg,.fqs,.hx .ug,.hx .mg,.hx .vg,.hx .pl{align-items:flex-start;margin-bottom:0}
+.hsh{margin:2px 0 0!important;font-size:12px}
+section.jall.sec{padding:16px 20px 14px}section.jall h2{font-size:21px;margin:0 0 2px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}section.jall h2 small{font-size:15px}section.jall h2 a{font-size:14px;margin-left:auto}
+section.jall>p.small{margin:0 0 8px}
+.jchips{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin:8px 0 0}.jchips::-webkit-scrollbar{display:none}.jchips .chip{padding:6px 12px!important;font-size:13px!important;margin:0!important}
+.hx .sec{padding:22px 20px}.hx .sec>h2{margin:0 0 4px}.hx .sec>p.muted{margin:0 0 10px}
+.pg.hrow>.pd b{font-size:13px;padding:7px 9px 1px}.pg.hrow>.pd small{padding:0 9px 8px}
