@@ -396,6 +396,8 @@ def build():
 
     # 지역 안내 (대전 목재 / 세종 목재)
     matlinks = "".join(f'<a class="mc" href="/jajae/{m["slug"]}.html"><b>{m["name"]}</b><small>{m["where"][0]}</small></a>' for m in MATS)
+    AREAS = [("daejeon","대전 목재"),("sejong","세종 목재"),("yuseong","유성구"),("seogu","서구"),("daedeok","대덕구"),("junggu-donggu","중구·동구")]
+    areanav = '<section class="wrap sec"><h2>지역별 목재·자재 안내</h2><p>' + " · ".join(f'<a href="/{a}.html">{n}</a>' for a, n in AREAS) + '</p></section>'
     for slug, area, t, lead, extra in [
         ("daejeon", "대전", "대전 목재 — 영진목재(월드건축자재) 3000평 목재소 | 합판·구조재·방부목·재단",
          "대전에서 목재를 찾으신다면 유성대로 44의 영진목재(영진종합목재·월드건축자재)로 오세요. 충청권 최대규모 3000평 매장에 합판·OSB·MDF·구조재·다루끼·방부목·합성데크·석고보드·몰딩·도어까지 한곳에 있고, 원하는 사이즈로 바로 재단해 드립니다.",
@@ -412,7 +414,35 @@ def build():
 <section class="wrap sec"><h2>{area}에서 많이 찾는 목재·자재</h2><div class="mg">{matlinks}</div></section>
 <section class="wrap sec"><h2>자주 묻는 질문</h2><p><b>Q. {area}에서 목재 소량도 사나요?</b><br>A. 네, 한 장·한 개부터 구매하실 수 있고 원하는 크기로 재단해 드립니다.</p>
 <p><b>Q. {area} 현장으로 배송되나요?</b><br>A. 대전·세종 배송과 현장 납품을 합니다. 수량과 위치를 알려 주시면 안내해 드립니다({TEL}).</p>
-<p><b>Q. 시공도 맡길 수 있나요?</b><br>A. 월드아키텍쳐가 대전·세종 인테리어·데크·샷시 시공을 직접 합니다. 모든 현장은 유튜브에 공개합니다.</p></section>{CTA}""", f"/{slug}.html", BIZ)
+<p><b>Q. 시공도 맡길 수 있나요?</b><br>A. 월드아키텍쳐가 대전·세종 인테리어·데크·샷시 시공을 직접 합니다. 모든 현장은 유튜브에 공개합니다.</p></section>{areanav}{CTA}""", f"/{slug}.html", BIZ)
+
+    # 대전 구별 안내 — 동네마다 실제로 다른 정보만 (거리·소요시간 등 확인 안 된 숫자 금지)
+    for slug, gu, t, lead, jobs, note in [
+        ("yuseong", "유성구", "유성구 목재·건축자재 — 원내동 영진목재 3000평 매장 | 재단·배송",
+         "영진목재(영진종합목재·월드건축자재)는 유성구 원내동(진잠) 유성대로 44에 있습니다. 도안·학하·노은·관평·신성 등 유성구 어디서든 합판·구조재·방부목·석고보드를 원하는 사이즈로 재단해 가져가시거나 현장으로 받으실 수 있습니다.",
+         [("deck","전원주택·마당 데크"),("greenhouse","목조 온실·창고"),("furniture","원목가구·선반 DIY"),("tips","신축 아파트 인테리어 상식")],
+         "유성구는 매장이 있는 구라 직접 오셔서 자재를 보고 고르기 좋습니다. 재단은 매장에서 바로 해 드립니다."),
+        ("seogu", "서구", "서구 목재·건축자재 — 둔산·가수원·관저·도안 인테리어 자재 | 영진목재",
+         "대전 서구(둔산·탄방·가수원·관저·도안·정림 등)에서 인테리어·리모델링 자재가 필요하시면 영진목재(월드건축자재)를 이용하세요. 시공 파트너 월드아키텍쳐 사무실도 서구 가수원로 42에 있어 서구 현장 상담이 빠릅니다.",
+         [("tips","아파트 리모델링 순서"),("finish","도배·페인트·필름"),("exterior","샷시 교체"),("kitchen","싱크대·주방")],
+         "아파트 현장은 엘리베이터·주차 조건에 맞춰 길이를 재단해 납품합니다(수량·위치는 전화 상담)."),
+        ("daedeok", "대덕구", "대덕구 목재·건축자재 — 신탄진·대화동·오정동 현장 납품 | 영진목재",
+         "대전 대덕구(신탄진·대화동·오정동·송촌·법동 등)의 공장·창고 보수, 주택 수리, 매장 인테리어에 필요한 합판·각재·구조재·석고보드를 영진목재(월드건축자재)에서 재단해 현장으로 납품합니다.",
+         [("gujo","각재·구조재(창고·칸막이)"),("tips","상가·공장 인테리어 상식"),("exterior","외벽·지붕 보수"),("deck","마당 데크")],
+         "공장·창고 현장은 사업자 도매회원 가입 시 회원가로 받으실 수 있습니다(사업자등록증·명함 확인)."),
+        ("junggu-donggu", "중구·동구", "중구·동구 목재·건축자재 — 노후주택 수리·리모델링 자재 | 영진목재",
+         "대전 중구(은행·대흥·문화·유천·태평 등)와 동구(가양·용전·판암·대동 등) 구도심의 노후주택·상가 수리에 필요한 문·문틀·몰딩·합판·석고보드를 영진목재(월드건축자재)에서 한곳에 구하세요.",
+         [("door","방문·문틀 교체"),("exterior","샷시·외벽 보수"),("finish","도배·필름·페인트"),("tips","노후주택 리모델링 상식")],
+         "오래된 집은 문틀·창틀 치수가 제각각이라 실측 치수를 알려 주시면 맞춰 재단해 드립니다."),
+    ]:
+        jl = "".join(f'<li><a href="/video/{c}.html">{n} 영상 보기</a></li>' if c not in [m["slug"] for m in MATS] else f'<li><a href="/jajae/{c}.html">{n} 자재 보기</a></li>' for c, n in jobs)
+        page(f"{slug}.html", t, lead[:150],
+             f"""<section class="wrap sec"><h1>대전 {gu} 목재 · 건축자재 — 영진목재</h1><p class="lead">{lead}</p>
+<div class="row"><a class="b g" href="/visit.html">매장 위치·영업시간</a><a class="b d" href="tel:{TEL.replace('-','')}">전화 {TEL}</a></div></section>
+<section class="wrap sec g2"><div class="card"><h2>{gu}에서 자주 하는 작업</h2><ul>{jl}</ul></div>
+<div class="card"><h2>{gu} 구매·배송 안내</h2><ul><li>매장: {ADDR} 영진목재(월드건축자재)</li><li>영업: {HOURS}</li><li>원하는 사이즈 즉석 재단</li><li>{note}</li><li><a href="/price.html">자재 기준가 보기</a> · <a href="/jaryo/">전체 자재 사진</a></li></ul></div></section>
+<section class="wrap sec"><h2>많이 찾는 목재·자재</h2><div class="mg">{matlinks}</div></section>
+<section class="wrap sec"><h2>{gu} 시공 문의</h2><p>인테리어·데크·샷시·문 교체 시공은 월드아키텍쳐(실내건축공사업 등록 대전서구24-나-19)가 직접 합니다. 현장 실측 후 견적을 드리며 모든 현장은 유튜브에 공개합니다. <a href="/sigong.html">시공 안내 보기 →</a></p></section>{areanav}{CTA}""", f"/{slug}.html", BIZ)
 
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
