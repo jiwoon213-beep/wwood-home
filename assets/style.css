@@ -159,3 +159,5 @@ section.jall>p.small{margin:0 0 8px}
  .hsh{display:none}
  .fqs,.pl.hs,.pg.hrow,.sg{margin-top:6px}
 }
+.mg.m2{display:grid!important;grid-auto-flow:column;grid-template-rows:repeat(2,auto);grid-template-columns:none;grid-auto-columns:46%;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;padding-bottom:6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.mg.m2::-webkit-scrollbar{display:none}.mg.m2>*{scroll-snap-align:start}
+@media(min-width:900px){.mg.m2{grid-auto-columns:23%}}
