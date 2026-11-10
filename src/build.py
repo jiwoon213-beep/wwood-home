@@ -382,6 +382,7 @@ def build():
          f"""<section class="hero dark"><div class="wrap"><span class="chip red">월드아키텍쳐 · {LIC}</span><h1>직접 하기 어렵다면,<br>자재 파는 저희가 시공까지 합니다</h1>
 <p class="lead">자재를 가장 잘 아는 목재상이 직접 시공합니다. 관급·대기업 공사를 수행하는 시공팀이 작업하고, 모든 시공 현장은 유튜브에 그대로 공개합니다.</p>
 <div class="row"><a class="b r" href="tel:{TEL.replace('-','')}">시공 상담 전화 {TEL}</a></div><p class="small">시공 지역: 대전·세종 전 공정 · 관급·대기업·전국 공사는 전화 문의</p></div></section>
+{"".join([]) if not os.path.exists(ROOT+"/data/cases.json") else "<section class=\"wrap sec\"><h2>지역별 시공 사례</h2><div class=\"pl\">" + "".join(f'<a class="pc" href="/sigong/{c["slug"]}.html"><small>{E(c["place"])}</small><b>{E(c["title"])}</b><span>{E(c["desc"][:70])}…</span></a>' for c in json.load(open(ROOT+"/data/cases.json", encoding="utf-8"))) + "</div></section>"}
 <section class="wrap sec"><h2>시공 현장 영상</h2>{sv}</section>{casesec}
 <section class="wrap sec g2"><div class="card"><h2>상담 순서</h2><ol><li>전화 상담 {TEL}</li><li>현장 방문 · 실측</li><li>견적서</li><li>시공 (현장은 유튜브 공개)</li></ol></div>
 <div class="card"><h2>업체 고르기 전에 꼭 보세요</h2><p>면허 확인, 하자 예방, 견적 보는 법 영상을 모았습니다. 월드아키텍쳐는 실내건축공사업 등록 업체입니다.</p><a href="/video/tips.html">업체 고르는 법 영상 모음 →</a></div></section>
@@ -393,6 +394,25 @@ def build():
 <div class="tw"><table><tbody><tr><th>주소</th><td>{ADDR} 월드건축자재(영진목재)</td></tr><tr><th>영업</th><td>{HOURS}</td></tr><tr><th>전화</th><td><a href="tel:{TEL.replace('-','')}">{TEL}</a></td></tr>
 <tr><th>재단</th><td>원하는 사이즈로 즉석 재단</td></tr><tr><th>배송</th><td>대전·세종 배송 · 현장 납품</td></tr><tr><th>도매</th><td>사업자등록증·명함 확인 후 도매회원 승인</td></tr><tr><th>시공</th><td>월드아키텍쳐 · 대전·세종 · 전화 상담</td></tr></tbody></table></div>
 <div class="row"><a class="b g" href="https://map.naver.com/p/search/{ADDR.replace(' ','%20')}%20월드건축자재" target="_blank" rel="noopener">네이버 지도로 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div></div></section>""", "/visit.html", BIZ)
+
+    # 지역 시공 사례 (data/cases.json — 영상 설명에 지역이 확인된 실제 현장만)
+    CASES = json.load(open(f"{ROOT}/data/cases.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/cases.json") else []
+    matname = {m["slug"]: m["name"] for m in MATS}
+    def casecards(cs):
+        return "".join(f'<a class="pc" href="/sigong/{c["slug"]}.html"><small>{E(c["place"])}</small><b>{E(c["title"])}</b><span>{E(c["desc"][:70])}…</span></a>' for c in cs)
+    def area_cases(slug):
+        cs = [c for c in CASES if c["area"] == slug or (slug == "daejeon" and c["area"] in ("yuseong","seogu","daedeok","junggu-donggu"))]
+        return f'<section class="wrap sec"><h2>이 지역 시공 사례</h2><div class="pl">{casecards(cs)}</div></section>' if cs else ""
+    for c in CASES:
+        vs = [byid[i] for i in c["videos"] if i in byid]
+        ml = " · ".join(f'<a href="/jajae/{m}.html">{matname[m]}</a>' for m in c["mats"] if m in matname)
+        page(f"sigong/{c['slug']}.html", c["title"] + " | 월드아키텍쳐", c["desc"],
+             f"""<section class="wrap sec"><p class="muted"><a href="/sigong.html">시공</a> › 시공 사례</p><h1>{E(c["title"])}</h1><p class="lead">{E(c["intro"])}</p>
+<div class="tw"><table><tbody><tr><th>현장</th><td>{E(c["place"])}</td></tr><tr><th>시공</th><td>월드아키텍쳐 (실내건축공사업 대전서구24-나-19)</td></tr>{f'<tr><th>관련 자재</th><td>{ml}</td></tr>' if ml else ''}</tbody></table></div></section>
+<section class="wrap sec"><h2>시공 영상</h2>{vsplit(vs, "h3")}</section>
+<section class="wrap sec"><h2>공사 내용</h2><ul>{"".join(f"<li>{E(w)}</li>" for w in c["works"])}</ul>
+<p>비슷한 공사를 준비 중이시면 현장 실측 후 견적을 드립니다 — 전화 <a href="tel:{TEL.replace('-','')}">{TEL}</a>. 자재만 필요하시면 영진목재(월드건축자재) 매장에서 재단해 드립니다.</p></section>
+<section class="wrap sec"><h2>다른 시공 사례</h2><div class="pl">{casecards([x for x in CASES if x is not c])}</div><p><a href="/{c["area"]}.html">이 지역 자재·배송 안내 →</a></p></section>{CTA}""", f"/sigong/{c['slug']}.html", BIZ, img=f"https://i.ytimg.com/vi/{c['videos'][0]}/hqdefault.jpg")
 
     # 지역 안내 (대전 목재 / 세종 목재)
     matlinks = "".join(f'<a class="mc" href="/jajae/{m["slug"]}.html"><b>{m["name"]}</b><small>{m["where"][0]}</small></a>' for m in MATS)
@@ -414,7 +434,7 @@ def build():
 <section class="wrap sec"><h2>{area}에서 많이 찾는 목재·자재</h2><div class="mg">{matlinks}</div></section>
 <section class="wrap sec"><h2>자주 묻는 질문</h2><p><b>Q. {area}에서 목재 소량도 사나요?</b><br>A. 네, 한 장·한 개부터 구매하실 수 있고 원하는 크기로 재단해 드립니다.</p>
 <p><b>Q. {area} 현장으로 배송되나요?</b><br>A. 대전·세종 배송과 현장 납품을 합니다. 수량과 위치를 알려 주시면 안내해 드립니다({TEL}).</p>
-<p><b>Q. 시공도 맡길 수 있나요?</b><br>A. 월드아키텍쳐가 대전·세종 인테리어·데크·샷시 시공을 직접 합니다. 모든 현장은 유튜브에 공개합니다.</p></section>{areanav}{CTA}""", f"/{slug}.html", BIZ)
+<p><b>Q. 시공도 맡길 수 있나요?</b><br>A. 월드아키텍쳐가 대전·세종 인테리어·데크·샷시 시공을 직접 합니다. 모든 현장은 유튜브에 공개합니다.</p></section>{area_cases(slug)}{areanav}{CTA}""", f"/{slug}.html", BIZ)
 
     # 대전 구별 안내 — 동네마다 실제로 다른 정보만 (거리·소요시간 등 확인 안 된 숫자 금지)
     for slug, gu, t, lead, jobs, note in [
@@ -470,7 +490,7 @@ def build():
 <section class="wrap sec g2"><div class="card"><h2>{gu}에서 자주 하는 작업</h2><ul>{jl}</ul></div>
 <div class="card"><h2>{gu} 구매·배송 안내</h2><ul><li>매장: {ADDR} 영진목재(월드건축자재)</li><li>영업: {HOURS}</li><li>원하는 사이즈 즉석 재단</li><li>{note}</li><li><a href="/price.html">자재 기준가 보기</a> · <a href="/jaryo/">전체 자재 사진</a></li></ul></div></section>
 <section class="wrap sec"><h2>많이 찾는 목재·자재</h2><div class="mg">{matlinks}</div></section>
-<section class="wrap sec"><h2>{gu} 시공 문의</h2><p>인테리어·데크·샷시·문 교체 시공은 월드아키텍쳐(실내건축공사업 등록 대전서구24-나-19)가 직접 합니다. 현장 실측 후 견적을 드리며 모든 현장은 유튜브에 공개합니다. <a href="/sigong.html">시공 안내 보기 →</a></p></section>{areanav}{CTA}""", f"/{slug}.html", BIZ)
+<section class="wrap sec"><h2>{gu} 시공 문의</h2><p>인테리어·데크·샷시·문 교체 시공은 월드아키텍쳐(실내건축공사업 등록 대전서구24-나-19)가 직접 합니다. 현장 실측 후 견적을 드리며 모든 현장은 유튜브에 공개합니다. <a href="/sigong.html">시공 안내 보기 →</a></p></section>{area_cases(slug)}{areanav}{CTA}""", f"/{slug}.html", BIZ)
 
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
