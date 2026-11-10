@@ -743,8 +743,8 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     def _rfc(d):
         try: return datetime.datetime.strptime(d, "%Y-%m-%d").strftime("%a, %d %b %Y 09:00:00 +0900")
         except Exception: return ""
-    items = "".join(f"<item><title>{html.escape(p['title'])}</title><link>{BASE}/news/{p['slug']}.html</link><guid>{BASE}/news/{p['slug']}.html</guid><pubDate>{_rfc(p.get('date',''))}</pubDate><description>{html.escape(p.get('desc',''))}</description></item>\n" for p in POSTS[:50])
-    open(f"{OUT}/rss.xml", "w", encoding="utf-8").write(f'<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>영진종합목재 소식·자재 정보</title><link>{BASE}/news/</link><description>대전 영진종합목재(월드건축자재) 자재 정보와 시공 소식</description><language>ko</language>\n{items}</channel></rss>\n')
+    items = "".join(f"<item><title>{html.escape(p['title'])}</title><link>{BASE}/news/{p['slug']}.html</link><guid>{BASE}/news/{p['slug']}.html</guid><pubDate>{_rfc(p.get('date',''))}</pubDate><description>{html.escape(p.get('desc',''))}</description><content:encoded><![CDATA[{p['body'].replace(']]>',']]&gt;').replace('href="/', 'href="'+BASE+'/').replace('src="/', 'src="'+BASE+'/')}]]></content:encoded></item>\n" for p in POSTS[:50])
+    open(f"{OUT}/rss.xml", "w", encoding="utf-8").write(f'<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>영진종합목재 소식·자재 정보</title><link>{BASE}/news/</link><description>대전 영진종합목재(월드건축자재) 자재 정보와 시공 소식</description><language>ko</language>\n{items}</channel></rss>\n')
     open(f"{OUT}/robots.txt", "w").write(f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\nSitemap: {BASE}/rss.xml\n")
     today = datetime.date.today().isoformat()
     open(f"{OUT}/sitemap.xml", "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' +
