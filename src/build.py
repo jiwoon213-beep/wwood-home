@@ -219,7 +219,7 @@ CTA = f"""<section class="cta"><div class="wrap g2"><div><h2>실물 보고, 원�
 BIZ = {"@context": "https://schema.org", "@type": "HardwareStore", "name": "영진종합목재",
        "telephone": "+82-42-545-2900", "address": {"@type": "PostalAddress", "streetAddress": "유성대로 44, 1층", "addressLocality": "대전", "addressCountry": "KR"},
        "openingHours": ["Mo-Fr 07:00-18:00", "Sa-Su 07:00-15:00"], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "07:00", "closes": "18:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday", "Sunday"], "opens": "07:00", "closes": "15:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "PublicHolidays", "opens": "07:00", "closes": "16:00"}], "url": BASE + "/", "sameAs": [YT, YT2, MALL], "alternateName": ["영진목재", "월드건축자재", "영진우드"], "legalName": "영진우드",
-       "image": [BASE + "/assets/store/gate.jpg", BASE + "/assets/store/yard-aisle2.jpg", BASE + "/assets/store/showroom.jpg"], "priceRange": "₩", "areaServed": ["대전", "세종", "공주", "계룡", "논산", "금산", "옥천"]}
+       "image": [BASE + "/assets/store/storefront.jpg", BASE + "/assets/store/yard-aisle2.jpg", BASE + "/assets/store/showroom.jpg"], "priceRange": "₩", "areaServed": ["대전", "세종", "공주", "계룡", "논산", "금산", "옥천"]}
 
 # ---------- pages ----------
 def build():
@@ -412,7 +412,7 @@ def build():
          f"""<section class="wrap sec g2"><div>{embed(tour) if tour else ''}</div><div><h1>매장 오시는 길</h1>
 <div class="tw"><table><tbody><tr><th>주소</th><td>{ADDR} 월드건축자재(영진목재)</td></tr><tr><th>영업</th><td>{HOURS}</td></tr><tr><th>전화</th><td><a href="tel:{TEL.replace('-','')}">{TEL}</a></td></tr>
 <tr><th>재단</th><td>원하는 사이즈로 즉석 재단</td></tr><tr><th>배송</th><td>대전·세종·공주·계룡·논산·금산·옥천 배송 · 현장 납품</td></tr><tr><th>도매</th><td>사업자등록증·명함 확인 후 도매회원 승인</td></tr><tr><th>시공</th><td>월드아키텍쳐 · 대전·세종 · 전화 상담</td></tr></tbody></table></div>
-<div class="row"><a class="b g" href="https://map.naver.com/p/search/{ADDR.replace(' ','%20')}%20영진종합목재" target="_blank" rel="noopener">네이버 지도로 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div></div></section>{"" if not os.path.exists(ROOT+"/data/store_photos.json") else '<section class="wrap sec"><h2>매장 사진</h2><div class="pg hrow">' + "".join(f'<a class="ph" href="/assets/store/{n}.jpg" target="_blank"><img loading="lazy" src="/assets/store/{n}.jpg" alt="{E(t)}"><small>{E(t)}</small></a>' for n, t in json.load(open(ROOT+"/data/store_photos.json", encoding="utf-8"))) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>'}""", "/visit.html", BIZ, BASE+"/assets/store/gate.jpg")
+<div class="row"><a class="b g" href="https://map.naver.com/p/search/{ADDR.replace(' ','%20')}%20영진종합목재" target="_blank" rel="noopener">네이버 지도로 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div></div></section>{"" if not os.path.exists(ROOT+"/data/store_photos.json") else '<section class="wrap sec"><h2>매장 사진</h2><div class="pg hrow">' + "".join(f'<a class="ph" href="/assets/store/{n}.jpg" target="_blank"><img loading="lazy" src="/assets/store/{n}.jpg" alt="{E(t)}"><small>{E(t)}</small></a>' for n, t in json.load(open(ROOT+"/data/store_photos.json", encoding="utf-8"))) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>'}""", "/visit.html", BIZ, BASE+"/assets/store/storefront.jpg")
 
     # 지역 시공 사례 (data/cases.json — 영상 설명에 지역이 확인된 실제 현장만)
     CASES = json.load(open(f"{ROOT}/data/cases.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/cases.json") else []
