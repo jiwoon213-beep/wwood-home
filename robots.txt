@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.wwood.co.kr/sitemap.xml
+Sitemap: https://www.wwood.co.kr/rss.xml
