@@ -117,3 +117,4 @@ body.psearch .pboard{display:none}
 .tpage{flex:0 0 100%;scroll-snap-align:start}
 .tdots{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px;font-size:13px;color:var(--mut);font-weight:700}
 .tb{width:34px;height:34px;border:1px solid var(--line);border-radius:50%;background:#fff;font-size:12px;cursor:pointer}
+details.faq{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;background:#fff}details.faq summary{font-weight:700;cursor:pointer}details.faq p{margin:8px 0 2px}

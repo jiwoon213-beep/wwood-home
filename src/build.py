@@ -124,6 +124,7 @@ def pcard(p):
 # 유튜브 채널 숫자: data/stats.json {"subs": "1.36만", "videos": 940, "date": "YYYY-MM-DD"} (하루 1번 자동 갱신)
 ST = json.load(open(f"{ROOT}/data/stats.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/stats.json") else {"subs": "1.3만", "videos": 900}
 # 최신 영상: data/latest.txt (영상 ID, 최신이 위)
+MFAQ = json.load(open(f"{ROOT}/data/mat_faq.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/mat_faq.json") else {}
 LATEST = [l.strip() for l in open(f"{ROOT}/data/latest.txt", encoding="utf-8")] if os.path.exists(f"{ROOT}/data/latest.txt") else []
 
 def vurl(v): return f"https://www.youtube.com/{'shorts/' if v['type']=='S' else 'watch?v='}{v['id']}"
@@ -166,7 +167,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <title>{E(title)}</title><meta name="description" content="{E(desc)}">
 <link rel="canonical" href="{canon}"><meta name="naver-site-verification" content="a59ff6921fc90666c920da00bf9a23ecb0ba3514"><meta property="og:type" content="website"><meta property="og:title" content="{E(title)}">
 <meta property="og:description" content="{E(desc)}"><meta property="og:url" content="{canon}"><meta property="og:image" content="{E(img or "https://i.ytimg.com/vi/xPsUVr7exLU/hqdefault.jpg")}"><meta property="og:site_name" content="영진종합목재 (월드건축자재)"><meta property="og:locale" content="ko_KR"><meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="/assets/style.css?v={ASSET_V}">{'<meta name="robots" content="noindex,nofollow">' if PREVIEW else ''}{ld}</head><body>
+<link rel="preconnect" href="https://i.ytimg.com"><link rel="preconnect" href="https://www.wwood.kr"><link rel="stylesheet" href="/assets/style.css?v={ASSET_V}">{'<meta name="robots" content="noindex,nofollow">' if PREVIEW else ''}{ld}</head><body>
 <div class="top"><div class="wrap row sb"><span>{HOURS} · {ADDR}</span><span><a href="/dome.html">업체·도매회원</a> <a href="/visit.html">매장 길찾기</a></span></div></div>
 <header><div class="wrap row sb hd"><a class="logo" href="/"><b>영진종합목재 (월드건축자재)</b><small>· 충청권 최대규모 목재상</small></a>
 <nav>{nav}</nav></div></header>
@@ -270,7 +271,7 @@ def build():
     # 자재 백과
     lst = "".join(f'<a class="mc" href="/jajae/{m["slug"]}.html"><b>{m["name"]}</b><small>{" · ".join(m["where"][:2])}</small></a>' for m in MATS)
     page("jajae/index.html", "자재 백과 — 합판·MDF·방부목·석고보드 용도와 가격 | 월드건축자재 대전", "자재별 용도, 인테리어 효과, 소매 기준가, 시공 영상을 한 번에. 대전 월드건축자재(영진목재).",
-         f'<section class="wrap sec"><h1>자재 백과</h1><p class="lead">손님들이 가장 헷갈리는 "이 자재 어디에 쓰나요?"를 자재별로 정리했습니다.</p><div class="mg">{lst}</div></section>{CTA}', "/jajae/")
+         f'<section class="wrap sec"><h1>자재 백과</h1><p class="lead">손님들이 가장 헷갈리는 "이 자재 어디에 쓰나요?"를 자재별로 정리했습니다.</p><p>자재 비교: <a href="/bigyo/hapan-osb-mdf.html">합판 vs OSB vs MDF</a> · <a href="/bigyo/bangbu-hapdeck.html">방부목 vs 합성데크</a> · <a href="/bigyo/gypsum-types.html">석고보드 종류</a> · <a href="/calc.html">자재 계산기</a></p><div class="mg">{lst}</div></section>{CTA}', "/jajae/")
     for m in MATS:
         vs = top(lambda v: m["tag"] in v["mats"], 10**6)
         rel = [x for x in MATS if x is not m][:0]
@@ -280,15 +281,20 @@ def build():
         vid = ((embed(lf[0]) if lf else "") + vsplit([v for v in vs if not lf or v is not lf[0]], "h3")) if vs else f'<p><a href="{YT}">유튜브 채널에서 보기</a></p>'
         faq = [{"@type": "Question", "name": f"{m['name']}은(는) 어디에 쓰나요?", "acceptedAnswer": {"@type": "Answer", "text": ", ".join(m["where"])}},
                {"@type": "Question", "name": f"대전에서 {m['name']}을(를) 어디서 사나요?", "acceptedAnswer": {"@type": "Answer", "text": f"월드건축자재(영진종합목재), {ADDR}, {TEL}. {HOURS}. 원하는 사이즈로 재단해 드립니다."}}]
+        cmpl = {"hapan":"hapan-osb-mdf","osb":"hapan-osb-mdf","mdf":"hapan-osb-mdf","bangbu":"bangbu-hapdeck","hapdeck":"bangbu-hapdeck","gypsum":"gypsum-types"}.get(m["slug"])
+        cmpln = f'<p>👉 <a href="/bigyo/{cmpl}.html">비슷한 자재와 비교해 보기</a> · <a href="/calc.html">필요한 양 계산하기</a></p>' if cmpl else '<p>👉 <a href="/calc.html">필요한 양 계산하기</a></p>'
+        mf = MFAQ.get(m["slug"], [])
+        faq += [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in mf]
+        faqsec = (f'<section class="wrap sec"><h2>{m["name"]} 자주 묻는 질문</h2>' + "".join(f"<details class=\"faq\"><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in mf) + '</section>') if mf else ""
         ph = mat_photos(m["slug"])
         gal = (f'<section class="wrap sec"><h2>{m["name"]} 사진으로 보기 <small class="muted">매장 취급 {len(ph)}종</small></h2><div class="pg">{"".join(pcard(p) for p in ph[:12])}</div>'
                + (f'<p class="small muted">사진을 누르면 상세 사진이 열립니다 · 전체 {len(ph)}종 중 {min(12,len(ph))}종 표시 · <a href="/jaryo/">전체 자재 보기 →</a></p>' if ph else '') + '</section>') if ph else ""
         body = f"""<section class="wrap sec"><p class="crumb"><a href="/jajae/">자재 백과</a> › {m['name']}</p>
 <h1>{m['name']} — {m['kw']}</h1><p class="lead">{E(m['lead'])}</p>
 <div class="row"><span class="chip">사용 장소: {E(m['place'])}</span><span class="chip">셀프 난이도: {E(m['diy'])}</span></div></section>{gal}
-<section class="wrap sec g2"><div class="card"><h2>어디에 쓰나요?</h2><ul>{where}</ul><h3>인테리어 효과</h3><p>{E(m['effect'])}</p><h3>고를 때 알아둘 것</h3><ul>{tips}</ul></div>
+<section class="wrap sec g2"><div class="card"><h2>어디에 쓰나요?</h2><ul>{where}</ul><h3>인테리어 효과</h3><p>{E(m['effect'])}</p><h3>고를 때 알아둘 것</h3><ul>{tips}</ul>{cmpln}</div>
 <div class="card"><h2>{m['name']} 소매 기준가</h2>{ptable(mat_prices(m))}<a href="/price.html">전체 기준가 →</a></div></section>
-<section class="wrap sec"><h2>{m['name']} 시공·사용 영상</h2>{vid}</section>{CTA}"""
+<section class="wrap sec"><h2>{m['name']} 시공·사용 영상</h2>{vid}</section>{faqsec}{CTA}"""
         page(f"jajae/{m['slug']}.html", f"{m['kw']} — {m['name']} 용도·기준가 | 대전 월드건축자재",
              f"{m['name']} 용도와 인테리어 효과, 규격별 소매 기준가, 시공 영상. 대전 유성 월드건축자재 매장에서 즉석 재단.", body, "/jajae/",
              {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq},
@@ -492,44 +498,123 @@ def build():
 <section class="wrap sec"><h2>많이 찾는 목재·자재</h2><div class="mg">{matlinks}</div></section>
 <section class="wrap sec"><h2>{gu} 시공 문의</h2><p>인테리어·데크·샷시·문 교체 시공은 월드아키텍쳐(실내건축공사업 등록 대전서구24-나-19)가 직접 합니다. 현장 실측 후 견적을 드리며 모든 현장은 유튜브에 공개합니다. <a href="/sigong.html">시공 안내 보기 →</a></p></section>{area_cases(slug)}{areanav}{CTA}""", f"/{slug}.html", BIZ)
 
-    # 자재 계산기
+    # 자재 계산기 — 옆으로 넘기는 카드
     CALC_FAQ = [("데크 1평에 방부목 몇 장 들어가나요?","1평(약 3.3㎡)에 폭 120mm·길이 3.6m 데크재를 5mm 간격으로 깔면 약 7~8장, 로스 10%를 더하면 8~9장 정도입니다. 하지(장선) 각재는 별도입니다."),
                 ("석고보드 1장은 몇 ㎡인가요?","3×6(900×1800mm)은 1.62㎡, 3×8(900×2400mm)은 2.16㎡입니다. 2겹(2P) 시공이면 장수가 2배입니다."),
                 ("합판 1장은 몇 ㎡인가요?","4×8(1220×2440mm) 합판·OSB·MDF 1장은 약 2.98㎡입니다."),
+                ("아이소핑크 1장은 몇 ㎡인가요?","900×1800mm 1장은 1.62㎡입니다. 두께는 필요한 단열 성능에 맞춰 고릅니다."),
                 ("1평은 몇 제곱미터인가요?","1평은 약 3.3058㎡입니다.")]
     faqld = {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in CALC_FAQ]}
-    page("calc.html", "자재 계산기 — 데크 방부목·합성데크, 석고보드, 합판 몇 장? 평·㎡ 변환 | 영진목재", "데크 평수로 방부목·합성데크 장수와 장선 각재·피스, 벽 면적으로 석고보드 장수, 합판·OSB·MDF 장수, 평↔㎡ 변환을 바로 계산하세요. 대전 영진목재(월드건축자재) 재단·배송.",
-f"""<section class="wrap sec"><h1>자재 계산기</h1><p class="lead">필요한 장수를 미리 계산해 오시면 매장에서 바로 재단해 드립니다. 결과는 참고용이며 현장 구조·자재 규격에 따라 달라질 수 있습니다(로스 10% 포함).</p>
-<div class="chips" style="margin:8px 0 14px"><a class="chip" href="#deck">데크</a><a class="chip" href="#gyp">석고보드</a><a class="chip" href="#ply">합판·OSB·MDF</a><a class="chip" href="#py">평↔㎡</a></div></section>
-<section class="wrap sec" id="deck"><div class="card"><h2>데크 자재 계산 (방부목·합성데크)</h2>
-<div class="cg"><label>데크 가로(m)<input id="dw" type="number" step="0.1" value="4"></label><label>데크 세로(m)<input id="dl" type="number" step="0.1" value="3"></label>
-<label>데크재<select id="dt"><option value="120,3600">방부목 데크재 120mm × 3.6m(12자)</option><option value="140,3000">합성데크 140mm × 3.0m</option><option value="95,3600">방부목 95mm × 3.6m</option></select></label>
-<label>장선 간격<select id="dj"><option value="400">400mm (권장)</option><option value="450">450mm</option><option value="300">300mm (합성데크·하중 큰 곳)</option></select></label></div>
-<div class="cr" id="dr"></div><p class="small muted">데크재는 세로 방향으로 깔고 장선은 가로 방향 간격으로 계산했습니다. 기초·멍에·기둥은 현장마다 달라 따로 상담해 주세요.</p>
-<p><a href="/jajae/bangbu.html">방부목 용도·기준가</a> · <a href="/jajae/hapdeck.html">합성데크 용도·기준가</a> · <a href="/video/deck.html">데크 시공 영상</a></p></div></section>
-<section class="wrap sec" id="gyp"><div class="card"><h2>석고보드 장수 계산</h2>
-<div class="cg"><label>벽 길이 합계(m)<input id="gw" type="number" step="0.1" value="10"></label><label>벽 높이(m)<input id="gh" type="number" step="0.1" value="2.4"></label>
-<label>창·문 면적(㎡)<input id="go" type="number" step="0.1" value="2"></label>
-<label>규격<select id="gs"><option value="1.62">3×6 (900×1800)</option><option value="2.16">3×8 (900×2400)</option></select></label><label>겹수<select id="gp"><option value="1">1겹(1P)</option><option value="2">2겹(2P)</option></select></label></div>
-<div class="cr" id="gr"></div><p><a href="/jajae/gypsum.html">석고보드 종류·기준가</a> · <a href="/jajae/gujo.html">목상(각재)</a></p></div></section>
-<section class="wrap sec" id="ply"><div class="card"><h2>합판·OSB·MDF 장수 계산</h2>
-<div class="cg"><label>시공 면적(㎡)<input id="pa" type="number" step="0.1" value="20"></label><label>판재 규격<select id="ps"><option value="2.9768">4×8 (1220×2440)</option><option value="1.62">3×6 (900×1800)</option></select></label></div>
-<div class="cr" id="pr"></div><p><a href="/jajae/hapan.html">합판</a> · <a href="/jajae/osb.html">OSB</a> · <a href="/jajae/mdf.html">MDF</a> · <a href="/price.html">기준가</a></p></div></section>
-<section class="wrap sec" id="py"><div class="card"><h2>평 ↔ ㎡ 변환</h2>
-<div class="cg"><label>평<input id="yp" type="number" step="0.1" value="1"></label><label>㎡<input id="ym" type="number" step="0.1" value="3.31"></label></div></div></section>
-<section class="wrap sec"><h2>자주 묻는 질문</h2>{"".join(f"<p><b>Q. {q}</b><br>A. {a}</p>" for q,a in CALC_FAQ)}</section>
-<style>.cg{{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:10px 0}}.cg label{{display:flex;flex-direction:column;font-size:14px;gap:4px}}.cg input,.cg select{{font-size:16px;padding:9px;border:1px solid #ccc;border-radius:8px}}.cr{{background:#fff7ed;border-radius:10px;padding:12px 14px;font-size:16px;line-height:1.7}}.cr b{{font-size:20px;color:#c2410c}}</style>
+    def fld(i, label, val, step="0.1"):
+        return f'<label>{label}<input id="{i}" type="number" step="{step}" value="{val}" inputmode="decimal"></label>'
+    def sel(i, label, opts):
+        return f'<label>{label}<select id="{i}">' + "".join(f'<option value="{v}">{t}</option>' for v, t in opts) + '</select></label>'
+    CALCS = [
+     ("deck","데크", "데크 자재 (방부목·합성데크)",
+      fld("dw","데크 가로(m)",4)+fld("dl","데크 세로(m)",3)+sel("dt","데크재",[("120,3600","방부목 120mm × 3.6m"),("140,3000","합성데크 140mm × 3.0m"),("95,3600","방부목 95mm × 3.6m")])+sel("dj","장선 간격",[("400","400mm (권장)"),("450","450mm"),("300","300mm")]),
+      '<a href="/jajae/bangbu.html">방부목</a> · <a href="/jajae/hapdeck.html">합성데크</a> · <a href="/video/deck.html">데크 시공 영상</a>', "기초·멍에·기둥은 현장마다 달라 따로 상담해 주세요."),
+     ("gyp","석고보드", "석고보드 장수",
+      fld("gw","벽 길이 합계(m)",10)+fld("gh","벽 높이(m)",2.4)+fld("go","창·문 면적(㎡)",2)+sel("gs","규격",[("1.62","3×6 (900×1800)"),("2.16","3×8 (900×2400)")])+sel("gp","겹수",[("1","1겹(1P)"),("2","2겹(2P)")]),
+      '<a href="/jajae/gypsum.html">석고보드 종류</a> · <a href="/jajae/gujo.html">목상(각재)</a>', ""),
+     ("ply","합판", "합판·OSB·MDF 장수",
+      fld("pa","시공 면적(㎡)",20)+sel("ps","판재 규격",[("2.9768","4×8 (1220×2440)"),("1.62","3×6 (900×1800)")]),
+      '<a href="/jajae/hapan.html">합판</a> · <a href="/jajae/osb.html">OSB</a> · <a href="/jajae/mdf.html">MDF</a>', ""),
+     ("mol","몰딩", "몰딩·걸레받이 길이",
+      fld("mw","방 가로(m)",4)+fld("ml","방 세로(m)",3)+fld("mr","방 개수",1,"1")+fld("md","문 개수(걸레받이 제외)",1,"1")+sel("mk","계산",[("both","천장몰딩 + 걸레받이"),("ceil","천장몰딩만"),("base","걸레받이만")])+sel("mp","1개 길이",[("2.4","2.4m"),("2.7","2.7m")]),
+      '<a href="/jajae/molding.html">몰딩·걸레받이</a> · <a href="/video/wall.html">몰딩 시공 영상</a>', "문 1개당 약 0.9m를 걸레받이에서 뺐습니다."),
+     ("flo","바닥재", "데코타일·강마루 박스 수",
+      fld("fa","바닥 면적(㎡)",20)+fld("fb","박스당 면적(㎡)",3.3)+sel("fl","로스",[("1.05","5% (직사각형 방)"),("1.1","10% (모서리 많음)"),("1.15","15% (사선·헤링본)")]),
+      '<a href="/jajae/tile.html">데코타일</a> · <a href="/jajae/maru.html">마루·장판</a>', "박스당 면적은 제품마다 달라요. 제품 포장에 적힌 값을 넣으세요."),
+     ("ins","단열재", "단열재(아이소핑크) 장수",
+      fld("ia","단열 면적(㎡)",15)+sel("is","규격",[("1.62","900×1800"),("1.08","600×1800"),("2.16","900×2400")])+fld("il","겹수",1,"1"),
+      '<a href="/jajae/insul.html">단열재</a> · <a href="/video/electric.html">단열·전기 영상</a>', "틈새를 채울 우레탄 폼도 함께 준비하세요."),
+     ("pnt","페인트", "페인트 양",
+      fld("ta","칠할 면적(㎡)",30)+fld("tc","칠 횟수",2,"1")+fld("tr","1L당 칠 면적(㎡, 1회)",8),
+      '<a href="/jajae/stain.html">오일스테인·도료</a> · <a href="/video/finish.html">페인트 시공 영상</a>', "1L당 칠 면적은 제품·바탕면에 따라 다릅니다. 통에 적힌 값을 넣으세요."),
+     ("py","평↔㎡", "평 ↔ ㎡ 변환", fld("yp","평",1)+fld("ym","㎡",3.31), "", ""),
+    ]
+    chips = "".join(f'<button class="chip" data-i="{i}">{t}</button>' for i, (k, t, *_ ) in enumerate(CALCS))
+    slides = "".join(f'<div class="cslide" id="{k}"><div class="card"><h2>{h}</h2><div class="cg">{inner}</div>' + ('' if k == "py" else f'<div class="cr" id="{k}r"></div>') + (f'<p class="small muted">{note}</p>' if note else "") + (f'<p class="small">{links}</p>' if links else "") + '</div></div>' for k, t, h, inner, links, note in CALCS)
+    page("calc.html", "자재 계산기 — 데크·석고보드·합판·몰딩·바닥재·단열재·페인트 몇 장? 평·㎡ 변환 | 영진목재", "데크 방부목·합성데크 장수, 석고보드·합판·단열재 장수, 몰딩·걸레받이 길이, 데코타일·강마루 박스 수, 페인트 양, 평↔㎡를 바로 계산하세요. 대전 영진목재(월드건축자재) 재단·배송.",
+f"""<section class="wrap sec"><h1>자재 계산기</h1><p class="lead">필요한 양을 미리 계산해 오시면 매장에서 바로 재단해 드립니다. 결과는 참고용입니다(로스 포함).</p>
+<div class="chips" id="cchips">{chips}</div>
+<div class="cnav"><button class="cb" data-d="-1">◀ 이전</button><span id="cpos" class="small muted"></span><button class="cb" data-d="1">다음 ▶</button></div>
+<div class="cslider" id="cslider">{slides}</div></section>
+<section class="wrap sec"><h2>자주 묻는 질문</h2>{"".join(f'<details class="faq"><summary>{q}</summary><p>{a}</p></details>' for q,a in CALC_FAQ)}</section>
+<style>.cslider{{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}}.cslider::-webkit-scrollbar{{display:none}}.cslide{{flex:0 0 100%;scroll-snap-align:start}}.cslide .card{{margin:0}}
+.cnav{{display:flex;justify-content:space-between;align-items:center;margin:6px 0 10px}}.cb{{padding:8px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;font-weight:700;cursor:pointer}}
+#cchips{{display:flex;gap:6px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}}#cchips .chip{{flex:0 0 auto;border:1px solid var(--line);background:#faf8f5;cursor:pointer;font-size:14px}}#cchips .chip.on{{background:var(--red);color:#fff;border-color:var(--red)}}
+.cg{{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0}}.cg label{{display:flex;flex-direction:column;font-size:14px;gap:4px}}.cg input,.cg select{{font-size:16px;padding:9px;border:1px solid #ccc;border-radius:8px;width:100%;box-sizing:border-box}}
+.cr{{background:#fff7ed;border-radius:10px;padding:12px 14px;font-size:16px;line-height:1.7}}.cr b{{font-size:20px;color:#c2410c}}</style>
 <script>
 (function(){{var $=function(i){{return document.getElementById(i)}},v=function(i){{return parseFloat($(i).value)||0}},n=function(x){{return Math.ceil(x).toLocaleString()}};
-function deck(){{var W=v('dw'),L=v('dl'),t=$('dt').value.split(','),bw=+t[0],bl=+t[1]/1000,J=+$('dj').value/1000;
-var rows=Math.ceil(W/((bw+5)/1000)),per=Math.ceil(L/bl),boards=rows*per*1.1,joists=Math.floor(W/J)+1,jm=joists*L,jp=jm/3.6*1.1,screws=rows*joists*2*1.1;
-$('dr').innerHTML='데크 면적 '+(W*L).toFixed(1)+'㎡ ('+(W*L/3.3058).toFixed(1)+'평)<br>데크재 <b>'+n(boards)+'장</b> · 장선 각재(3.6m) <b>'+n(jp)+'개</b> · 데크 피스 약 <b>'+n(screws)+'개</b>';}}
-function gyp(){{var A=Math.max(0,v('gw')*v('gh')-v('go')),c=A/parseFloat($('gs').value)*(+$('gp').value)*1.1;$('gr').innerHTML='시공 면적 '+A.toFixed(1)+'㎡<br>석고보드 <b>'+n(c)+'장</b>';}}
-function ply(){{var c=v('pa')/parseFloat($('ps').value)*1.1;$('pr').innerHTML='필요 장수 <b>'+n(c)+'장</b>';}}
-['dw','dl','dt','dj'].forEach(function(i){{$(i).addEventListener('input',deck)}});['gw','gh','go','gs','gp'].forEach(function(i){{$(i).addEventListener('input',gyp)}});['pa','ps'].forEach(function(i){{$(i).addEventListener('input',ply)}});
+var C={{
+deck:function(){{var W=v('dw'),L=v('dl'),t=$('dt').value.split(','),bw=+t[0],bl=+t[1]/1000,J=+$('dj').value/1000,rows=Math.ceil(W/((bw+5)/1000)),per=Math.ceil(L/bl),boards=rows*per*1.1,joists=Math.floor(W/J)+1,jp=joists*L/3.6*1.1,sc=rows*per*joists/per*2*1.1;
+ return '데크 면적 '+(W*L).toFixed(1)+'㎡ ('+(W*L/3.3058).toFixed(1)+'평)<br>데크재 <b>'+n(boards)+'장</b> · 장선 각재(3.6m) <b>'+n(jp)+'개</b> · 데크 피스 약 <b>'+n(sc)+'개</b>'}},
+gyp:function(){{var A=Math.max(0,v('gw')*v('gh')-v('go'));return '시공 면적 '+A.toFixed(1)+'㎡<br>석고보드 <b>'+n(A/parseFloat($('gs').value)*(+$('gp').value)*1.1)+'장</b>'}},
+ply:function(){{return '필요 장수 <b>'+n(v('pa')/parseFloat($('ps').value)*1.1)+'장</b>'}},
+mol:function(){{var per=2*(v('mw')+v('ml'))*Math.max(1,v('mr')),k=$('mk').value,p=parseFloat($('mp').value),ce=per,ba=Math.max(0,per-0.9*v('md')),out='방 둘레 '+per.toFixed(1)+'m<br>';
+ if(k!='base')out+='천장몰딩 <b>'+n(ce*1.1/p)+'개</b> ';if(k!='ceil')out+='걸레받이 <b>'+n(ba*1.1/p)+'개</b>';return out+' <span class="small">('+p+'m 기준, 로스 10%)</span>'}},
+flo:function(){{var b=v('fb')||1;return '필요 면적 '+(v('fa')*parseFloat($('fl').value)).toFixed(1)+'㎡<br>바닥재 <b>'+n(v('fa')*parseFloat($('fl').value)/b)+'박스</b>'}},
+ins:function(){{return '단열재 <b>'+n(v('ia')/parseFloat($('is').value)*Math.max(1,v('il'))*1.1)+'장</b>'}},
+pnt:function(){{var L=v('ta')*Math.max(1,v('tc'))/(v('tr')||1);return '필요량 약 <b>'+L.toFixed(1)+'L</b><br>18L 기준 '+n(L/18)+'통 또는 4L 기준 '+n(L/4)+'통'}}
+}};
+Object.keys(C).forEach(function(k){{var s=$(k);s.querySelectorAll('input,select').forEach(function(e){{e.addEventListener('input',function(){{$(k+'r').innerHTML=C[k]()}})}});$(k+'r').innerHTML=C[k]()}});
 $('yp').addEventListener('input',function(){{$('ym').value=(v('yp')*3.3058).toFixed(2)}});$('ym').addEventListener('input',function(){{$('yp').value=(v('ym')/3.3058).toFixed(2)}});
-deck();gyp();ply();}})();
+var sl=$('cslider'),ch=[].slice.call(document.querySelectorAll('#cchips .chip')),N=ch.length;
+function cur(){{return Math.round(sl.scrollLeft/sl.clientWidth)}}
+function upd(){{var i=cur();ch.forEach(function(c,j){{c.classList.toggle('on',i==j)}});$('cpos').textContent=(i+1)+' / '+N+' · 옆으로 밀어서 넘기기';var a=ch[i];if(a)a.scrollIntoView({{block:'nearest',inline:'center'}})}}
+function go(i){{i=Math.max(0,Math.min(N-1,i));sl.scrollTo({{left:i*sl.clientWidth,behavior:'smooth'}})}}
+ch.forEach(function(c){{c.onclick=function(){{go(+c.dataset.i)}}}});document.querySelectorAll('.cnav .cb').forEach(function(b){{b.onclick=function(){{go(cur()+(+b.dataset.d))}}}});
+sl.addEventListener('scroll',function(){{clearTimeout(sl._t);sl._t=setTimeout(upd,80)}},{{passive:true}});
+var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(function(e){{return e.id==h}});if(ix>=0)setTimeout(function(){{sl.scrollLeft=ix*sl.clientWidth;upd()}},50)}}upd();
+}})();
 </script>{CTA}""", "/calc.html", faqld)
+
+    # 자재 비교
+    CMP = [
+     ("hapan-osb-mdf", "합판 vs OSB vs MDF 차이 — 용도·강도·물에 강한 정도 비교", "합판, OSB, MDF 무엇이 다를까요? 만드는 방식, 강도, 물에 강한 정도, 피스 고정력, 표면 마감, 쓰는 곳을 한눈에 비교했습니다.",
+      ["합판","OSB","MDF"],
+      [("만드는 방식","얇은 나무판을 결 방향 엇갈려 접착","나무 조각(스트랜드)을 방향 맞춰 압축","나무 섬유를 접착제와 고압 압축"),
+       ("강도·휨","강하고 잘 안 휨","구조 덮개로 쓸 만큼 강함","무겁고 무른 편, 긴 선반은 처짐"),
+       ("물·습기","일반은 보통, 방수합판은 강함","단면이 물 먹으면 부풂","약함(방수 MDF 따로 있음)"),
+       ("피스 고정력","좋음","좋음","모서리는 갈라지기 쉬움"),
+       ("표면","나뭇결(자작·낙엽송 등은 마감용)","거친 조각 무늬","매끈해 도장·필름에 좋음"),
+       ("주로 쓰는 곳","벽·바닥 바탕, 가구, 노출 마감","목조주택 벽·지붕 덮개, 창고, 빈티지 마감","몰딩, 가구 문짝, 아트월, 도장 벽")],
+      "튼튼한 바탕과 가구 몸체는 합판, 목조주택·창고 덮개와 거친 질감은 OSB, 매끈한 도장·몰딩·문짝은 MDF가 잘 맞습니다.",
+      ["hapan","osb","mdf"], r"합판|OSB|MDF"),
+     ("bangbu-hapdeck", "방부목 vs 합성데크 비교 — 수명·관리·비용·시공", "마당·옥상 데크, 방부목과 합성데크 중 무엇을 깔까요? 관리 방법, 질감, 시공 방식, 비용 차이를 비교했습니다.",
+      ["방부목 데크","합성데크"],
+      [("재료","방부 처리한 나무","나무 가루 + 수지 합성재"),
+       ("관리","1~2년마다 오일스테인 덧칠","오일 칠 필요 없음, 물청소"),
+       ("갈라짐·썩음","관리 안 하면 갈라지고 썩을 수 있음","썩거나 갈라지지 않음"),
+       ("질감","자연스러운 나무 느낌","균일한 색·무늬, 여름엔 표면이 뜨거워질 수 있음"),
+       ("고정 방식","피스로 위에서 고정","클립으로 숨겨 고정"),
+       ("초기 비용","낮은 편","높은 편")],
+      "처음 비용을 아끼고 나무 질감을 원하면 방부목, 관리 시간을 줄이고 오래 깔끔하게 쓰려면 합성데크가 좋습니다. 어느 쪽이든 하지(장선) 시공과 배수가 수명을 좌우합니다.",
+      ["bangbu","hapdeck","stain"], r"데크"),
+     ("gypsum-types", "석고보드 종류 비교 — 일반·방수·방화 석고보드 어디에 쓰나", "일반 석고보드, 방수 석고보드, 방화 석고보드의 차이와 쓰는 곳, 규격을 정리했습니다.",
+      ["일반 석고보드","방수 석고보드","방화 석고보드"],
+      [("쓰는 곳","거실·방 벽·천장","주방·욕실 주변, 습기 있는 벽","내화 성능이 필요한 벽·천장"),
+       ("특징","가볍고 시공이 쉬움","습기에 강하게 처리","불에 견디는 성능 보강"),
+       ("주의","물에 젖으면 약해짐","물이 직접 닿는 곳은 방수층 따로","현장 기준에 맞는 제품 확인"),
+       ("규격(예)","3×6, 3×8 / 9.5T 등","3×6, 3×8","3×6, 3×8")],
+      "보통 실내 벽은 일반, 물 쓰는 곳 주변은 방수, 법적·안전상 내화가 필요한 곳은 방화 석고보드를 씁니다. 1장 면적은 3×6이 1.62㎡, 3×8이 2.16㎡입니다.",
+      ["gypsum","gujo","sound"], r"석고보드"),
+    ]
+    matname2 = {m["slug"]: m["name"] for m in MATS}
+    for slug, t, d, cols, rows, concl, mats, kw in CMP:
+        th = "<tr><th></th>" + "".join(f"<th>{c}</th>" for c in cols) + "</tr>"
+        tb = "".join("<tr><th>" + r[0] + "</th>" + "".join(f"<td>{x}</td>" for x in r[1:]) + "</tr>" for r in rows)
+        vs = top(lambda v, kw=kw: re.search(kw, v["title"]) is not None, 8)
+        ml = " · ".join(f'<a href="/jajae/{m}.html">{matname2[m]} 용도·기준가</a>' for m in mats if m in matname2)
+        page(f"bigyo/{slug}.html", t + " | 영진목재", d,
+             f"""<section class="wrap sec"><p class="crumb"><a href="/jajae/">자재 백과</a> › 자재 비교</p><h1>{t}</h1><p class="lead">{d}</p>
+<div class="tw"><table class="cmp"><thead>{th}</thead><tbody>{tb}</tbody></table></div>
+<h2>정리하면</h2><p>{concl}</p><p>{ml} · <a href="/calc.html">자재 계산기</a></p>
+<p class="small muted">일반적인 특징을 정리한 것으로 제품·등급에 따라 다를 수 있습니다. 매장에서 실물을 비교해 보세요.</p></section>
+<section class="wrap sec"><h2>관련 영상</h2>{vsplit(vs, "h3")}</section>
+<section class="wrap sec"><h2>다른 자재 비교</h2><p>{" · ".join(f'<a href="/bigyo/{s2}.html">{t2.split(" — ")[0]}</a>' for s2, t2, *_ in CMP if s2 != slug)}</p></section>{CTA}""", "/jajae/")
 
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
