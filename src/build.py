@@ -406,7 +406,7 @@ def build():
     for c in CASES:
         vs = [byid[i] for i in c["videos"] if i in byid]
         ml = " · ".join(f'<a href="/jajae/{m}.html">{matname[m]}</a>' for m in c["mats"] if m in matname)
-        page(f"sigong/{c['slug']}.html", c["title"] + (" | 월드도어" if c.get("by") else " | 월드아키텍쳐"), c["desc"],
+        page(f"sigong/{c['slug']}.html", c["title"] + (" | 월드아키텍쳐·월드도어" if c.get("by") else " | 월드아키텍쳐"), c["desc"],
              f"""<section class="wrap sec"><p class="muted"><a href="/sigong.html">시공</a> › 시공 사례</p><h1>{E(c["title"])}</h1><p class="lead">{E(c["intro"])}</p>
 <div class="tw"><table><tbody>{f'<tr><th>현장</th><td>{E(c["place"])}</td></tr>' if c["place"] else ""}<tr><th>시공</th><td>{E(c.get("by") or "월드아키텍쳐 (실내건축공사업 대전서구24-나-19)")}</td></tr>{f'<tr><th>관련 자재</th><td>{ml}</td></tr>' if ml else ''}</tbody></table></div></section>
 <section class="wrap sec"><h2>시공 영상</h2>{vsplit(vs, "h3")}</section>
