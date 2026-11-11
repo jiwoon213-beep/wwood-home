@@ -925,6 +925,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         cn = CATN.get(v["cat"], "영상")
         vds = (first or st)[:110]
         if len(vds) < 60: vds = (vds + " " + (v["title"] if v["title"] not in vds else "") + f" — 대전 영진종합목재(월드건축자재) {cn} 영상. 자재 재단·전국 배송.").replace("  ", " ")[:150]
+        VSM.append((f"{BASE}/v/{v['id']}.html", v, (d or v["title"]), ts, ln))
         page(f"v/{v['id']}.html", f"{st} — 영상 | 대전 영진목재", vds,
              f"""<section class="wrap sec"><p class="crumb"><a href="/video/">영상</a> › <a href="/video/{v['cat']}.html">{E(cn)}</a></p><h1 class="vt1">{E(v['title'])}</h1>
 <div class="{'emb sh1' if v['type']=='S' else 'emb'}"><iframe loading="lazy" src="https://www.youtube.com/embed/{v['id']}" title="{E(st)}" allowfullscreen></iframe></div>
@@ -1034,14 +1035,35 @@ Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i
     _cu = [("https://wwood.kr/home/mall/shoplist.php?depth=1&amp;code1_idx=" + c) if "-" not in c else ("https://wwood.kr/home/mall/shoplist.php?depth=2&amp;code1_idx=%s&amp;code2_idx=%s" % tuple(c.split("-"))) for c in _cats]
     _pu = ["https://wwood.kr/home/mall/shoplist.php?idx=%d&amp;pmode=view" % i for i in _ids]
     open(f"{OUT}/wwoodkr-sitemap.xml", "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<url><loc>https://wwood.kr/home/mall/</loc></url>\n<url><loc>https://wwood.kr/home/sub05/video.php</loc></url>\n' + "".join(f"<url><loc>{u}</loc></url>\n" for u in _cu + _pu) + "</urlset>\n")
-    open(f"{OUT}/robots.txt", "w").write(f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\nSitemap: {BASE}/rss.xml\n")
+    open(f"{OUT}/robots.txt", "w").write(f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\nSitemap: {BASE}/sitemap-video.xml\nSitemap: {BASE}/rss.xml\n")
     today = datetime.date.today().isoformat()
+    # lastmod: 내용이 실제로 바뀐 날만 갱신(매일 오늘 날짜면 구글이 lastmod를 무시함)
+    _lmf = f"{ROOT}/data/lastmod.json"
+    _lm = json.load(open(_lmf, encoding="utf-8")) if os.path.exists(_lmf) else {}
+    def _lmod(u):
+        rel = u[len(BASE):].lstrip("/") or "index.html"
+        if rel.endswith("/"): rel += "index.html"
+        try: b = open(f"{OUT}/{rel}", "rb").read()
+        except OSError: return today
+        b = re.sub(rb"\?v=[0-9a-f]{8}", b"", b)
+        h = hashlib.md5(b).hexdigest()[:12]
+        if _lm.get(u, [None])[0] != h: _lm[u] = [h, today]
+        return _lm[u][1]
+    LMD = {u: _lmod(u) for u in SITEMAP}
+    json.dump(_lm, open(_lmf, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+    X = lambda t: html.escape(t, quote=True)
+    open(f"{OUT}/sitemap-video.xml", "w", encoding="utf-8").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">\n' +
+        "".join(f"<url><loc>{u}</loc><video:video><video:thumbnail_loc>https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg</video:thumbnail_loc><video:title>{X(v['title'][:100])}</video:title><video:description>{X(dd[:2000])}</video:description><video:player_loc>https://www.youtube.com/embed/{v['id']}</video:player_loc>"
+                + (f"<video:duration>{ln}</video:duration>" if ln else "")
+                + (f"<video:publication_date>{_dt.datetime.fromtimestamp(ts, _dt.timezone(_dt.timedelta(hours=9))).isoformat()}</video:publication_date>" if ts else "")
+                + "<video:family_friendly>yes</video:family_friendly></video:video></url>\n" for u, v, dd, ts, ln in VSM) + "</urlset>\n")
     open(f"{OUT}/sitemap.xml", "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' +
-        "".join(f"<url><loc>{u}</loc><lastmod>{today}</lastmod>" + (f"<image:image><image:loc>{html.escape(SIMG[u])}</image:loc></image:image>" if SIMG.get(u) else "") + "</url>\n" for u in SITEMAP) + "</urlset>\n")
+        "".join(f"<url><loc>{u}</loc><lastmod>{LMD[u]}</lastmod>" + (f"<image:image><image:loc>{html.escape(SIMG[u])}</image:loc></image:image>" if SIMG.get(u) else "") + "</url>\n" for u in SITEMAP) + "</urlset>\n")
     print(len(SITEMAP), "pages →", OUT)
 
 import hashlib
 ASSET_V = hashlib.md5((open(f"{ROOT}/assets/style.css","rb").read()+open(f"{ROOT}/assets/site.js","rb").read())).hexdigest()[:8]
 SITEMAP = []
+VSM = []
 SIMG = {}
 build()

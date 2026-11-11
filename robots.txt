@@ -2,4 +2,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.wwood.co.kr/sitemap.xml
+Sitemap: https://www.wwood.co.kr/sitemap-video.xml
 Sitemap: https://www.wwood.co.kr/rss.xml
