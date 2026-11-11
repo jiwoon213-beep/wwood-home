@@ -197,7 +197,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><img class="lm" src="/assets/logo-mark.svg" width="46" height="46" alt=""><span class="lt"><b>영진종합목재</b><small><em>월드건축자재</em> · 충청권 최대규모 목재상</small></span></a>
 <nav>{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">만들기 자재</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">만들기 자재</a> · <a href="/baesong.html">전국 배송</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로 무단 복제·사용을 금합니다.<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr",seen=false;try{{seen=localStorage.getItem("vcd")===k;}}catch(e){{}}var m=seen?"get":"hit";if(!seen){{try{{var rf=document.referrer||"",src=/youtube|youtu\\.be/.test(rf)?"yt":/naver/.test(rf)?"naver":/google/.test(rf)?"google":/daum|kakao/.test(rf)?"daum":/bing/.test(rf)?"bing":/daangn|karrot/.test(rf)?"daangn":/wwood\\.kr/.test(rf)?"wwoodkr":rf&&rf.indexOf(location.host)<0?"etc":"direct";fetch(b+"hit/"+n+"/src-"+src).catch(function(){{}});fetch(b+"hit/"+n+"/src-"+src+"-d"+k).catch(function(){{}});}}catch(e){{}}}}Promise.all([fetch(b+m+"/"+n+"/d"+k).then(function(r){{return r.json()}}),fetch(b+m+"/"+n+"/total").then(function(r){{return r.json()}})]).then(function(v){{try{{localStorage.setItem("vcd",k)}}catch(e){{}}var t=v[0].value||0,a=v[1].value||0;var el=document.getElementById("vcnt");if(el)el.textContent="오늘 "+t.toLocaleString()+" · 전체 "+a.toLocaleString();}}).catch(function(){{}});}}catch(e){{}}}})();</script>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
@@ -427,6 +427,21 @@ def build():
 <section class="wrap sec">{tips}</section>{CTA}""", "/sigong.html")
 
     # 매장
+    # 전국 용달 배송 안내 (회원 70%가 대전 밖)
+    _BR = [("경기·서울·인천", "수도권 인테리어·목공 현장, 카페·상가 공사"), ("충남·충북", "천안·아산·청주·공주·논산 주택·창고 공사"), ("경북·경남·대구·부산·울산", "영남권 데크·목조 주택·리모델링"),
+           ("전북·전남·광주", "호남권 데크·평상·조경 목재"), ("강원", "전원주택·펜션 데크·내장재")]
+    _BF = [("대전에서 먼 지역도 보내 주나요?", "네. 대전·세종·공주·계룡·논산·금산·옥천은 직접 배송·현장 납품하고, 그 밖의 전국은 용달(화물차)로 보내 드립니다."),
+           ("운임은 얼마인가요?", "거리·차량 크기·수량에 따라 달라 정해진 금액이 없습니다. 품목과 수량, 받는 주소를 알려 주시면 사무실에서 운임을 먼저 알려 드리고, 입금 확인 후 출고합니다."),
+           ("재단해서 보내 주나요?", "네. 원하는 크기로 재단한 뒤 보내 드립니다. 재단 크기는 재단 미리보기에서 그림으로 만들어 메일로 보내 주시면 정확합니다."),
+           ("한두 장도 보내 주나요?", "소량도 보낼 수 있지만 용달 운임이 자재값보다 클 수 있습니다. 가까운 분은 방문 구매가 경제적이고, 먼 곳은 한 번에 모아서 주문하시는 것을 권합니다."),
+           ("주문은 어떻게 하나요?", f"전화({TEL})나 메일({EMAIL})로 품목·규격·수량·받는 주소·받는 분 연락처를 알려 주세요. 사업자는 도매회원(wwood.kr)으로 가입하시면 회원가로 주문할 수 있습니다.")]
+    page("baesong.html", "전국 목재 배송 — 합판·구조재 재단해서 용달로 | 영진목재(대전)", "합판·MDF·구조재·방부목·데크재를 원하는 크기로 재단해 전국에 용달로 보내 드립니다. 경기·서울·충청·영남·호남·강원. 운임은 미리 견적. 대전 영진목재.",
+         f"""<section class="wrap sec"><h1>전국 목재 배송 — 재단해서 용달로 보내 드립니다</h1><p class="lead">영진종합목재(월드건축자재) 쇼핑몰 회원의 절반 이상이 대전 밖에 계십니다. 합판·MDF·집성판·구조재·방부목·데크재·석고보드·몰딩·도어까지 원하는 크기로 재단해서 전국 현장으로 보내 드립니다.</p>
+<div class="row"><a class="b r" href="mailto:{EMAIL}?subject=%EB%B0%B0%EC%86%A1%20%EA%B2%AC%EC%A0%81%20%EC%9A%94%EC%B2%AD&body=%ED%92%88%EB%AA%A9%C2%B7%EA%B7%9C%EA%B2%A9%C2%B7%EC%88%98%EB%9F%89%3A%0A%EB%B0%9B%EB%8A%94%20%EC%A3%BC%EC%86%8C%3A%0A%EB%B0%9B%EB%8A%94%20%EB%B6%84%20%EC%97%B0%EB%9D%BD%EC%B2%98%3A%0A%ED%9D%AC%EB%A7%9D%20%EB%82%A0%EC%A7%9C%3A%0A">메일로 배송 견적 요청</a><a class="b d" href="tel:{TEL.replace('-','')}">전화 {TEL}</a><a class="b o" href="/cut.html">재단 그림 만들기</a></div></section>
+<section class="wrap sec g2"><div class="card"><h2>배송 방법</h2><ul><li><b>대전·세종·공주·계룡·논산·금산·옥천</b>: 직접 배송·현장 납품</li><li><b>그 밖의 전국</b>: 용달(화물차) 배송 — 운임 별도, 미리 견적</li><li>원하는 크기로 재단한 뒤 출고</li></ul></div>
+<div class="card"><h2>주문 순서</h2><ol><li>품목·규격·수량·받는 주소를 전화나 메일로 알려 주세요.</li><li>사무실에서 자재값과 운임을 알려 드립니다.</li><li>입금 확인 후 재단·상차하고 출고합니다.</li></ol></div></section>
+<section class="wrap sec"><h2>지역별로 많이 보내는 자재</h2><ul>{"".join(f"<li><b>{E(a)}</b> — {E(b)}</li>" for a, b in _BR)}</ul><p>자재별 용도와 규격은 <a href="/jajae/">자재 백과</a>, 기준가는 <a href="/price.html">기준가</a>, 필요한 양은 <a href="/calc.html">자재 계산기</a>에서 미리 보실 수 있습니다.</p></section>
+<section class="wrap sec"><h2>자주 묻는 질문</h2>{faqslide(_BF)}</section>{CTA}""", "", [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in _BF]}], BASE + "/assets/store/delivery.jpg")
     page("visit.html", "대전 목재소 영진목재 위치·영업시간 — 유성대로 44, 즉석 재단", f"월드건축자재(영진종합목재) {ADDR}. {HOURS}. 3000평 매장, 즉석 재단, 대전·세종 배송. {TEL}.",
          f"""<section class="wrap sec g2"><div>{embed(tour) if tour else ''}</div><div><h1>매장 오시는 길</h1>
 <div class="tw"><table><tbody><tr><th>주소</th><td>{ADDR} 월드건축자재(영진목재)</td></tr><tr><th>영업</th><td>{HOURS}</td></tr><tr><th>전화</th><td><a href="tel:{TEL.replace('-','')}">{TEL}</a></td></tr>
