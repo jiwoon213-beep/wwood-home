@@ -177,3 +177,4 @@ dl.yg dt{font-weight:800;font-size:17px;margin:14px 0 2px}dl.yg dt .muted{font-w
 .ph{display:block;text-decoration:none;color:var(--ink)}.ph img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:12px;display:block}.ph small{display:block;font-size:13px;color:var(--mut);margin-top:6px;line-height:1.4}
 .pg.hrow>.ph{flex:0 0 72%;max-width:420px}@media(min-width:900px){.pg.hrow>.ph{flex-basis:31%}}
 .top .vcnt{color:#EDE7DD;font-size:12px;opacity:.9;white-space:nowrap;margin-right:4px}
+img{-webkit-user-drag:none;-webkit-touch-callout:none}

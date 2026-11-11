@@ -87,3 +87,6 @@ document.addEventListener("click", function (e) {
   document.querySelectorAll('a[href*="/home/mall/shoplist.php"]').forEach(fix);
   document.addEventListener("click", function (e) { fix(e.target.closest && e.target.closest("a")); }, true);
 })();
+
+/* 사진 무단 저장 방지(우클릭·드래그·길게 누르기) */
+(function(){function b(e){var t=e.target;if(t&&t.tagName==="IMG"){e.preventDefault();return false}}document.addEventListener("contextmenu",b,true);document.addEventListener("dragstart",b,true);})();
