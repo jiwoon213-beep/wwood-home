@@ -157,7 +157,7 @@ function tex(W,H,m){
 function hex(c,i){return (parseInt(c.substr(1+i*2,2),16)/255).toFixed(3)}
 var FS='font-family="Pretendard,Noto Sans KR,sans-serif"';
 function dims(W,H,ox,oy,showH){
- var f=Math.max(28,Math.min(W,H||W)/26),s='<g stroke="#8a8174" stroke-width="2" fill="#5e574e" '+FS+'>';
+ var f=Math.max(34,Math.min(W,H||W)/17),s='<g stroke="#8a8174" stroke-width="2" fill="#5e574e" '+FS+'>';
  var y=-oy*0.55;s+='<line x1="0" x2="'+W+'" y1="'+y+'" y2="'+y+'"/><line x1="0" x2="0" y1="'+(y-12)+'" y2="'+(y+12)+'"/><line x1="'+W+'" x2="'+W+'" y1="'+(y-12)+'" y2="'+(y+12)+'"/>';
  s+='<rect x="'+(W/2-f*2.6)+'" y="'+(y-f*0.7)+'" width="'+f*5.2+'" height="'+f*1.4+'" fill="#f6f3ee" stroke="none"/><text x="'+W/2+'" y="'+y+'" font-size="'+f+'" text-anchor="middle" dominant-baseline="central" stroke="none" font-weight="700">'+W+' mm</text>';
  if(showH){var x=-ox*0.55;s+='<line y1="0" y2="'+H+'" x1="'+x+'" x2="'+x+'"/><line y1="0" y2="0" x1="'+(x-12)+'" x2="'+(x+12)+'"/><line y1="'+H+'" y2="'+H+'" x1="'+(x-12)+'" x2="'+(x+12)+'"/>';
