@@ -1,0 +1,170 @@
+<section class="wrap sec cutp">
+<h1>재단 미리보기</h1>
+<p class="lead">자재 고르고, 필요한 크기만 넣으세요. 원판에서 <b>어떻게 잘리는지</b> 그림으로 바로 보여드립니다. 이 화면을 매장에 보여주시면 그대로 잘라 드려요.</p>
+
+<div class="cutbox">
+ <div class="cstep"><span class="cn">1</span>자재</div>
+ <div class="ctabs" id="ctabs"></div>
+ <select id="cprod" class="cin"></select>
+ <div id="ccustom" class="crow" style="display:none">
+  <label>원판 가로<input class="cin" id="cw" type="number" inputmode="numeric" value="1220"></label>
+  <label>원판 세로<input class="cin" id="ch" type="number" inputmode="numeric" value="2440"></label>
+ </div>
+ <div class="cinfo" id="cinfo"></div>
+
+ <div class="cstep"><span class="cn">2</span>자를 크기 <small id="cunit">(mm)</small></div>
+ <div id="cparts"></div>
+ <button class="b o cadd" id="cadd" type="button">+ 크기 추가</button>
+ <label class="cchk" id="cgrainw"><input type="checkbox" id="cgrain"> 나뭇결 방향 유지 (조각 안 돌리기)</label>
+</div>
+
+<div class="cres" id="cres"></div>
+<div id="csvg"></div>
+
+<div class="cact">
+ <button class="b r" id="cshare" type="button">링크 복사</button>
+ <button class="b o" id="cprint" type="button">인쇄</button>
+ <a class="b d" href="tel:__TEL__">전화로 재단 문의</a>
+</div>
+<p class="small muted">톱날 두께 3mm를 빼고 계산합니다. 실제 재단은 자재 상태(휨·모서리)에 따라 조금 달라질 수 있어요. 원판·각재 규격은 매장 취급 제품 기준입니다.</p>
+</section>
+<style>
+.cutp h1{margin-bottom:6px}.cutbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+.cstep{font-weight:800;font-size:18px;margin:14px 0 8px;display:flex;align-items:center;gap:8px}.cstep:first-child{margin-top:0}.cstep small{font-weight:500;color:var(--mut);font-size:14px}
+.cn{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--red);color:#fff;align-items:center;justify-content:center;font-size:14px}
+.ctabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.ctabs button{border:1px solid var(--line);background:#fff;border-radius:20px;padding:8px 14px;font-size:15px;font-weight:700;cursor:pointer}.ctabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cin{width:100%;font-size:16px;padding:10px;border:1px solid #cfc7ba;border-radius:8px;background:#fff;box-sizing:border-box}
+.crow{display:flex;gap:8px;margin-top:8px}.crow label{flex:1;font-size:13px;color:var(--mut)}
+.cinfo{font-size:14px;color:var(--mut);margin-top:6px}
+.cpart{display:grid;grid-template-columns:1fr auto 1fr auto 70px 34px;gap:6px;align-items:center;margin-bottom:6px}
+.cpart.l{grid-template-columns:1fr auto 70px 34px}
+.cpart span{color:var(--mut);font-size:14px}.cpart .cin{padding:10px 6px;text-align:center}
+.cdel{border:0;background:#eee;border-radius:8px;height:40px;font-size:18px;cursor:pointer}
+.cadd{min-height:40px;font-size:15px;padding:0 14px;margin-top:4px}
+.cchk{display:block;margin-top:12px;font-size:15px}
+.cres{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}.cres div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;flex:1;min-width:120px}.cres b{display:block;font-size:24px}.cres small{color:var(--mut)}
+.cres .cerr{background:#fff3f2;border-color:#f3c2bd;color:var(--red);flex-basis:100%}
+.csheet{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:12px}.csheet h3{margin:0 0 8px;font-size:16px}
+.csheet svg{width:100%;height:auto;display:block}
+.cact{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.cact .b{flex:1;min-width:120px}
+@media print{header,footer,.top,.cutbox,.cact,.lead,.mbar,.cta{display:none!important}.csheet{break-inside:avoid}}
+</style>
+<script>
+(function(){
+var D=__DATA__,KERF=3,COL=["#f6c89f","#a8d5ba","#a9c8ec","#f2a7a7","#d6c1ea","#f3e19b","#9fd9d9","#e8b9d6","#c9d99f","#f0c0a0"];
+var $=function(i){return document.getElementById(i)};
+var cat=0,prod=0,parts=[];
+function curCat(){return D.cats[cat]}
+function isLin(){return curCat().lin}
+function custom(){return curCat().custom}
+function stock(){
+ if(custom()){return isLin()?{L:+$("cw").value||3600}:{w:+$("cw").value||1220,h:+$("ch").value||2440}}
+ var p=curCat().items[prod];return isLin()?{L:p[1]}:{w:p[1],h:p[2]};
+}
+function tabs(){
+ $("ctabs").innerHTML=D.cats.map(function(c,i){return '<button type="button" data-i="'+i+'"'+(i==cat?' class="on"':'')+'>'+c.n+'</button>'}).join("");
+ [].forEach.call($("ctabs").children,function(b){b.onclick=function(){setCat(+b.dataset.i,true)}});
+}
+function setCat(i,reset){
+ cat=i;prod=0;tabs();var c=curCat();
+ $("cprod").style.display=c.custom?"none":"";$("ccustom").style.display=c.custom?"":"none";
+ $("cprod").innerHTML=(c.items||[]).map(function(p,k){return '<option value="'+k+'">'+p[0]+'</option>'}).join("");
+ $("cgrainw").style.display=c.lin?"none":"";
+ $("cunit").textContent=c.lin?"(길이 mm)":"(가로 × 세로 mm)";
+ if(c.custom){$("ccustom").querySelector("label").firstChild.textContent=c.lin?"원래 길이":"원판 가로";$("ch").parentNode.style.display=c.lin?"none":"";if(reset){$("cw").value=c.lin?3600:1220;$("ch").value=2440}}
+ if(reset)parts=c.lin?[[900,0,4]]:[[600,400,2]];
+ drawParts();run();
+}
+function drawParts(){
+ var L=isLin();
+ $("cparts").innerHTML=parts.map(function(p,k){
+  return '<div class="cpart'+(L?' l':'')+'"><input class="cin" type="number" inputmode="numeric" data-k="'+k+'" data-f="0" value="'+(p[0]||"")+'" placeholder="'+(L?"길이":"가로")+'">'+
+  (L?'':'<span>×</span><input class="cin" type="number" inputmode="numeric" data-k="'+k+'" data-f="1" value="'+(p[1]||"")+'" placeholder="세로">')+
+  '<span>×</span><input class="cin" type="number" inputmode="numeric" data-k="'+k+'" data-f="2" value="'+(p[2]||1)+'" placeholder="개"><button type="button" class="cdel" data-k="'+k+'" aria-label="삭제">×</button></div>'}).join("");
+ [].forEach.call($("cparts").querySelectorAll("input"),function(x){x.oninput=function(){parts[+x.dataset.k][+x.dataset.f]=+x.value||0;run()}});
+ [].forEach.call($("cparts").querySelectorAll(".cdel"),function(x){x.onclick=function(){parts.splice(+x.dataset.k,1);if(!parts.length)parts=[[0,0,1]];drawParts();run()}});
+}
+/* 판재: 길로틴(직선 재단) 방식 — 패널쏘로 그대로 자를 수 있는 배치 */
+function packSheets(W,H,list,rot){
+ var bins=[],err=[];
+ list.sort(function(a,b){return Math.max(b.w,b.h)-Math.max(a.w,a.h)||b.w*b.h-a.w*a.h});
+ list.forEach(function(p){
+  var fitsN=p.w<=W&&p.h<=H,fitsR=rot&&p.h<=W&&p.w<=H;
+  if(!fitsN&&!fitsR){err.push(p);return}
+  var best=null;
+  bins.forEach(function(b,bi){b.free.forEach(function(f,fi){
+   [[p.w,p.h,0],[p.h,p.w,1]].forEach(function(o){
+    if(o[2]&&!rot)return;
+    if(o[0]<=f.w&&o[1]<=f.h){var s=Math.min(f.w-o[0],f.h-o[1]);if(!best||s<best.s)best={s:s,bi:bi,fi:fi,w:o[0],h:o[1]}}
+   })})});
+  if(!best){var o=fitsN?[p.w,p.h]:[p.h,p.w];bins.push({free:[{x:0,y:0,w:W,h:H}],pl:[]});best={bi:bins.length-1,fi:0,w:o[0],h:o[1]}}
+  var b=bins[best.bi],f=b.free[best.fi];b.free.splice(best.fi,1);
+  b.pl.push({x:f.x,y:f.y,w:best.w,h:best.h,c:p.c});
+  var rw=f.w-best.w-KERF,rh=f.h-best.h-KERF;
+  // 남는 쪽을 크게 남기도록 자르는 방향 결정
+  if(rw*f.h>=rh*f.w){ if(rw>0)b.free.push({x:f.x+best.w+KERF,y:f.y,w:rw,h:f.h}); if(rh>0)b.free.push({x:f.x,y:f.y+best.h+KERF,w:best.w,h:rh}); }
+  else { if(rh>0)b.free.push({x:f.x,y:f.y+best.h+KERF,w:f.w,h:rh}); if(rw>0)b.free.push({x:f.x+best.w+KERF,y:f.y,w:rw,h:best.h}); }
+ });
+ return {bins:bins,err:err};
+}
+function packLin(L,list){
+ var bins=[],err=[];list.sort(function(a,b){return b.l-a.l});
+ list.forEach(function(p){
+  if(p.l>L){err.push(p);return}
+  var b=null;for(var i=0;i<bins.length;i++){if(bins[i].used+p.l+(bins[i].pl.length?KERF:0)<=L){b=bins[i];break}}
+  if(!b){b={used:0,pl:[]};bins.push(b)}
+  if(b.pl.length)b.used+=KERF;b.pl.push({x:b.used,l:p.l,c:p.c});b.used+=p.l;
+ });
+ return {bins:bins,err:err};
+}
+function svgSheet(W,H,b){
+ var land=W<H, VW=land?H:W, VH=land?W:H, s='';
+ s+='<svg viewBox="-4 -4 '+(VW+8)+' '+(VH+8)+'" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="'+VW+'" height="'+VH+'" fill="#eee" stroke="#555" stroke-width="4"/>';
+ var fs=Math.max(40,Math.min(VW,VH)/14);
+ b.pl.forEach(function(p){
+  var x=land?p.y:p.x,y=land?p.x:p.y,w=land?p.h:p.w,h=land?p.w:p.h,lw=land?p.h:p.w,lh=land?p.w:p.h;
+  var t=(land?p.h:p.w)+'×'+(land?p.w:p.h);t=p.w+'×'+p.h;
+  var f=Math.min(fs,w/(t.length*0.6),h*0.6);
+  s+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+COL[p.c%COL.length]+'" stroke="#333" stroke-width="3"/>';
+  if(f>12)s+='<text x="'+(x+w/2)+'" y="'+(y+h/2)+'" font-size="'+f+'" text-anchor="middle" dominant-baseline="middle" font-weight="700" fill="#222">'+t+'</text>';
+ });
+ return s+'</svg>';
+}
+function svgLin(L,b){
+ var H=Math.max(60,L/18),s='<svg viewBox="-4 -4 '+(L+8)+' '+(H+8)+'" xmlns="http://www.w3.org/2000/svg"><rect width="'+L+'" height="'+H+'" fill="#eee" stroke="#555" stroke-width="4"/>';
+ b.pl.forEach(function(p){var f=Math.min(H*0.55,p.l/((''+p.l).length*0.65));s+='<rect x="'+p.x+'" y="0" width="'+p.l+'" height="'+H+'" fill="'+COL[p.c%COL.length]+'" stroke="#333" stroke-width="3"/>';if(f>10)s+='<text x="'+(p.x+p.l/2)+'" y="'+H/2+'" font-size="'+f+'" text-anchor="middle" dominant-baseline="middle" font-weight="700">'+p.l+'</text>'});
+ return s+'</svg>';
+}
+function run(){
+ var st=stock(),L=isLin(),list=[],n=0;
+ $("cinfo").textContent=L?('원래 길이 '+st.L+'mm'):('원판 '+st.w+' × '+st.h+'mm');
+ parts.forEach(function(p,k){var q=Math.min(+p[2]||0,500);for(var i=0;i<q;i++){if(L){if(p[0]>0)list.push({l:+p[0],c:k})}else if(p[0]>0&&p[1]>0)list.push({w:+p[0],h:+p[1],c:k})}});
+ n=list.length;var r=L?packLin(st.L,list):packSheets(st.w,st.h,list,!$("cgrain").checked),html='',sv='';
+ var used=0,tot=0;
+ r.bins.forEach(function(b,i){
+  if(L){used+=b.pl.reduce(function(a,p){return a+p.l},0);tot+=st.L;sv+='<div class="csheet"><h3>'+(i+1)+'번째 ('+st.L+'mm) · 남는 길이 '+(st.L-b.used)+'mm</h3>'+svgLin(st.L,b)+'</div>'}
+  else{used+=b.pl.reduce(function(a,p){return a+p.w*p.h},0);tot+=st.w*st.h;sv+='<div class="csheet"><h3>'+(i+1)+'번째 원판 · 조각 '+b.pl.length+'개</h3>'+svgSheet(st.w,st.h,b)+'</div>'}
+ });
+ if(n){html+='<div><small>필요한 '+(L?'자재':'원판')+'</small><b>'+r.bins.length+(L?'개':'장')+'</b></div><div><small>자르는 조각</small><b>'+(n-r.err.length)+'개</b></div><div><small>사용률</small><b>'+(tot?Math.round(used/tot*100):0)+'%</b></div>'}
+ if(r.err.length)html+='<div class="cerr">'+(L?'원래 길이':'원판')+'보다 큰 조각 '+r.err.length+'개는 한 장에서 안 나와요. 크기를 확인해 주세요.</div>';
+ if(!n)html='<div><small>크기를 넣으면 바로 그림이 나와요</small></div>';
+ $("cres").innerHTML=html;$("csvg").innerHTML=sv;save();
+}
+function save(){
+ var h='c='+cat+'&p='+prod+'&g='+($("cgrain").checked?1:0)+'&s='+parts.map(function(p){return p.join('x')}).join('_');
+ if(custom())h+='&w='+$("cw").value+'&h='+$("ch").value;
+ try{history.replaceState(null,'','#'+h)}catch(e){}
+}
+function load(){
+ var q={};location.hash.slice(1).split('&').forEach(function(kv){var a=kv.split('=');if(a[0])q[a[0]]=decodeURIComponent(a[1]||'')});
+ if(q.c&&D.cats[+q.c]){setCat(+q.c,true);if(q.w)$("cw").value=q.w;if(q.h)$("ch").value=q.h;if(q.p&&curCat().items&&curCat().items[+q.p]){prod=+q.p;$("cprod").value=prod}$("cgrain").checked=q.g=="1";
+  if(q.s)parts=q.s.split('_').map(function(t){return t.split('x').map(Number)});drawParts();run();return true}
+}
+$("cprod").onchange=function(){prod=+this.value;run()};$("cw").oninput=$("ch").oninput=run;$("cgrain").onchange=run;
+$("cadd").onclick=function(){parts.push(isLin()?[0,0,1]:[0,0,1]);drawParts();var x=$("cparts").lastChild.querySelector("input");x&&x.focus()};
+$("cprint").onclick=function(){window.print()};
+$("cshare").onclick=function(){var u=location.href,b=this;function ok(){b.textContent="복사됨 ✓";setTimeout(function(){b.textContent="링크 복사"},1500)}
+ if(navigator.clipboard)navigator.clipboard.writeText(u).then(ok,function(){prompt("이 주소를 복사하세요",u)});else prompt("이 주소를 복사하세요",u)};
+if(!load())setCat(0,true);
+})();
+</script>

@@ -172,7 +172,7 @@ def mat_prices(m, k=10):
     return sorted(rows, key=lambda p: -p["qty"])[:k]
 
 # ---------- layout ----------
-NAV = [("/jajae/", "자재 백과"), ("/jaryo/", "전체 자재"), ("/video/", "영상"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/calc.html", "계산기"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/visit.html", "매장 안내")]
+NAV = [("/jajae/", "자재 백과"), ("/jaryo/", "전체 자재"), ("/video/", "영상"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/calc.html", "계산기"), ("/cut.html", "재단"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/visit.html", "매장 안내")]
 
 def page(path, title, desc, body, active="", jsonld=None, img=None):
     if len(desc) > 80:  # 네이버 권장: 설명 80자 이내 — 문장·쉼표 경계에서 자름
@@ -601,6 +601,40 @@ def build():
     ]
     chips = "".join(f'<button class="chip" data-i="{i}">{t}</button>' for i, (k, t, *_ ) in enumerate(CALCS))
     slides = "".join(f'<div class="cslide" id="{k}"><div class="card"><h2>{h}</h2><div class="cg">{inner}</div>' + ('' if k == "py" else f'<div class="cr" id="{k}r"></div>') + (f'<p class="small muted">{note}</p>' if note else "") + (f'<p class="small">{links}</p>' if links else "") + '</div></div>' for k, t, h, inner, links, note in CALCS)
+    # 재단 미리보기 — 매장 취급 원판·각재 규격(가격 없음)
+    def _cutdata():
+        rows = list(csv.DictReader(open(ROOT + "/data/prices.csv", encoding="utf-8")))
+        def ln(n):
+            m = re.search(r"(\d+)\s*ft", n, re.I)
+            if m: return int(m.group(1)) * 300
+            m = re.search(r"(\d+(?:\.\d+)?)\s*자", n)
+            if m: return round(float(m.group(1)) * 300)
+            m = re.findall(r"\*\s*(\d{4})\b", n)
+            return int(m[-1]) if m else 0
+        def nm(n): return re.sub(r"\s+", " ", re.sub(r"^[^-]+-\s*", "", n)).strip()
+        G = [("합판", ["합판"], 0), ("MDF", ["엠디"], 0), ("집성판", ["집성판"], 0), ("석고보드", ["석고"], 0), ("단열재", ["단열"], 0),
+             ("구조재", ["구조"], 1), ("방부목", ["방부"], 1), ("각재·다루끼", ["목재", "각재"], 1), ("데크", ["데크", "합성"], 1)]
+        cats = []
+        for label, cs, lin in G:
+            items = []
+            for r in sorted([r for r in rows if r["cat"] in cs], key=lambda r: -int(r["qty"] or 0)):
+                n = r["name"]
+                if lin:
+                    L = ln(n)
+                    if L >= 600 and not re.search(r"클립|스타터|브라켓|캡|지주", n): items.append([nm(n), L])
+                else:
+                    m = re.search(r"(\d{3,4})\s*\*\s*(\d{3,4})\s*\*\s*\d", n)
+                    if m: w, h = int(m.group(1)), int(m.group(2))
+                    else:
+                        m = re.search(r"([34])\s*\*\s*([68])", n)
+                        if not m: continue
+                        w, h = {"4*8": (1220, 2440), "3*6": (900, 1800)}[m.group(1) + "*" + m.group(2)]
+                    items.append([nm(n), w, h])
+            if items: cats.append({"n": label, "lin": lin, "items": items})
+        cats += [{"n": "판재 직접입력", "lin": 0, "custom": 1}, {"n": "각재 직접입력", "lin": 1, "custom": 1}]
+        return {"cats": cats}
+    page("cut.html", "재단 미리보기 — 합판·MDF·집성판 어떻게 잘리는지 그림으로 | 영진목재", "필요한 크기만 넣으면 합판·MDF·집성판·석고보드 원판과 구조재·각재에서 어떻게 잘리는지 그림으로 보여드립니다. 대전 영진종합목재 즉석 재단.",
+         open(ROOT + "/cut_tpl.html", encoding="utf-8").read().replace("__DATA__", json.dumps(_cutdata(), ensure_ascii=False, separators=(",", ":"))).replace("__TEL__", TEL.replace("-", "")), "/cut.html")
     page("calc.html", "자재 계산기 — 데크·석고보드·합판 몇 장? 문짝·중문 크기까지 | 영진목재", "데크 방부목·합성데크 장수, 석고보드·합판·단열재 장수, 몰딩·걸레받이 길이, 데코타일·강마루 박스 수, 페인트 양, 평↔㎡를 바로 계산하세요. 대전 영진목재(월드건축자재) 재단·배송.",
 f"""<section class="wrap sec"><h1>자재 계산기</h1><p class="lead">필요한 양을 미리 계산해 오시면 매장에서 바로 재단해 드립니다. 결과는 참고용입니다(로스 포함).</p>
 <div class="chips" id="cchips">{chips}</div>
