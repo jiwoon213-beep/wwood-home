@@ -901,10 +901,18 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         if chk: h += "<h2>이 영상에서 알 수 있는 것</h2><ul>" + "".join(chk) + "</ul>"
         if lis: h += "<h2>영상 목차</h2><ul class=\"toc\">" + "".join(lis) + "</ul>"
         return h
-    for v in V:
+    _vt_used = set()
+    def _vtitle(v):  # 영상 페이지 제목 겹침 방지(구글 중복 제목 경고)
+        b = vshort(v["title"])[:40]
+        for c in (b, v["title"][:44].strip(), b + (" (쇼츠)" if v["type"] == "S" else " (영상)"), v["title"][:44].strip() + (" 쇼츠" if v["type"] == "S" else " 풀영상")):
+            if c not in _vt_used: _vt_used.add(c); return c
+        k = 2
+        while f"{b} {k}" in _vt_used: k += 1
+        _vt_used.add(f"{b} {k}"); return f"{b} {k}"
+    for v in sorted(V, key=lambda x: -x["n"]):
         if v["id"] not in VD: continue
         d, ln, ts = VD[v["id"]]
-        st = vshort(v["title"])
+        st = _vtitle(v)
         first = re.split(r"(?<=[.!?다요])\s", d.replace("\n", " "), maxsplit=1)[0] if d else v["title"]
         rel = [x for x in V if x["cat"] == v["cat"] and x["id"] != v["id"]]
         rel = sorted(rel, key=lambda x: -x["n"])[:8]
@@ -915,7 +923,9 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         if ts: ld["uploadDate"] = _dt.datetime.fromtimestamp(ts, _dt.timezone(_dt.timedelta(hours=9))).isoformat()
         if ln: ld["duration"] = f"PT{ln // 60}M{ln % 60}S"
         cn = CATN.get(v["cat"], "영상")
-        page(f"v/{v['id']}.html", f"{st} — 영상 | 대전 영진목재", (first or st)[:80],
+        vds = (first or st)[:110]
+        if len(vds) < 60: vds = (vds + " " + (v["title"] if v["title"] not in vds else "") + f" — 대전 영진종합목재(월드건축자재) {cn} 영상. 자재 재단·전국 배송.").replace("  ", " ")[:150]
+        page(f"v/{v['id']}.html", f"{st} — 영상 | 대전 영진목재", vds,
              f"""<section class="wrap sec"><p class="crumb"><a href="/video/">영상</a> › <a href="/video/{v['cat']}.html">{E(cn)}</a></p><h1 class="vt1">{E(v['title'])}</h1>
 <div class="{'emb sh1' if v['type']=='S' else 'emb'}"><iframe loading="lazy" src="https://www.youtube.com/embed/{v['id']}" title="{E(st)}" allowfullscreen></iframe></div>
 <p class="small muted">조회 {views(v['n'])}{' · 쇼츠' if v['type']=='S' else ''} · <a href="{vurl(v)}" target="_blank" rel="noopener">유튜브에서 보기</a></p>
