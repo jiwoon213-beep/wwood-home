@@ -160,7 +160,7 @@ function svgSheet(W,H,b){
  var fs=Math.max(40,Math.min(VW,VH)/14),R=[];
  b.pl.forEach(function(p){
   var x=land?p.y:p.x,y=land?p.x:p.y,w=land?p.h:p.w,h=land?p.w:p.h,t=w+'×'+h;
-  R.push([x,y,w,h,[t,Math.min(fs,w/(t.length*0.62),h*0.5)],p.c]);
+  R.push([x,y,w,h,[t,Math.min(fs,w/(t.length*0.74),h*0.45)],p.c]);
  });
  return s+cutOverlay(VW,VH,R)+'</svg>';
 }
