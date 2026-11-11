@@ -769,6 +769,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     SITEMAP[:] = [u for u in SITEMAP if not u.endswith("/r/")]
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
+    json.dump({"cats": [[c, n, d] for c, n, d in CATS], "v": [[v["id"], v["type"], v["cat"], v["n"], v["title"]] for v in V]}, open(f"{OUT}/assets/videos.json", "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))  # wwood.kr 시공영상 페이지용
     open(f"{OUT}/b4237bce57cfb60c93b64e5203857f41.txt", "w").write("b4237bce57cfb60c93b64e5203857f41")  # IndexNow 키(네이버·빙)
     # RSS (네이버 서치어드바이저 RSS 제출용)
     def _rfc(d):
