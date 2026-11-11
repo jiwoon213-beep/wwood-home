@@ -32,10 +32,14 @@
 <div id="csvg"></div>
 
 <div class="cact">
- <button class="b r" id="cshare" type="button">링크 복사</button>
+ <button class="b r" id="cpng" type="button">그림 사진으로 저장</button>
+ <button class="b o" id="cmail" type="button">메일로 보내기</button>
+ <button class="b o" id="cshare" type="button">링크 복사</button>
  <button class="b o" id="cprint" type="button">인쇄</button>
+ <a class="b d" id="cshop" href="mailto:yjwood2021@naver.com">매장에 메일로 재단 요청</a>
  <a class="b d" href="tel:0425452900">전화 문의</a>
 </div></div></div>
+<details class="cemb"><summary>블로그·카페에 이 재단 계산기 붙이기</summary><p class="small">아래 코드를 블로그(티스토리·워드프레스 등) HTML 편집에 붙여 넣으면 이 계산기가 그대로 보입니다. 누구나 무료로 쓰셔도 됩니다.</p><textarea readonly rows="3" class="cin" onclick="this.select()">&lt;iframe src="https://www.wwood.co.kr/cut.html?embed=1" width="100%" height="900" style="border:0" loading="lazy" title="합판·목재 재단 미리보기"&gt;&lt;/iframe&gt;&lt;p&gt;재단 계산기 제공: &lt;a href="https://www.wwood.co.kr/cut.html"&gt;영진종합목재 재단 미리보기&lt;/a&gt;&lt;/p&gt;</textarea></details>
 <p class="small muted">톱날 두께 3mm를 빼고 계산합니다. 실제 재단은 자재 상태(휨·모서리)에 따라 조금 달라질 수 있어요. 원판·각재 규격은 매장 취급 제품 기준입니다.</p>
 </section>
 <style>
@@ -58,6 +62,8 @@
 .cres .cerr{background:#fff3f2;border-color:#f3c2bd;color:var(--red);flex-basis:100%}
 .csheet{background:linear-gradient(180deg,#fbfaf7,#f1ede6);border:1px solid var(--line);border-radius:16px;padding:14px 14px 10px;margin-bottom:14px;box-shadow:0 2px 10px rgba(40,30,20,.06)}.csheet h3{margin:0 0 2px;font-size:16px;display:flex;justify-content:space-between;gap:8px}.csheet h3 small{font-weight:500;color:var(--mut);font-size:13px}.cleg{display:flex;gap:14px;font-size:12px;color:var(--mut);margin:8px 2px 0}.cleg i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px}
 .csheet svg{width:100%;height:auto;display:block}
+.cemb{margin:10px 0;font-size:15px}.cemb summary{cursor:pointer;font-weight:700}.cemb textarea{font-size:12px;margin-top:6px}
+html.emb header,html.emb footer,html.emb .top,html.emb .mbar,html.emb .cta,html.emb .cemb,html.emb main>section:not(.cutp){display:none!important}html.emb .cutp{padding-top:8px}
 .cact{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.cact .b{flex:1;min-width:120px}
 @media print{header,footer,.top,.cutbox,.cact,.lead,.mbar,.cta{display:none!important}.csheet{break-inside:avoid}}
 </style>
@@ -225,6 +231,16 @@ function load(){
 $("cprod").onchange=function(){prod=+this.value;run()};$("cw").oninput=$("ch").oninput=run;$("cgrain").onchange=run;
 $("cadd").onclick=function(){parts.push(isLin()?[0,0,1]:[0,0,1]);drawParts();var x=$("cparts").lastChild.querySelector("input");x&&x.focus()};
 $("cprint").onclick=function(){window.print()};
+if(/[?&]embed=1/.test(location.search)){document.documentElement.className+=" emb";[].forEach.call(document.querySelectorAll('.cutp a[href^="/"]'),function(a){a.target="_blank";a.href="https://www.wwood.co.kr"+a.getAttribute("href")})}
+function summary(){var c=curCat(),it=custom()?null:c.items[prod],L=isLin(),t=(it?it[0]:c.n)+"\n";parts.forEach(function(p){if(p[0])t+=(L?p[0]+"mm":p[0]+"×"+p[1]+"mm")+" × "+(p[2]||1)+"개\n"});return t}
+$("cmail").onclick=function(){var b="재단 그림 보기: "+location.href+"\n\n"+summary()+"\n영진종합목재(월드건축자재) · 대전 유성대로 44, 1층 · www.wwood.co.kr";location.href="mailto:?subject="+encodeURIComponent("재단 그림 — 영진종합목재")+"&body="+encodeURIComponent(b)};
+$("cshop").onclick=function(e){e.preventDefault();var b="안녕하세요. 아래 크기로 재단 부탁드립니다.\n\n"+summary()+"\n재단 그림: "+location.href+"\n\n이름:\n연락처:\n방문(또는 배송) 희망일:\n";location.href="mailto:yjwood2021@naver.com?subject="+encodeURIComponent("재단 요청")+"&body="+encodeURIComponent(b)};
+$("cpng").onclick=function(){var btn=this,svgs=[].slice.call(document.querySelectorAll("#csvg svg"));if(!svgs.length)return;btn.textContent="만드는 중…";
+ var W=1200,pad=40,imgs=[],done=0;svgs.forEach(function(sv,i){var vb=sv.viewBox.baseVal,h=Math.round(W*vb.height/vb.width),x=new XMLSerializer().serializeToString(sv),im=new Image();im.onload=function(){imgs[i]={im:im,h:h};if(++done==svgs.length)draw()};im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(x)});
+ function draw(){var head=150,foot=110,H=head+foot+imgs.reduce(function(a,o){return a+o.h+pad},0),cv=document.createElement("canvas");cv.width=W+pad*2;cv.height=H;var g=cv.getContext("2d");g.fillStyle="#f6f3ee";g.fillRect(0,0,cv.width,H);g.fillStyle="#1d1b18";g.font="bold 40px sans-serif";g.fillText("재단 그림",pad,70);g.font="26px sans-serif";g.fillStyle="#5e574e";g.fillText(summary().split("\n").filter(Boolean).join("  ·  ").slice(0,70),pad,115);
+  var y=head;imgs.forEach(function(o){g.drawImage(o.im,pad,y,W,o.h);y+=o.h+pad});g.fillStyle="#c62a1f";g.fillRect(0,H-foot,cv.width,foot);g.fillStyle="#fff";g.font="bold 34px sans-serif";g.fillText("영진종합목재(월드건축자재)",pad,H-foot+48);g.font="24px sans-serif";g.fillText("대전 유성대로 44, 1층 · 원하는 사이즈 즉석 재단 · www.wwood.co.kr",pad,H-foot+86);
+  cv.toBlob(function(bl){var a=document.createElement("a");a.href=URL.createObjectURL(bl);a.download="재단그림_영진종합목재.png";document.body.appendChild(a);a.click();a.remove();btn.textContent="저장됨 ✓";setTimeout(function(){btn.textContent="그림 사진으로 저장"},1500)},"image/png")}
+};
 $("cshare").onclick=function(){var u=location.href,b=this;function ok(){b.textContent="복사됨 ✓";setTimeout(function(){b.textContent="링크 복사"},1500)}
  if(navigator.clipboard)navigator.clipboard.writeText(u).then(ok,function(){prompt("이 주소를 복사하세요",u)});else prompt("이 주소를 복사하세요",u)};
 if(!load())setCat(0,true);
@@ -233,7 +249,7 @@ if(!load())setCat(0,true);
 <section class="wrap sec"><h2>매장 원판·각재 규격 (재단 기준)</h2><ul><li><b>합판</b> — 1220×2440mm, 900×1800mm</li><li><b>MDF</b> — 1220×2440mm</li><li><b>집성판</b> — 1200×2400mm, 1200×2440mm, 1220×2400mm, 1220×2440mm, 915×2300mm</li><li><b>석고보드</b> — 900×1800mm</li><li><b>단열재</b> — 900×1800mm, 900×2400mm</li><li><b>구조재</b> — 길이 3600mm</li><li><b>방부목</b> — 길이 1800mm, 길이 3600mm</li><li><b>각재·다루끼</b> — 길이 2100mm, 길이 2400mm, 길이 3600mm</li><li><b>데크</b> — 길이 1200mm, 길이 1300mm, 길이 2400mm, 길이 3000mm, 길이 3600mm</li></ul><h2>재단 미리보기 사용법</h2><ol><li>자재(합판·MDF·집성판·석고보드·단열재·구조재·방부목·각재·데크)를 고릅니다.</li><li>자를 크기(가로×세로×개수, 각재는 길이×개수)를 넣습니다.</li><li>필요한 원판 장수와 재단 그림을 확인하고, 링크를 매장에 보내거나 화면을 보여주세요.</li></ol><h2>자주 묻는 질문</h2><h3>합판·MDF 원하는 사이즈로 잘라 주나요?</h3><p>네. 대전 유성대로 44 매장에서 합판, MDF, 집성판, OSB, 석고보드, 단열재와 구조재·각재·방부목을 원하는 크기로 즉석 재단해 드립니다. 한 장, 한 개 소량도 됩니다.</p><h3>4×8 합판 한 장에서 몇 조각 나오나요?</h3><p>4×8 합판 원판은 1220×2440mm입니다. 이 페이지에 자를 크기와 개수를 넣으면 톱날 두께 3mm를 빼고 몇 장이 필요한지, 어떻게 잘리는지 그림으로 바로 보여드립니다.</p><h3>재단할 때 톱날 두께는 얼마나 빠지나요?</h3><p>한 번 자를 때마다 약 3mm가 빠집니다. 이 계산기는 3mm를 빼고 배치하므로 실제 재단과 거의 같게 나옵니다.</p><h3>나뭇결 방향을 맞춰서 자를 수 있나요?</h3><p>네. 집성판이나 무늬목처럼 결이 중요한 자재는 &#x27;나뭇결 방향 유지&#x27;를 체크하면 조각을 돌리지 않고 배치합니다.</p><h3>재단 그림을 매장에 어떻게 보내나요?</h3><p>&#x27;링크 복사&#x27;를 눌러 카톡이나 문자로 보내시거나, 화면을 매장에 보여주시면 그대로 잘라 드립니다. 인쇄도 됩니다.</p><p>👉 <a href="/mandeul/">만들기 자재 목록(평상·책장·데크·가벽)</a> · <a href="/calc.html">자재 계산기(몇 장 필요한지)</a> · <a href="/jajae/">자재 백과</a> · <a href="/visit.html">매장 안내·길찾기</a></p></section><section class="cta"><div class="wrap g2"><div><h2>실물 보고, 원하는 사이즈로 잘라 가세요</h2>
 <p>대전 유성대로 44, 1층 · 평일 07:00~18:00 · 토·일 07:00~15:00 · 공휴일 07:00~16:00. 3000평 매장에서 바로 고르고 즉석 재단해 드립니다.</p></div>
 <div class="row"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b r" href="/sigong.html">시공 맡기기</a></div></div></section></main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">만들기 자재</a> · <a href="/yongeo.html">현장 용어</a> | 대전 유성대로 44, 1층 | 042-545-2900 | 평일 07:00~18:00 · 토·일 07:00~15:00 · 공휴일 07:00~16:00<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">만들기 자재</a> · <a href="/yongeo.html">현장 용어</a> | 대전 유성대로 44, 1층 | 042-545-2900 | <a href="mailto:yjwood2021@naver.com">yjwood2021@naver.com</a> | 평일 07:00~18:00 · 토·일 07:00~15:00 · 공휴일 07:00~16:00<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | 실내건축공사업 대전서구24-나-19<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로 무단 복제·사용을 금합니다.<br>
 유튜브 <a href="https://www.youtube.com/@월드건축자재DIY">@월드건축자재DIY</a> · <a href="https://www.youtube.com/@worlddoor">@월드도어</a> · 도매회원 쇼핑몰 <a href="https://wwood.kr/home/sub06/menu03.php">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){try{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr",seen=false;try{seen=localStorage.getItem("vcd")===k;}catch(e){}var m=seen?"get":"hit";if(!seen){try{var rf=document.referrer||"",src=/youtube|youtu\.be/.test(rf)?"yt":/naver/.test(rf)?"naver":/google/.test(rf)?"google":/daum|kakao/.test(rf)?"daum":/bing/.test(rf)?"bing":/daangn|karrot/.test(rf)?"daangn":/wwood\.kr/.test(rf)?"wwoodkr":rf&&rf.indexOf(location.host)<0?"etc":"direct";fetch(b+"hit/"+n+"/src-"+src).catch(function(){});fetch(b+"hit/"+n+"/src-"+src+"-d"+k).catch(function(){});}catch(e){}}Promise.all([fetch(b+m+"/"+n+"/d"+k).then(function(r){return r.json()}),fetch(b+m+"/"+n+"/total").then(function(r){return r.json()})]).then(function(v){try{localStorage.setItem("vcd",k)}catch(e){}var t=v[0].value||0,a=v[1].value||0;var el=document.getElementById("vcnt");if(el)el.textContent="오늘 "+t.toLocaleString()+" · 전체 "+a.toLocaleString();}).catch(function(){});}catch(e){}})();</script>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:0425452900">전화</a></div>

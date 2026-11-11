@@ -18,6 +18,7 @@ KAKAO = "https://pf.kakao.com/_JxhxoxeX"
 BLOG = "https://blog.naver.com/swr4083"
 TEL = "042-545-2900"
 ADDR = "대전 유성대로 44, 1층"
+EMAIL = "yjwood2021@naver.com"
 HOURS = "평일 07:00~18:00 · 토·일 07:00~15:00 · 공휴일 07:00~16:00"
 LIC = "실내건축공사업 대전서구24-나-19"
 E = html.escape
@@ -196,7 +197,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><img class="lm" src="/assets/logo-mark.svg" width="46" height="46" alt=""><span class="lt"><b>영진종합목재</b><small><em>월드건축자재</em> · 충청권 최대규모 목재상</small></span></a>
 <nav>{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">만들기 자재</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">만들기 자재</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로 무단 복제·사용을 금합니다.<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr",seen=false;try{{seen=localStorage.getItem("vcd")===k;}}catch(e){{}}var m=seen?"get":"hit";if(!seen){{try{{var rf=document.referrer||"",src=/youtube|youtu\\.be/.test(rf)?"yt":/naver/.test(rf)?"naver":/google/.test(rf)?"google":/daum|kakao/.test(rf)?"daum":/bing/.test(rf)?"bing":/daangn|karrot/.test(rf)?"daangn":/wwood\\.kr/.test(rf)?"wwoodkr":rf&&rf.indexOf(location.host)<0?"etc":"direct";fetch(b+"hit/"+n+"/src-"+src).catch(function(){{}});fetch(b+"hit/"+n+"/src-"+src+"-d"+k).catch(function(){{}});}}catch(e){{}}}}Promise.all([fetch(b+m+"/"+n+"/d"+k).then(function(r){{return r.json()}}),fetch(b+m+"/"+n+"/total").then(function(r){{return r.json()}})]).then(function(v){{try{{localStorage.setItem("vcd",k)}}catch(e){{}}var t=v[0].value||0,a=v[1].value||0;var el=document.getElementById("vcnt");if(el)el.textContent="오늘 "+t.toLocaleString()+" · 전체 "+a.toLocaleString();}}).catch(function(){{}});}}catch(e){{}}}})();</script>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
@@ -430,7 +431,7 @@ def build():
          f"""<section class="wrap sec g2"><div>{embed(tour) if tour else ''}</div><div><h1>매장 오시는 길</h1>
 <div class="tw"><table><tbody><tr><th>주소</th><td>{ADDR} 월드건축자재(영진목재)</td></tr><tr><th>영업</th><td>{HOURS}</td></tr><tr><th>전화</th><td><a href="tel:{TEL.replace('-','')}">{TEL}</a></td></tr>
 <tr><th>재단</th><td>원하는 사이즈로 즉석 재단</td></tr><tr><th>배송</th><td>대전·세종·공주·계룡·논산·금산·옥천 배송 · 현장 납품 · 그 외 전국은 용달 배송(전화로 운임 견적 → 입금 확인 후 출고)</td></tr><tr><th>도매</th><td>사업자등록증·명함 확인 후 도매회원 승인</td></tr><tr><th>시공</th><td>월드아키텍쳐 · 대전·세종 · 전화 상담</td></tr></tbody></table></div>
-<div class="row"><a class="b g" href="https://map.naver.com/p/search/{ADDR.replace(' ','%20')}%20영진종합목재" target="_blank" rel="noopener">네이버 지도로 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div></div></section>{"" if not os.path.exists(ROOT+"/data/store_photos.json") else '<section class="wrap sec"><h2>매장 사진</h2><div class="pg hrow">' + "".join(f'<a class="ph" href="/assets/store/{n}.jpg" target="_blank"><img loading="lazy" src="/assets/store/{n}.jpg" alt="{E(t)}"><small>{E(t)}</small></a>' for n, t in json.load(open(ROOT+"/data/store_photos.json", encoding="utf-8"))) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>'}""", "/visit.html", BIZ, BASE+"/assets/store/storefront.jpg")
+<div class="row"><a class="b g" href="https://map.naver.com/p/search/{ADDR.replace(' ','%20')}%20영진종합목재" target="_blank" rel="noopener">네이버 지도로 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a><a class="b o" href="mailto:{EMAIL}?subject=%EB%AC%B8%EC%9D%98">메일 문의</a></div></div></section>{"" if not os.path.exists(ROOT+"/data/store_photos.json") else '<section class="wrap sec"><h2>매장 사진</h2><div class="pg hrow">' + "".join(f'<a class="ph" href="/assets/store/{n}.jpg" target="_blank"><img loading="lazy" src="/assets/store/{n}.jpg" alt="{E(t)}"><small>{E(t)}</small></a>' for n, t in json.load(open(ROOT+"/data/store_photos.json", encoding="utf-8"))) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>'}""", "/visit.html", BIZ, BASE+"/assets/store/storefront.jpg")
 
     # 지역 시공 사례 (data/cases.json — 영상 설명에 지역이 확인된 실제 현장만)
     CASES = json.load(open(f"{ROOT}/data/cases.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/cases.json") else []
@@ -734,9 +735,9 @@ def build():
         page(f"mandeul/{slug}.html", title + " | 영진목재", lead[:120], body, "", {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": fq})
         mk_cards += f'<a class="mc" href="/mandeul/{slug}.html"><b>{E(nm)}</b><small>{E(lead[:40])}…</small></a>'
     page("mandeul/index.html", "만들기 자재 목록 — 평상·책장·텃밭상자·데크·가벽 재단 크기 | 영진목재", "평상, 책장, 텃밭상자, 작은 데크, 가벽을 만들 때 필요한 자재와 재단 크기를 정리했습니다. 재단 그림까지 바로 확인하세요.",
-         f'<section class="wrap sec"><h1>만들기 자재 목록</h1><p class="lead">자주 만드는 것들의 자재와 재단 크기를 정리했습니다. 크기만 바꿔서 재단 그림으로 확인하고, 매장에 보여주시면 그대로 잘라 드려요.</p><div class="mg m2">{mk_cards}</div></section>{CTA}', "")
+         f'<section class="wrap sec"><h1>만들기 자재 목록</h1><p class="lead">자주 만드는 것들의 자재와 재단 크기를 정리했습니다. 크기만 바꿔서 재단 그림으로 확인하고, 매장에 보여주시면 그대로 잘라 드려요.</p><div class="mg m2">{mk_cards}</div></section><section class="wrap sec"><div class="card"><h2>직접 만드신 작품을 보내 주세요</h2><p>영진종합목재 자재로 만든 평상·선반·데크·가구 사진을 메일로 보내 주시면 이 페이지 「손님이 만든 작품」에 소개해 드립니다(이름은 원하시는 대로, 얼굴·주소가 나온 사진은 빼고 올립니다).</p><p><a class="b r" href="mailto:{EMAIL}?subject=%EC%9E%91%ED%92%88%20%EC%82%AC%EC%A7%84%20%EB%B3%B4%EB%83%85%EB%8B%88%EB%8B%A4&body=%EB%A7%8C%EB%93%A0%20%EA%B2%83%3A%0A%EC%93%B4%20%EC%9E%90%EC%9E%AC%3A%0A%EC%86%8C%EA%B0%9C%ED%95%A0%20%EC%9D%B4%EB%A6%84(%EB%8B%89%EB%84%A4%EC%9E%84)%3A%0A">작품 사진 메일로 보내기</a></p></div></section>{CTA}', "")
     page("cut.html", "합판·MDF 재단 미리보기 — 원하는 사이즈 재단 그림 | 대전 영진목재", "합판·MDF·집성판·석고보드·구조재를 원하는 사이즈로 넣으면 원판에서 어떻게 잘리는지, 몇 장 필요한지 그림으로 보여드립니다. 대전 영진목재 즉석 재단.",
-         open(ROOT + "/cut_tpl.html", encoding="utf-8").read().replace("__DATA__", json.dumps(_cd, ensure_ascii=False, separators=(",", ":"))).replace("__TEL__", TEL.replace("-", "")) + _seo + CTA, "/cut.html", _ld, BASE + "/assets/store/plywood-rack.jpg")
+         open(ROOT + "/cut_tpl.html", encoding="utf-8").read().replace("__DATA__", json.dumps(_cd, ensure_ascii=False, separators=(",", ":"))).replace("__TEL__", TEL.replace("-", "")).replace("__EMAIL__", EMAIL) + _seo + CTA, "/cut.html", _ld, BASE + "/assets/store/plywood-rack.jpg")
     page("calc.html", "자재 계산기 — 데크·석고보드·합판 몇 장? 문짝·중문 크기까지 | 영진목재", "데크 방부목·합성데크 장수, 석고보드·합판·단열재 장수, 몰딩·걸레받이 길이, 데코타일·강마루 박스 수, 페인트 양, 평↔㎡를 바로 계산하세요. 대전 영진목재(월드건축자재) 재단·배송.",
 f"""<section class="wrap sec"><h1>자재 계산기</h1><p class="lead">필요한 양을 미리 계산해 오시면 매장에서 바로 재단해 드립니다. 결과는 참고용입니다(로스 포함). 어떻게 잘리는지는 <a href="/cut.html">재단 미리보기</a>에서 그림으로 확인하세요.</p>
 <div class="chips" id="cchips">{chips}</div>
