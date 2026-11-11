@@ -157,7 +157,7 @@ function tex(W,H,m){
 function hex(c,i){return (parseInt(c.substr(1+i*2,2),16)/255).toFixed(3)}
 var FS='font-family="Pretendard,Noto Sans KR,sans-serif"';
 function dims(W,H,ox,oy,showH){
- var f=Math.max(34,Math.min(W,H||W)/17),s='<g stroke="#8a8174" stroke-width="2" fill="#5e574e" '+FS+'>';
+ var f=showH?Math.max(34,Math.min(W,H)/17):W/38,s='<g stroke="#8a8174" stroke-width="2" fill="#5e574e" '+FS+'>';
  var y=-oy*0.55;s+='<line x1="0" x2="'+W+'" y1="'+y+'" y2="'+y+'"/><line x1="0" x2="0" y1="'+(y-12)+'" y2="'+(y+12)+'"/><line x1="'+W+'" x2="'+W+'" y1="'+(y-12)+'" y2="'+(y+12)+'"/>';
  s+='<rect x="'+(W/2-f*2.6)+'" y="'+(y-f*0.7)+'" width="'+f*5.2+'" height="'+f*1.4+'" fill="#f6f3ee" stroke="none"/><text x="'+W/2+'" y="'+y+'" font-size="'+f+'" text-anchor="middle" dominant-baseline="central" stroke="none" font-weight="700">'+W+' mm</text>';
  if(showH){var x=-ox*0.55;s+='<line y1="0" y2="'+H+'" x1="'+x+'" x2="'+x+'"/><line y1="0" y2="0" x1="'+(x-12)+'" x2="'+(x+12)+'"/><line y1="'+H+'" y2="'+H+'" x1="'+(x-12)+'" x2="'+(x+12)+'"/>';
@@ -174,12 +174,12 @@ function board(W,H,m,R,free,showH){
  s+='<rect x="0" y="'+th+'" width="'+W+'" height="'+H+'" rx="4" fill="'+m.g+'" opacity=".55"/>';
  // 자투리: 연하게 비친 원판
  s+='<use href="#tx'+k+'"/><rect width="'+W+'" height="'+H+'" fill="#f6f3ee" opacity=".62"/><rect width="'+W+'" height="'+H+'" fill="none" stroke="#b9ae9c" stroke-width="3" rx="4"/>';
- free.forEach(function(f){var t='자투리 '+f[2]+'×'+f[3],fs=Math.min(Math.min(W,H)/24,f[2]/(t.length*0.62),f[3]*0.3);if(fs>14)s+='<rect x="'+(f[0]+6)+'" y="'+(f[1]+6)+'" width="'+(f[2]-12)+'" height="'+(f[3]-12)+'" fill="none" stroke="#a69a86" stroke-width="2.5" stroke-dasharray="14 10" rx="6"/><text x="'+(f[0]+f[2]/2)+'" y="'+(f[1]+f[3]/2)+'" font-size="'+fs+'" text-anchor="middle" dominant-baseline="central" fill="#8a7f6d" '+FS+'>'+t+'</text>'});
+ free.forEach(function(f){var t=showH?'자투리 '+f[2]+'×'+f[3]:'남는 '+f[2],fs=Math.min(showH?Math.min(W,H)/24:H*0.3,f[2]/(t.length*0.62),f[3]*0.3);if(fs>14)s+='<rect x="'+(f[0]+6)+'" y="'+(f[1]+6)+'" width="'+(f[2]-12)+'" height="'+(f[3]-12)+'" fill="none" stroke="#a69a86" stroke-width="2.5" stroke-dasharray="14 10" rx="6"/><text x="'+(f[0]+f[2]/2)+'" y="'+(f[1]+f[3]/2)+'" font-size="'+fs+'" text-anchor="middle" dominant-baseline="central" fill="#8a7f6d" '+FS+'>'+t+'</text>'});
  // 조각: 실제 자재 + 그림자
  s+='<g filter="url(#sh'+k+')"><g clip-path="url(#cp'+k+')"><use href="#tx'+k+'"/><rect width="'+W+'" height="'+H+'" fill="url(#gl'+k+')"/></g></g>';
  R.forEach(function(r){
   s+='<rect x="'+r[0]+'" y="'+r[1]+'" width="'+r[2]+'" height="'+r[3]+'" rx="2" fill="none" stroke="rgba(30,20,10,.55)" stroke-width="2.5"/><rect x="'+r[0]+'" y="'+r[1]+'" width="'+r[2]+'" height="'+Math.max(4,th*0.5)+'" fill="'+COL[r[5]%COL.length]+'"/>';
-  var t=r[4],fs=Math.min(Math.min(W,H||W)/16,r[2]/(t.length*0.66),r[3]*0.34);
+  var t=r[4],fs=Math.min(showH?Math.min(W,H)/16:H*0.42,r[2]/(t.length*0.66),r[3]*(showH?0.34:0.42));
   if(fs>11){var pw=fs*t.length*0.6+fs*1.2,ph=fs*1.6;s+='<rect x="'+(r[0]+r[2]/2-pw/2)+'" y="'+(r[1]+r[3]/2-ph/2)+'" width="'+pw+'" height="'+ph+'" rx="'+ph/2+'" fill="#fff" opacity=".92"/><text x="'+(r[0]+r[2]/2)+'" y="'+(r[1]+r[3]/2)+'" font-size="'+fs+'" text-anchor="middle" dominant-baseline="central" font-weight="800" fill="#1d1b18" '+FS+'>'+t+'</text>'}
  });
  return s+dims(W,H,ox,oy,showH)+'</svg>';
@@ -191,7 +191,7 @@ function svgSheet(W,H,b){
  return board(VW,VH,m,R,F,1)+'<div class="cleg"><span><i style="background:#d9b98a"></i>자르는 조각</span><span><i style="background:#e9e3d8;border:1px dashed #a69a86"></i>남는 자투리</span><span>톱날 3mm 반영</span></div>';
 }
 function svgLin(L,b){
- var H=Math.max(110,L/16),m=mat(),R=b.pl.map(function(p){return[p.x,0,p.l,H,p.l+'',p.c]}),rest=L-b.used,F=rest>=150?[[b.used+KERF,0,rest-KERF,H]]:[];
+ var H=Math.max(160,L/9),m=mat(),R=b.pl.map(function(p){return[p.x,0,p.l,H,p.l+'',p.c]}),rest=L-b.used,F=rest>=150?[[b.used+KERF,0,rest-KERF,H]]:[];
  return board(L,H,m,R,F,0);
 }
 function run(){
