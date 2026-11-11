@@ -60,7 +60,7 @@ for fn in sorted(os.listdir(_pd) if os.path.isdir(_pd) else [], reverse=True):
     raw = open(f"{_pd}/{fn}", encoding="utf-8").read()
     m = re.match(r"\s*<!--(\{.*?\})-->\s*", raw, re.S)
     if not m: continue
-    meta = json.loads(m.group(1)); meta["slug"] = fn[:-5]; meta["body"] = raw[m.end():]
+    meta = json.loads(m.group(1)); meta["slug"] = fn[:-5]; meta["body"] = re.sub(r"<(li|p)[^>]*>[^<]*(카카오톡|카톡)[^<]*<a [^>]*pf\.kakao\.com[^>]*>.*?</a>[^<]*</\1>", "", raw[m.end():], flags=re.S)  # 카톡 상담 링크 제거(사장님 요청)
     POSTS.append(meta)
 POSTS.sort(key=lambda p: (p.get("date", ""), p["slug"]), reverse=True)
 # 쇼핑몰(wwood.kr) 자재 목록: data/products.tsv  (# 줄 = 분류코드, 나머지 = id, 이름, 사진, 분류들) — 가격 없음
