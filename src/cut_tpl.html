@@ -24,7 +24,7 @@
 <div class="cact">
  <button class="b r" id="cshare" type="button">링크 복사</button>
  <button class="b o" id="cprint" type="button">인쇄</button>
- <a class="b d" href="tel:__TEL__">전화로 재단 문의</a>
+ <a class="b d" href="tel:__TEL__">전화 문의</a>
 </div>
 <p class="small muted">톱날 두께 3mm를 빼고 계산합니다. 실제 재단은 자재 상태(휨·모서리)에 따라 조금 달라질 수 있어요. 원판·각재 규격은 매장 취급 제품 기준입니다.</p>
 </section>
@@ -118,13 +118,13 @@ function packLin(L,list){
  return {bins:bins,err:err};
 }
 function svgSheet(W,H,b){
- var land=W<H, VW=land?H:W, VH=land?W:H, s='';
+ var land=W<H, VW=land?H:W, VH=land?W:H, s='<p class="small muted" style="margin:0 0 6px">원판 '+VW+' × '+VH+' 기준 그림 · 회색은 남는 자투리</p>';
  s+='<svg viewBox="-4 -4 '+(VW+8)+' '+(VH+8)+'" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="'+VW+'" height="'+VH+'" fill="#eee" stroke="#555" stroke-width="4"/>';
  var fs=Math.max(40,Math.min(VW,VH)/14);
  b.pl.forEach(function(p){
   var x=land?p.y:p.x,y=land?p.x:p.y,w=land?p.h:p.w,h=land?p.w:p.h,lw=land?p.h:p.w,lh=land?p.w:p.h;
-  var t=(land?p.h:p.w)+'×'+(land?p.w:p.h);t=p.w+'×'+p.h;
-  var f=Math.min(fs,w/(t.length*0.6),h*0.6);
+  var t=w+'×'+h;
+  var f=Math.min(fs,w/(t.length*0.62),h*0.5);
   s+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+COL[p.c%COL.length]+'" stroke="#333" stroke-width="3"/>';
   if(f>12)s+='<text x="'+(x+w/2)+'" y="'+(y+h/2)+'" font-size="'+f+'" text-anchor="middle" dominant-baseline="middle" font-weight="700" fill="#222">'+t+'</text>';
  });
