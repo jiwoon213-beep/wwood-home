@@ -1,0 +1,16 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>방문 통계 · 영진종합목재</title>
+<style>body{font-family:Pretendard,'Noto Sans KR',sans-serif;background:#f6f3ee;color:#1d1b18;margin:0;padding:18px;max-width:640px;margin:auto}h1{font-size:22px}.k{display:flex;gap:10px}.k div{flex:1;background:#fff;border:1px solid #e4ded4;border-radius:14px;padding:14px}.k b{display:block;font-size:30px}small{color:#5e574e}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;margin-top:14px;font-size:15px}th,td{padding:10px;border-bottom:1px solid #eee;text-align:right}th:first-child,td:first-child{text-align:left}th{background:#1d1b18;color:#fff;font-weight:700}.bar{height:8px;background:#c62a1f;border-radius:4px;display:inline-block;vertical-align:middle;margin-left:6px}</style></head><body>
+<h1>www.wwood.co.kr 방문 통계</h1><div class="k"><div><small>오늘 방문</small><b id="td">…</b></div><div><small>전체 방문</small><b id="tt">…</b></div></div>
+<table id="src"><tr><th>어디서 왔나</th><th>오늘</th><th>누적</th></tr></table>
+<table id="days"><tr><th>날짜</th><th>방문</th></tr></table>
+<p><small>같은 사람이 하루에 여러 번 들어와도 1번으로 셉니다. 경로 집계는 2026-11-11 오후부터 시작했어요.</small></p>
+<script>
+var b="https://abacus.jasoncameron.dev/get/wwood-co-kr/",S=[["yt","유튜브"],["naver","네이버"],["google","구글"],["daum","다음·카카오"],["bing","빙"],["daangn","당근"],["wwoodkr","쇼핑몰(wwood.kr)"],["etc","다른 사이트"],["direct","주소 입력·즐겨찾기"]];
+function g(k){return fetch(b+k).then(function(r){return r.ok?r.json():{value:0}}).then(function(j){return j.value||0}).catch(function(){return 0})}
+function day(i){return new Date(Date.now()+9*3600e3-i*864e5).toISOString().slice(0,10).replace(/-/g,"")}
+var k=day(0);g("d"+k).then(function(v){td.textContent=v.toLocaleString()});g("total").then(function(v){tt.textContent=v.toLocaleString()});
+Promise.all(S.map(function(s){return Promise.all([g("src-"+s[0]+"-d"+k),g("src-"+s[0])])})).then(function(R){var mx=Math.max.apply(null,R.map(function(r){return r[1]}).concat([1]));
+ S.forEach(function(s,i){var t=document.createElement("tr");t.innerHTML="<td>"+s[1]+"</td><td>"+R[i][0]+"</td><td>"+R[i][1]+"<span class=bar style='width:"+Math.round(R[i][1]/mx*60)+"px'></span></td>";document.getElementById("src").appendChild(t)})});
+Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i))})).then(function(R){R.forEach(function(v,i){var d=day(i),t=document.createElement("tr");t.innerHTML="<td>"+d.slice(4,6)+"/"+d.slice(6)+(i?"":" (오늘)")+"</td><td>"+v+"</td>";document.getElementById("days").appendChild(t)})});
+</script></body></html>
