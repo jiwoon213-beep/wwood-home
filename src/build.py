@@ -271,7 +271,7 @@ def build():
 <div>{embed(tour) if tour else ''}<p class="small muted">대전 목재소·건축자재 백화점 3000평 투어 · 조회 18만회</p></div></div></section>
 <section class="stat"><div class="wrap g4"><div><b>구독 {ST["subs"]}명</b><small>유튜브 월드건축자재DIY</small></div><div><b>영상 {int(ST["videos"]):,}개</b><small>시공·DIY·자재 정보</small></div>
 <div><b>소매 + 도매</b><small>셀프 고객부터 현장 납품까지</small></div><div><b>직접 시공</b><small>월드아키텍쳐 · {LIC}</small></div></div></section>
-<section class="wrap sec"><div class="tl4"><a href="/cut.html"><b>✂ 재단 미리보기</b><span>치수만 넣으면 원판에서 어떻게 잘리는지 그림으로</span></a><a href="/mandeul/"><b>🪚 만들기 자재</b><span>평상·책장·데크·울타리 재단 목록</span></a><a href="/calc.html"><b>🧮 자재 계산기</b><span>몇 장·몇 개 필요한지</span></a><a href="/baesong.html"><b>🚚 전국 배송</b><span>재단해서 용달로 전국 현장까지</span></a></div></section>
+<section class="wrap sec"><div class="tl4"><a href="/cut.html"><b>✂ 재단 미리보기</b><span>치수만 넣으면 원판에서 어떻게 잘리는지 그림으로</span></a><a href="/mandeul/"><b>🪚 만들기 자재</b><span>평상·책장·데크·울타리 재단 목록</span></a><a href="/gyugyeok.html"><b>📏 규격표</b><span>합판 두께·2×4 실제 치수 한눈에</span></a><a href="/baesong.html"><b>🚚 전국 배송</b><span>재단해서 용달로 전국 현장까지</span></a></div></section>
 <style>.tl4{{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}}.tl4 a{{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;color:inherit;text-decoration:none}}.tl4 a:hover{{border-color:var(--red)}}.tl4 b{{display:block;font-size:17px;margin-bottom:4px}}.tl4 span{{font-size:13px;color:var(--mut)}}@media(max-width:760px){{.tl4{{grid-template-columns:1fr 1fr}}}}</style>
 <div class="hx"><section class="wrap sec"><h2>무엇을 만들고 싶으세요?</h2><p class="muted">고르면 그 용도의 자재와 시공 영상이 한 번에 나옵니다.</p><div class="ug">{use}</div></section>
 <section class="wrap sec"><h2>자재 백과 — 이 나무, 어디에 쓰나요?</h2><p class="muted">용도·인테리어 효과·기준가·관련 영상을 자재별로 정리했습니다.</p><div class="mg">{mats}</div></section>
@@ -403,7 +403,7 @@ def build():
              + '<div class="tdots"><button type="button" class="tb" data-d="-1">◀</button><span id="tdot">1–5위 / 6–10위 ▶ 옆으로 밀기</span><button type="button" class="tb" data-d="1">▶</button></div></div>')
     secs = '<div class="pboard">' + board + '</div>' + secs
     page("price.html", "목재 가격 기준가 공개 — 합판·MDF·구조재·방부목·석고보드 | 대전 영진목재", "대전 월드건축자재(영진목재) 소매 기준가. 부가세 별도, 결제·재단은 매장에서.",
-         f'<section class="wrap sec ptsec"><h1>소매 기준가</h1>{psearch}<p class="lead">자주 찾는 자재의 소매 기준가입니다(부가세 별도). 규격·수량에 따라 달라지며 재단비·운임은 매장에서 계산합니다. 도매가는 <a href="/dome.html">도매회원</a> 로그인 후 확인하세요.</p>{secs}</section>{CTA}', "/price.html")
+         f'<section class="wrap sec ptsec"><h1>소매 기준가</h1>{psearch}<p class="lead">자주 찾는 자재의 소매 기준가입니다(부가세 별도). 규격·수량에 따라 달라지며 재단비·운임은 매장에서 계산합니다. 도매가는 <a href="/dome.html">도매회원</a> 로그인 후 확인하세요. 크기·두께는 <a href="/gyugyeok.html">규격표</a>, 어떻게 잘리는지는 <a href="/cut.html">재단 미리보기</a>에서 보세요.</p>{secs}</section>{CTA}', "/price.html")
 
     # 도매
     page("dome.html", "건축자재 도매·현장 납품 — 인테리어 업체·목수 도매회원 | 대전 월드건축자재", "인테리어 업체·목수·시공사 도매회원. 사업자등록증·명함 확인 후 승인, 회원가 적용, 현장 납품, 세금계산서 월 1회.",
@@ -740,7 +740,7 @@ def build():
     _seo = (f'<section class="wrap sec"><h2>매장 원판·각재 규격 (재단 기준)</h2><ul>{_sz}</ul>'
             '<h2>재단 미리보기 사용법</h2><ol><li>자재(합판·MDF·집성판·석고보드·단열재·구조재·방부목·각재·데크)를 고릅니다.</li><li>자를 크기(가로×세로×개수, 각재는 길이×개수)를 넣습니다.</li><li>필요한 원판 장수와 재단 그림을 확인하고, 링크를 매장에 보내거나 화면을 보여주세요.</li></ol>'
             '<h2>자주 묻는 질문</h2>' + "".join(f"<h3>{E(q)}</h3><p>{E(a)}</p>" for q, a in _CF) +
-            '<p>👉 <a href="/mandeul/">만들기 자재 목록(평상·책장·데크·가벽)</a> · <a href="/calc.html">자재 계산기(몇 장 필요한지)</a> · <a href="/jajae/">자재 백과</a> · <a href="/visit.html">매장 안내·길찾기</a></p></section>')
+            '<p>👉 <a href="/gyugyeok.html">합판·목재 규격표</a> · <a href="/mandeul/">만들기 자재 목록(평상·책장·데크·가벽)</a> · <a href="/calc.html">자재 계산기(몇 장 필요한지)</a> · <a href="/jajae/">자재 백과</a> · <a href="/visit.html">매장 안내·길찾기</a></p></section>')
     _ld = [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in _CF]},
            {"@context": "https://schema.org", "@type": "WebApplication", "name": "재단 미리보기 — 영진종합목재", "applicationCategory": "UtilityApplication", "operatingSystem": "All", "url": BASE + "/cut.html", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}, "provider": {"@type": "HardwareStore", "name": "영진종합목재(월드건축자재)", "telephone": TEL, "address": ADDR}}]
     # 만들기별 자재 안내 — 자재 목록·재단 크기·재단 미리보기 연결(가격 없음)
