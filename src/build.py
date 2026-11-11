@@ -208,7 +208,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 
 def vcard(v, big=False):
     return f"""<a class="vc{' big' if big else ''}{' sh' if v['type']=='S' else ''}" href="{vpage(v)}"{'' if v['id'] in VD else ' target="_blank" rel="noopener"'} data-yt="{v['id']}">
-<span class="th"><img loading="lazy" src="https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg" alt="{E(vshort(v['title']))}"><i class="play"></i>{'<em>쇼츠</em>' if v['type']=='S' else '<em>라이브</em>' if v['type']=='V' else ''}</span>
+<span class="th"><img loading="lazy" decoding="async" width="480" height="360" src="https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg" alt="{E(vshort(v['title']))}"><i class="play"></i>{'<em>쇼츠</em>' if v['type']=='S' else '<em>라이브</em>' if v['type']=='V' else ''}</span>
 <b>{E(v['title'])}</b><small>조회 {views(v['n'])}</small></a>"""
 
 def vsplit(vs, hl="h2", nl=None, ns=None):
