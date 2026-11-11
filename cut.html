@@ -126,23 +126,55 @@ function packLin(L,list){
  });
  return {bins:bins,err:err};
 }
+/* 자재 표면 질감 — 실제 자재처럼 보이게 */
+function mat(){
+ var c=curCat().n,n=custom()?"":(curCat().items[prod]||[""])[0];
+ if(/핑크/.test(n))return{b:"#f4a9bb",g:"#d9819a",f:"0.03 0.03",a:.35};
+ if(/스티로폴|이보드/.test(n))return{b:"#f6f5f0",g:"#cfcdc4",f:"0.09 0.09",a:.5};
+ if(c=="단열재")return{b:"#f2efe6",g:"#c9c4b5",f:"0.05 0.05",a:.4};
+ if(c=="석고보드")return{b:"#e8e6df",g:"#bdb9ae",f:"0.02 0.02",a:.25};
+ if(/OSB/i.test(n))return{b:"#c9995a",g:"#6e461d",f:"0.011 0.016",a:1.1,osb:1};
+ if(/코팅|태고/.test(n))return{b:"#4a3528",g:"#2a1d15",f:"0.002 0.03",a:.35};
+ if(/자작/.test(n))return{b:"#ecd6ad",g:"#b48d5c",f:"0.0015 0.04",a:.6};
+ if(c=="MDF")return /백색|LPM/.test(n)?{b:"#f7f6f2",g:"#dcd9d0",f:"0.05 0.05",a:.25}:{b:"#b88c5d",g:"#7c5634",f:"0.06 0.06",a:.45};
+ if(c=="집성판")return /멀바우|참죽/.test(n)?{b:"#9a5a33",g:"#5c3019",f:"0.0015 0.05",a:.8,st:1}:/히노끼|삼목|레드파인/.test(n)?{b:"#e8c896",g:"#b07d47",f:"0.0015 0.05",a:.7,st:1}:{b:"#d9ad74",g:"#8f5f2c",f:"0.0015 0.05",a:.8,st:1};
+ if(c=="방부목")return{b:"#ab9a63",g:"#66603a",f:"0.0012 0.08",a:.8};
+ if(c=="데크")return /합성/.test(n)?{b:"#6e4c35",g:"#3e2919",f:"0.001 0.2",a:.6,gr:1}:{b:"#b8875a",g:"#6e4626",f:"0.0012 0.08",a:.8};
+ if(c=="합판")return{b:"#dcb987",g:"#8d6236",f:"0.0016 0.035",a:.75};
+ return{b:"#e0be8c",g:"#8f6538",f:"0.0012 0.07",a:.8};
+}
+var SID=0;
+function tex(W,H,m){
+ var id="t"+(++SID),k=m.a,s='<defs><filter id="'+id+'" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="'+m.f+'" numOctaves="'+(m.osb?2:4)+'" seed="'+(SID*7%50)+'"/><feColorMatrix type="matrix" values="0 0 0 0 '+hex(m.g,0)+' 0 0 0 0 '+hex(m.g,1)+' 0 0 0 0 '+hex(m.g,2)+' '+(m.osb?2.6:1.4)*k+' 0 0 0 '+(m.osb?-1.1:-0.45)*k+'"/></filter></defs>';
+ s+='<rect width="'+W+'" height="'+H+'" fill="'+m.b+'"/><rect width="'+W+'" height="'+H+'" filter="url(#'+id+')"/>';
+ if(m.st){for(var y=0,i=0;y<H;i++){var h=45+(i*37%30);s+='<rect y="'+y+'" width="'+W+'" height="'+h+'" fill="'+(i%2?"#fff":"#000")+'" opacity="'+(0.04+(i*13%5)/100)+'"/><line x1="0" x2="'+W+'" y1="'+y+'" y2="'+y+'" stroke="#000" stroke-opacity=".12" stroke-width="1.5"/>';y+=h}}
+ if(m.gr){for(var y=8;y<H;y+=H/8)s+='<line x1="0" x2="'+W+'" y1="'+y+'" y2="'+y+'" stroke="#000" stroke-opacity=".35" stroke-width="2"/>'}
+ return s;
+}
+function hex(c,i){return (parseInt(c.substr(1+i*2,2),16)/255).toFixed(3)}
+function cutOverlay(W,H,rects,lab){
+ var id="m"+(++SID),s='<defs><mask id="'+id+'"><rect width="'+W+'" height="'+H+'" fill="#fff"/>';
+ rects.forEach(function(r){s+='<rect x="'+r[0]+'" y="'+r[1]+'" width="'+r[2]+'" height="'+r[3]+'" fill="#000"/>'});
+ s+='</mask><pattern id="h'+id+'" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="40" stroke="#fff" stroke-width="6" stroke-opacity=".5"/></pattern></defs>';
+ s+='<g mask="url(#'+id+')"><rect width="'+W+'" height="'+H+'" fill="#000" opacity=".5"/><rect width="'+W+'" height="'+H+'" fill="url(#h'+id+')"/></g>';
+ rects.forEach(function(r){s+='<rect x="'+r[0]+'" y="'+r[1]+'" width="'+r[2]+'" height="'+r[3]+'" fill="none" stroke="#1a1a1a" stroke-width="5"/><rect x="'+(r[0]+4)+'" y="'+(r[1]+4)+'" width="'+Math.max(0,r[2]-8)+'" height="'+Math.max(0,r[3]-8)+'" fill="none" stroke="'+COL[r[5]%COL.length]+'" stroke-width="6" opacity=".9"/>';
+  var f=r[4][1];if(f>12)s+='<text x="'+(r[0]+r[2]/2)+'" y="'+(r[1]+r[3]/2)+'" font-size="'+f+'" text-anchor="middle" dominant-baseline="middle" font-weight="800" fill="#111" stroke="#fff" stroke-width="'+(f/6)+'" paint-order="stroke">'+r[4][0]+'</text>'});
+ return s+'<rect width="'+W+'" height="'+H+'" fill="none" stroke="#333" stroke-width="5"/>';
+}
 function svgSheet(W,H,b){
- var land=W<H, VW=land?H:W, VH=land?W:H, s='<p class="small muted" style="margin:0 0 6px">원판 '+VW+' × '+VH+' 기준 그림 · 회색은 남는 자투리</p>';
- s+='<svg viewBox="-4 -4 '+(VW+8)+' '+(VH+8)+'" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="'+VW+'" height="'+VH+'" fill="#eee" stroke="#555" stroke-width="4"/>';
- var fs=Math.max(40,Math.min(VW,VH)/14);
+ var land=W<H, VW=land?H:W, VH=land?W:H, m=mat(), s='<p class="small muted" style="margin:0 0 6px">원판 '+VW+' × '+VH+' 기준 · 어두운 빗금은 남는 자투리</p>';
+ s+='<svg viewBox="-4 -4 '+(VW+8)+' '+(VH+8)+'" xmlns="http://www.w3.org/2000/svg">'+tex(VW,VH,m);
+ var fs=Math.max(40,Math.min(VW,VH)/14),R=[];
  b.pl.forEach(function(p){
-  var x=land?p.y:p.x,y=land?p.x:p.y,w=land?p.h:p.w,h=land?p.w:p.h,lw=land?p.h:p.w,lh=land?p.w:p.h;
-  var t=w+'×'+h;
-  var f=Math.min(fs,w/(t.length*0.62),h*0.5);
-  s+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+COL[p.c%COL.length]+'" stroke="#333" stroke-width="3"/>';
-  if(f>12)s+='<text x="'+(x+w/2)+'" y="'+(y+h/2)+'" font-size="'+f+'" text-anchor="middle" dominant-baseline="middle" font-weight="700" fill="#222">'+t+'</text>';
+  var x=land?p.y:p.x,y=land?p.x:p.y,w=land?p.h:p.w,h=land?p.w:p.h,t=w+'×'+h;
+  R.push([x,y,w,h,[t,Math.min(fs,w/(t.length*0.62),h*0.5)],p.c]);
  });
- return s+'</svg>';
+ return s+cutOverlay(VW,VH,R)+'</svg>';
 }
 function svgLin(L,b){
- var H=Math.max(60,L/18),s='<svg viewBox="-4 -4 '+(L+8)+' '+(H+8)+'" xmlns="http://www.w3.org/2000/svg"><rect width="'+L+'" height="'+H+'" fill="#eee" stroke="#555" stroke-width="4"/>';
- b.pl.forEach(function(p){var f=Math.min(H*0.55,p.l/((''+p.l).length*0.65));s+='<rect x="'+p.x+'" y="0" width="'+p.l+'" height="'+H+'" fill="'+COL[p.c%COL.length]+'" stroke="#333" stroke-width="3"/>';if(f>10)s+='<text x="'+(p.x+p.l/2)+'" y="'+H/2+'" font-size="'+f+'" text-anchor="middle" dominant-baseline="middle" font-weight="700">'+p.l+'</text>'});
- return s+'</svg>';
+ var H=Math.max(90,L/14),m=mat(),s='<svg viewBox="-4 -4 '+(L+8)+' '+(H+8)+'" xmlns="http://www.w3.org/2000/svg">'+tex(L,H,m),R=[];
+ b.pl.forEach(function(p){var t=''+p.l;R.push([p.x,0,p.l,H,[t,Math.min(H*0.5,p.l/(t.length*0.65))],p.c])});
+ return s+cutOverlay(L,H,R)+'</svg>';
 }
 function run(){
  var st=stock(),L=isLin(),list=[],n=0;
