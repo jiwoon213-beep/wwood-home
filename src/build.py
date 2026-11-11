@@ -1,4 +1,4 @@
-import re
+import collections, re
 #!/usr/bin/env python3
 """월드건축자재 홍보 사이트 생성기. python3 build.py [BASE_URL]"""
 import csv, html, json, os, re, shutil, sys, datetime
@@ -197,7 +197,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><img class="lm" src="/assets/logo-mark.svg" width="46" height="46" alt=""><span class="lt"><b>영진종합목재</b><small><em>월드건축자재</em> · 충청권 최대규모 목재상</small></span></a>
 <nav>{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">만들기 자재</a> · <a href="/baesong.html">전국 배송</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">만들기 자재</a> · <a href="/baesong.html">전국 배송</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로 무단 복제·사용을 금합니다.<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr",seen=false;try{{seen=localStorage.getItem("vcd")===k;}}catch(e){{}}var m=seen?"get":"hit";if(!seen){{try{{var rf=document.referrer||"",src=/youtube|youtu\\.be/.test(rf)?"yt":/naver/.test(rf)?"naver":/google/.test(rf)?"google":/daum|kakao/.test(rf)?"daum":/bing/.test(rf)?"bing":/daangn|karrot/.test(rf)?"daangn":/wwood\\.kr/.test(rf)?"wwoodkr":rf&&rf.indexOf(location.host)<0?"etc":"direct";fetch(b+"hit/"+n+"/src-"+src).catch(function(){{}});fetch(b+"hit/"+n+"/src-"+src+"-d"+k).catch(function(){{}});}}catch(e){{}}}}Promise.all([fetch(b+m+"/"+n+"/d"+k).then(function(r){{return r.json()}}),fetch(b+m+"/"+n+"/total").then(function(r){{return r.json()}})]).then(function(v){{try{{localStorage.setItem("vcd",k)}}catch(e){{}}var t=v[0].value||0,a=v[1].value||0;var el=document.getElementById("vcnt");if(el)el.textContent="오늘 "+t.toLocaleString()+" · 전체 "+a.toLocaleString();}}).catch(function(){{}});}}catch(e){{}}}})();</script>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
@@ -437,6 +437,55 @@ def build():
            ("재단해서 보내 주나요?", "네. 원하는 크기로 재단한 뒤 보내 드립니다. 재단 크기는 재단 미리보기에서 그림으로 만들어 메일로 보내 주시면 정확합니다."),
            ("한두 장도 보내 주나요?", "소량도 보낼 수 있지만 용달 운임이 자재값보다 클 수 있습니다. 가까운 분은 방문 구매가 경제적이고, 먼 곳은 한 번에 모아서 주문하시는 것을 권합니다."),
            ("주문은 어떻게 하나요?", f"전화({TEL})나 메일({EMAIL})로 품목·규격·수량·받는 주소·받는 분 연락처를 알려 주세요. 사업자는 도매회원(wwood.kr)으로 가입하시면 회원가로 주문할 수 있습니다.")]
+    # 규격표 — 매장 취급 제품 기준 크기·두께(가격 없음)
+    def _gy():
+        rows = list(csv.DictReader(open(ROOT + "/data/prices.csv", encoding="utf-8")))
+        SZ = {"4*8": "1220×2440", "3*6": "900×1800"}
+        def sheet(cat, label, note):
+            g = collections.OrderedDict()
+            for r in rows:
+                if r["cat"] != cat: continue
+                n = re.sub(r"^[^-]+-\s*", "", r["name"])
+                m = re.search(r"(\d{3,4})\s*\*\s*(\d{3,4})\s*\*\s*(\d+(?:\.\d+)?)\s*T", n)
+                if m: size, th, typ = f"{m.group(1)}×{m.group(2)}", m.group(3), n[:n.find("@")].strip() or label
+                else:
+                    m2 = re.search(r"([34])\s*\*\s*([68])", n); t = re.search(r"@\s*(\d+(?:\.\d+)?)\s*(?:mm|T)", n)
+                    if not (m2 and t): continue
+                    size, th = SZ[m2.group(1) + "*" + m2.group(2)], t.group(1)
+                    typ = re.sub(r"\s*[34]\s*\*\s*[68].*$", "", n).strip() or label
+                typ = re.sub(r"\s+", " ", typ)
+                g.setdefault((typ, size), set()).add(float(th))
+            if not g: return ""
+            trs = "".join(f"<tr><td>{E(t)}</td><td>{sz}</td><td>{', '.join(('%g' % x) for x in sorted(v))}</td></tr>" for (t, sz), v in g.items())
+            return f'<h2>{label} 규격</h2><p class="muted small">{note}</p><div class="tw"><table><thead><tr><th>종류</th><th>크기(mm)</th><th>두께(mm)</th></tr></thead><tbody>{trs}</tbody></table></div>'
+        def lin(cats, label, note):
+            trs = []
+            for r in rows:
+                if r["cat"] not in cats: continue
+                n = re.sub(r"^[^-]+-\s*", "", r["name"])
+                if re.search(r"클립|브라켓|캡|지주|본드", n): continue
+                a, _, b = n.partition("@")
+                trs.append(f"<tr><td>{E(a.strip() or n)}</td><td>{E(b.strip())}</td></tr>")
+            return f'<h2>{label} 규격</h2><p class="muted small">{note}</p><div class="tw"><table><thead><tr><th>종류</th><th>단면·길이</th></tr></thead><tbody>{"".join(trs)}</tbody></table></div>' if trs else ""
+        body = (sheet("합판", "합판", "4×8 = 1220×2440mm, 3×6 = 900×1800mm. (베)=베트남, (인)=인도네시아, OSB·태고(코팅)·오쿠메 등은 종류별로 따로 표시했습니다.")
+              + sheet("엠디", "MDF", "MDF는 4×8(1220×2440) 원판 기준입니다. 고밀도·LPM(백색 코팅)은 따로 표시했습니다.")
+              + sheet("집성판", "집성판", "수종에 따라 원판 크기가 1200×2400 또는 1220×2440으로 조금 다릅니다.")
+              + sheet("석고", "석고보드", "3×6 = 900×1800mm. 일반·방수·방화 석고보드.")
+              + sheet("단열", "단열재", "아이소핑크·스티로폼은 900×1800, 이보드는 900×2400 기준입니다.")
+              + lin(["구조"], "구조재", "2×4는 실제 38×89mm입니다. 12ft는 약 3.6m입니다.")
+              + lin(["방부"], "방부목", "12자는 약 3.6m입니다. 데크재와 각재(2×4, 4×4 등).")
+              + lin(["목재", "각재"], "각재·다루끼", "1.0×1.0은 1치×1치(약 30×30mm), 12자는 약 3.6m입니다.")
+              + lin(["합성", "데크"], "데크재", "합성데크와 하드우드 데크재(시우리·캠퍼스·큐링)."))
+        return body
+    _gyb = _gy()
+    page("gyugyeok.html", "합판·MDF·석고보드·구조재 규격표 — 두께·크기 한눈에 | 영진목재", "합판 두께, MDF 규격, 석고보드 크기, 구조재 2x4 실제 치수, 방부목·각재·다루끼 규격을 한 표로 정리했습니다. 대전 영진목재 매장 취급 제품 기준.",
+         f"""<section class="wrap sec"><h1>목재·합판 규격표</h1><p class="lead">매장에서 실제로 파는 제품 기준으로 크기와 두께를 정리했습니다. 원하는 크기는 매장에서 바로 재단해 드리고, 어떻게 잘리는지는 <a href="/cut.html">재단 미리보기</a>에서 그림으로 볼 수 있습니다.</p>
+<div class="card"><h2>단위 읽는 법</h2><ul><li><b>4×8</b> = 4피트×8피트 = 1220×2440mm, <b>3×6</b> = 900×1800mm</li><li><b>T</b> = 두께(mm). 8.5T = 8.5mm</li><li><b>1치</b> ≈ 30mm, <b>1자</b> ≈ 303mm → <b>12자</b> ≈ 3.6m, 8자 ≈ 2.4m</li><li><b>12ft</b> ≈ 3.6m (구조재)</li><li><b>2×4</b>(투바이포)는 이름일 뿐, 실제 치수는 38×89mm</li></ul></div></section>
+<section class="wrap sec">{_gyb}<p>가격은 <a href="/price.html">기준가</a>, 필요한 양은 <a href="/calc.html">자재 계산기</a>, 자재별 용도는 <a href="/jajae/">자재 백과</a>에서 보세요.</p></section>{CTA}""", "",
+         [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+           {"@type": "Question", "name": "합판 4×8은 몇 mm인가요?", "acceptedAnswer": {"@type": "Answer", "text": "4×8 합판은 1220×2440mm입니다. 3×6은 900×1800mm입니다."}},
+           {"@type": "Question", "name": "구조재 2×4 실제 치수는?", "acceptedAnswer": {"@type": "Answer", "text": "2×4 구조재의 실제 단면은 38×89mm이고, 12ft 길이는 약 3.6m입니다."}},
+           {"@type": "Question", "name": "다루끼 1치는 몇 mm인가요?", "acceptedAnswer": {"@type": "Answer", "text": "1치는 약 30mm입니다. 다루끼 1.0×1.0은 약 30×30mm, 12자는 약 3.6m입니다."}}]}])
     page("baesong.html", "전국 목재 배송 — 합판·구조재 재단해서 용달로 | 영진목재(대전)", "합판·MDF·구조재·방부목·데크재를 원하는 크기로 재단해 전국에 용달로 보내 드립니다. 경기·서울·충청·영남·호남·강원. 운임은 미리 견적. 대전 영진목재.",
          f"""<section class="wrap sec"><h1>전국 목재 배송 — 재단해서 용달로 보내 드립니다</h1><p class="lead">영진종합목재(월드건축자재) 쇼핑몰 회원의 절반 이상이 대전 밖에 계십니다. 합판·MDF·집성판·구조재·방부목·데크재·석고보드·몰딩·도어까지 원하는 크기로 재단해서 전국 현장으로 보내 드립니다.</p>
 <div class="row"><a class="b r" href="mailto:{EMAIL}?subject=%EB%B0%B0%EC%86%A1%20%EA%B2%AC%EC%A0%81%20%EC%9A%94%EC%B2%AD&body=%ED%92%88%EB%AA%A9%C2%B7%EA%B7%9C%EA%B2%A9%C2%B7%EC%88%98%EB%9F%89%3A%0A%EB%B0%9B%EB%8A%94%20%EC%A3%BC%EC%86%8C%3A%0A%EB%B0%9B%EB%8A%94%20%EB%B6%84%20%EC%97%B0%EB%9D%BD%EC%B2%98%3A%0A%ED%9D%AC%EB%A7%9D%20%EB%82%A0%EC%A7%9C%3A%0A">메일로 배송 견적 요청</a><a class="b d" href="tel:{TEL.replace('-','')}">전화 {TEL}</a><a class="b o" href="/cut.html">재단 그림 만들기</a></div></section>
