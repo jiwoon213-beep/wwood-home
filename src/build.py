@@ -196,7 +196,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><img class="lm" src="/assets/logo-mark.svg" width="46" height="46" alt=""><span class="lt"><b>영진종합목재</b><small><em>월드건축자재</em> · 충청권 최대규모 목재상</small></span></a>
 <nav>{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로 무단 복제·사용을 금합니다.<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr",seen=false;try{{seen=localStorage.getItem("vcd")===k;}}catch(e){{}}var m=seen?"get":"hit";Promise.all([fetch(b+m+"/"+n+"/d"+k).then(function(r){{return r.json()}}),fetch(b+m+"/"+n+"/total").then(function(r){{return r.json()}})]).then(function(v){{try{{localStorage.setItem("vcd",k)}}catch(e){{}}var t=v[0].value||0,a=v[1].value||0;var el=document.getElementById("vcnt");if(el)el.textContent="오늘 "+t.toLocaleString()+" · 전체 "+a.toLocaleString();}}).catch(function(){{}});}}catch(e){{}}}})();</script>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
@@ -295,7 +295,7 @@ def build():
     # 자재 백과
     lst = "".join(f'<a class="mc" href="/jajae/{m["slug"]}.html"><b>{m["name"]}</b><small>{" · ".join(m["where"][:2])}</small></a>' for m in MATS)
     page("jajae/index.html", "자재 백과 — 합판·MDF·방부목·석고보드 용도와 가격 | 월드건축자재 대전", "자재별 용도, 인테리어 효과, 소매 기준가, 시공 영상을 한 번에. 대전 월드건축자재(영진목재).",
-         f'<section class="wrap sec"><h1>자재 백과</h1><p class="lead">손님들이 가장 헷갈리는 "이 자재 어디에 쓰나요?"를 자재별로 정리했습니다.</p><p><a class="b o" href="/bigyo/">자재 비교 전체 보기 (14종)</a> <a class="b o" href="/calc.html">자재 계산기</a> <a class="b o" href="/yongeo.html">현장 용어 사전</a></p><div class="mg m2">{lst}</div></section>{CTA}', "/jajae/")
+         f'<section class="wrap sec"><h1>자재 백과</h1><p class="lead">손님들이 가장 헷갈리는 "이 자재 어디에 쓰나요?"를 자재별로 정리했습니다.</p><p><a class="b o" href="/bigyo/">자재 비교 전체 보기 (14종)</a> <a class="b o" href="/calc.html">자재 계산기</a> <a class="b o" href="/cut.html">재단 미리보기</a> <a class="b o" href="/yongeo.html">현장 용어 사전</a></p><div class="mg m2">{lst}</div></section>{CTA}', "/jajae/")
     for m in MATS:
         vs = top(lambda v: m["tag"] in v["mats"], 10**6)
         rel = [x for x in MATS if x is not m][:0]
@@ -646,10 +646,23 @@ def build():
                     if re.search(rx, raw) and jn in J: it.append([J[jn], jn]); break
         cats += [{"n": "판재 직접입력", "lin": 0, "custom": 1}, {"n": "각재 직접입력", "lin": 1, "custom": 1}]
         return {"cats": cats}
-    page("cut.html", "재단 미리보기 — 합판·MDF·집성판 어떻게 잘리는지 그림으로 | 영진목재", "필요한 크기만 넣으면 합판·MDF·집성판·석고보드 원판과 구조재·각재에서 어떻게 잘리는지 그림으로 보여드립니다. 대전 영진종합목재 즉석 재단.",
-         open(ROOT + "/cut_tpl.html", encoding="utf-8").read().replace("__DATA__", json.dumps(_cutdata(), ensure_ascii=False, separators=(",", ":"))).replace("__TEL__", TEL.replace("-", "")), "/cut.html")
+    _cd = _cutdata()
+    _CF = [("합판·MDF 원하는 사이즈로 잘라 주나요?", "네. 대전 유성대로 44 매장에서 합판, MDF, 집성판, OSB, 석고보드, 단열재와 구조재·각재·방부목을 원하는 크기로 즉석 재단해 드립니다. 한 장, 한 개 소량도 됩니다."),
+           ("4×8 합판 한 장에서 몇 조각 나오나요?", "4×8 합판 원판은 1220×2440mm입니다. 이 페이지에 자를 크기와 개수를 넣으면 톱날 두께 3mm를 빼고 몇 장이 필요한지, 어떻게 잘리는지 그림으로 바로 보여드립니다."),
+           ("재단할 때 톱날 두께는 얼마나 빠지나요?", "한 번 자를 때마다 약 3mm가 빠집니다. 이 계산기는 3mm를 빼고 배치하므로 실제 재단과 거의 같게 나옵니다."),
+           ("나뭇결 방향을 맞춰서 자를 수 있나요?", "네. 집성판이나 무늬목처럼 결이 중요한 자재는 '나뭇결 방향 유지'를 체크하면 조각을 돌리지 않고 배치합니다."),
+           ("재단 그림을 매장에 어떻게 보내나요?", "'링크 복사'를 눌러 카톡이나 문자로 보내시거나, 화면을 매장에 보여주시면 그대로 잘라 드립니다. 인쇄도 됩니다.")]
+    _sz = "".join(f"<li><b>{E(c['n'])}</b> — " + ", ".join(sorted({(f"{i[1]}×{i[2]}mm" if not c['lin'] else f"길이 {i[1]}mm") for i in c['items']})) + "</li>" for c in _cd["cats"] if c.get("items"))
+    _seo = (f'<section class="wrap sec"><h2>매장 원판·각재 규격 (재단 기준)</h2><ul>{_sz}</ul>'
+            '<h2>재단 미리보기 사용법</h2><ol><li>자재(합판·MDF·집성판·석고보드·단열재·구조재·방부목·각재·데크)를 고릅니다.</li><li>자를 크기(가로×세로×개수, 각재는 길이×개수)를 넣습니다.</li><li>필요한 원판 장수와 재단 그림을 확인하고, 링크를 매장에 보내거나 화면을 보여주세요.</li></ol>'
+            '<h2>자주 묻는 질문</h2>' + "".join(f"<h3>{E(q)}</h3><p>{E(a)}</p>" for q, a in _CF) +
+            '<p>👉 <a href="/calc.html">자재 계산기(몇 장 필요한지)</a> · <a href="/jajae/">자재 백과</a> · <a href="/visit.html">매장 안내·길찾기</a></p></section>')
+    _ld = [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in _CF]},
+           {"@context": "https://schema.org", "@type": "WebApplication", "name": "재단 미리보기 — 영진종합목재", "applicationCategory": "UtilityApplication", "operatingSystem": "All", "url": BASE + "/cut.html", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}, "provider": {"@type": "HardwareStore", "name": "영진종합목재(월드건축자재)", "telephone": TEL, "address": ADDR}}]
+    page("cut.html", "합판·MDF 재단 미리보기 — 원하는 사이즈 재단 그림 | 대전 영진목재", "합판·MDF·집성판·석고보드·구조재를 원하는 사이즈로 넣으면 원판에서 어떻게 잘리는지, 몇 장 필요한지 그림으로 보여드립니다. 대전 영진목재 즉석 재단.",
+         open(ROOT + "/cut_tpl.html", encoding="utf-8").read().replace("__DATA__", json.dumps(_cd, ensure_ascii=False, separators=(",", ":"))).replace("__TEL__", TEL.replace("-", "")) + _seo + CTA, "/cut.html", _ld, BASE + "/assets/store/plywood-rack.jpg")
     page("calc.html", "자재 계산기 — 데크·석고보드·합판 몇 장? 문짝·중문 크기까지 | 영진목재", "데크 방부목·합성데크 장수, 석고보드·합판·단열재 장수, 몰딩·걸레받이 길이, 데코타일·강마루 박스 수, 페인트 양, 평↔㎡를 바로 계산하세요. 대전 영진목재(월드건축자재) 재단·배송.",
-f"""<section class="wrap sec"><h1>자재 계산기</h1><p class="lead">필요한 양을 미리 계산해 오시면 매장에서 바로 재단해 드립니다. 결과는 참고용입니다(로스 포함).</p>
+f"""<section class="wrap sec"><h1>자재 계산기</h1><p class="lead">필요한 양을 미리 계산해 오시면 매장에서 바로 재단해 드립니다. 결과는 참고용입니다(로스 포함). 어떻게 잘리는지는 <a href="/cut.html">재단 미리보기</a>에서 그림으로 확인하세요.</p>
 <div class="chips" id="cchips">{chips}</div>
 <div class="cnav"><button class="cb" data-d="-1">◀ 이전</button><span id="cpos" class="small muted"></span><button class="cb" data-d="1">다음 ▶</button></div>
 <div class="cslider" id="cslider">{slides}</div>
