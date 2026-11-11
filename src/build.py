@@ -931,14 +931,16 @@ table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;ove
 <h1>www.wwood.co.kr 방문 통계</h1><div class="k"><div><small>오늘 방문</small><b id="td">…</b></div><div><small>전체 방문</small><b id="tt">…</b></div></div>
 <table id="src"><tr><th>어디서 왔나</th><th>오늘</th><th>누적</th></tr></table>
 <table id="days"><tr><th>날짜</th><th>방문</th></tr></table>
+<p id="note" style="display:none;background:#fff3f2;border:1px solid #f3c2bd;color:#c62a1f;padding:12px;border-radius:12px">방문자 숫자를 세는 외부 카운터 서버가 지금 응답하지 않아요(일시 장애). 사이트는 정상이고, 서버가 돌아오면 다시 숫자가 나옵니다. 잠시 후 새로고침해 주세요.</p>
 <p><small>같은 사람이 하루에 여러 번 들어와도 1번으로 셉니다. 경로 집계는 2026-11-11 오후부터 시작했어요.</small></p>
 <script>
 var b="https://abacus.jasoncameron.dev/get/wwood-co-kr/",S=[["yt","유튜브"],["naver","네이버"],["google","구글"],["daum","다음·카카오"],["bing","빙"],["daangn","당근"],["wwoodkr","쇼핑몰(wwood.kr)"],["etc","다른 사이트"],["direct","주소 입력·즐겨찾기"]];
-function g(k){return fetch(b+k).then(function(r){return r.ok?r.json():{value:0}}).then(function(j){return j.value||0}).catch(function(){return 0})}
+var fail=0;function g(k){var c=window.AbortController?new AbortController():null;if(c)setTimeout(function(){c.abort()},9000);return fetch(b+k,c?{signal:c.signal}:{}).then(function(r){return r.ok?r.json():{value:0}}).then(function(j){return j.value||0}).catch(function(){fail++;return "-"})}
+setTimeout(function(){if(fail){var p=document.getElementById("note");p.style.display="block"}},9500);
 function day(i){return new Date(Date.now()+9*3600e3-i*864e5).toISOString().slice(0,10).replace(/-/g,"")}
 var k=day(0);g("d"+k).then(function(v){td.textContent=v.toLocaleString()});g("total").then(function(v){tt.textContent=v.toLocaleString()});
-Promise.all(S.map(function(s){return Promise.all([g("src-"+s[0]+"-d"+k),g("src-"+s[0])])})).then(function(R){var mx=Math.max.apply(null,R.map(function(r){return r[1]}).concat([1]));
- S.forEach(function(s,i){var t=document.createElement("tr");t.innerHTML="<td>"+s[1]+"</td><td>"+R[i][0]+"</td><td>"+R[i][1]+"<span class=bar style='width:"+Math.round(R[i][1]/mx*60)+"px'></span></td>";document.getElementById("src").appendChild(t)})});
+Promise.all(S.map(function(s){return Promise.all([g("src-"+s[0]+"-d"+k),g("src-"+s[0])])})).then(function(R){var mx=Math.max.apply(null,R.map(function(r){return +r[1]||0}).concat([1]));
+ S.forEach(function(s,i){var t=document.createElement("tr");t.innerHTML="<td>"+s[1]+"</td><td>"+R[i][0]+"</td><td>"+R[i][1]+"<span class=bar style='width:"+Math.round((+R[i][1]||0)/mx*60)+"px'></span></td>";document.getElementById("src").appendChild(t)})});
 Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i))})).then(function(R){R.forEach(function(v,i){var d=day(i),t=document.createElement("tr");t.innerHTML="<td>"+d.slice(4,6)+"/"+d.slice(6)+(i?"":" (오늘)")+"</td><td>"+v+"</td>";document.getElementById("days").appendChild(t)})});
 </script></body></html>""")
     open(f"{OUT}/b4237bce57cfb60c93b64e5203857f41.txt", "w").write("b4237bce57cfb60c93b64e5203857f41")  # IndexNow 키(네이버·빙)
