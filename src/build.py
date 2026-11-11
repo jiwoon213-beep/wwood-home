@@ -271,6 +271,8 @@ def build():
 <div>{embed(tour) if tour else ''}<p class="small muted">대전 목재소·건축자재 백화점 3000평 투어 · 조회 18만회</p></div></div></section>
 <section class="stat"><div class="wrap g4"><div><b>구독 {ST["subs"]}명</b><small>유튜브 월드건축자재DIY</small></div><div><b>영상 {int(ST["videos"]):,}개</b><small>시공·DIY·자재 정보</small></div>
 <div><b>소매 + 도매</b><small>셀프 고객부터 현장 납품까지</small></div><div><b>직접 시공</b><small>월드아키텍쳐 · {LIC}</small></div></div></section>
+<section class="wrap sec"><div class="tl4"><a href="/cut.html"><b>✂ 재단 미리보기</b><span>치수만 넣으면 원판에서 어떻게 잘리는지 그림으로</span></a><a href="/mandeul/"><b>🪚 만들기 자재</b><span>평상·책장·데크·울타리 재단 목록</span></a><a href="/calc.html"><b>🧮 자재 계산기</b><span>몇 장·몇 개 필요한지</span></a><a href="/baesong.html"><b>🚚 전국 배송</b><span>재단해서 용달로 전국 현장까지</span></a></div></section>
+<style>.tl4{{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}}.tl4 a{{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;color:inherit;text-decoration:none}}.tl4 a:hover{{border-color:var(--red)}}.tl4 b{{display:block;font-size:17px;margin-bottom:4px}}.tl4 span{{font-size:13px;color:var(--mut)}}@media(max-width:760px){{.tl4{{grid-template-columns:1fr 1fr}}}}</style>
 <div class="hx"><section class="wrap sec"><h2>무엇을 만들고 싶으세요?</h2><p class="muted">고르면 그 용도의 자재와 시공 영상이 한 번에 나옵니다.</p><div class="ug">{use}</div></section>
 <section class="wrap sec"><h2>자재 백과 — 이 나무, 어디에 쓰나요?</h2><p class="muted">용도·인테리어 효과·기준가·관련 영상을 자재별로 정리했습니다.</p><div class="mg">{mats}</div></section>
 {postsec}{newsec}
