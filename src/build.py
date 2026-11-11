@@ -196,7 +196,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><img class="lm" src="/assets/logo-mark.svg" width="46" height="46" alt=""><span class="lt"><b>영진종합목재</b><small><em>월드건축자재</em> · 충청권 최대규모 목재상</small></span></a>
 <nav>{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">만들기 자재</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로 무단 복제·사용을 금합니다.<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr",seen=false;try{{seen=localStorage.getItem("vcd")===k;}}catch(e){{}}var m=seen?"get":"hit";if(!seen){{try{{var rf=document.referrer||"",src=/youtube|youtu\\.be/.test(rf)?"yt":/naver/.test(rf)?"naver":/google/.test(rf)?"google":/daum|kakao/.test(rf)?"daum":/bing/.test(rf)?"bing":/daangn|karrot/.test(rf)?"daangn":/wwood\\.kr/.test(rf)?"wwoodkr":rf&&rf.indexOf(location.host)<0?"etc":"direct";fetch(b+"hit/"+n+"/src-"+src).catch(function(){{}});fetch(b+"hit/"+n+"/src-"+src+"-d"+k).catch(function(){{}});}}catch(e){{}}}}Promise.all([fetch(b+m+"/"+n+"/d"+k).then(function(r){{return r.json()}}),fetch(b+m+"/"+n+"/total").then(function(r){{return r.json()}})]).then(function(v){{try{{localStorage.setItem("vcd",k)}}catch(e){{}}var t=v[0].value||0,a=v[1].value||0;var el=document.getElementById("vcnt");if(el)el.textContent="오늘 "+t.toLocaleString()+" · 전체 "+a.toLocaleString();}}).catch(function(){{}});}}catch(e){{}}}})();</script>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
@@ -295,7 +295,7 @@ def build():
     # 자재 백과
     lst = "".join(f'<a class="mc" href="/jajae/{m["slug"]}.html"><b>{m["name"]}</b><small>{" · ".join(m["where"][:2])}</small></a>' for m in MATS)
     page("jajae/index.html", "자재 백과 — 합판·MDF·방부목·석고보드 용도와 가격 | 월드건축자재 대전", "자재별 용도, 인테리어 효과, 소매 기준가, 시공 영상을 한 번에. 대전 월드건축자재(영진목재).",
-         f'<section class="wrap sec"><h1>자재 백과</h1><p class="lead">손님들이 가장 헷갈리는 "이 자재 어디에 쓰나요?"를 자재별로 정리했습니다.</p><p><a class="b o" href="/bigyo/">자재 비교 전체 보기 (14종)</a> <a class="b o" href="/calc.html">자재 계산기</a> <a class="b o" href="/cut.html">재단 미리보기</a> <a class="b o" href="/yongeo.html">현장 용어 사전</a></p><div class="mg m2">{lst}</div></section>{CTA}', "/jajae/")
+         f'<section class="wrap sec"><h1>자재 백과</h1><p class="lead">손님들이 가장 헷갈리는 "이 자재 어디에 쓰나요?"를 자재별로 정리했습니다.</p><p><a class="b o" href="/bigyo/">자재 비교 전체 보기 (14종)</a> <a class="b o" href="/calc.html">자재 계산기</a> <a class="b o" href="/cut.html">재단 미리보기</a> <a class="b o" href="/mandeul/">만들기 자재 목록</a> <a class="b o" href="/yongeo.html">현장 용어 사전</a></p><div class="mg m2">{lst}</div></section>{CTA}', "/jajae/")
     for m in MATS:
         vs = top(lambda v: m["tag"] in v["mats"], 10**6)
         rel = [x for x in MATS if x is not m][:0]
@@ -307,7 +307,8 @@ def build():
         faq = [{"@type": "Question", "name": f"{m['name']}{'은' if _jj else '는'} 어디에 쓰나요?", "acceptedAnswer": {"@type": "Answer", "text": ", ".join(m["where"])}},
                {"@type": "Question", "name": f"대전에서 {m['name']}{'을' if _jj else '를'} 어디서 사나요?", "acceptedAnswer": {"@type": "Answer", "text": f"월드건축자재(영진종합목재), {ADDR}, {TEL}. {HOURS}. 원하는 사이즈로 재단해 드립니다."}}]
         cmpl = {"hapan":"hapan-types","osb":"hapan-osb-mdf","mdf":"hapan-osb-mdf","bangbu":"bangbu-hapdeck","hapdeck":"bangbu-hapdeck","gypsum":"gypsum-types","siding":"siding-types","insul":"insulation-types","maru":"floor-types","tile":"floor-types","door":"door-types","stain":"stain-oil-water","hinoki":"louver-types","jipseong":"jipseong-types","gujo":"gakjae-types","sound":"sound-types","film":"door-types"}.get(m["slug"])
-        cmpln = f'<p>👉 <a href="/bigyo/{cmpl}.html">비슷한 자재와 비교해 보기</a> · <a href="/calc.html">필요한 양 계산하기</a></p>' if cmpl else (f'<p>👉 <a href="/calc.html#door">문짝·문틀 크기 계산하기</a></p>' if m["slug"] == "door" else '<p>👉 <a href="/calc.html">필요한 양 계산하기</a></p>')
+        cutln = f' · <a href="/cut.html#m={m["slug"]}">원하는 크기로 재단 그림 보기</a>' if m["slug"] in {"hapan","osb","mdf","gujo","bangbu","hapdeck","jipseong","hinoki","gypsum","insul"} else ""
+        cmpln = f'<p>👉 <a href="/bigyo/{cmpl}.html">비슷한 자재와 비교해 보기</a> · <a href="/calc.html">필요한 양 계산하기</a>{cutln}</p>' if cmpl else (f'<p>👉 <a href="/calc.html#door">문짝·문틀 크기 계산하기</a></p>' if m["slug"] == "door" else f'<p>👉 <a href="/calc.html">필요한 양 계산하기</a>{cutln}</p>')
         mf = MFAQ.get(m["slug"], []) + [(f"{m['name']} 지방(전국)으로도 배송되나요?", f"네, 전국 어디든 용달차로 보내 드립니다. 품목·수량·도착지를 알려 주시면 사무실에서 용달 운임 견적을 드리고, 입금 확인 후 바로 출고합니다. 대전·세종·공주·계룡·논산·금산·옥천은 직접 배송·현장 납품합니다. 문의 {TEL}")]
         _seen = {re.sub(r"[^가-힣A-Za-z0-9]|은|는|을|를", "", q) for q, a in mf}
         faq = [x for x in faq if re.sub(r"[^가-힣A-Za-z0-9]|은|는|을|를", "", x["name"]) not in _seen] + [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in mf]
@@ -492,7 +493,7 @@ def build():
 <h1>{ra} {nm} — 파는 곳·기준가·재단·배송</h1><p class="lead">{ra}에서 {nm}{"이" if (ord(nm[-1])-0xAC00)%28 else "가"} 필요하시면 영진목재(월드건축자재) 매장에서 실물을 보고 고르세요. {E(m['lead'])} 원하는 사이즈로 바로 재단하고, {rdel}</p>
 <div class="row"><a class="b g" href="/visit.html">매장 위치·영업시간</a><a class="b d" href="tel:{TEL.replace('-','')}">전화 {TEL}</a></div></section>{gal}
 <section class="wrap sec g2"><div class="card"><h2>{nm} 소매 기준가</h2>{ptable(mat_prices(m))}<p class="small muted">부가세 별도 · 규격·수량에 따라 다릅니다.</p><a href="/price.html">전체 기준가 →</a></div>
-<div class="card"><h2>{ra}에서 {nm} 쓰는 곳</h2><ul>{"".join(f"<li>{E(w)}</li>" for w in m["where"])}</ul><p><a href="/jajae/{m['slug']}.html">{nm} 용도·고르는 법 자세히 →</a> · <a href="/calc.html">필요한 양 계산</a></p></div></section>
+<div class="card"><h2>{ra}에서 {nm} 쓰는 곳</h2><ul>{"".join(f"<li>{E(w)}</li>" for w in m["where"])}</ul><p><a href="/jajae/{m['slug']}.html">{nm} 용도·고르는 법 자세히 →</a> · <a href="/calc.html">필요한 양 계산</a>{f' · <a href="/cut.html#m={m["slug"]}">{nm} 재단 그림 보기</a>' if m["slug"] in {"hapan","osb","mdf","gujo","bangbu","hapdeck","jipseong","hinoki","gypsum","insul"} else ""}</p></div></section>
 {csec}{vsec}<section class="wrap sec"><h2>{ra} {nm} 자주 묻는 질문</h2>{faqslide(fq)}</section>
 <section class="wrap sec"><p class="small">{ra} 다른 자재: {" · ".join(f'<a href="/{rs}/{x["slug"]}.html">{x["name"]}</a>' for x in MATS if x is not m)}</p></section>{CTA}"""
             page(f"{rs}/{m['slug']}.html", f"{ra} {nm} 파는 곳 — 기준가·즉석 재단·배송 | 영진목재",
@@ -645,8 +646,24 @@ def build():
                 for rx, jn in PIC:
                     if re.search(rx, raw) and jn in J: it.append([J[jn], jn]); break
         cats += [{"n": "판재 직접입력", "lin": 0, "custom": 1}, {"n": "각재 직접입력", "lin": 1, "custom": 1}]
-        return {"cats": cats}
+        def fx(cn, rx=None):
+            for ci, c in enumerate(cats):
+                if c["n"] == cn:
+                    if not rx: return [ci, 0]
+                    for ii, it in enumerate(c.get("items", [])):
+                        if re.search(rx, it[0]): return [ci, ii]
+                    return [ci, 0]
+        M = {"hapan": fx("합판"), "osb": fx("합판", "OSB"), "mdf": fx("MDF"), "gujo": fx("구조재"), "bangbu": fx("방부목"), "hapdeck": fx("데크", "합성"),
+             "jipseong": fx("집성판"), "hinoki": fx("집성판", "히노끼"), "gypsum": fx("석고보드"), "insul": fx("단열재")}
+        return {"cats": cats, "m": {k: v for k, v in M.items() if v}}
     _cd = _cutdata()
+    def cutlink(cn, rx, parts, label="재단 그림 보기"):
+        for ci, c in enumerate(_cd["cats"]):
+            if c["n"] == cn:
+                ii = next((i for i, it in enumerate(c.get("items", [])) if re.search(rx, it[0])), 0) if rx else 0
+                return f'/cut.html#c={ci}&p={ii}&g=0&s=' + "_".join(f"{a}x{b}x{q}" for a, b, q in parts)
+        return "/cut.html"
+    CUTSLUG = _cd["m"]
     _CF = [("합판·MDF 원하는 사이즈로 잘라 주나요?", "네. 대전 유성대로 44 매장에서 합판, MDF, 집성판, OSB, 석고보드, 단열재와 구조재·각재·방부목을 원하는 크기로 즉석 재단해 드립니다. 한 장, 한 개 소량도 됩니다."),
            ("4×8 합판 한 장에서 몇 조각 나오나요?", "4×8 합판 원판은 1220×2440mm입니다. 이 페이지에 자를 크기와 개수를 넣으면 톱날 두께 3mm를 빼고 몇 장이 필요한지, 어떻게 잘리는지 그림으로 바로 보여드립니다."),
            ("재단할 때 톱날 두께는 얼마나 빠지나요?", "한 번 자를 때마다 약 3mm가 빠집니다. 이 계산기는 3mm를 빼고 배치하므로 실제 재단과 거의 같게 나옵니다."),
@@ -656,9 +673,68 @@ def build():
     _seo = (f'<section class="wrap sec"><h2>매장 원판·각재 규격 (재단 기준)</h2><ul>{_sz}</ul>'
             '<h2>재단 미리보기 사용법</h2><ol><li>자재(합판·MDF·집성판·석고보드·단열재·구조재·방부목·각재·데크)를 고릅니다.</li><li>자를 크기(가로×세로×개수, 각재는 길이×개수)를 넣습니다.</li><li>필요한 원판 장수와 재단 그림을 확인하고, 링크를 매장에 보내거나 화면을 보여주세요.</li></ol>'
             '<h2>자주 묻는 질문</h2>' + "".join(f"<h3>{E(q)}</h3><p>{E(a)}</p>" for q, a in _CF) +
-            '<p>👉 <a href="/calc.html">자재 계산기(몇 장 필요한지)</a> · <a href="/jajae/">자재 백과</a> · <a href="/visit.html">매장 안내·길찾기</a></p></section>')
+            '<p>👉 <a href="/mandeul/">만들기 자재 목록(평상·책장·데크·가벽)</a> · <a href="/calc.html">자재 계산기(몇 장 필요한지)</a> · <a href="/jajae/">자재 백과</a> · <a href="/visit.html">매장 안내·길찾기</a></p></section>')
     _ld = [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in _CF]},
            {"@context": "https://schema.org", "@type": "WebApplication", "name": "재단 미리보기 — 영진종합목재", "applicationCategory": "UtilityApplication", "operatingSystem": "All", "url": BASE + "/cut.html", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}, "provider": {"@type": "HardwareStore", "name": "영진종합목재(월드건축자재)", "telephone": TEL, "address": ADDR}}]
+    # 만들기별 자재 안내 — 자재 목록·재단 크기·재단 미리보기 연결(가격 없음)
+    def ffd(L, parts):
+        bins = []
+        for l in sorted([a for a, _, q in parts for _ in range(q)], reverse=True):
+            for b in bins:
+                if b[0] + (3 if b[1] else 0) + l <= L: b[0] += (3 if b[1] else 0) + l; b[1].append(l); break
+            else: bins.append([l, [l]])
+        return len(bins)
+    MK = [
+     ("pyeongsang", "원목 평상", "평상 만들기 자재 — 1800×1200 방부목 평상 재단 목록", "마당·옥상·텃밭에 두는 1800×1200, 높이 약 40cm 평상입니다. 방부목 데크재로 상판을 깔고, 2×4로 틀, 4×4로 다리를 세웁니다.",
+      [("상판", "방부목", r"25\*140", [(1790, 0, 8)], "데크재 25×140 · 1790mm 8장 (사이 간격 약 10mm)"),
+       ("틀·장선", "방부목", r"2\* 4", [(1790, 0, 2), (1124, 0, 4)], "2×4(38×89) · 긴 쪽 1790mm 2개, 짧은 쪽·가운데 1124mm 4개"),
+       ("다리", "방부목", r"4\*4", [(375, 0, 6)], "4×4(89×89) · 375mm 6개")],
+      ["틀(1790×2, 1124×4)을 직사각형으로 짜고 모서리를 피스로 고정합니다.", "다리 6개를 네 모서리와 긴 쪽 가운데에 붙입니다.", "상판 8장을 10mm 간격으로 올리고 장선마다 피스 2개씩 박습니다.", "모서리를 사포로 다듬고 오일스테인을 바르면 오래 갑니다."],
+      ["방부목 데크재", "방부목 2×4", "방부목 4×4", "데크 피스(스테인리스)", "오일스테인"]),
+     ("chaekjang", "책장·수납장", "책장 만들기 자재 — 집성판 18T 책장 재단 목록", "폭 800, 높이 1800, 깊이 300mm 5칸 책장입니다. 집성판 18T 한 장으로 옆판과 선반이 모두 나오고, 뒷판은 MDF로 막습니다.",
+      [("옆판·선반", "집성판", r"미송.*18T", [(300, 1800, 2), (764, 300, 6)], "집성판 18T · 옆판 300×1800 2장, 선반(위·아래 포함) 764×300 6장"),
+       ("뒷판", "MDF", r"6mm", [(800, 1800, 1)], "MDF 6mm · 800×1800 1장")],
+      ["옆판 2장 사이에 위·아래 판을 먼저 끼워 상자 모양을 만듭니다.", "가운데 선반 4장을 같은 간격(약 340mm)으로 고정합니다.", "뒷판 MDF를 타카나 짧은 피스로 붙이면 흔들림이 잡힙니다.", "키 큰 책장은 벽에 고정 철물로 잡아 주세요."],
+      ["집성판 18T", "MDF 6mm", "목공 피스·목공본드", "넘어짐 방지 철물"]),
+     ("tutbat", "텃밭상자", "텃밭상자 만들기 자재 — 1200×600 방부목 텃밭상자", "베란다·마당용 1200×600, 높이 약 280mm 텃밭상자입니다. 방부목 2×6을 두 단으로 쌓고 모서리는 2×2 기둥으로 잡습니다.",
+      [("벽판", "방부목", r"2\* 6", [(1200, 0, 4), (524, 0, 4)], "2×6(38×140) · 긴 쪽 1200mm 4개, 짧은 쪽 524mm 4개"),
+       ("모서리 기둥", "방부목", r"2\* 2", [(280, 0, 4)], "2×2(38×38) · 280mm 4개")],
+      ["짧은 판 2장을 모서리 기둥 2개에 붙여 양쪽 끝판을 만듭니다.", "긴 판을 끝판에 붙여 상자를 완성합니다(두 단).", "바닥에 부직포나 방초시트를 깔면 흙이 덜 빠집니다."],
+      ["방부목 2×6", "방부목 2×2", "데크 피스(스테인리스)", "방초시트"]),
+     ("deck", "작은 데크", "소형 데크 만들기 자재 — 2400×1800 방부목 데크", "마당이나 현관 앞 2400×1800 낮은 데크입니다. 2×4 장선을 400mm 간격으로 놓고 데크재를 1800 길이로 깝니다.",
+      [("데크재", "방부목", r"25\*140", [(1790, 0, 17)], "데크재 25×140 · 1790mm 17장 (간격 약 5mm)"),
+       ("장선·테두리", "방부목", r"2\* 4", [(1790, 0, 7), (2400, 0, 2)], "2×4(38×89) · 장선 1790mm 7개, 테두리 2400mm 2개")],
+      ["바닥을 평평하게 고르고 주춧돌이나 받침을 놓습니다.", "테두리 2400 2개 사이에 장선 1790 7개를 400mm 간격으로 고정합니다.", "데크재를 5mm 간격으로 깔고 장선마다 피스 2개씩 박습니다.", "끝선을 맞춰 한 번에 잘라내면 깔끔합니다."],
+      ["방부목 데크재", "방부목 2×4", "주춧돌·받침", "데크 피스(스테인리스)", "오일스테인"]),
+     ("gabyeok", "가벽", "가벽 만들기 자재 — 2400×2400 목공 가벽(석고보드 마감)", "방을 나누는 폭 2400, 높이 2400 실내 가벽입니다. 구조재 2×4로 틀을 짜고 양면에 석고보드를 붙입니다.",
+      [("틀(스터드)", "구조재", r"Ⅱ 2\* 4", [(2400, 0, 2), (2324, 0, 7)], "구조재 2×4 · 위·아래 깔도리 2400mm 2개, 세로 기둥 2324mm 7개(약 400mm 간격)")],
+      ["바닥·천장에 깔도리 2400을 고정합니다.", "세로 기둥 7개를 약 400mm 간격으로 세웁니다.", "석고보드 900×1800을 양면에 붙입니다(한쪽 약 4장, 남는 부분은 재단).", "이음매에 퍼티를 바르고 도배·페인트로 마감합니다."],
+      ["구조재 2×4", "석고보드 9.5T(900×1800) 양면 약 8장", "석고 피스", "퍼티·조인트 테이프"]),
+    ]
+    mk_cards = ""
+    for slug, nm, title, lead, rows, steps, mats in MK:
+        trs, btns = "", ""
+        for part, cat, rx, parts, desc in rows:
+            c = next(c for c in _cd["cats"] if c["n"] == cat)
+            if c["lin"]:
+                it = next((x for x in c["items"] if re.search(rx, x[0])), c["items"][0])
+                cnt = f'{ffd(it[1], parts)}개 ({it[1]}mm 기준)'
+            else:
+                it = next((x for x in c["items"] if re.search(rx, x[0])), c["items"][0])
+                cnt = "재단 그림에서 확인"
+            trs += f"<tr><th>{E(part)}</th><td>{E(desc)}</td><td>{cnt}</td></tr>"
+            btns += f'<a class="b o" href="{cutlink(cat, rx, parts)}">{E(part)} 재단 그림</a> '
+        body = f"""<section class="wrap sec"><p class="crumb"><a href="/mandeul/">만들기 자재</a> › {E(nm)}</p><h1>{E(title.split(" — ")[0])}</h1><p class="lead">{E(lead)}</p>
+<div class="tw"><table><thead><tr><th>부분</th><th>자재·재단 크기</th><th>필요 수량</th></tr></thead><tbody>{trs}</tbody></table></div>
+<p class="small muted">톱날 3mm를 빼고 계산했습니다. 크기를 바꾸고 싶으면 아래 재단 그림에서 숫자만 고치세요.</p><p>{btns}</p></section>
+<section class="wrap sec g2"><div class="card"><h2>만드는 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol></div>
+<div class="card"><h2>준비할 자재</h2><ul>{"".join(f"<li>{E(x)}</li>" for x in mats)}</ul><p>매장({ADDR})에서 위 크기대로 즉석 재단해 드립니다. 이 페이지를 보여주시면 됩니다.</p></div></section>
+<section class="wrap sec"><h2>다른 만들기</h2><p>{" · ".join(f'<a href="/mandeul/{x[0]}.html">{E(x[1])}</a>' for x in MK if x[0] != slug)} · <a href="/cut.html">재단 미리보기</a> · <a href="/calc.html">자재 계산기</a></p></section>{CTA}"""
+        fq = [{"@type": "Question", "name": f"{nm} 만들 때 자재 재단해 주나요?", "acceptedAnswer": {"@type": "Answer", "text": f"네. 대전 {ADDR} 영진종합목재에서 표의 크기대로 즉석 재단해 드립니다. 한 개 소량도 됩니다."}}]
+        page(f"mandeul/{slug}.html", title + " | 영진목재", lead[:120], body, "", {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": fq})
+        mk_cards += f'<a class="mc" href="/mandeul/{slug}.html"><b>{E(nm)}</b><small>{E(lead[:40])}…</small></a>'
+    page("mandeul/index.html", "만들기 자재 목록 — 평상·책장·텃밭상자·데크·가벽 재단 크기 | 영진목재", "평상, 책장, 텃밭상자, 작은 데크, 가벽을 만들 때 필요한 자재와 재단 크기를 정리했습니다. 재단 그림까지 바로 확인하세요.",
+         f'<section class="wrap sec"><h1>만들기 자재 목록</h1><p class="lead">자주 만드는 것들의 자재와 재단 크기를 정리했습니다. 크기만 바꿔서 재단 그림으로 확인하고, 매장에 보여주시면 그대로 잘라 드려요.</p><div class="mg m2">{mk_cards}</div></section>{CTA}', "")
     page("cut.html", "합판·MDF 재단 미리보기 — 원하는 사이즈 재단 그림 | 대전 영진목재", "합판·MDF·집성판·석고보드·구조재를 원하는 사이즈로 넣으면 원판에서 어떻게 잘리는지, 몇 장 필요한지 그림으로 보여드립니다. 대전 영진목재 즉석 재단.",
          open(ROOT + "/cut_tpl.html", encoding="utf-8").read().replace("__DATA__", json.dumps(_cd, ensure_ascii=False, separators=(",", ":"))).replace("__TEL__", TEL.replace("-", "")) + _seo + CTA, "/cut.html", _ld, BASE + "/assets/store/plywood-rack.jpg")
     page("calc.html", "자재 계산기 — 데크·석고보드·합판 몇 장? 문짝·중문 크기까지 | 영진목재", "데크 방부목·합성데크 장수, 석고보드·합판·단열재 장수, 몰딩·걸레받이 길이, 데코타일·강마루 박스 수, 페인트 양, 평↔㎡를 바로 계산하세요. 대전 영진목재(월드건축자재) 재단·배송.",

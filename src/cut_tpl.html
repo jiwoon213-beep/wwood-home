@@ -209,6 +209,7 @@ function save(){
 }
 function load(){
  var q={};location.hash.slice(1).split('&').forEach(function(kv){var a=kv.split('=');if(a[0])q[a[0]]=decodeURIComponent(a[1]||'')});
+ if(q.m&&D.m&&D.m[q.m]){q.c=''+D.m[q.m][0];q.p=''+D.m[q.m][1];if(!q.s){var cc=D.cats[D.m[q.m][0]];q.s=cc.lin?'900x0x4':'600x400x2'}}
  if(q.c&&D.cats[+q.c]){setCat(+q.c,true);if(q.w)$("cw").value=q.w;if(q.h)$("ch").value=q.h;if(q.p&&curCat().items&&curCat().items[+q.p]){prod=+q.p;$("cprod").value=prod}$("cgrain").checked=q.g=="1";
   if(q.s)parts=q.s.split('_').map(function(t){return t.split('x').map(Number)});drawParts();run();return true}
 }
