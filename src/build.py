@@ -891,13 +891,13 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 
     # 매장 카운터 QR 안내판이 여는 페이지(/r/) — 리뷰·채널 링크는 여기서만 바꾸면 됨(재인쇄 불필요)
     RV_NAVER = "https://map.naver.com/p/search/%EC%98%81%EC%A7%84%EC%A2%85%ED%95%A9%EB%AA%A9%EC%9E%AC"
-    RV_GOOGLE = "https://www.google.com/maps/search/?api=1&query=%EC%98%81%EC%A7%84%EC%A2%85%ED%95%A9%EB%AA%A9%EC%9E%AC+%EB%8C%80%EC%A0%84+%EC%9C%A0%EC%84%B1%EB%8C%80%EB%A1%9C+44"
+    RV_GOOGLE = "https://g.page/r/CZcZc9J-M0L0EAE/review"  # 구글 리뷰 바로 쓰기
     RV_KAKAOMAP = "https://map.kakao.com/?q=%EC%98%81%EC%A7%84%EC%A2%85%ED%95%A9%EB%AA%A9%EC%9E%AC"
     rbtn = lambda href, bg, fg, t, sub: f'<a href="{href}" target="_blank" rel="noopener" style="display:block;background:{bg};color:{fg};border-radius:14px;padding:18px 20px;margin:12px 0;text-decoration:none;font-size:20px;font-weight:800">{t}<small style="display:block;font-size:14px;font-weight:500;opacity:.85;margin-top:4px">{sub}</small></a>'
     page("r/index.html", "영진종합목재 방문 리뷰 남기기", "영진종합목재(월드건축자재) 방문 리뷰 남기기(네이버·구글·카카오맵), 자재 정보 보기.",
          '<section class="wrap sec" style="max-width:520px"><h1 style="font-size:26px">방문해 주셔서 감사합니다</h1><p class="lead">리뷰 한 줄이 동네 손님들께 큰 도움이 됩니다.</p>'
          + rbtn(RV_NAVER, "#03c75a", "#fff", "네이버 리뷰 쓰기", "지도에서 영진종합목재 → 리뷰 → 영수증 인증")
-         + rbtn(RV_GOOGLE, "#1a73e8", "#fff", "구글 리뷰 쓰기", "구글 지도 → 영진종합목재 → 리뷰 작성")
+         + rbtn(RV_GOOGLE, "#1a73e8", "#fff", "구글 리뷰 쓰기", "누르면 바로 별점·리뷰 쓰는 화면이 열려요")
          + rbtn(RV_KAKAOMAP, "#3b82f6", "#fff", "카카오맵 후기 쓰기", "카카오맵에서 영진종합목재 검색")
          + rbtn("/jajae/", "#333", "#fff", "자재 사진·기준가 보기", "합판·각재·데크·사이딩 등 용도와 기준가")
          + f'<p class="small muted">{ADDR} · {TEL} · {HOURS}</p></section>', "")
@@ -905,6 +905,8 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
     json.dump({"cats": [[c, n, d] for c, n, d in CATS], "v": [[v["id"], v["type"], v["cat"], v["n"], v["title"]] for v in V]}, open(f"{OUT}/assets/videos.json", "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))  # wwood.kr 시공영상 페이지용
+    # 404 — 없는 주소로 들어온 손님을 주요 페이지로
+    open(f"{OUT}/404.html", "w", encoding="utf-8").write(open(f"{OUT}/index.html", encoding="utf-8").read().split("<main>")[0].replace('<link rel="canonical"', '<meta name="robots" content="noindex"><link rel="x-canonical"') + '<main><section class="wrap sec"><h1>찾으시는 페이지가 없어요</h1><p class="lead">주소가 바뀌었거나 없어진 페이지입니다. 아래에서 찾아보세요.</p><div class="row"><a class="b r" href="/">처음으로</a><a class="b o" href="/jaryo/">전체 자재</a><a class="b o" href="/cut.html">재단 미리보기</a><a class="b o" href="/price.html">기준가</a><a class="b d" href="/visit.html">매장 안내</a></div></section></main></body></html>')
     # 사장님용 방문 통계(검색 제외, 메뉴 링크 없음)
     os.makedirs(f"{OUT}/stats", exist_ok=True)
     open(f"{OUT}/stats/index.html", "w", encoding="utf-8").write("""<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>방문 통계 · 영진종합목재</title>
