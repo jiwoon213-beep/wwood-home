@@ -11,7 +11,7 @@
 <h1>합판·MDF 재단 미리보기</h1>
 <p class="lead">자재 고르고, 필요한 크기만 넣으세요. 원판에서 <b>어떻게 잘리는지</b> 그림으로 바로 보여드립니다. 이 화면을 매장에 보여주시면 그대로 잘라 드려요.</p>
 
-<div class="cutbox">
+<div class="cutgrid"><div class="cutbox">
  <div class="cstep"><span class="cn">1</span>자재</div>
  <div class="ctabs" id="ctabs"></div>
  <select id="cprod" class="cin"></select>
@@ -28,14 +28,14 @@
  <label class="cchk" id="cgrainw"><input type="checkbox" id="cgrain"> 나뭇결 방향 유지 (조각 안 돌리기)</label>
 </div>
 
-<div class="cres" id="cres"></div>
+<div class="cout"><div class="cres" id="cres"></div>
 <div id="csvg"></div>
 
 <div class="cact">
  <button class="b r" id="cshare" type="button">링크 복사</button>
  <button class="b o" id="cprint" type="button">인쇄</button>
  <a class="b d" href="tel:0425452900">전화 문의</a>
-</div>
+</div></div></div>
 <p class="small muted">톱날 두께 3mm를 빼고 계산합니다. 실제 재단은 자재 상태(휨·모서리)에 따라 조금 달라질 수 있어요. 원판·각재 규격은 매장 취급 제품 기준입니다.</p>
 </section>
 <style>
@@ -53,9 +53,10 @@
 .cdel{border:0;background:#eee;border-radius:8px;height:40px;font-size:18px;cursor:pointer}
 .cadd{min-height:40px;font-size:15px;padding:0 14px;margin-top:4px}
 .cchk{display:block;margin-top:12px;font-size:15px}
+.cutgrid{display:block}@media(min-width:960px){.cutgrid{display:grid;grid-template-columns:380px 1fr;gap:22px;align-items:start}.cutgrid .cutbox{position:sticky;top:12px;margin:0}.cout{min-width:0}}
 .cres{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}.cres div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;flex:1;min-width:120px}.cres b{display:block;font-size:24px}.cres small{color:var(--mut)}
 .cres .cerr{background:#fff3f2;border-color:#f3c2bd;color:var(--red);flex-basis:100%}
-.csheet{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:12px}.csheet h3{margin:0 0 8px;font-size:16px}
+.csheet{background:linear-gradient(180deg,#fbfaf7,#f1ede6);border:1px solid var(--line);border-radius:16px;padding:14px 14px 10px;margin-bottom:14px;box-shadow:0 2px 10px rgba(40,30,20,.06)}.csheet h3{margin:0 0 2px;font-size:16px;display:flex;justify-content:space-between;gap:8px}.csheet h3 small{font-weight:500;color:var(--mut);font-size:13px}.cleg{display:flex;gap:14px;font-size:12px;color:var(--mut);margin:8px 2px 0}.cleg i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px}
 .csheet svg{width:100%;height:auto;display:block}
 .cact{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.cact .b{flex:1;min-width:120px}
 @media print{header,footer,.top,.cutbox,.cact,.lead,.mbar,.cta{display:none!important}.csheet{break-inside:avoid}}
@@ -154,29 +155,44 @@ function tex(W,H,m){
  return s;
 }
 function hex(c,i){return (parseInt(c.substr(1+i*2,2),16)/255).toFixed(3)}
-function cutOverlay(W,H,rects,lab){
- var id="m"+(++SID),s='<defs><mask id="'+id+'"><rect width="'+W+'" height="'+H+'" fill="#fff"/>';
- rects.forEach(function(r){s+='<rect x="'+r[0]+'" y="'+r[1]+'" width="'+r[2]+'" height="'+r[3]+'" fill="#000"/>'});
- s+='</mask><pattern id="h'+id+'" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="40" stroke="#fff" stroke-width="6" stroke-opacity=".5"/></pattern></defs>';
- s+='<g mask="url(#'+id+')"><rect width="'+W+'" height="'+H+'" fill="#000" opacity=".5"/><rect width="'+W+'" height="'+H+'" fill="url(#h'+id+')"/></g>';
- rects.forEach(function(r){s+='<rect x="'+r[0]+'" y="'+r[1]+'" width="'+r[2]+'" height="'+r[3]+'" fill="none" stroke="#1a1a1a" stroke-width="5"/><rect x="'+(r[0]+4)+'" y="'+(r[1]+4)+'" width="'+Math.max(0,r[2]-8)+'" height="'+Math.max(0,r[3]-8)+'" fill="none" stroke="'+COL[r[5]%COL.length]+'" stroke-width="6" opacity=".9"/>';
-  var f=r[4][1];if(f>12)s+='<text x="'+(r[0]+r[2]/2)+'" y="'+(r[1]+r[3]/2)+'" font-size="'+f+'" text-anchor="middle" dominant-baseline="middle" font-weight="800" fill="#111" stroke="#fff" stroke-width="'+(f/6)+'" paint-order="stroke">'+r[4][0]+'</text>'});
- return s+'<rect width="'+W+'" height="'+H+'" fill="none" stroke="#333" stroke-width="5"/>';
+var FS='font-family="Pretendard,Noto Sans KR,sans-serif"';
+function dims(W,H,ox,oy,showH){
+ var f=Math.max(28,Math.min(W,H||W)/26),s='<g stroke="#8a8174" stroke-width="2" fill="#5e574e" '+FS+'>';
+ var y=-oy*0.55;s+='<line x1="0" x2="'+W+'" y1="'+y+'" y2="'+y+'"/><line x1="0" x2="0" y1="'+(y-12)+'" y2="'+(y+12)+'"/><line x1="'+W+'" x2="'+W+'" y1="'+(y-12)+'" y2="'+(y+12)+'"/>';
+ s+='<rect x="'+(W/2-f*2.6)+'" y="'+(y-f*0.7)+'" width="'+f*5.2+'" height="'+f*1.4+'" fill="#f6f3ee" stroke="none"/><text x="'+W/2+'" y="'+y+'" font-size="'+f+'" text-anchor="middle" dominant-baseline="central" stroke="none" font-weight="700">'+W+' mm</text>';
+ if(showH){var x=-ox*0.55;s+='<line y1="0" y2="'+H+'" x1="'+x+'" x2="'+x+'"/><line y1="0" y2="0" x1="'+(x-12)+'" x2="'+(x+12)+'"/><line y1="'+H+'" y2="'+H+'" x1="'+(x-12)+'" x2="'+(x+12)+'"/>';
+  s+='<g transform="translate('+x+' '+H/2+') rotate(-90)"><rect x="'+(-f*2.6)+'" y="'+(-f*0.7)+'" width="'+f*5.2+'" height="'+f*1.4+'" fill="#f6f3ee" stroke="none"/><text font-size="'+f+'" text-anchor="middle" dominant-baseline="central" stroke="none" font-weight="700">'+H+' mm</text></g>'}
+ return s+'</g>';
+}
+function board(W,H,m,R,free,showH){
+ var k=++SID,ox=showH?Math.max(90,H/9):10,oy=Math.max(80,(showH?H:W/6)/9),th=Math.max(10,Math.min(W,H)/70);
+ var s='<svg viewBox="'+(-ox)+' '+(-oy)+' '+(W+ox+20)+' '+(H+oy+th+24)+'" xmlns="http://www.w3.org/2000/svg">';
+ s+='<defs><g id="tx'+k+'">'+tex(W,H,m)+'</g><clipPath id="cp'+k+'">'+R.map(function(r){return '<rect x="'+r[0]+'" y="'+r[1]+'" width="'+r[2]+'" height="'+r[3]+'" rx="2"/>'}).join('')+'</clipPath>'+
+  '<filter id="sh'+k+'" x="-5%" y="-5%" width="110%" height="115%"><feDropShadow dx="0" dy="'+th*0.6+'" stdDeviation="'+th*0.6+'" flood-color="#3a2a18" flood-opacity=".35"/></filter>'+
+  '<linearGradient id="gl'+k+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".08"/></linearGradient></defs>';
+ // 원판 두께(옆면)
+ s+='<rect x="0" y="'+th+'" width="'+W+'" height="'+H+'" rx="4" fill="'+m.g+'" opacity=".55"/>';
+ // 자투리: 연하게 비친 원판
+ s+='<use href="#tx'+k+'"/><rect width="'+W+'" height="'+H+'" fill="#f6f3ee" opacity=".62"/><rect width="'+W+'" height="'+H+'" fill="none" stroke="#b9ae9c" stroke-width="3" rx="4"/>';
+ free.forEach(function(f){var t='자투리 '+f[2]+'×'+f[3],fs=Math.min(Math.min(W,H)/24,f[2]/(t.length*0.62),f[3]*0.3);if(fs>14)s+='<rect x="'+(f[0]+6)+'" y="'+(f[1]+6)+'" width="'+(f[2]-12)+'" height="'+(f[3]-12)+'" fill="none" stroke="#a69a86" stroke-width="2.5" stroke-dasharray="14 10" rx="6"/><text x="'+(f[0]+f[2]/2)+'" y="'+(f[1]+f[3]/2)+'" font-size="'+fs+'" text-anchor="middle" dominant-baseline="central" fill="#8a7f6d" '+FS+'>'+t+'</text>'});
+ // 조각: 실제 자재 + 그림자
+ s+='<g filter="url(#sh'+k+')"><g clip-path="url(#cp'+k+')"><use href="#tx'+k+'"/><rect width="'+W+'" height="'+H+'" fill="url(#gl'+k+')"/></g></g>';
+ R.forEach(function(r){
+  s+='<rect x="'+r[0]+'" y="'+r[1]+'" width="'+r[2]+'" height="'+r[3]+'" rx="2" fill="none" stroke="rgba(30,20,10,.55)" stroke-width="2.5"/><rect x="'+r[0]+'" y="'+r[1]+'" width="'+r[2]+'" height="'+Math.max(4,th*0.5)+'" fill="'+COL[r[5]%COL.length]+'"/>';
+  var t=r[4],fs=Math.min(Math.min(W,H||W)/16,r[2]/(t.length*0.66),r[3]*0.34);
+  if(fs>11){var pw=fs*t.length*0.6+fs*1.2,ph=fs*1.6;s+='<rect x="'+(r[0]+r[2]/2-pw/2)+'" y="'+(r[1]+r[3]/2-ph/2)+'" width="'+pw+'" height="'+ph+'" rx="'+ph/2+'" fill="#fff" opacity=".92"/><text x="'+(r[0]+r[2]/2)+'" y="'+(r[1]+r[3]/2)+'" font-size="'+fs+'" text-anchor="middle" dominant-baseline="central" font-weight="800" fill="#1d1b18" '+FS+'>'+t+'</text>'}
+ });
+ return s+dims(W,H,ox,oy,showH)+'</svg>';
 }
 function svgSheet(W,H,b){
- var land=W<H, VW=land?H:W, VH=land?W:H, m=mat(), s='<p class="small muted" style="margin:0 0 6px">원판 '+VW+' × '+VH+' 기준 · 어두운 빗금은 남는 자투리</p>';
- s+='<svg viewBox="-4 -4 '+(VW+8)+' '+(VH+8)+'" xmlns="http://www.w3.org/2000/svg">'+tex(VW,VH,m);
- var fs=Math.max(40,Math.min(VW,VH)/14),R=[];
- b.pl.forEach(function(p){
-  var x=land?p.y:p.x,y=land?p.x:p.y,w=land?p.h:p.w,h=land?p.w:p.h,t=w+'×'+h;
-  R.push([x,y,w,h,[t,Math.min(fs,w/(t.length*0.74),h*0.45)],p.c]);
- });
- return s+cutOverlay(VW,VH,R)+'</svg>';
+ var land=W<H,VW=land?H:W,VH=land?W:H,m=mat(),R=[],F=[];
+ b.pl.forEach(function(p){var x=land?p.y:p.x,y=land?p.x:p.y,w=land?p.h:p.w,h=land?p.w:p.h;R.push([x,y,w,h,w+'×'+h,p.c])});
+ b.free.slice().sort(function(a,c){return c.w*c.h-a.w*a.h}).slice(0,2).forEach(function(f){if(f.w>=150&&f.h>=150)F.push(land?[f.y,f.x,f.h,f.w]:[f.x,f.y,f.w,f.h])});
+ return board(VW,VH,m,R,F,1)+'<div class="cleg"><span><i style="background:#d9b98a"></i>자르는 조각</span><span><i style="background:#e9e3d8;border:1px dashed #a69a86"></i>남는 자투리</span><span>톱날 3mm 반영</span></div>';
 }
 function svgLin(L,b){
- var H=Math.max(90,L/14),m=mat(),s='<svg viewBox="-4 -4 '+(L+8)+' '+(H+8)+'" xmlns="http://www.w3.org/2000/svg">'+tex(L,H,m),R=[];
- b.pl.forEach(function(p){var t=''+p.l;R.push([p.x,0,p.l,H,[t,Math.min(H*0.5,p.l/(t.length*0.65))],p.c])});
- return s+cutOverlay(L,H,R)+'</svg>';
+ var H=Math.max(110,L/16),m=mat(),R=b.pl.map(function(p){return[p.x,0,p.l,H,p.l+'',p.c]}),rest=L-b.used,F=rest>=150?[[b.used+KERF,0,rest-KERF,H]]:[];
+ return board(L,H,m,R,F,0);
 }
 function run(){
  var st=stock(),L=isLin(),list=[],n=0;
@@ -187,8 +203,8 @@ function run(){
  n=list.length;var r=L?packLin(st.L,list):packSheets(st.w,st.h,list,!$("cgrain").checked),html='',sv='';
  var used=0,tot=0;
  r.bins.forEach(function(b,i){
-  if(L){used+=b.pl.reduce(function(a,p){return a+p.l},0);tot+=st.L;sv+='<div class="csheet"><h3>'+(i+1)+'번째 ('+st.L+'mm) · 남는 길이 '+(st.L-b.used)+'mm</h3>'+svgLin(st.L,b)+'</div>'}
-  else{used+=b.pl.reduce(function(a,p){return a+p.w*p.h},0);tot+=st.w*st.h;sv+='<div class="csheet"><h3>'+(i+1)+'번째 원판 · 조각 '+b.pl.length+'개</h3>'+svgSheet(st.w,st.h,b)+'</div>'}
+  if(L){used+=b.pl.reduce(function(a,p){return a+p.l},0);tot+=st.L;sv+='<div class="csheet"><h3>'+(i+1)+'번째 각재<small>원래 '+st.L+'mm · 남는 길이 '+Math.max(0,st.L-b.used)+'mm</small></h3>'+svgLin(st.L,b)+'</div>'}
+  else{used+=b.pl.reduce(function(a,p){return a+p.w*p.h},0);tot+=st.w*st.h;sv+='<div class="csheet"><h3>'+(i+1)+'번째 원판<small>조각 '+b.pl.length+'개</small></h3>'+svgSheet(st.w,st.h,b)+'</div>'}
  });
  if(n){html+='<div><small>필요한 '+(L?'자재':'원판')+'</small><b>'+r.bins.length+(L?'개':'장')+'</b></div><div><small>자르는 조각</small><b>'+(n-r.err.length)+'개</b></div><div><small>사용률</small><b>'+(tot?Math.round(used/tot*100):0)+'%</b></div>'}
  if(r.err.length)html+='<div class="cerr">'+(L?'원래 길이':'원판')+'보다 큰 조각 '+r.err.length+'개는 한 장에서 안 나와요. 크기를 확인해 주세요.</div>';
