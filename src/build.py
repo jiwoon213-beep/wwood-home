@@ -198,7 +198,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <main>{body}</main>
 <footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로 무단 복제·사용을 금합니다.<br>
-카카오톡 <a href="{KAKAO}/chat">영진종합목재 채널 상담</a> · 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr",seen=false;try{{seen=localStorage.getItem("vcd")===k;}}catch(e){{}}var m=seen?"get":"hit";Promise.all([fetch(b+m+"/"+n+"/d"+k).then(function(r){{return r.json()}}),fetch(b+m+"/"+n+"/total").then(function(r){{return r.json()}})]).then(function(v){{try{{localStorage.setItem("vcd",k)}}catch(e){{}}var t=v[0].value||0,a=v[1].value||0;var el=document.getElementById("vcnt");if(el)el.textContent="오늘 "+t.toLocaleString()+" · 전체 "+a.toLocaleString();}}).catch(function(){{}});}}catch(e){{}}}})();</script>
+유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr",seen=false;try{{seen=localStorage.getItem("vcd")===k;}}catch(e){{}}var m=seen?"get":"hit";Promise.all([fetch(b+m+"/"+n+"/d"+k).then(function(r){{return r.json()}}),fetch(b+m+"/"+n+"/total").then(function(r){{return r.json()}})]).then(function(v){{try{{localStorage.setItem("vcd",k)}}catch(e){{}}var t=v[0].value||0,a=v[1].value||0;var el=document.getElementById("vcnt");if(el)el.textContent="오늘 "+t.toLocaleString()+" · 전체 "+a.toLocaleString();}}).catch(function(){{}});}}catch(e){{}}}})();</script>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
 <script src="/assets/site.js?v={ASSET_V}" defer></script></body></html>"""
     if PREFIX: doc = doc.replace('href="/', f'href="{PREFIX}/').replace('src="/', f'src="{PREFIX}/')
@@ -758,10 +758,9 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     RV_GOOGLE = "https://www.google.com/maps/search/?api=1&query=%EC%98%81%EC%A7%84%EC%A2%85%ED%95%A9%EB%AA%A9%EC%9E%AC+%EB%8C%80%EC%A0%84+%EC%9C%A0%EC%84%B1%EB%8C%80%EB%A1%9C+44"
     RV_KAKAOMAP = "https://map.kakao.com/?q=%EC%98%81%EC%A7%84%EC%A2%85%ED%95%A9%EB%AA%A9%EC%9E%AC"
     rbtn = lambda href, bg, fg, t, sub: f'<a href="{href}" target="_blank" rel="noopener" style="display:block;background:{bg};color:{fg};border-radius:14px;padding:18px 20px;margin:12px 0;text-decoration:none;font-size:20px;font-weight:800">{t}<small style="display:block;font-size:14px;font-weight:500;opacity:.85;margin-top:4px">{sub}</small></a>'
-    page("r/index.html", "영진종합목재 리뷰·카톡 채널", "영진종합목재(월드건축자재) 방문 리뷰 남기기, 카카오톡 채널 추가, 자재 정보 보기.",
+    page("r/index.html", "영진종합목재 방문 리뷰 남기기", "영진종합목재(월드건축자재) 방문 리뷰 남기기(네이버·구글·카카오맵), 자재 정보 보기.",
          '<section class="wrap sec" style="max-width:520px"><h1 style="font-size:26px">방문해 주셔서 감사합니다</h1><p class="lead">리뷰 한 줄이 동네 손님들께 큰 도움이 됩니다.</p>'
          + rbtn(RV_NAVER, "#03c75a", "#fff", "네이버 리뷰 쓰기", "지도에서 영진종합목재 → 리뷰 → 영수증 인증")
-         + rbtn(f"{KAKAO}/friend", "#fee500", "#191919", "카카오톡 채널 추가", "재고·가격 문의를 카톡으로 바로")
          + rbtn(RV_GOOGLE, "#1a73e8", "#fff", "구글 리뷰 쓰기", "구글 지도 → 영진종합목재 → 리뷰 작성")
          + rbtn(RV_KAKAOMAP, "#3b82f6", "#fff", "카카오맵 후기 쓰기", "카카오맵에서 영진종합목재 검색")
          + rbtn("/jajae/", "#333", "#fff", "자재 사진·기준가 보기", "합판·각재·데크·사이딩 등 용도와 기준가")
