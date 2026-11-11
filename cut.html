@@ -203,7 +203,7 @@ function run(){
  n=list.length;var r=L?packLin(st.L,list):packSheets(st.w,st.h,list,!$("cgrain").checked),html='',sv='';
  var used=0,tot=0;
  r.bins.forEach(function(b,i){
-  if(L){used+=b.pl.reduce(function(a,p){return a+p.l},0);tot+=st.L;sv+='<div class="csheet"><h3>'+(i+1)+'번째 각재<small>원래 '+st.L+'mm · 남는 길이 '+Math.max(0,st.L-b.used)+'mm</small></h3>'+svgLin(st.L,b)+'</div>'}
+  if(L){used+=b.pl.reduce(function(a,p){return a+p.l},0);tot+=st.L;sv+='<div class="csheet"><h3>'+(i+1)+'번째 각재<small>원래 '+st.L+'mm · 남는 길이 '+Math.max(0,st.L-b.used-KERF)+'mm</small></h3>'+svgLin(st.L,b)+'</div>'}
   else{used+=b.pl.reduce(function(a,p){return a+p.w*p.h},0);tot+=st.w*st.h;sv+='<div class="csheet"><h3>'+(i+1)+'번째 원판<small>조각 '+b.pl.length+'개</small></h3>'+svgSheet(st.w,st.h,b)+'</div>'}
  });
  if(n){html+='<div><small>필요한 '+(L?'자재':'원판')+'</small><b>'+r.bins.length+(L?'개':'장')+'</b></div><div><small>자르는 조각</small><b>'+(n-r.err.length)+'개</b></div><div><small>사용률</small><b>'+(tot?Math.round(used/tot*100):0)+'%</b></div>'}
