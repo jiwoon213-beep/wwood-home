@@ -15,8 +15,7 @@
 
  <div class="cstep"><span class="cn">2</span>자를 크기 <small id="cunit">(mm)</small></div>
  <div id="cparts"></div>
- <button class="b o cadd" id="cadd" type="button">+ 크기 추가</button>
- <div id="cpad" class="cpad"></div>
+ <button class="cadd" id="cadd" type="button">＋ 다른 크기 추가</button>
  <label class="cchk" id="cgrainw"><input type="checkbox" id="cgrain"> 나뭇결 방향 유지 (조각 안 돌리기)</label>
 </div>
 
@@ -42,11 +41,18 @@
 .crow{display:flex;gap:8px;margin-top:8px}.crow label{flex:1;font-size:13px;color:var(--mut)}
 .cpic{display:none;margin-top:10px;gap:12px;align-items:center;background:#faf8f5;border:1px solid var(--line);border-radius:12px;padding:8px}.cpic img{width:120px;height:120px;object-fit:cover;border-radius:8px;background:#eee;flex:0 0 auto;cursor:zoom-in}.cpic b{display:block;font-size:16px;margin-bottom:4px}.cpic a{font-size:14px}
 .cinfo{font-size:14px;color:var(--mut);margin-top:6px}
+.cpc{background:#faf8f5;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}.cph{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.cph b{font-size:18px}.cph .cdel{border:1px solid var(--line);background:#fff;border-radius:10px;height:40px;padding:0 14px;font-size:15px;font-weight:700;color:var(--mut);cursor:pointer}
+.cf{margin-top:10px}.cfl{font-size:17px;font-weight:800;margin-bottom:6px}.cfl small{font-weight:500;color:var(--mut);font-size:14px;margin-left:4px}
+.cfi{display:flex;align-items:center;gap:8px}.cfi span{font-size:17px;color:var(--mut)}
+.cbig{font-size:24px!important;font-weight:800;height:58px;padding:0 14px!important;border:2px solid #cfc7ba!important;border-radius:12px!important;text-align:left}.cbig:focus{border-color:var(--red)!important;outline:none}
+.cqs{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:6px;padding:8px 0 2px}.cqs::-webkit-scrollbar{display:none}.cqs button{height:48px;border:1px solid var(--line);background:#fff;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;padding:0 4px;letter-spacing:-.3px}.cqs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cnum{display:grid;grid-template-columns:64px 1fr 64px;gap:8px}.cnum .cbig{text-align:center}.cm{height:58px;border:0;border-radius:12px;background:var(--ink);color:#fff;font-size:28px;font-weight:700;cursor:pointer}
+.cadd{width:100%;height:56px;border:2px dashed #b9b2a8;background:#fff;border-radius:14px;font-size:18px;font-weight:800;color:var(--ink);cursor:pointer;margin-top:2px}
 .cpart{display:grid;grid-template-columns:1fr auto 1fr auto 70px 34px;gap:6px;align-items:center;margin-bottom:6px}
 .cpart.l{grid-template-columns:1fr auto 70px 34px}
 .cpart span{color:var(--mut);font-size:14px}.cpart .cin{padding:10px 6px;text-align:center}
 .cdel{border:0;background:#eee;border-radius:8px;height:40px;font-size:18px;cursor:pointer}
-.cadd{min-height:40px;font-size:15px;padding:0 14px;margin-top:4px}
+
 .cchk{display:block;margin-top:12px;font-size:15px}
 .cpad{margin-top:10px;background:#faf8f5;border:1px solid var(--line);border-radius:12px;padding:10px}.cpad p{margin:0 0 6px;font-size:14px;color:var(--mut)}.cpad p b{color:var(--ink)}.cpv{color:#2a5ac8;font-weight:800}.cpad svg{max-height:340px}.cpart .cin.act{border:2px solid var(--red);background:#fffaf8}
 .cutgrid{display:block}@media(min-width:960px){.cutgrid{display:grid;grid-template-columns:380px 1fr;gap:22px;align-items:start}.cutgrid .cutbox{position:sticky;top:12px;margin:0}.cout{min-width:0}}
@@ -65,20 +71,7 @@ var D=__DATA__,KERF=3,COL=["#f6c89f","#a8d5ba","#a9c8ec","#f2a7a7","#d6c1ea","#f
 var $=function(i){return document.getElementById(i)};
 var cat=0,prod=0,parts=[],act={k:0,f:0};
 /* 원판 그림에서 마우스로 가로·세로 찍기 */
-function pad(){
- var P=$("cpad");if(!P||!parts.length)return;var L=isLin(),k=act.k,st=stock();
- [].forEach.call($("cparts").querySelectorAll("input"),function(x){x.classList.toggle("act",+x.dataset.k==k&&+x.dataset.f<2)});
- var X=L?st.L:Math.max(st.w,st.h),Y=L?Math.round(st.L/12):Math.min(st.w,st.h),p=parts[k],sx=L?(p[0]||0):(p[0]||0),sy=L?Y:(p[1]||0);
- P.innerHTML='<p>🖱 <b>'+(k+1)+'번째 크기</b>를 원판 그림에서 클릭하세요 — 왼쪽 위 모서리부터 누른 곳까지가 '+(L?'길이':'가로 × 세로')+'가 됩니다. <span class="cpv"></span></p><svg viewBox="'+(-X*.06)+' '+(-X*.06)+' '+(X*1.08)+' '+(Y+X*.08)+'" style="width:100%;height:auto;cursor:crosshair;touch-action:none;display:block"><rect x="0" y="0" width="'+X+'" height="'+Y+'" fill="#f1d9ae" stroke="#b08a55" stroke-width="'+X/300+'"/><rect class="cps" x="0" y="0" width="'+sx+'" height="'+sy+'" fill="rgba(200,40,30,.25)" stroke="#c8281e" stroke-width="'+X/250+'"/><rect class="cpm" x="0" y="0" width="0" height="0" fill="rgba(40,90,200,.2)" stroke="#2a5ac8" stroke-dasharray="'+X/60+'" stroke-width="'+X/300+'"/><text x="'+X/2+'" y="'+(-X*.015)+'" text-anchor="middle" font-size="'+X/30+'" fill="#666">'+(L?'길이 ':'가로 ')+X+'mm</text>'+(L?'':'<text x="'+(-X*.015)+'" y="'+Y/2+'" text-anchor="middle" font-size="'+X/30+'" fill="#666" transform="rotate(-90 '+(-X*.015)+' '+Y/2+')">세로 '+Y+'mm</text>')+'<text class="cpl" text-anchor="middle" dominant-baseline="central" font-size="'+X/22+'" font-weight="800" fill="#1d3f8f" style="pointer-events:none"></text></svg>';
- var sv=P.querySelector("svg"),mv=P.querySelector(".cpm"),pv=P.querySelector(".cpv"),lb=P.querySelector(".cpl");
- function mm(e){var r=sv.getBoundingClientRect(),vb=sv.viewBox.baseVal,x=(e.clientX-r.left)/r.width*vb.width+vb.x,y=(e.clientY-r.top)/r.height*vb.height+vb.y;
-  function sn(v,M){var c=[M,M/2,M/3,M*2/3,M/4,M*3/4,300,400,450,500,600,900,1200];for(var i=0;i<c.length;i++){var t=Math.floor(c[i]);if(t<=M&&Math.abs(v-t)<=M*.015)return t}return Math.round(v/10)*10}
-  x=Math.max(10,Math.min(X,sn(x,X)));y=Math.max(10,Math.min(Y,sn(y,Y)));return [x,L?Y:y]}
- sv.onpointermove=function(e){var m=mm(e),t=L?m[0]+"mm":m[0]+" × "+m[1];mv.setAttribute("width",m[0]);mv.setAttribute("height",m[1]);pv.textContent="→ "+t+(L?"":"mm");lb.textContent=t;lb.setAttribute("x",m[0]/2);lb.setAttribute("y",(L?Y:m[1])/2)};
- sv.onpointerleave=function(){mv.setAttribute("width",0);pv.textContent="";lb.textContent=""};
- sv.onclick=function(e){var m=mm(e),q=parts[act.k];q[0]=m[0];if(!L)q[1]=m[1];
-  [0,1].forEach(function(f){var inp=$("cparts").querySelector('input[data-k="'+act.k+'"][data-f="'+f+'"]');if(inp)inp.value=q[f]||""});run();pad()};
-}
+function pad(){}
 function curCat(){return D.cats[cat]}
 function isLin(){return curCat().lin}
 function custom(){return curCat().custom}
@@ -100,15 +93,27 @@ function setCat(i,reset){
  if(reset)parts=c.lin?[[900,0,4]]:[[600,400,2]];
  drawParts();run();
 }
+function presets(f){
+ var st=stock(),L=isLin(),M=L?st.L:(f==0?st.w:st.h),n=L?[300,450,600,900,1200,1800]:(f==0?[300,400,450,500,600,900]:[300,400,600,900,1200,1800]),o=[];
+ n.forEach(function(v){if(v<M)o.push([v,""+v])});
+ [[2,"반"],[3,"3등분"],[4,"4등분"]].forEach(function(d){var v=Math.floor((M-KERF*(d[0]-1))/d[0]);if(v>=100)o.push([v,d[1]+" "+v])});
+ o.push([M,"통째 "+M]);return o;
+}
 function drawParts(){
- var L=isLin();
+ var L=isLin(),st=stock();
+ function fld(k,f,lab,v){var M=L?st.L:(f==0?st.w:st.h);
+  return '<div class="cf"><div class="cfl">'+lab+' <small>숫자를 누르거나 직접 입력 (최대 '+M+')</small></div><div class="cfi"><input class="cin cbig" type="number" inputmode="numeric" data-k="'+k+'" data-f="'+f+'" value="'+(v||"")+'" placeholder="숫자 입력"><span>mm</span></div>'+
+  '<div class="cqs">'+presets(f).map(function(x){return '<button type="button" data-k="'+k+'" data-f="'+f+'" data-v="'+x[0]+'"'+(x[0]==v?' class="on"':'')+'>'+x[1]+'</button>'}).join("")+'</div></div>'}
  $("cparts").innerHTML=parts.map(function(p,k){
-  return '<div class="cpart'+(L?' l':'')+'"><input class="cin" type="number" inputmode="numeric" data-k="'+k+'" data-f="0" value="'+(p[0]||"")+'" placeholder="'+(L?"길이":"가로")+'">'+
-  (L?'':'<span>×</span><input class="cin" type="number" inputmode="numeric" data-k="'+k+'" data-f="1" value="'+(p[1]||"")+'" placeholder="세로">')+
-  '<span>×</span><input class="cin" type="number" inputmode="numeric" data-k="'+k+'" data-f="2" value="'+(p[2]||1)+'" placeholder="개"><button type="button" class="cdel" data-k="'+k+'" aria-label="삭제">×</button></div>'}).join("");
- [].forEach.call($("cparts").querySelectorAll("input"),function(x){x.oninput=function(){parts[+x.dataset.k][+x.dataset.f]=+x.value||0;run()}});
- [].forEach.call($("cparts").querySelectorAll("input"),function(x){x.addEventListener("focus",function(){act={k:+x.dataset.k,f:0};pad()});x.addEventListener("click",function(){act={k:+x.dataset.k,f:0};pad()})});
- if(act.k>=parts.length)act={k:parts.length-1,f:0};if(L&&act.f==1)act.f=0;pad();
+  return '<div class="cpc"><div class="cph"><b>'+(k+1)+'번 크기</b>'+(parts.length>1?'<button type="button" class="cdel" data-k="'+k+'">지우기</button>':'')+'</div>'+
+  fld(k,0,L?'길이':'가로',p[0])+(L?'':fld(k,1,'세로',p[1]))+
+  '<div class="cf"><div class="cfl">몇 개</div><div class="cnum"><button type="button" class="cm" data-k="'+k+'" data-d="-1" aria-label="하나 빼기">−</button><input class="cin cbig" type="number" inputmode="numeric" data-k="'+k+'" data-f="2" value="'+(p[2]||1)+'"><button type="button" class="cm" data-k="'+k+'" data-d="1" aria-label="하나 더하기">＋</button></div></div></div>'}).join("");
+ [].forEach.call($("cparts").querySelectorAll("input"),function(x){x.oninput=function(){parts[+x.dataset.k][+x.dataset.f]=+x.value||0;
+  var q=x.closest(".cf").querySelectorAll(".cqs button");[].forEach.call(q,function(b){b.classList.toggle("on",+b.dataset.v==+x.value)});run()}});
+ [].forEach.call($("cparts").querySelectorAll(".cqs button"),function(b){b.onclick=function(){var k=+b.dataset.k,f=+b.dataset.f;parts[k][f]=+b.dataset.v;
+  var inp=$("cparts").querySelector('input[data-k="'+k+'"][data-f="'+f+'"]');inp.value=b.dataset.v;[].forEach.call(b.parentNode.children,function(c){c.classList.toggle("on",c===b)});run()}});
+ [].forEach.call($("cparts").querySelectorAll(".cm"),function(b){b.onclick=function(){var k=+b.dataset.k;parts[k][2]=Math.max(1,(parts[k][2]||1)+(+b.dataset.d));
+  $("cparts").querySelector('input[data-k="'+k+'"][data-f="2"]').value=parts[k][2];run()}});
  [].forEach.call($("cparts").querySelectorAll(".cdel"),function(x){x.onclick=function(){parts.splice(+x.dataset.k,1);if(!parts.length)parts=[[0,0,1]];drawParts();run()}});
 }
 /* 판재: 길로틴(직선 재단) 방식 — 패널쏘로 그대로 자를 수 있는 배치 */
@@ -249,8 +254,8 @@ function load(){
  if(q.c&&D.cats[+q.c]){setCat(+q.c,true);if(q.w)$("cw").value=q.w;if(q.h)$("ch").value=q.h;if(q.p&&curCat().items&&curCat().items[+q.p]){prod=+q.p;$("cprod").value=prod}$("cgrain").checked=q.g=="1";
   if(q.s)parts=q.s.split('_').map(function(t){return t.split('x').map(Number)});drawParts();run();return true}
 }
-$("cprod").onchange=function(){prod=+this.value;run()};$("cw").oninput=$("ch").oninput=run;$("cgrain").onchange=run;
-$("cadd").onclick=function(){parts.push(isLin()?[0,0,1]:[0,0,1]);act={k:parts.length-1,f:0};drawParts();var x=$("cparts").lastChild.querySelector("input");x&&x.focus()};
+$("cprod").onchange=function(){prod=+this.value;drawParts();run()};$("cw").onchange=$("ch").onchange=function(){drawParts();run()};$("cw").oninput=$("ch").oninput=run;$("cgrain").onchange=run;
+$("cadd").onclick=function(){parts.push(isLin()?[0,0,1]:[0,0,1]);act={k:parts.length-1,f:0};drawParts();$("cparts").lastChild.scrollIntoView({behavior:"smooth",block:"center"})};
 $("cprint").onclick=function(){window.print()};
 if(/[?&]embed=1/.test(location.search)){document.documentElement.className+=" emb";[].forEach.call(document.querySelectorAll('.cutp a[href^="/"]'),function(a){a.target="_blank";a.href="https://www.wwood.co.kr"+a.getAttribute("href")})}
 function summary(){var c=curCat(),it=custom()?null:c.items[prod],L=isLin(),t=(it?it[0]:c.n)+"\n";parts.forEach(function(p){if(p[0])t+=(L?p[0]+"mm":p[0]+"×"+p[1]+"mm")+" × "+(p[2]||1)+"개\n"});var e=document.querySelector("#cres .cest"),rb=document.querySelector("#cres b");if(rb)t+="\n필요한 "+(L?"자재":"원판")+": "+rb.textContent+"\n";if(e)t+="기준가 예상 자재비: "+e.querySelector("b").textContent+" ("+e.querySelectorAll("small")[1].textContent+")\n";return t}
