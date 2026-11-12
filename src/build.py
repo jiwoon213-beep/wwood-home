@@ -921,7 +921,7 @@ def build():
     def mkvids(slug, nm):
         rx = MKV.get(slug) or re.escape(re.sub(r"^(원목|목재|야외|작은)\s*", "", nm).split()[0])
         hit = [v for v in V if re.search(rx, v["title"])]
-        hit.sort(key=lambda v: (0 if re.search(rx, v["title"].split("|")[0]) else 1, 0 if v["type"] != "S" else 1, -v["n"]))
+        hit.sort(key=lambda v: (0 if re.match(r"\W*(?:" + rx + ")", v["title"]) else 1 if re.search(rx, v["title"].split("|")[0]) else 2, 0 if v["type"] != "S" else 1, -v["n"]))
         return hit[:6]
     for slug, nm, title, lead, rows, steps, mats in MK:
         trs, btns = "", ""
