@@ -215,6 +215,9 @@ def vcard(v, big=False):
 <span class="th"><img loading="lazy" decoding="async" width="480" height="360" src="https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg" alt="{E(vshort(v['title']))}"><i class="play"></i>{'<em>쇼츠</em>' if v['type']=='S' else '<em>라이브</em>' if v['type']=='V' else ''}</span>
 <b>{E(v['title'])}</b><small>조회 {views(v['n'])}</small></a>"""
 
+def vrank(vs, grid="vg"):
+    return f'<div class="{grid}">' + "".join(vcard(v).replace('<span class="th">', f'<span class="th"><i class="rk{" r3" if i < 3 else ""}">{i + 1}</i>', 1) for i, v in enumerate(vs)) + '</div>'
+
 def vsplit(vs, hl="h2", nl=None, ns=None):
     """일반 영상(라이브 포함)과 쇼츠를 나눠서 표시"""
     L = [v for v in vs if v["type"] != "S"][:nl]; S = [v for v in vs if v["type"] == "S"][:ns]
@@ -251,7 +254,9 @@ def build():
     tour = byid.get("xPsUVr7exLU")
     use = "".join(f'<a class="uc" href="/video/{c}.html"><b>{n}</b><small>{d}</small></a>' for c, n, d in CATS)
     mats = "".join(f'<a class="mc" href="/jajae/{m["slug"]}.html"><b>{m["name"]}</b><small>{m["where"][0]}</small></a>' for m in MATS)
-    hot = vsplit(top(lambda v: v["id"] != "xPsUVr7exLU", 10**6), "h3", 8, 6)
+    _hl = [v for v in top(lambda v: v["id"] != "xPsUVr7exLU" and v["type"] != "S", 8)]
+    _hs = [v for v in top(lambda v: v["type"] == "S", 6)]
+    hot = '<h3 class="vh">▶ 영상 TOP 8</h3>' + vrank(_hl) + '<h3 class="vh">⚡ 쇼츠 TOP 6</h3>' + vrank(_hs, "sg")
     ids = LATEST
     if not ids and os.path.exists(f"{ROOT}/data/yt_all.tsv"):
         rows = [l.rstrip("\n").split("\t") for l in open(f"{ROOT}/data/yt_all.tsv", encoding="utf-8") if l.strip()]
@@ -279,7 +284,7 @@ def build():
 <div class="hx"><section class="wrap sec"><h2>무엇을 만들고 싶으세요?</h2><p class="muted">고르면 그 용도의 자재와 시공 영상이 한 번에 나옵니다.</p><div class="ug">{use}</div></section>
 <section class="wrap sec"><h2>자재 백과 — 이 나무, 어디에 쓰나요?</h2><p class="muted">용도·인테리어 효과·기준가·관련 영상을 자재별로 정리했습니다.</p><div class="mg">{mats}</div></section>
 {postsec}{newsec}
-<section class="wrap sec"><h2>많이 본 영상</h2>{hot}<p><a href="{YT}" target="_blank" rel="noopener">유튜브 채널 전체 보기 →</a></p></section></div>
+<section class="wrap sec"><h2>🏆 많이 본 영상 TOP</h2><p class="small muted">조회수가 많은 순서입니다.</p>{hot}<p><a class="b o" href="/video/top.html">많이 본 영상 TOP 50 전체 보기 ›</a> <a href="{YT}" target="_blank" rel="noopener">유튜브 채널 →</a></p></section></div>
 <section class="wrap sec g2"><div class="card"><h2>기본 자재 기준가</h2><p class="muted small">부가세 별도 · 규격·수량에 따라 달라집니다</p>
 <div class="tw"><table><thead><tr><th>자재</th><th>규격</th><th class=r>기준가</th></tr></thead><tbody>{bt}</tbody></table></div>
 <p class="small">재단비·운임·수량 할인은 매장에서 계산 · 고재·수입목·특수목은 매장 문의 · 도매가는 회원 로그인 후</p><a href="/price.html">기준가 전체 보기 →</a></div>
@@ -370,8 +375,14 @@ def build():
     vl = "".join(f'<a class="uc" href="/video/{c}.html"><b>{n}</b><small>{d} · {sum(1 for v in V if v["cat"]==c)}편</small></a>' for c, n, d in CATS)
     PLS = [('PLFOIw225ouPo', '건축자재 종류 & 방부목 데크'), ('PLVA2J1KAJvsk', '목조 비닐하우스 짓기'), ('PLahzdcM8tSYQ', '목공 기초 & 원목 가구'), ('PLdOhbZ-KJAiQ', '싱크대 셀프 리폼'), ('PLSZCoKnD3ZJs', '세라믹사이딩 외벽 시공'), ('PLRSwZ8WxHpV8', '인테리어 필름 시공·견적'), ('PLbvlO5h0i7mo', '반셀프 인테리어 공정 순서'), ('PLfQ12jGtwTx0', '인테리어 견적 비교'), ('PLCMIh2xFaEFE', '주차장·토목 현장'), ('PLE3-sMP7uo2k', '건축자재 꿀팁 쇼츠'), ('PLEp1gBHSiHds', 'CNC 목공 라이브')]
     plh = "".join(f'<a href="https://www.youtube.com/playlist?list={i}" target="_blank" rel="noopener">▶ {n}</a>' for i, n in PLS)
+    _tl = top(lambda v: v["type"] != "S", 50); _ts = top(lambda v: v["type"] == "S", 50)
+    _tld = {"@context": "https://schema.org", "@type": "ItemList", "name": "월드건축자재DIY 많이 본 영상 TOP 50", "itemListOrder": "https://schema.org/ItemListOrderDescending",
+            "itemListElement": [{"@type": "ListItem", "position": i + 1, "url": BASE + vpage(v) if vpage(v).startswith("/") else vpage(v), "name": v["title"][:100]} for i, v in enumerate(_tl)]}
+    page("video/top.html", f"많이 본 영상 TOP 50 — 셀프 인테리어·목공·데크 인기 영상 순위 | 월드건축자재DIY", "월드건축자재DIY 유튜브에서 조회수가 가장 많은 영상과 쇼츠 순위입니다. 데크, 목조 온실, 샷시, 싱크대, 원목가구 시공 영상.",
+         f'<section class="wrap sec"><p class="crumb"><a href="/video/">영상</a> › 많이 본 영상 TOP</p><h1>🏆 많이 본 영상 TOP 50</h1><p class="lead">유튜브 「월드건축자재DIY」·「월드도어」 영상 {len(V)}편 중 조회수가 많은 순서입니다. 순위는 새 영상이 올라올 때마다 자동으로 바뀝니다.</p>'
+         f'<p><a class="b o" href="#tl">▶ 일반 영상 TOP 50</a> <a class="b o" href="#ts">⚡ 쇼츠 TOP 50</a></p><h2 id="tl">▶ 일반 영상 TOP 50</h2>{vrank(_tl)}<h2 id="ts">⚡ 쇼츠 TOP 50</h2>{vrank(_ts, "sgt")}</section>{CTA}', "/video/", _tld)
     page("video/index.html", "시공·DIY 영상 모음 — 데크·온실·가구·외벽·인테리어 | 월드건축자재DIY", "월드건축자재DIY 유튜브 영상을 용도별로 정리했습니다. 데크, 목조 온실, 원목가구, 싱크대, 외벽, 바닥, 전기.",
-         f'<section class="wrap sec"><h1>영상으로 찾기</h1><p class="lead">유튜브 「월드건축자재DIY」·「월드도어」 공개 영상 {len(V)}편(일반·쇼츠·라이브)을 용도별로 모두 모았습니다. 새 영상은 자동으로 추가됩니다.</p><div class="ug m2">{vl}</div><h2>유튜브 재생목록</h2><div class="plc">{plh}</div><p><a href="{YT}">유튜브 채널 바로가기 →</a></p></section>{CTA}', "/video/")
+         f'<section class="wrap sec"><h1>영상으로 찾기</h1><p class="lead">유튜브 「월드건축자재DIY」·「월드도어」 공개 영상 {len(V)}편(일반·쇼츠·라이브)을 용도별로 모두 모았습니다. 새 영상은 자동으로 추가됩니다.</p><p><a class="b r" href="/video/top.html">🏆 많이 본 영상 TOP 50</a></p><div class="ug m2">{vl}</div><h2>유튜브 재생목록</h2><div class="plc">{plh}</div><p><a href="{YT}">유튜브 채널 바로가기 →</a></p></section>{CTA}', "/video/")
     for c, n, d in CATS:
         vs = top(lambda v: v["cat"] == c, 10**6)
         page(f"video/{c}.html", f"{n} 영상 — {d} | 월드건축자재DIY 대전", f"{n} 관련 시공·DIY 영상 모음({d}). 영상에 나온 자재는 대전 월드건축자재 매장에서.",

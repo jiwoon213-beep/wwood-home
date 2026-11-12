@@ -232,3 +232,5 @@ table{font-size:15px}th,td{padding:10px 12px}
 .emb .ytf{position:absolute;inset:0;max-width:none;aspect-ratio:auto;height:100%}.ytf img{height:100%}
 
 .mc,.vc,.pc{position:relative}.newb{position:absolute;top:6px;left:6px;z-index:3;background:#e11d48;color:#fff;font-style:normal;font-size:11px;font-weight:800;letter-spacing:.5px;line-height:1;padding:4px 7px;border-radius:999px;box-shadow:0 1px 3px rgba(0,0,0,.25);pointer-events:none}.pc .newb{position:static;display:inline-block;margin-right:6px;vertical-align:1px}
+
+.th{position:relative}.rk{position:absolute;right:6px;top:6px;z-index:2;min-width:24px;height:24px;line-height:24px;padding:0 6px;border-radius:12px;background:rgba(20,20,20,.82);color:#fff;font-style:normal;font-weight:800;font-size:13px;text-align:center}.rk.r3{background:#d97706}.sgt{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin:12px 0}@media(max-width:900px){.sgt{grid-template-columns:repeat(3,1fr)}}@media(max-width:600px){.sgt{grid-template-columns:repeat(2,1fr);gap:10px}}
