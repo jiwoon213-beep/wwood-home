@@ -53,6 +53,75 @@ GG = [
        ("유성과 수성 중 뭘 써야 하나요?", "바깥 데크·울타리는 유성이 오래가고, 실내 가구·소품은 냄새가 적은 수성이 편합니다.")]),
 ]
 
+# ---- 판재·각재 자동 목록(규격이 이름에 있는 것만) ----
+import csv as _csv, os as _os
+_ROWS = [r for r in _csv.DictReader(open(_os.path.dirname(_os.path.abspath(__file__)) + "/data/prices.csv", encoding="utf-8")) if r["price"].strip().isdigit()]
+def _sheet_area(n):
+    m = re.search(r"(\d{3,4})\*\s*(\d{3,4})(?:\*|$)", n.replace(" ", ""))
+    if m: return round(int(m.group(1)) * int(m.group(2)) / 1e6, 3)
+    if "4*8" in n.replace(" ", ""): return 2.977
+    if "3*6" in n.replace(" ", ""): return 1.62
+    return None
+def _pick(cat, rx, ex=None, k=14):
+    rs = [r for r in _ROWS if r["cat"] == cat and re.search(rx, r["name"]) and not (ex and re.search(ex, r["name"]))]
+    rs.sort(key=lambda r: -float(r["qty"] or 0))
+    return [(re.escape(r["name"]) + "$", "1장", _sheet_area(r["name"])) for r in rs[:k] if _sheet_area(r["name"])]
+def _deck(cat, rx, gap=5):
+    out = []
+    for r in _ROWS:
+        if r["cat"] == cat and re.search(rx, r["name"]):
+            m = re.search(r"@?(\d{2})\*\s*(\d{2,3})\*\s*(\d{4}|\d+자)", r["name"])
+            if not m: continue
+            L = int(m.group(3)) if m.group(3).isdigit() else round(int(m.group(3)[:-1]) * 303.03)
+            out.append((re.escape(r["name"]) + "$", "1개", round((int(m.group(2)) + gap) / 1000 * L / 1000, 3)))
+    return out
+def _lumber(cat, rx):
+    rs = [r for r in _ROWS if r["cat"] == cat and re.search(rx, r["name"])]
+    return [(re.escape(r["name"]) + "$", "1개", "len") for r in sorted(rs, key=lambda r: -float(r["qty"] or 0))]
+_EX_SHEET = [("방 바닥 3×3m", 9.0), ("벽 1면 3×2.4m", 7.2), ("창고 벽·지붕 2×3m", 6.0)]
+GG += [
+ ("hapan-gagyeok", "합판", "hapan", "isopink-badak", _pick("합판", r"일반 [34]\*[68]"),
+  "합판은 1장 단위로 팝니다. 4×8 합판(1220×2440mm)은 1장이 약 3㎡, 3×6 합판(900×1800mm)은 약 1.6㎡입니다. 두께(2.7~18mm)와 수종(베트남·인니·오쿠메), 등급에 따라 값이 다릅니다.",
+  "4×8 = 1220×2440mm(약 2.98㎡) · 3×6 = 900×1800mm(약 1.62㎡) · 1장 단가", 0.10, _EX_SHEET,
+  [("합판 1평에 몇 장 필요한가요?", "4×8 합판 1장이 약 3㎡라 1평(3.3㎡)에 약 1.1장, 로스 10%를 더하면 약 1.2장입니다. 실제로는 벽·바닥 크기에 맞춰 장 단위로 올림합니다."),
+   ("바닥 덧방에는 몇 mm 합판을 쓰나요?", "장선 위 바닥은 보통 11.5mm 이상, 기존 바닥 위 덧방은 8.5~11.5mm를 많이 씁니다. 하중과 장선 간격에 따라 매장에서 같이 정해 드립니다.")]),
+ ("osb-gagyeok", "OSB 합판", "osb", "osb-byeok", _pick("합판", r"OSB"),
+  "OSB 합판은 1장(1220×2440mm, 약 3㎡) 단위로 팝니다. 같은 두께 일반 합판보다 값이 낮아 창고·가벽·지붕 바탕, 인더스트리얼 벽 마감에 많이 씁니다.",
+  "1장 = 1220×2440mm(약 2.98㎡)", 0.10, _EX_SHEET,
+  [("OSB 1평에 몇 장 필요한가요?", "1장이 약 3㎡라 1평에 약 1.1장, 로스 10% 포함 약 1.2장입니다."),
+   ("OSB와 일반 합판 중 뭐가 좋나요?", "값과 강도는 OSB가 유리하고, 표면이 매끈하고 습기에 강한 쪽은 일반 합판입니다. 칠·필름 마감이 필요하면 합판, 거친 질감을 그대로 쓰면 OSB가 어울립니다.")]),
+ ("mdf-gagyeok", "MDF", "mdf", "film-sigong", _pick("엠디", r"4\*8"),
+  "MDF는 1장(1220×2440mm, 약 3㎡) 단위로 팝니다. 두께 3~18mm, 일반·고밀도·LPM(백색 마감)에 따라 값이 다르고, 원하는 크기로 재단해 드립니다.",
+  "1장 = 1220×2440mm(약 2.98㎡)", 0.10, [("벽 1면 3×2.4m", 7.2), ("수납장 옆판·선반 (약 4㎡)", 4.0), ("방 벽 4면 3×3m 방", 28.8)],
+  [("MDF 1장에 얼마인가요?", "두께에 따라 다르며 위 표의 소매 기준가(부가세 별도)를 참고하세요. 원하는 크기로 잘라 드리고 재단비는 매장에서 계산합니다."),
+   ("MDF는 물에 약한가요?", "네. 물에 닿으면 부풀기 쉬워 욕실·바깥에는 쓰지 않습니다. 습기 있는 곳은 합판을 권합니다.")]),
+ ("seokgo-gagyeok", "석고보드", "gypsum", "seokgo-byeok", _pick("석고", r"3\*6"),
+  "석고보드는 1장(900×1800mm, 약 1.62㎡) 단위로 팝니다. 일반 9.5T가 가장 많이 쓰이고, 방수(욕실·주방), 방화(12.5T)는 값이 더 높습니다.",
+  "1장 = 900×1800mm(약 1.62㎡)", 0.10, [("벽 1면 3×2.4m (1겹)", 7.2), ("방 천장 3×3m", 9.0), ("방 벽 4면 3×3m 방 (1겹)", 28.8)],
+  [("석고보드 1평에 몇 장 필요한가요?", "1장이 약 1.62㎡라 1평에 약 2장, 로스 10% 포함 약 2.2장입니다. 2겹 시공이면 2배입니다."),
+   ("욕실에는 어떤 석고보드를 쓰나요?", "물기가 닿는 욕실·주방 벽은 방수 석고보드를 씁니다. 타일 바탕은 시멘트보드를 쓰기도 합니다.")]),
+ ("danyeol-gagyeok", "아이소핑크·단열재", "insul", "isopink-badak", _pick("단열", r"아이소핑크|스티로폴|이보드"),
+  "아이소핑크·스티로폴은 1장(900×1800mm, 약 1.62㎡), 이보드는 1장(900×2400mm, 약 2.16㎡) 단위로 팝니다. 두께가 두꺼울수록 단열이 좋고 값도 올라갑니다.",
+  "아이소핑크·스티로폴 900×1800mm(1.62㎡) · 이보드 900×2400mm(2.16㎡)", 0.05, [("방 바닥 3×3m", 9.0), ("외벽 1면 3×2.4m", 7.2), ("창고 천장 2×3m", 6.0)],
+  [("아이소핑크 1평에 몇 장 필요한가요?", "1장이 약 1.62㎡라 1평에 약 2장, 로스 5% 포함 약 2.1장입니다."),
+   ("이보드는 어디에 쓰나요?", "단열재에 도배·페인트용 표면이 붙어 있어, 벽에 바로 붙이고 도배하는 단열 리모델링에 많이 씁니다.")]),
+ ("jipseong-gagyeok", "집성판", "jipseong", "film-sigong", _pick("집성판", r"\d{3,4}\*\d{4}\*\d+T"),
+  "집성판은 1장(보통 1200×2400 또는 1220×2440mm) 단위로 팝니다. 미송·아카시아·고무나무·멀바우 등 수종과 두께(12~30T)에 따라 값이 크게 다르고, 원하는 크기로 재단해 드립니다.",
+  "1장 = 1200×2400mm(2.88㎡) 또는 1220×2440mm(2.98㎡)", 0.0, [],
+  [("집성판은 어떤 수종이 좋나요?", "가구 상판은 아카시아·고무나무, 가볍고 값이 낮은 건 미송, 짙은 색은 멀바우를 많이 씁니다. 매장에서 실물 결을 보고 고르세요."),
+   ("집성판 재단도 해 주나요?", "네. 원하는 크기로 잘라 드립니다. 재단 그림은 재단 미리보기 페이지에서 먼저 볼 수 있습니다.")]),
+ ("deck-gagyeok", "데크재(방부·합성)", "hapdeck", "hapdeck-sigong", _deck("방부", r"\(데크\)") + _deck("합성", r"데크\(솔리드\) @\d"),
+  "데크재는 1개(1본) 단위로 팝니다. 방부목 데크는 12자(약 3.6m), 합성데크는 3m·2.4m 길이이고, 1개가 덮는 면적은 폭+틈(약 5mm) 기준으로 계산했습니다. 장선·클립은 따로 듭니다.",
+  "1개 단가 · 면적 = (폭+틈 5mm) × 길이", 0.10, [("마당 데크 3×3m", 9.0), ("베란다 데크 2×4m", 8.0), ("넓은 데크 4×5m", 20.0)],
+  [("데크 1평에 몇 개 필요한가요?", "방부목 25×140×12자 기준 1개가 약 0.52㎡라 1평에 약 6.4개, 로스 10% 포함 약 7개입니다. 장선 방부목·피스(또는 합성데크 클립)는 따로 계산합니다."),
+   ("방부목 데크와 합성데크 중 뭐가 좋나요?", "방부목은 값이 낮고 칠로 색을 낼 수 있지만 오일스테인 관리가 필요합니다. 합성데크는 값이 높지만 썩지 않고 칠할 필요가 거의 없습니다.")]),
+ ("gakjae-gagyeok", "구조재·방부목 각재", "gujo", "hapdeck-sigong", _lumber("구조", r"12ft") + _lumber("방부", r"^방부- ?\d(?!.*데크)"),
+  "구조재(2×4, 2×6 등)와 방부목 각재는 1개 단위로 팝니다. 길이는 12ft·12자(약 3.6m)이고 원하는 길이로 잘라 드립니다. 1m당 금액도 같이 적었습니다.",
+  "1개 단가 · 길이 약 3.6m(12자·12ft)", 0.0, [],
+  [("구조재 2×4는 실제 크기가 얼마인가요?", "2×4는 실제 38×89mm, 2×6은 38×140mm입니다. 이름은 건조 전 치수(인치)라 실제보다 큽니다."),
+   ("방부목은 실내에 써도 되나요?", "방부목은 바깥 데크·울타리·화단용입니다. 실내 가구·벽에는 구조재나 집성판을 권합니다.")]),
+]
+
 def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL):
     import json
     pages = []
@@ -63,16 +132,24 @@ def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL):
             if hit: rows.append((hit, unit, area))
         if not rows: continue
         def cn(n): return re.sub(r"^[^-]+-\s*", "", n).replace("*", "×").replace("@", " · ").strip(" ·")
-        hasA = any(a for _, _, a in rows)
-        th = "<tr><th>품목·규격</th><th>판매 단위</th><th class=r>기준가</th>" + ("<th class=r>1단위 면적</th><th class=r>1평 필요량(로스 포함)</th><th class=r>1평 예상 금액</th>" if hasA else ("<th class=r>1L당</th>" if slug == "oilstain" else "<th class=r>1㎡당(폭 1.22m)</th>")) + "</tr>"
+        hasA = bool(exs) and any(isinstance(a, float) for _, _, a in rows)
+        isM2 = not exs and any(isinstance(a, float) for _, _, a in rows)
+        isLen = any(a == "len" for _, _, a in rows)
+        th = "<tr><th>품목·규격</th><th>판매 단위</th><th class=r>기준가</th>" + ("<th class=r>1단위 면적</th><th class=r>1평 필요량(로스 포함)</th><th class=r>1평 예상 금액</th>" if hasA else ("<th class=r>1L당</th>" if slug == "oilstain" else "<th class=r>1m당</th>" if isLen else "<th class=r>1㎡당</th>" if isM2 else "<th class=r>1㎡당(폭 1.22m)</th>")) + "</tr>"
         trs = ""
         for p, unit, a in rows:
             pr = p["price"]
-            if hasA:
+            if hasA and not isinstance(a, float):
+                ext = '<td class=r>—</td><td class=r>—</td><td class=r>—</td>'
+            elif hasA:
                 need = PY / a * (1 + loss)
                 ext = f'<td class=r data-l="1단위 면적">{a:.2f}㎡</td><td class=r data-l="1평 필요량">약 {need:.1f}</td><td class=r data-l="1평 예상"><b>약 {round(pr * need, -2):,.0f}원</b></td>'
             elif slug == "oilstain":
                 L = float(re.search(r"([\d.]+)L", unit).group(1)); ext = f'<td class=r data-l="1L당">약 {round(pr / L, -2):,.0f}원</td>'
+            elif isM2:
+                ext = f'<td class=r data-l="1㎡당">약 {round(pr / a, -2):,.0f}원</td>'
+            elif isLen:
+                ext = f'<td class=r data-l="1m당">약 {round(pr / 3.6, -2):,.0f}원</td>'
             else:
                 ext = f'<td class=r data-l="1㎡당">약 {round(pr / 1.22, -2):,.0f}원</td>'
             trs += f'<tr><td>{E(cn(p["name"]))}</td><td data-l="단위">{unit}</td><td class=r data-l="기준가"><b>{pr:,}원</b></td>{ext}</tr>'
@@ -85,7 +162,7 @@ def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL):
 <script>(function(){{var a=document.getElementById("gga"),u=document.getElementById("ggu"),s=document.getElementById("ggp"),r=document.getElementById("ggr");function f(){{var v=parseFloat(a.value)||0,m=u.value=="py"?v*{PY}:v,x=s.value.split("|"),n=Math.ceil(m/parseFloat(x[1])*{1 + loss});r.innerHTML="<b>약 "+n+"단위 · 예상 자재비 약 "+(n*parseInt(x[0])).toLocaleString()+"원</b><span>로스 {int(loss * 100)}% 포함 · 소매 기준가 · 부가세 별도</span>";}}[a,u,s].forEach(function(e){{e.addEventListener("input",f);e.addEventListener("change",f)}});f();}})();</script></div>'''
             exh += calc
         lo = min(p["price"] for p, _, _ in rows)
-        title = f"{nm} 가격 — {rows[0][1].split('(')[0]} 기준가 {lo:,}원부터" + (" · 1평에 얼마" if hasA else (" · 1L당 비교" if slug == "oilstain" else " · m당 단가"))
+        title = f"{nm} 가격 — {rows[0][1].split('(')[0]} 기준가 {lo:,}원부터" + (" · 1평에 얼마" if hasA else (" · 1L당 비교" if slug == "oilstain" else " · 1m당 단가" if isLen else " · 1㎡당 비교" if isM2 else " · m당 단가"))
         desc = f"{nm} 소매 기준가 {lo:,}원부터({rows[0][1]}). " + (f"1평에 몇 {rows[0][1][1:].split('(')[0]} 드는지, 크기별 예상 금액 계산." if hasA else "판매 단위와 품목별 기준가 정리.") + " 대전 영진목재."
         body = f'''<section class="wrap sec"><p class="crumb"><a href="/gagyeok/">자재 가격 가이드</a> › {E(nm)}</p><h1>{E(nm)} 가격</h1><p class="lead">{E(lead)}</p>
 <p class="small muted">{E(unitdesc)}</p><div class="tw"><table class="rt"><thead>{th}</thead><tbody>{trs}</tbody></table></div><p class="small muted">소매 기준가 · 부가세 별도 · 면적·필요량은 계산 참고치(시공 방법·자르는 양에 따라 달라짐) · 재단·운임은 매장에서 계산</p>
@@ -98,7 +175,7 @@ def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL):
         page(f"gagyeok/{slug}.html", title + " | 대전 영진목재", desc, body, "/price.html", ld)
         pages.append((slug, nm, lo, rows[0][1], lead))
     cards = "".join(f'<a class="mc" href="/gagyeok/{s}.html"><b>{E(n)} 가격</b><span>{E(u)} {lo:,}원부터 · {E(l[:50])}…</span></a>' for s, n, lo, u, l in pages)
-    page("gagyeok/index.html", "자재 가격 가이드 — 루바·템바보드·인테리어 필름·오일스테인 1평에 얼마 | 영진목재",
-         "히노끼·스프러스 루바, 템바보드, 템바 루바, 인테리어 필름, 오일스테인의 판매 단위와 소매 기준가, 1평 예상 금액을 정리했습니다.",
+    page("gagyeok/index.html", "자재 가격 가이드 — 합판·석고보드·OSB·MDF·데크·루바·템바보드 1평에 얼마 | 영진목재",
+         "합판·OSB·MDF·석고보드·단열재·집성판·데크·구조재·루바·템바보드·필름·오일스테인의 판매 단위와 소매 기준가, 1평 예상 금액.",
          f'<section class="wrap sec"><h1>자재 가격 가이드</h1><p class="lead">"1단에 몇 장이에요?", "1평에 얼마 들어요?" — 자주 묻는 판매 단위와 예상 금액을 자재별로 정리했습니다. 모두 소매 기준가(부가세 별도)입니다.</p><div class="mg m2">{cards}</div><p><a href="/price.html">전체 기준가 보기</a> · <a href="/sigongbeop/">자재 시공법</a></p></section>{CTA}', "/price.html")
     return [(s, n) for s, n, *_ in pages]
