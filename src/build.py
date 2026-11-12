@@ -199,7 +199,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><img class="lm" src="/assets/logo-mark.svg" width="46" height="46" alt=""><span class="lt"><b>영진종합목재</b><small><em>월드건축자재</em> · 충청권 최대규모 목재상</small></span></a>
 <nav>{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">만들기 자재</a> · <a href="/baesong.html">전국 배송</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">만들기 자재</a> · <a href="/sigongbeop/">자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로 무단 복제·사용을 금합니다.<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr",seen=false;try{{seen=localStorage.getItem("vcd")===k;}}catch(e){{}}var m=seen?"get":"hit";if(!seen){{try{{var rf=document.referrer||"",src=/youtube|youtu\\.be/.test(rf)?"yt":/naver/.test(rf)?"naver":/google/.test(rf)?"google":/daum|kakao/.test(rf)?"daum":/bing/.test(rf)?"bing":/daangn|karrot/.test(rf)?"daangn":/wwood\\.kr/.test(rf)?"wwoodkr":rf&&rf.indexOf(location.host)<0?"etc":"direct";fetch(b+"hit/"+n+"/src-"+src).catch(function(){{}});fetch(b+"hit/"+n+"/src-"+src+"-d"+k).catch(function(){{}});}}catch(e){{}}}}Promise.all([fetch(b+m+"/"+n+"/d"+k).then(function(r){{return r.json()}}),fetch(b+m+"/"+n+"/total").then(function(r){{return r.json()}})]).then(function(v){{try{{localStorage.setItem("vcd",k)}}catch(e){{}}var t=v[0].value||0,a=v[1].value||0;var el=document.getElementById("vcnt");if(el)el.textContent="오늘 "+t.toLocaleString()+" · 전체 "+a.toLocaleString();}}).catch(function(){{}});}}catch(e){{}}}})();</script>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
@@ -960,6 +960,40 @@ def build():
     MKMAT_HTML = {ms: f'<section class="wrap sec"><h2>이 자재로 만들 수 있는 것</h2><p class="small muted">재단 크기·수량과 만드는 순서, 만들기 영상까지 정리했습니다. 매장에서 그 크기대로 잘라 드려요.</p><div class="mg m2">'
                   + "".join(f'<a class="mc" href="/mandeul/{x[0]}.html"><b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in xs[:12]) + '</div></section>' for ms, xs in _mkmat.items()}
     MKNM = {x[0]: x[1] for x in MK}
+    # 자재 시공법(내장재·외장재·바닥·도어 등) — /sigongbeop/
+    from sigong_data import SG
+    def sgvids(rx):
+        hit = [v for v in V if re.search(rx, v["title"])]
+        hit.sort(key=lambda v: (0 if re.match(r"\W*(?:" + rx + ")", v["title"]) else 1 if re.search(rx, v["title"].split("|")[0]) else 2, 0 if v["type"] != "S" else 1, -v["n"]))
+        return hit[:6]
+    _mname = {m["slug"]: m["name"] for m in MATS}
+    sg_cards = ""
+    for slug, nm, title, lead, ex, rows, steps, tools, tips, ms, vrx in SG:
+        _sv = sgvids(vrx)
+        _hi = os.path.exists(f"{ROOT}/assets/sigongbeop/{slug}.jpg"); _si = os.path.exists(f"{ROOT}/assets/sigongbeop/{slug}-steps.jpg")
+        hero = f'<figure class="mkfig"><img src="/assets/sigongbeop/{slug}.jpg" width="1200" height="800" alt="{E(nm)} 완성 모습 그림"><figcaption class="small muted">시공이 끝난 모습 그림</figcaption></figure>' if _hi else ""
+        stp = f'<section class="wrap sec"><h2>{E(nm)} 순서 (그림 설명서)</h2><img class="mkfig" loading="lazy" src="/assets/sigongbeop/{slug}-steps.jpg" alt="{E(nm)} 순서 그림 설명서" style="width:100%;height:auto;border-radius:14px;border:1px solid #e6e0d4"><p class="small muted">빨간 테두리가 그 단계에서 새로 붙이는 부분입니다.</p></section>' if _si else ""
+        trs = "".join(f"<tr><th>{E(a)}</th><td>{E(b)}</td><td>{E(c)}</td></tr>" for a, b, c in rows)
+        body = f"""<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › {E(nm)}</p><h1>{E(title.split(" — ")[0])}</h1><p class="lead">{E(lead)}</p>{hero}
+<h2>필요한 자재 <small class="muted">예시: {E(ex)}</small></h2><div class="tw"><table><thead><tr><th>자재</th><th>규격</th><th>예시 수량</th></tr></thead><tbody>{trs}</tbody></table></div>
+<p class="small muted">수량은 예시 크기 기준 참고치입니다(로스 포함). 실제 크기를 알려 주시면 매장에서 다시 계산해 드리고, 원하는 크기로 재단해 드립니다. <a href="/calc.html">자재 계산기</a> · <a href="/jajae/{ms}.html">{E(_mname.get(ms, ""))} 용도·기준가</a></p></section>{stp}
+<section class="wrap sec g2"><div class="card"><h2>시공 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol><h3>필요한 공구</h3><p>{" · ".join(E(t) for t in tools)}</p></div>
+<div class="card"><h2>주의할 점</h2><ul>{"".join(f"<li>{E(t)}</li>" for t in tips)}</ul><p>자재는 매장({ADDR})에서 실물 보고 고를 수 있고, 시공이 어려우면 월드아키텍쳐(실내건축공사업 등록)에서 직접 시공합니다.</p></div></section>
+{(f'<section class="wrap sec"><h2>{E(nm)} 영상</h2>' + embed(_sv[0]) + vsplit(_sv[1:], "h3") + '</section>') if _sv else ''}
+<section class="wrap sec"><p class="small muted">© 영진종합목재(월드건축자재). 이 페이지의 그림·그림 설명서·자재표는 영진종합목재가 직접 만든 저작물입니다. 무단 복제·배포·상업적 사용을 금합니다(링크 공유는 환영합니다).</p><h2>다른 시공법</h2><p>{" · ".join(f'<a href="/sigongbeop/{x[0]}.html">{E(x[1])}</a>' for x in SG if x[0] != slug)} · <a href="/mandeul/">만들기 자재</a></p></section>{CTA}"""
+        ld = [{"@context": "https://schema.org", "@type": "HowTo", "name": title.split(" — ")[0], "description": lead,
+               "supply": [{"@type": "HowToSupply", "name": a} for a, b, c in rows], "tool": [{"@type": "HowToTool", "name": t} for t in tools],
+               "step": [{"@type": "HowToStep", "position": k + 1, "text": t} for k, t in enumerate(steps)]}]
+        if _hi: ld[0]["image"] = BASE + f"/assets/sigongbeop/{slug}.jpg"
+        ld += [{"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": BASE + f"/assets/sigongbeop/{slug}{sfx}.jpg", "name": nm + (" 완성 그림" if not sfx else " 그림 설명서"), "creator": {"@type": "Organization", "name": "영진종합목재(월드건축자재)"}, "copyrightNotice": "© 영진종합목재(월드건축자재) www.wwood.co.kr", "creditText": "영진종합목재", "license": BASE + "/sigongbeop/", "acquireLicensePage": BASE + "/visit.html"} for sfx in ([""] if _hi else []) + (["-steps"] if _si else [])]
+        page(f"sigongbeop/{slug}.html", title + " | 영진목재", lead[:120], body, "", ld, (BASE + f"/assets/sigongbeop/{slug}.jpg") if _hi else (f"https://i.ytimg.com/vi/{_sv[0]['id']}/hqdefault.jpg" if _sv else None))
+        sg_cards += f'<a class="mc" href="/sigongbeop/{slug}.html">' + (f'<img loading="lazy" src="/assets/sigongbeop/{slug}.jpg" alt="{E(nm)}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if _hi else "") + f'<b>{E(nm)}</b><small>{E(lead[:40])}…</small></a>'
+    page("sigongbeop/index.html", "자재 시공법 — 석고보드·루바·사이딩·몰딩·강마루·필름·문 교체 셀프 시공 | 영진목재", "석고보드 벽, 루바 천장, 외벽 사이딩, 몰딩·걸레받이, 강마루, 템바보드, 흡음판, 합성데크, 방문 교체, 필름, 오일스테인, OSB 벽 시공 방법을 자재 수량·그림 설명서·영상으로 정리했습니다.",
+         f'<section class="wrap sec"><h1>자재 시공법</h1><p class="lead">내장재·외장재·바닥재·도어를 직접 시공하는 순서를 자재 수량, 그림 설명서, 영상으로 정리했습니다. 자재는 매장에서 원하는 크기로 잘라 드리고, 어려운 공사는 직접 시공도 합니다.</p><div class="mg m2">{sg_cards}</div><p><a class="b o" href="/mandeul/">가구·소품 만들기 자재 보기 ›</a></p></section>{CTA}', "")
+    SGMAT_HTML = {}
+    for x in SG:
+        SGMAT_HTML.setdefault(x[9], []).append(x)
+    SGMAT_HTML = {k: '<section class="wrap sec"><h2>시공법</h2><div class="mg m2">' + "".join(f'<a class="mc" href="/sigongbeop/{x[0]}.html">' + (f'<img loading="lazy" src="/assets/sigongbeop/{x[0]}.jpg" alt="{E(x[1])}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if os.path.exists(f"{ROOT}/assets/sigongbeop/{x[0]}.jpg") else "") + f'<b>{E(x[1])}</b><small>자재 수량·그림 설명서·영상</small></a>' for x in v) + '</div></section>' for k, v in SGMAT_HTML.items()}
     page("mandeul/index.html", "만들기 자재 목록 — 평상·책장·침대·신발장·작업대·데크·개집 재단 크기 | 영진목재", "평상, 책장, 신발장, 침대 프레임, 작업대, 벤치, 베란다 선반, 벽 단열, 데크, 가벽, 울타리, 테이블, 강아지집을 만들 때 필요한 자재와 재단 크기를 정리했습니다. 재단 그림까지 바로 확인하세요.",
          f'<section class="wrap sec"><h1>만들기 자재 목록</h1><p class="lead">자주 만드는 것들의 자재와 재단 크기를 정리했습니다. 크기만 바꿔서 재단 그림으로 확인하고, 매장에 보여주시면 그대로 잘라 드려요.</p><div class="mg m2">{mk_cards}</div></section><section class="wrap sec"><div class="card"><h2>직접 만드신 작품을 보내 주세요</h2><p>영진종합목재 자재로 만든 평상·선반·데크·가구 사진을 메일로 보내 주시면 이 페이지 「손님이 만든 작품」에 소개해 드립니다(이름은 원하시는 대로, 얼굴·주소가 나온 사진은 빼고 올립니다).</p><p><a class="b r" href="mailto:{EMAIL}?subject=%EC%9E%91%ED%92%88%20%EC%82%AC%EC%A7%84%20%EB%B3%B4%EB%83%85%EB%8B%88%EB%8B%A4&body=%EB%A7%8C%EB%93%A0%20%EA%B2%83%3A%0A%EC%93%B4%20%EC%9E%90%EC%9E%AC%3A%0A%EC%86%8C%EA%B0%9C%ED%95%A0%20%EC%9D%B4%EB%A6%84(%EB%8B%89%EB%84%A4%EC%9E%84)%3A%0A">작품 사진 메일로 보내기</a></p></div></section>{CTA}', "")
     page("cut.html", "합판·MDF 재단 미리보기 — 원하는 사이즈 재단 그림 | 대전 영진목재", "합판·MDF·집성판·석고보드·구조재를 원하는 사이즈로 넣으면 원판에서 어떻게 잘리는지, 몇 장 필요한지 그림으로 보여드립니다. 대전 영진목재 즉석 재단.",
@@ -1148,7 +1182,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     _hm = [x for k in _hp for x in MK if x[0] == k]
     MKHOME = ('<section class="wrap sec"><h2>직접 만들기 — 자재와 재단 크기</h2><p class="small muted">만들 것을 고르면 필요한 자재, 몇 mm로 몇 개 자를지, 만드는 순서와 영상까지 나옵니다. 매장에서 그 크기대로 잘라 드려요.</p><div class="mg m2">'
               + "".join(f'<a class="mc" href="/mandeul/{x[0]}.html">' + (f'<img loading="lazy" src="/assets/mandeul/{x[0]}.jpg" alt="{E(x[1])}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if os.path.exists(f"{ROOT}/assets/mandeul/{x[0]}.jpg") else "") + f'<b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in _hm)
-              + f'</div><p><a class="b o" href="/mandeul/">만들기 {len(MK)}가지 전체 보기 ›</a></p></section>')
+              + f'</div><p><a class="b o" href="/mandeul/">만들기 {len(MK)}가지 전체 보기 ›</a> <a class="b o" href="/sigongbeop/">자재 시공법 {len(SG)}가지 ›</a></p></section>')
     _ip = f"{OUT}/index.html"; _it = open(_ip, encoding="utf-8").read()
     if "<!--MKHOME-->" in _it: open(_ip, "w", encoding="utf-8").write(_it.replace("<!--MKHOME-->", MKHOME))
     # 사이트 전체: 소식·제품·자재 사진·지역×자재 페이지에 "직접 만들어 보기"(완성 그림 카드) 자동 삽입 — 새 글도 빌드 때 자동 적용
@@ -1172,13 +1206,20 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         _h1 = re.search(r"<h1[^>]*>(.*?)</h1>", _t, re.S); _h1 = re.sub(r"<[^>]+>", "", _h1.group(1)) if _h1 else ""
         _main = re.sub(r"<[^>]+>", " ", _t.split("<main>")[-1].split('<section class="cta">')[0]) if "/news/" in _f else ""
         _r = _mkrel(_h1, _main)
-        if not _r: continue
+        _sgm = {ms for ms, rx in MATKW.items() if re.search(rx, _h1)} | {ms for ms in ("hinoki", "siding", "molding", "maru", "film", "door", "sound", "stain") if re.search({"hinoki": r"루바|히노끼|편백", "siding": r"사이딩", "molding": r"몰딩|걸레받이", "maru": r"마루", "film": r"필름", "door": r"도어|문틀|방문", "sound": r"흡음|방음|템바|타공", "stain": r"스테인"}[ms], _h1)}
+        _sgr = [x for x in SG if re.search(x[10], _h1) or x[9] in _sgm][:4]
+        if _sgr:
+            _sgsec = '<section class="wrap sec"><h2>🔨 시공법 보기</h2><div class="mg m2">' + "".join(f'<a class="mc" href="/sigongbeop/{x[0]}.html">' + (f'<img loading="lazy" src="/assets/sigongbeop/{x[0]}.jpg" alt="{E(x[1])}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if os.path.exists(f"{ROOT}/assets/sigongbeop/{x[0]}.jpg") else "") + f'<b>{E(x[1])}</b><small>자재 수량·그림 설명서·영상</small></a>' for x in _sgr) + '</div></section>'
+            _t = _t.replace('<section class="cta">', _sgsec + '<section class="cta">', 1)
+        if not _r:
+            if _sgr: open(_f, "w", encoding="utf-8").write(_t)
+            continue
         _sec = ('<section class="wrap sec"><h2>🪚 직접 만들어 보기</h2><p class="small muted">이 자재로 만들 수 있는 것 — 재단 크기, 그림 설명서, 만들기 영상까지 정리했습니다. 매장에서 그 크기대로 잘라 드려요.</p><div class="mg m2">'
                 + "".join(_mkcard(x) for x in _r) + '</div><p><a href="/mandeul/">만들기 전체 보기 ›</a></p></section>')
         open(_f, "w", encoding="utf-8").write(_t.replace('<section class="cta">', _sec + '<section class="cta">', 1))
     for _f in glob.glob(f"{OUT}/jajae/*.html"):
         _t = open(_f, encoding="utf-8").read()
-        _t2 = re.sub(r"<!--MK:([\w-]+)-->", lambda mm: MKMAT_HTML.get(mm.group(1), ""), _t)
+        _t2 = re.sub(r"<!--MK:([\w-]+)-->", lambda mm: SGMAT_HTML.get(mm.group(1), "") + MKMAT_HTML.get(mm.group(1), ""), _t)
         if _t2 != _t: open(_f, "w", encoding="utf-8").write(_t2)
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return

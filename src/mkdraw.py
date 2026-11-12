@@ -12,6 +12,9 @@ MAT = {  # 기본색, 결 방향 표시 여부
     "osb": ((198, 158, 92), False), "pink": ((238, 160, 172), False), "gyp": ((232, 232, 226), False),
     "daru": ((214, 184, 138), True), "metal": ((58, 58, 62), False), "soil": ((92, 68, 48), False),
     "plant": ((86, 140, 70), False), "wood2": ((150, 104, 64), True), "deck2": ((160, 138, 98), True),
+    "conc": ((178, 176, 170), False), "wrap": ((236, 238, 240), False), "siding": ((196, 190, 178), True), "white": ((242, 240, 234), False),
+    "maru": ((170, 122, 80), True), "hapdeck": ((112, 86, 66), True), "foam": ((236, 214, 120), False), "stained": ((128, 84, 52), True),
+    "tempa": ((206, 168, 120), True), "tempa2": ((120, 86, 56), False), "acoustic": ((214, 186, 146), True), "hinoki": ((236, 214, 170), True), "putty": ((246, 246, 242), False),
 }
 S = 2  # 슈퍼샘플
 
@@ -296,6 +299,66 @@ for (x, z) in [(0, 0), (360, 0), (0, 360), (720, 0)]:
 MODELS["cube"] = ("수납 큐브 350 × 4개", m)
 
 
+# ── 자재 시공법(sigong_data.SG) 그림 ──
+SGM = {}
+def _wall(W, H, t=100): return [B(0, -t, 0, W, t, H, "conc")]
+m = _wall(3000, 2400) + [B(0, 0, 0, 3000, 30, 30, "daru"), B(0, 0, 2370, 3000, 30, 30, "daru")] + [B(i * 424, 0, 30, 30, 30, 2340, "daru") for i in range(8)]
+for x in (0, 900, 1800, 2700):
+    w = min(900, 3000 - x); m += [B(x, 30, 0, w, 10, 1800, "gyp"), B(x, 30, 1800, w, 10, 600, "gyp")]
+m += [B(x - 25, 40, 0, 50, 1, 2400, "putty") for x in (900, 1800, 2700)]
+SGM["seokgo-byeok"] = ("석고보드 벽 3.0×2.4m", m, "0:3|3:11|11:19|19:22")
+m = [B(0, 0, -100, 3000, 3000, 100, "conc")] + [B(0, 30 + i * 360, 0, 3000, 30, 30, "daru") for i in range(9)]
+m += [B(0, i * 100, 30, 3000, 100, 10, "hinoki") for i in range(30)]
+m += [B(-20, -20, 40, 3040, 20, 40, "white"), B(-20, 0, 40, 20, 3000, 40, "white")]
+SGM["rubaa-cheonjang"] = ("루바 천장 3.0×3.0m (아래에서 본 모습)", m, "0:10|10:12|12:39|39:42")
+m = _wall(4000, 2400) + [B(0, 0, 0, 4000, 2, 2400, "wrap")] + [B(i * 440, 2, 0, 38, 38, 2400, "bangbu") for i in range(10)]
+m += [B(0, 40, 0, 4000, 10, 60, "metal")] + [B(0, 40 + 0, 40 + i * 200, 4000, 8, min(230, 2400 - 40 - i * 200), "siding") for i in range(12)]
+SGM["siding-oebyeok"] = ("외벽 시멘트 사이딩 4.0×2.4m", m, "0:2|2:12|12:14|14:25")
+m = [B(0, 0, -40, 3600, 3000, 40, "maru"), B(0, 0, 0, 3600, 20, 2400, "white"), B(0, 0, 0, 20, 3000, 2400, "white")]
+m += [B(20, 20, 0, 3580, 9, 90, "wood2"), B(20, 29, 0, 9, 2971, 90, "wood2"), B(20, 20, 2340, 3580, 40, 60, "wood2"), B(20, 60, 2340, 40, 2940, 60, "wood2")]
+SGM["molding-georebatgi"] = ("걸레받이·천장 몰딩", m, "0:3|3:5|5:7|*")
+m = [B(0, 0, -60, 3600, 3000, 60, "conc"), B(0, -20, 0, 3600, 20, 1200, "white"), B(-20, -20, 0, 20, 3020, 1200, "white")]
+for r in range(15):
+    off = 0 if r % 2 == 0 else 600; x = -off; k = 0
+    while x < 3600:
+        L = 1200 if (x + 1200) <= 3600 else 3600 - x
+        if x < 0: L = 1200 + x; x = 0
+        m.append(B(x, 10 + r * 198, 0, L - 2, 196, 8, "maru")); x += L; k += 1
+nb = len(m)
+m += [B(0, 0, 8, 3600, 9, 80, "white"), B(0, 9, 8, 9, 2991, 80, "white")]
+SGM["gangmaru"] = ("강마루 바닥 시공", m, f"0:3|3:12|12:{nb}|{nb}:{nb + 2}")
+m = _wall(3000, 2400)
+for p_ in range(3):
+    w = 1200 if p_ < 2 else 600
+    for j in range(w // 30):
+        m.append(B(p_ * 1200 + j * 30, 0, 30, 24, 12, 2340, "tempa")); m.append(B(p_ * 1200 + j * 30 + 24, 0, 30, 6, 6, 2340, "tempa2"))
+n1 = 1 + 80; n2 = 1 + 160
+m += [B(0, 0, 0, 3000, 18, 30, "wood2"), B(0, 0, 2370, 3000, 18, 30, "wood2")]
+SGM["tempa-byeok"] = ("템바보드 포인트 벽", m, f"0|1:{n1}|{n1}:{len(m) - 2}|{len(m) - 2}:{len(m)}")
+m = _wall(3600, 2400) + [B(i * 395, 0, 0, 30, 30, 2400, "daru") for i in range(10)]
+m += [B(i * 395 + 30, 0, 0, 365, 28, 2400, "pink") for i in range(9)]
+m += [B(x, 30, 0, 1200, 9, 2400, "acoustic") for x in (0, 1200, 2400)]
+m += [B(0, 39, 0, 3600, 12, 40, "wood2"), B(0, 39, 2360, 3600, 12, 40, "wood2")]
+SGM["heumeum-byeok"] = ("흡음 타공판 벽", m, "0:11|11:20|20:22|22:25")
+m = [B(0, i * 375, 0, 2400, 38, 89, "bangbu") for i in range(9)]
+m += [B(i * 145 - 0, -20, 89, 140, 3040, 20, "hapdeck") for i in range(17)]
+m += [B(-40, -60, 69, 40, 3120, 40, "hapdeck"), B(2425, -60, 69, 40, 3120, 40, "hapdeck")]
+SGM["hapdeck-sigong"] = ("합성데크 2.4×3.0m", m, "0:9|9:10|10:26|26:28")
+m = [B(0, 0, 0, 600, 130, 2400, "gyp"), B(1500, 0, 0, 600, 130, 2400, "gyp"), B(600, 0, 2100, 900, 130, 300, "gyp")]
+m += [B(605, -5, 0, 40, 140, 2095, "white"), B(1455, -5, 0, 40, 140, 2095, "white"), B(605, -5, 2055, 890, 140, 40, "white")]
+m += [B(600, 20, 0, 5, 90, 2100, "foam"), B(1495, 20, 0, 5, 90, 2100, "foam"), B(600, 20, 2095, 900, 90, 5, "foam")]
+m += [B(648, 95, 3, 804, 38, 2048, "white"), B(1380, 133, 1000, 20, 60, 20, "metal")]
+SGM["munteul-gyoche"] = ("방문·문틀 교체", m, "0:3|3:6|6:9|9:11")
+m = [B(0, 0, 0, 900, 40, 2100, "white"), B(0, 40, 1050, 900, 1, 1050, "wood2"), B(0, 40, 0, 900, 1, 1050, "wood2"), B(780, 41, 1000, 80, 40, 20, "metal")]
+SGM["film-sigong"] = ("인테리어 필름 — 문짝", m, "0|0|1|2:4")
+m = [B(0, i * 400, 0, 2400, 38, 89, "bangbu") for i in range(9)]
+bb = [B(i * 145, -20, 89, 140, 3260, 25, "bangbu") for i in range(17)]
+m += bb + [B(i * 145, -20, 114, 140, 3260, 1, "stained") for i in range(17)]
+SGM["oilstain"] = ("오일스테인 칠하기 — 데크", m, f"0:26|26:31|31:43|*")
+m = _wall(3600, 2400) + [B(i * 395, 0, 0, 30, 30, 2400, "daru") for i in range(10)]
+m += [B(0, 30, 0, 1220, 11, 2400, "osb"), B(1223, 30, 0, 1220, 11, 2400, "osb"), B(2446, 30, 0, 1154, 11, 2400, "osb")]
+SGM["osb-byeok"] = ("OSB 벽 마감", m, "0:11|11|12|13")
+
 STEPS = {"pyeongsang": "6:8,16:19|0:6|8:16|*", "chaekjang": "1:5|5:9|0|*", "tutbat": "0:4,7:9,11:13|5:7,9:11|4,13:16", "deck": "0:2|2:9|9:24|*",
          "gabyeok": "0:2|2:9|9:11|*", "byeokseonban": "0|1:3,4:6,7:9|3,6,9|*", "ultari": "0:3|3:5|5:26|*", "teibeul": "5|0:4|4|*",
          "sinbaljang": "1:5|5:9|0|*", "benchi": "4:6|0:4|6:9|*", "chimdae": "4:8|10:15|0:4|8:10", "jakeopdae": "4:6,7:9|0:4|6|9",
@@ -335,7 +398,7 @@ def render_steps(slug, boxes, out, title, caps, spec):
     img = Image.new("RGB", (W, H), (250, 247, 241)); dr = ImageDraw.Draw(img)
     fb = "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc"; fr = "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"
     F = lambda p, z: ImageFont.truetype(p, z)
-    dr.text((30, 18), f"{title} 만드는 순서", fill=(40, 34, 28), font=F(fb, 30))
+    dr.text((30, 18), title if title.endswith("순서") else f"{title} 만드는 순서", fill=(40, 34, 28), font=F(fb, 30))
     for k, pnl in enumerate(panels):
         x0 = (k % cols) * 600; y0 = 70 + (k // cols) * 470
         img.paste(pnl, (x0, y0))
@@ -358,6 +421,15 @@ if __name__ == "__main__":
     od = os.path.join(root, "assets", "mandeul"); os.makedirs(od, exist_ok=True)
     only = set(sys.argv[1:])
     TXT = mk_steps_text(root)
+    sys.path.insert(0, root)
+    from sigong_data import SG as _SG
+    SGT = {x[0]: x[6] for x in _SG}
+    od2 = os.path.join(root, "assets", "sigongbeop"); os.makedirs(od2, exist_ok=True)
+    for slug, (label, boxes, spec) in SGM.items():
+        if only and slug not in only: continue
+        render(slug, boxes, os.path.join(od2, slug + ".jpg"), label)
+        render_steps(slug, boxes, os.path.join(od2, slug + "-steps.jpg"), label.split(" — ")[0].split(" (")[0] + " 순서", SGT.get(slug, []), spec)
+        print("ok", slug)
     for slug, (label, boxes) in MODELS.items():
         if only and slug not in only: continue
         render(slug, boxes, os.path.join(od, slug + ".jpg"), label)
