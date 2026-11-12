@@ -911,7 +911,7 @@ def build():
     ]
     mk_cards = ""
     # 만들기별 관련 유튜브 영상(제목 키워드). 없는 slug는 짧은 이름으로 찾음
-    MKV = {"pyeongsang": r"평상", "chaekjang": r"책장", "tutbat": r"텃밭|화분만들기|방부목 화분", "deck": r"데크 셀프|방부목 데크|데크 시공|데크만들기|데크 만들기",
+    MKV = {"pyeongsang": r"평상(?!형)", "chaekjang": r"책장", "tutbat": r"텃밭|화분만들기|방부목 화분", "deck": r"데크 셀프|방부목 데크|데크 시공|데크만들기|데크 만들기",
            "gabyeok": r"가벽", "byeokseonban": r"^(?!.*온실).*(벽선반|원목선반|선반 만들|선반만들)", "ultari": r"울타리|펜스", "teibeul": r"테이블",
            "sinbaljang": r"신발장|수납장", "benchi": r"벤치|의자", "chimdae": r"침대", "jakeopdae": r"작업대|가구만들기|합판으로 가구", "monitor": r"모니터|컴퓨터받침대",
            "beranda": r"^(?!.*온실).*(선반|수납장)", "dannyeolbyeok": r"단열", "saideu": r"협탁|사이드", "hyeongwanbench": r"수납 의자|벤치|의자",
