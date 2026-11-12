@@ -1245,6 +1245,9 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
                              (r"히노끼|편백|삼나무|루바", "hinoki"), (r"석고", "gypsum"), (r"사이딩", "siding"), (r"단열|아이소핑크", "insul"), (r"스테인|오일", "stain"), (r"마루|후로링|장판|데코타일", "maru"),
                              (r"필름", "film"), (r"몰딩|걸레받이", "molding"), (r"침목", "chimmok"), (r"타일", "tile"), (r"문짝|방문|도어|문틀|중문", "door"), (r"흡음|방음", "sound"), (r"피스|타카|경첩|철물", "hardware"), (r"온실|비닐하우스|골조|파고라|퍼걸러|창고", "gujo"), (r"아트월|원목|라왕|테이블|선반|책상", "jipseong"), (r"벽|천장", "gypsum")]:
                 if re.search(rx_, v["title"]) and sl_ not in _ms: _ms.append(sl_)
+        if not _ms:
+            _cf = {"deck": "bangbu", "greenhouse": "gujo", "furniture": "jipseong", "kitchen": "jipseong", "exterior": "siding", "wall": "gypsum", "floor": "maru", "finish": "film", "electric": "insul", "door": "door", "tool": "hardware"}.get(v["cat"])
+            if _cf: _ms = [_cf]
         _mm = [m for sl_ in _ms for m in MATS if m["slug"] == sl_][:2]
         _vx = '<section class="wrap sec"><h2>영상 정보</h2><div class="tw"><table class="rt"><tbody>' + \
               f'<tr><th>분류</th><td><a href="/video/{v["cat"]}.html">{E(cn)}</a></td></tr>' + \
@@ -1256,7 +1259,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
             _vx += (f'<section class="wrap sec"><h2>영상에 나온 자재 — {E(m["name"])}</h2><p>{E(m["lead"])}</p><h3>어디에 쓰나요</h3><ul>' + "".join(f"<li>{E(w)}</li>" for w in m["where"][:5]) + '</ul>'
                     + f'<h3>{E(m["name"])} 소매 기준가</h3>' + ptable(mat_prices(m, 6))
                     + (('<h3>자주 묻는 질문</h3>' + faqslide([tuple(x) for x in _mfq.get(m["slug"], [])[:3]])) if _mfq.get(m["slug"]) else '')
-                    + f'<p><a href="/jajae/{m["slug"]}.html">{E(m["name"])} 용도·규격·시공 영상 전체 보기 ›</a></p></section>')
+                    + f'<p><a href="/jajae/{m["slug"]}.html">{E(m["name"])} 용도·규격·시공 영상 전체 보기 ›</a> · <a href="/calc.html">필요한 양 계산</a> · <a href="/cut.html">원하는 크기로 재단 그림</a></p></section>')
         _seg = v["title"].split("|")[0]
         _mks = sorted(((re.search(rx, _seg).start(), k) for k, rx in MKV.items() if k in MKNM and k not in ("jakeopdae", "beranda", "sinbaljang") and re.search(rx, _seg)))
         _mks = [k for _, k in _mks][:2]
