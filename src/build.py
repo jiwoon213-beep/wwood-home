@@ -1024,8 +1024,14 @@ def build():
 <p class="small muted">톱날 3mm를 빼고 계산했습니다. 크기를 바꾸고 싶으면 아래 재단 그림에서 숫자만 고치세요.</p><p>{btns}</p><p><a class="b r" href="mailto:{EMAIL}?subject={quote(nm + ' 재단·견적 요청')}&amp;body={quote('안녕하세요. 아래 목록대로 재단·견적 부탁드립니다.' + chr(10) + chr(10) + nm + ' (' + BASE + '/mandeul/' + slug + '.html)' + chr(10) + chr(10).join(_ml) + chr(10) + (f'예상 자재비(기준가): 약 {_tot:,}원' if _tot else '') + chr(10) + chr(10) + '수량·크기 변경:' + chr(10) + '이름:' + chr(10) + '연락처:' + chr(10) + '방문(또는 배송) 희망일:' + chr(10))}">✉ 이 목록으로 재단·견적 요청</a> <a class="b d" href="tel:{TEL.replace('-', '')}">전화 문의</a></p></section>
 {_gal}{_stp}<section class="wrap sec g2"><div class="card"><h2>만드는 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol></div>
 <div class="card"><h2>준비할 자재</h2><ul>{"".join(f"<li>{E(x)}</li>" for x in mats)}</ul><p>매장({ADDR})에서 위 크기대로 즉석 재단해 드립니다. 이 페이지를 보여주시면 됩니다.</p></div></section>
-{(f'<section class="wrap sec"><h2>{E(nm)} 만들기 영상</h2>' + embed(_mv[0]) + vsplit(_mv[1:], "h3") + '</section>') if _mv else ''}<section class="wrap sec"><p class="small muted">© 영진종합목재(월드건축자재). 이 페이지의 완성 그림·그림 설명서·재단표는 영진종합목재가 직접 만든 저작물입니다. 무단 복제·배포·상업적 사용을 금합니다(링크 공유는 환영합니다).</p></section><section class="wrap sec"><h2>다른 만들기</h2><p>{" · ".join(f'<a href="/mandeul/{x[0]}.html">{E(x[1])}</a>' for x in MK if x[0] != slug)} · <a href="/cut.html">재단 미리보기</a> · <a href="/calc.html">자재 계산기</a></p></section>{CTA}"""
-        fq = [{"@type": "Question", "name": f"{nm} 만들 때 자재 재단해 주나요?", "acceptedAnswer": {"@type": "Answer", "text": f"네. 대전 {ADDR} 영진종합목재에서 표의 크기대로 즉석 재단해 드립니다. 한 개 소량도 됩니다."}}]
+{(f'<section class="wrap sec"><h2>{E(nm)} 만들기 영상</h2>' + embed(_mv[0]) + vsplit(_mv[1:], "h3") + '</section>') if _mv else ''}<!--MKFAQ--><section class="wrap sec"><p class="small muted">© 영진종합목재(월드건축자재). 이 페이지의 완성 그림·그림 설명서·재단표는 영진종합목재가 직접 만든 저작물입니다. 무단 복제·배포·상업적 사용을 금합니다(링크 공유는 환영합니다).</p></section><section class="wrap sec"><h2>다른 만들기</h2><p>{" · ".join(f'<a href="/mandeul/{x[0]}.html">{E(x[1])}</a>' for x in MK if x[0] != slug)} · <a href="/cut.html">재단 미리보기</a> · <a href="/calc.html">자재 계산기</a></p></section>{CTA}"""
+        _qa = []
+        if _tot: _qa.append((f"{nm} 만들려면 자재비가 얼마나 드나요?", f"이 페이지의 크기 기준으로 소매 기준가 약 {_tot:,}원입니다(부가세 별도, 피스·철물·마감재 제외). 크기를 바꾸면 재단 그림 페이지에서 다시 계산됩니다."))
+        _qa.append((f"{nm} 만들 때 어떤 자재가 필요한가요?", ", ".join(mats) + "가 필요합니다. 부분별 재단 크기와 수량은 위 표에 있습니다."))
+        _qa.append((f"{nm} 자재를 원하는 크기로 재단해 주나요?", f"네. 대전 {ADDR} 영진종합목재에서 표의 크기대로 즉석 재단해 드립니다. 한 개 소량도 됩니다."))
+        _qa.append(("지방에서도 자재를 받을 수 있나요?", "대전·세종·공주·계룡·논산·금산·옥천은 배송하고, 그 외 전국은 용달로 보내 드립니다(운임 견적 후 출고)."))
+        body = body.replace("<!--MKFAQ-->", f'<section class="wrap sec"><h2>{E(nm)} 자주 묻는 질문</h2>' + faqslide(_qa) + '</section>')
+        fq = [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a_}} for q, a_ in _qa]
         page(f"mandeul/{slug}.html", title + " | 영진목재", lead[:120], body, "/mandeul/", [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": fq}] + ([{"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": BASE + f"/assets/mandeul/{slug}{sfx}.jpg", "name": f"{nm} " + ("완성 모습 그림" if not sfx else "만드는 순서 그림 설명서"), "creator": {"@type": "Organization", "name": "영진종합목재(월드건축자재)", "url": BASE + "/"}, "copyrightHolder": {"@type": "Organization", "name": "영진종합목재(월드건축자재)"}, "copyrightNotice": "© 영진종합목재(월드건축자재) www.wwood.co.kr", "creditText": "영진종합목재", "license": BASE + "/mandeul/", "acquireLicensePage": BASE + "/visit.html"} for sfx in ([""] if _hi else []) + (["-steps"] if _si else [])]), (BASE + f"/assets/mandeul/{slug}.jpg") if _hi else (f"https://i.ytimg.com/vi/{_mv[0]['id']}/hqdefault.jpg" if _mv else None))
         mk_cards += f'<a class="mc" href="/mandeul/{slug}.html">' + (f'<img loading="lazy" src="/assets/mandeul/{slug}.jpg" alt="{E(nm)}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if _hi else "") + f'<b>{E(nm)}</b><small>{E(lead[:40])}…</small><span hidden>{E(" ".join(r[1] + " " + r[4] for r in rows) + " " + " ".join(mats) + " " + lead)}</span></a>'
     # 자재 백과 ↔ 만들기 연결: 자재 페이지에 "이 자재로 만들 수 있는 것"
@@ -1069,10 +1075,16 @@ def build():
 <section class="wrap sec g2"><div class="card"><h2>시공 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol><h3>필요한 공구</h3><p>{" · ".join(E(t) for t in tools)}</p></div>
 <div class="card"><h2>주의할 점</h2><ul>{"".join(f"<li>{E(t)}</li>" for t in tips)}</ul><p>자재는 매장({ADDR})에서 실물 보고 고를 수 있고, 시공이 어려우면 월드아키텍쳐(실내건축공사업 등록)에서 직접 시공합니다.</p></div></section>
 {(f'<section class="wrap sec"><h2>{E(nm)} 영상</h2>' + embed(_sv[0]) + vsplit(_sv[1:], "h3") + '</section>') if _sv else ''}
-<section class="wrap sec"><p class="small muted">© 영진종합목재(월드건축자재). 이 페이지의 그림·그림 설명서·자재표는 영진종합목재가 직접 만든 저작물입니다. 무단 복제·배포·상업적 사용을 금합니다(링크 공유는 환영합니다).</p><h2>다른 시공법</h2><p>{" · ".join(f'<a href="/sigongbeop/{x[0]}.html">{E(x[1])}</a>' for x in SG if x[0] != slug)} · <a href="/mandeul/">만들기 자재</a></p></section>{CTA}"""
+<!--SGFAQ--><section class="wrap sec"><p class="small muted">© 영진종합목재(월드건축자재). 이 페이지의 그림·그림 설명서·자재표는 영진종합목재가 직접 만든 저작물입니다. 무단 복제·배포·상업적 사용을 금합니다(링크 공유는 환영합니다).</p><h2>다른 시공법</h2><p>{" · ".join(f'<a href="/sigongbeop/{x[0]}.html">{E(x[1])}</a>' for x in SG if x[0] != slug)} · <a href="/mandeul/">만들기 자재</a></p></section>{CTA}"""
+        _sq = []
+        if _el: _sq.append((f"{nm} 자재비는 얼마나 드나요?", f"예시({ex}) 기준으로 확인된 품목만 더하면 소매 기준가 약 {sum(p_ * q for l, p_, q in _el):,}원입니다(부가세 별도). 실제 크기를 알려 주시면 다시 계산해 드립니다."))
+        _sq.append((f"{nm}에 어떤 자재가 필요한가요?", ", ".join(a for a, b, c in rows) + "가 필요합니다. 규격과 예시 수량은 위 표에 있습니다."))
+        _sq.append((f"{nm} 시공도 맡길 수 있나요?", "네. 월드아키텍쳐(실내건축공사업 등록)가 대전·세종에서 직접 시공합니다. 전화 042-545-2900으로 문의하세요."))
+        _sq.append(("자재를 원하는 크기로 잘라 주나요?", f"네. 대전 {ADDR} 매장에서 원하는 크기로 재단해 드리고, 전국 용달 배송도 됩니다."))
+        body = body.replace("<!--SGFAQ-->", f'<section class="wrap sec"><h2>{E(nm)} 자주 묻는 질문</h2>' + faqslide(_sq) + '</section>')
         ld = [{"@context": "https://schema.org", "@type": "HowTo", "name": title.split(" — ")[0], "description": lead,
                "supply": [{"@type": "HowToSupply", "name": a} for a, b, c in rows], "tool": [{"@type": "HowToTool", "name": t} for t in tools],
-               "step": [{"@type": "HowToStep", "position": k + 1, "text": t} for k, t in enumerate(steps)]}]
+               "step": [{"@type": "HowToStep", "position": k + 1, "text": t} for k, t in enumerate(steps)]}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a_}} for q, a_ in _sq]}]
         if _hi: ld[0]["image"] = BASE + f"/assets/sigongbeop/{slug}.jpg"
         ld += [{"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": BASE + f"/assets/sigongbeop/{slug}{sfx}.jpg", "name": nm + (" 완성 그림" if not sfx else " 그림 설명서"), "creator": {"@type": "Organization", "name": "영진종합목재(월드건축자재)"}, "copyrightNotice": "© 영진종합목재(월드건축자재) www.wwood.co.kr", "creditText": "영진종합목재", "license": BASE + "/sigongbeop/", "acquireLicensePage": BASE + "/visit.html"} for sfx in ([""] if _hi else []) + (["-steps"] if _si else [])]
         page(f"sigongbeop/{slug}.html", title + " | 영진목재", lead[:120], body, "/sigongbeop/", ld, (BASE + f"/assets/sigongbeop/{slug}.jpg") if _hi else (f"https://i.ytimg.com/vi/{_sv[0]['id']}/hqdefault.jpg" if _sv else None))
@@ -1398,7 +1410,7 @@ Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i
                 + (f"<video:publication_date>{_dt.datetime.fromtimestamp(ts, _dt.timezone(_dt.timedelta(hours=9))).isoformat()}</video:publication_date>" if ts else "")
                 + "<video:family_friendly>yes</video:family_friendly></video:video></url>\n" for u, v, dd, ts, ln in VSM) + "</urlset>\n")
     open(f"{OUT}/sitemap.xml", "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' +
-        "".join(f"<url><loc>{u}</loc><lastmod>{LMD[u]}</lastmod>" + (f"<image:image><image:loc>{html.escape(SIMG[u])}</image:loc></image:image>" if SIMG.get(u) else "") + "</url>\n" for u in SITEMAP) + "</urlset>\n")
+        "".join(f"<url><loc>{u}</loc><lastmod>{LMD[u]}</lastmod>" + (f"<image:image><image:loc>{html.escape(SIMG[u])}</image:loc></image:image>" if SIMG.get(u) else "") + "".join(f"<image:image><image:loc>{BASE}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg</image:loc></image:image>" for d_ in ("mandeul", "sigongbeop") if f"/{d_}/" in u and not u.endswith("/") and os.path.exists(f"{ROOT}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg")) + "</url>\n" for u in SITEMAP) + "</urlset>\n")
     print(len(SITEMAP), "pages →", OUT)
 
 import hashlib
