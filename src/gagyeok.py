@@ -122,7 +122,14 @@ GG += [
    ("방부목은 실내에 써도 되나요?", "방부목은 바깥 데크·울타리·화단용입니다. 실내 가구·벽에는 구조재나 집성판을 권합니다.")]),
 ]
 
-def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL):
+# 자재백과 slug·재단 카테고리 → 가격 가이드
+BYMAT = {"hinoki": [("hinoki-ruba", "히노끼 루바"), ("spruce-ruba", "스프러스 루바")], "sound": [("tempa-board", "템바보드"), ("tempa-ruba", "템바 루바")], "film": [("interior-film", "인테리어 필름")], "stain": [("oilstain", "오일스테인")], "hapan": [("hapan-gagyeok", "합판")], "osb": [("osb-gagyeok", "OSB")], "mdf": [("mdf-gagyeok", "MDF")], "gypsum": [("seokgo-gagyeok", "석고보드")], "insul": [("danyeol-gagyeok", "아이소핑크·단열재")], "jipseong": [("jipseong-gagyeok", "집성판")], "hapdeck": [("deck-gagyeok", "데크재")], "bangbu": [("deck-gagyeok", "방부목 데크"), ("gakjae-gagyeok", "방부목 각재")], "gujo": [("gakjae-gagyeok", "구조재")]}
+BYCAT = {"합판": [("hapan-gagyeok", "합판")], "MDF": [("mdf-gagyeok", "MDF")], "집성판": [("jipseong-gagyeok", "집성판")], "석고보드": [("seokgo-gagyeok", "석고보드")], "단열재": [("danyeol-gagyeok", "단열재")], "구조재": [("gakjae-gagyeok", "구조재")], "방부목": [("gakjae-gagyeok", "방부목")], "각재·다루끼": [("gakjae-gagyeok", "각재")], "데크": [("deck-gagyeok", "데크재")]}
+def links(pairs):
+    seen = []; [seen.append(p) for p in pairs if p not in seen]
+    return ('<p>💰 <b>가격 가이드</b> ' + " · ".join(f'<a href="/gagyeok/{a}.html">{b} 가격 — 1평에 얼마</a>' for a, b in seen) + '</p>') if seen else ""
+
+def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ=None):
     import json
     pages = []
     for slug, nm, js, sg, specs, lead, unitdesc, loss, exs, faq in GG:
@@ -172,6 +179,7 @@ def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL):
 <section class="wrap sec"><h2>다른 자재 가격</h2><p>{" · ".join(f'<a href="/gagyeok/{g[0]}.html">{E(g[1])} 가격</a>' for g in GG if g[0] != slug)}</p></section>{CTA}'''
         ld = [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}]
         ld += prod_ld([{"name": p["name"], "cat": p["cat"], "price": p["price"]} for p, _, _ in rows[:6]], f"{BASE}/gagyeok/{slug}.html")
+        if ALLFAQ is not None: ALLFAQ.append(("자재 가격", faq, f"/gagyeok/{slug}.html", nm + " 가격"))
         page(f"gagyeok/{slug}.html", title + " | 대전 영진목재", desc, body, "/price.html", ld)
         pages.append((slug, nm, lo, rows[0][1], lead))
     cards = "".join(f'<a class="mc" href="/gagyeok/{s}.html"><b>{E(n)} 가격</b><span>{E(u)} {lo:,}원부터 · {E(l[:50])}…</span></a>' for s, n, lo, u, l in pages)

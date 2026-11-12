@@ -326,8 +326,8 @@ def build():
         cmpl = {"hapan":"hapan-types","osb":"hapan-osb-mdf","mdf":"hapan-osb-mdf","bangbu":"bangbu-hapdeck","hapdeck":"bangbu-hapdeck","gypsum":"gypsum-types","siding":"siding-types","insul":"insulation-types","maru":"floor-types","tile":"floor-types","door":"door-types","stain":"stain-oil-water","hinoki":"louver-types","jipseong":"jipseong-types","gujo":"gakjae-types","sound":"sound-types","film":"door-types"}.get(m["slug"])
         cutln = f' · <a href="/cut.html#m={m["slug"]}">원하는 크기로 재단 그림 보기</a>' if m["slug"] in {"hapan","osb","mdf","gujo","bangbu","hapdeck","jipseong","hinoki","gypsum","insul"} else ""
         cmpln = f'<p>👉 <a href="/bigyo/{cmpl}.html">비슷한 자재와 비교해 보기</a> · <a href="/calc.html">필요한 양 계산하기</a>{cutln}</p>' if cmpl else (f'<p>👉 <a href="/calc.html#door">문짝·문틀 크기 계산하기</a></p>' if m["slug"] == "door" else f'<p>👉 <a href="/calc.html">필요한 양 계산하기</a>{cutln}</p>')
-        _ggm = {"hinoki": [("hinoki-ruba", "히노끼 루바"), ("spruce-ruba", "스프러스 루바")], "sound": [("tempa-board", "템바보드"), ("tempa-ruba", "템바 루바")], "film": [("interior-film", "인테리어 필름")], "stain": [("oilstain", "오일스테인")], "hapan": [("hapan-gagyeok", "합판")], "osb": [("osb-gagyeok", "OSB")], "mdf": [("mdf-gagyeok", "MDF")], "gypsum": [("seokgo-gagyeok", "석고보드")], "insul": [("danyeol-gagyeok", "아이소핑크·단열재")], "jipseong": [("jipseong-gagyeok", "집성판")], "hapdeck": [("deck-gagyeok", "데크재")], "bangbu": [("deck-gagyeok", "방부목 데크"), ("gakjae-gagyeok", "방부목 각재")], "gujo": [("gakjae-gagyeok", "구조재")]}.get(m["slug"])
-        if _ggm: cmpln += '<p>💰 ' + " · ".join(f'<a href="/gagyeok/{a}.html">{b} 가격 — 1평에 얼마</a>' for a, b in _ggm) + '</p>'
+        import gagyeok as _g0
+        cmpln += _g0.links(_g0.BYMAT.get(m["slug"], []))
         mf = MFAQ.get(m["slug"], []) + [(f"{m['name']} 지방(전국)으로도 배송되나요?", f"네, 전국 어디든 용달차로 보내 드립니다. 품목·수량·도착지를 알려 주시면 사무실에서 용달 운임 견적을 드리고, 입금 확인 후 바로 출고합니다. 대전·세종·공주·계룡·논산·금산·옥천은 직접 배송·현장 납품합니다. 문의 {TEL}")]
         _seen = {re.sub(r"[^가-힣A-Za-z0-9]|은|는|을|를", "", q) for q, a in mf}
         faq = [x for x in faq if re.sub(r"[^가-힣A-Za-z0-9]|은|는|을|를", "", x["name"]) not in _seen] + [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in mf]
@@ -1043,6 +1043,7 @@ def build():
         hit = [v for v in V if re.search(rx, v["title"])]
         hit.sort(key=lambda v: (0 if re.match(r"\W*(?:" + rx + ")", v["title"]) else 1 if re.search(rx, v["title"].split("|")[0]) else 2, 0 if v["type"] != "S" else 1, -v["n"]))
         return hit[:6]
+    import gagyeok as _gg0
     for slug, nm, title, lead, rows, steps, mats in MK:
         trs, btns = "", ""
         _mv = mkvids(slug, nm)
@@ -1093,7 +1094,7 @@ def build():
 <p class="small muted">톱날 3mm를 빼고 계산했습니다. 크기를 바꾸고 싶으면 아래 재단 그림에서 숫자만 고치세요.</p><p>{btns}</p><p><a class="b r" href="mailto:{EMAIL}?subject={quote(nm + ' 재단·견적 요청')}&amp;body={quote('안녕하세요. 아래 목록대로 재단·견적 부탁드립니다.' + chr(10) + chr(10) + nm + ' (' + BASE + '/mandeul/' + slug + '.html)' + chr(10) + chr(10).join(_ml) + chr(10) + (f'예상 자재비(기준가): 약 {_tot:,}원' if _tot else '') + chr(10) + chr(10) + '수량·크기 변경:' + chr(10) + '이름:' + chr(10) + '연락처:' + chr(10) + '방문(또는 배송) 희망일:' + chr(10))}">✉ 이 목록으로 재단·견적 요청</a> <a class="b d" href="tel:{TEL.replace('-', '')}">전화 문의</a></p></section>
 {_gal}{_stp}<section class="wrap sec g2"><div class="card"><h2>만드는 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol></div>
 <div class="card"><h2>준비할 자재</h2><ul>{"".join(f"<li>{E(x)}</li>" for x in mats)}</ul><p>매장({ADDR})에서 위 크기대로 즉석 재단해 드립니다. 이 페이지를 보여주시면 됩니다.</p></div></section>
-{(f'<section class="wrap sec"><h2>{E(nm)} 만들기 영상</h2>' + embed(_mv[0]) + vsplit(_mv[1:], "h3") + '</section>') if _mv else ''}<!--MKFAQ--><section class="wrap sec"><p class="small muted">© 영진종합목재(월드건축자재). 이 페이지의 완성 그림·그림 설명서·재단표는 영진종합목재가 직접 만든 저작물입니다. 무단 복제·배포·상업적 사용을 금합니다(링크 공유는 환영합니다).</p></section><section class="wrap sec"><h2>다른 만들기</h2><p>{" · ".join(f'<a href="/mandeul/{x[0]}.html">{E(x[1])}</a>' for x in MK if x[0] != slug)} · <a href="/cut.html">재단 미리보기</a> · <a href="/calc.html">자재 계산기</a></p></section>{CTA}"""
+{(f'<section class="wrap sec"><h2>{E(nm)} 만들기 영상</h2>' + embed(_mv[0]) + vsplit(_mv[1:], "h3") + '</section>') if _mv else ''}<!--MKFAQ--><section class="wrap sec"><p class="small muted">© 영진종합목재(월드건축자재). 이 페이지의 완성 그림·그림 설명서·재단표는 영진종합목재가 직접 만든 저작물입니다. 무단 복제·배포·상업적 사용을 금합니다(링크 공유는 환영합니다).</p></section><section class="wrap sec">{_gg0.links([p for r_ in rows for p in _gg0.BYCAT.get(r_[1], [])])}<h2>다른 만들기</h2><p>{" · ".join(f'<a href="/mandeul/{x[0]}.html">{E(x[1])}</a>' for x in MK if x[0] != slug)} · <a href="/cut.html">재단 미리보기</a> · <a href="/calc.html">자재 계산기</a></p></section>{CTA}"""
         _qa = []
         if _tot: _qa.append((f"{nm} 만들려면 자재비가 얼마나 드나요?", f"이 페이지의 크기 기준으로 소매 기준가 약 {_tot:,}원입니다(부가세 별도, 피스·철물·마감재 제외). 크기를 바꾸면 재단 그림 페이지에서 다시 계산됩니다."))
         _qa.append((f"{nm} 만들 때 어떤 자재가 필요한가요?", ", ".join(mats) + "가 필요합니다. 부분별 재단 크기와 수량은 위 표에 있습니다."))
@@ -1115,7 +1116,7 @@ def build():
     MKMAT_HTML = {ms: f'<section class="wrap sec"><h2>이 자재로 만들 수 있는 것</h2><p class="small muted">재단 크기·수량과 만드는 순서, 만들기 영상까지 정리했습니다. 매장에서 그 크기대로 잘라 드려요.</p><div class="mg m2">'
                   + "".join(f'<a class="mc" href="/mandeul/{x[0]}.html"><b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in xs[:12]) + '</div></section>' for ms, xs in _mkmat.items()}
     import gagyeok as _gg
-    GGLIST = _gg.gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL)
+    GGLIST = _gg.gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ)
     MKNM = {x[0]: x[1] for x in MK}
     # 자재 시공법(내장재·외장재·바닥·도어 등) — /sigongbeop/
     from sigong_data import SG, SGP
@@ -1143,7 +1144,7 @@ def build():
                 + f'</tbody></table></div><div class="est"><b>예상 자재비 약 {sum(p_ * q for l, p_, q in _el):,}원</b><span>위 품목만 더한 금액 · 소매 기준가 · 부가세 별도 · 표에 없는 품목(피스·본드·마감재 등)은 매장 문의 · 규격·길이·제품에 따라 달라져요</span></div>') if _el else ""
         body = f"""<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › {E(nm)}</p><h1>{E(title.split(" — ")[0])}</h1><p class="lead">{E(lead)}</p>{hero}
 <h2>필요한 자재</h2><p class="small muted" style="margin:-4px 0 8px">예시: {E(ex)}</p><div class="tw"><table class="rt"><thead><tr><th>자재</th><th>규격</th><th>예시 수량</th></tr></thead><tbody>{trs}</tbody></table></div>
-{_est}<p><a class="b r" href="mailto:{EMAIL}?subject={quote(nm + ' 자재 견적 요청')}&amp;body={quote('안녕하세요. ' + nm + ' 자재 견적 부탁드립니다.' + chr(10) + '(' + BASE + '/sigongbeop/' + slug + '.html)' + chr(10) + chr(10) + '시공할 곳 크기(가로×세로):' + chr(10) + chr(10) + chr(10).join(f'- {a}: {b} / {c}' for a, b, c in rows) + chr(10) + chr(10) + '이름:' + chr(10) + '연락처:' + chr(10) + '시공도 맡기실지(예/아니오):' + chr(10))}">✉ 내 크기로 자재 견적 요청</a> <a class="b d" href="tel:{TEL.replace('-', '')}">전화 문의</a></p><p class="small muted">수량은 예시 크기 기준 참고치입니다(로스 포함). 실제 크기를 알려 주시면 매장에서 다시 계산해 드리고, 원하는 크기로 재단해 드립니다. <a href="/calc.html">자재 계산기</a> · <a href="/jajae/{ms}.html">{E(_mname.get(ms, ""))} 용도·기준가</a></p></section>{_gal}{stp}
+{_est}<p><a class="b r" href="mailto:{EMAIL}?subject={quote(nm + ' 자재 견적 요청')}&amp;body={quote('안녕하세요. ' + nm + ' 자재 견적 부탁드립니다.' + chr(10) + '(' + BASE + '/sigongbeop/' + slug + '.html)' + chr(10) + chr(10) + '시공할 곳 크기(가로×세로):' + chr(10) + chr(10) + chr(10).join(f'- {a}: {b} / {c}' for a, b, c in rows) + chr(10) + chr(10) + '이름:' + chr(10) + '연락처:' + chr(10) + '시공도 맡기실지(예/아니오):' + chr(10))}">✉ 내 크기로 자재 견적 요청</a> <a class="b d" href="tel:{TEL.replace('-', '')}">전화 문의</a></p><p class="small muted">수량은 예시 크기 기준 참고치입니다(로스 포함). 실제 크기를 알려 주시면 매장에서 다시 계산해 드리고, 원하는 크기로 재단해 드립니다. <a href="/calc.html">자재 계산기</a> · <a href="/jajae/{ms}.html">{E(_mname.get(ms, ""))} 용도·기준가</a></p>{_gg.links(_gg.BYMAT.get(ms, []))}</section>{_gal}{stp}
 <section class="wrap sec g2"><div class="card"><h2>시공 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol><h3>필요한 공구</h3><p>{" · ".join(E(t) for t in tools)}</p></div>
 <div class="card"><h2>주의할 점</h2><ul>{"".join(f"<li>{E(t)}</li>" for t in tips)}</ul><p>자재는 매장({ADDR})에서 실물 보고 고를 수 있고, 시공이 어려우면 월드아키텍쳐(실내건축공사업 등록)에서 직접 시공합니다.</p></div></section>
 {(f'<section class="wrap sec"><h2>{E(nm)} 영상</h2>' + embed(_sv[0]) + vsplit(_sv[1:], "h3") + '</section>') if _sv else ''}
@@ -1446,7 +1447,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         for q, a_ in v_[:2]: _mat.append((q, a_, f"/jajae/{k_}.html", _mn.get(k_, "자재 백과")))
     _groups.append(("자재 고르기", _mat))
     _groups.append(("필요한 양 계산", [(q, a_, "/calc.html", "자재 계산기") for q, a_ in CALC_FAQ]))
-    for g_ in ("DIY 만들기", "자재 시공법"):
+    for g_ in ("DIY 만들기", "자재 시공법", "자재 가격"):
         _groups.append((g_, [(q, a_, u_, n_) for gg, qa_, u_, n_ in ALLFAQ if gg == g_ for q, a_ in qa_]))
     _fb = ""; _fld = []; _toc = []
     for gi, (gn, qs) in enumerate(_groups):
