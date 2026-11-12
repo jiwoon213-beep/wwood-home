@@ -1317,7 +1317,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         _mkln = ('<p>🪚 직접 만들어 보기: ' + " · ".join(f'<a href="/mandeul/{k}.html">{E(MKNM[k])} 자재·재단 크기</a>' for k in _mks) + '</p>') if _mks else ""
         _sgs = [x for x in SG if x[10] and re.search(x[10], v["title"])][:2]
         if _sgs: _mkln += '<p>🔨 시공법 보기: ' + " · ".join(f'<a href="/sigongbeop/{x[0]}.html">{E(x[1])} 순서·필요 자재</a>' for x in _sgs) + '</p>'
-        page(f"v/{v['id']}.html", f"{st} — 영상 | 대전 영진목재", vds,
+        page(f"v/{v['id']}.html", f"{st} — {'쇼츠' if v['type'] == 'S' else '영상'}" + (f" 조회 {views(v['n'])}" if v['n'] >= 1000 else "") + " | 영진목재", vds,
              f"""<section class="wrap sec"><p class="crumb"><a href="/video/">영상</a> › <a href="/video/{v['cat']}.html">{E(cn)}</a></p><h1 class="vt1">{E(v['title'])}</h1>
 <div class="{'emb sh1' if v['type']=='S' else 'emb'}"><iframe loading="lazy" src="https://www.youtube.com/embed/{v['id']}" title="{E(st)}" allowfullscreen></iframe></div>
 <p class="small muted">조회 {views(v['n'])}{' · 쇼츠' if v['type']=='S' else ''} · <a href="{vurl(v)}" target="_blank" rel="noopener">유튜브에서 보기</a></p>
