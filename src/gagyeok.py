@@ -155,64 +155,72 @@ def links(pairs):
     return ('<p>💰 <b>가격 가이드</b> ' + " · ".join(f'<a href="/gagyeok/{a}.html">{b} 가격 — 1평에 얼마</a>' for a, b in seen) + '</p>') if seen else ""
 
 def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ=None):
-    import json
     pages = []
+    def won(x): return f"{int(round(x, -2)):,}원"
     for slug, nm, js, sg, specs, lead, unitdesc, loss, exs, faq in GG:
         rows = []
         for rx, unit, area in specs:
             hit = next((p for p in P if re.search(rx, p["name"])), None)
             if hit: rows.append((hit, unit, area))
         if not rows: continue
-        def cn(n): return re.sub(r"^[^-]+-\s*", "", n).replace("*", "×").replace("@", " · ").strip(" ·")
+        def cn(p):
+            n = re.sub(r"^[^-]+-\s*", "", p["name"]).replace("*", "×").replace("@", " · ").strip(" ·")
+            n = re.sub(r"\s+", " ", n)
+            return (("문틀 " if p["cat"] == "문틀" else "문짝 ") if slug == "door-gagyeok" else "") + n
         hasA = bool(exs) and any(isinstance(a, float) for _, _, a in rows)
         isM2 = not exs and any(isinstance(a, float) for _, _, a in rows)
         isLen = any(a == "len" for _, _, a in rows)
         isPlain = all(a == "plain" for _, _, a in rows)
-        th = "<tr><th>품목·규격</th><th>판매 단위</th><th class=r>기준가</th>" + ("<th class=r>1단위 면적</th><th class=r>1평 필요량(로스 포함)</th><th class=r>1평 예상 금액</th>" if hasA else ("" if isPlain else "<th class=r>1L당</th>" if slug == "oilstain" else "<th class=r>1m당</th>" if isLen else "<th class=r>1㎡당</th>" if isM2 else "<th class=r>1㎡당(폭 1.22m)</th>")) + "</tr>"
-        trs = ""
+        uw = rows[0][1][1:].split("(")[0]  # 장·단·개·묶음·m·통
+        # 카드: 큰 숫자 하나 + 작은 정보 줄
+        cards = []; per = []
         for p, unit, a in rows:
-            pr = p["price"]
-            if hasA and not isinstance(a, float):
-                ext = '<td class=r>—</td><td class=r>—</td><td class=r>—</td>'
-            elif hasA:
-                need = PY / a * (1 + loss)
-                ext = f'<td class=r data-l="1단위 면적">{a:.2f}㎡</td><td class=r data-l="1평 필요량">약 {need:.1f}</td><td class=r data-l="1평 예상"><b>약 {round(pr * need, -2):,.0f}원</b></td>'
-            elif isPlain:
-                ext = ""
-            elif slug == "oilstain":
-                L = float(re.search(r"([\d.]+)L", unit).group(1)); ext = f'<td class=r data-l="1L당">약 {round(pr / L, -2):,.0f}원</td>'
-            elif isM2:
-                ext = f'<td class=r data-l="1㎡당">약 {round(pr / a, -2):,.0f}원</td>'
+            pr = p["price"]; li = [("기준가", f"{pr:,}원 / {unit}")]
+            if hasA and isinstance(a, float):
+                need = PY / a * (1 + loss); v = pr * need; per.append(v)
+                big, lab = "약 " + won(v), "1평 예상"
+                li += [(f"{unit.split('(')[0]} 면적", f"{a:.2f}㎡"), ("1평에", f"약 {need:.1f}{uw}")]
+            elif isM2 and isinstance(a, float):
+                v = pr / a; per.append(v); big, lab = "약 " + won(v), "1㎡당"
+                li += [(f"{unit} 면적", f"{a:.2f}㎡")]
             elif isLen:
-                ext = f'<td class=r data-l="1m당">약 {round(pr / 3.6, -2):,.0f}원</td>'
+                v = pr / 3.6; per.append(v); big, lab = "약 " + won(v), "1m당"; li += [("길이", "약 3.6m")]
+            elif slug == "oilstain":
+                L = float(re.search(r"([\d.]+)L", unit).group(1)); v = pr / L; per.append(v); big, lab = "약 " + won(v), "1L당"
+            elif slug == "interior-film":
+                v = pr / 1.22; per.append(v); big, lab = "약 " + won(v), "1㎡당"
             else:
-                ext = f'<td class=r data-l="1㎡당">약 {round(pr / 1.22, -2):,.0f}원</td>'
-            _nm = (("문틀 " if p["cat"] == "문틀" else "문짝 ") if slug == "door-gagyeok" else "") + cn(p["name"])
-            trs += f'<tr><td>{E(_nm)}</td><td data-l="단위">{unit}</td><td class=r data-l="기준가"><b>{pr:,}원</b></td>{ext}</tr>'
+                big, lab = f"{pr:,}원", unit; li = []
+            cards.append(f'<div class="gc"><div class="gn">{E(cn(p))}</div><div class="gp"><small>{lab}</small>{big}</div>' + ("<ul>" + "".join(f"<li><span>{x}</span><b>{y}</b></li>" for x, y in li) + "</ul>" if li else "") + "</div>")
+        lo = min(p["price"] for p, _, _ in rows)
+        if hasA: hl, hv = "1평 예상", "약 " + won(min(per)) + "부터"
+        elif per: hl, hv = ("1㎡당" if isM2 or slug == "interior-film" else "1m당" if isLen else "1L당"), "약 " + won(min(per)) + "부터"
+        else: hl, hv = f"{rows[0][1]} 기준가", f"{lo:,}원부터"
+        a0 = next((a for _, _, a in rows if isinstance(a, float)), None)
+        hero = f'<div class="ghero"><div class="gh1"><small>{hl}</small><b>{hv}</b></div>' + (f'<div><small>기준가</small><b>{lo:,}원~</b><span>{E(rows[0][1])}</span></div>' if per else f'<div><small>판매 단위</small><b>{E(rows[0][1])}</b><span>{E(unitdesc.split(" · ")[0])}</span></div>') + f'<div><small>종류</small><b>{len(rows)}가지</b><span class="gsw">옆으로 넘겨 보기</span></div></div>'
         exh = ""
         if exs and hasA:
-            p0, u0, a0 = rows[0]
-            et = "".join(f'<tr><th>{E(t)}</th><td class=r>{m2:g}㎡ ({m2 / PY:.1f}평)</td><td class=r>{math.ceil(m2 / a0 * (1 + loss))} {u0.split("(")[0][1:] or "개"}</td><td class=r><b>약 {math.ceil(m2 / a0 * (1 + loss)) * p0["price"]:,}원</b></td></tr>' for t, m2 in exs)
-            exh = f'<h2>{E(nm)} 크기별 예상 금액</h2><p class="small muted">기준: {E(cn(p0["name"]))} · 로스 {int(loss * 100)}% 포함 · 올림 계산</p><div class="tw"><table class="rt"><thead><tr><th>예시</th><th class=r>면적</th><th class=r>필요량</th><th class=r>자재비</th></tr></thead><tbody>{et}</tbody></table></div>'
-            calc = f'''<div class="card" id="ggc"><h3>내 면적으로 계산</h3><p><label>면적 <input id="gga" type="number" inputmode="decimal" value="3" min="0" step="0.1" style="width:90px"></label> <select id="ggu"><option value="py">평</option><option value="m2">㎡</option></select> <select id="ggp">{"".join(f'<option value="{p["price"]}|{a}">{E(cn(p["name"]))} — {p["price"]:,}원/{u}</option>' for p, u, a in rows if isinstance(a, float))}</select></p><p id="ggr" class="est"></p>
-<script>(function(){{var a=document.getElementById("gga"),u=document.getElementById("ggu"),s=document.getElementById("ggp"),r=document.getElementById("ggr");function f(){{var v=parseFloat(a.value)||0,m=u.value=="py"?v*{PY}:v,x=s.value.split("|"),n=Math.ceil(m/parseFloat(x[1])*{1 + loss});r.innerHTML="<b>약 "+n+"단위 · 예상 자재비 약 "+(n*parseInt(x[0])).toLocaleString()+"원</b><span>로스 {int(loss * 100)}% 포함 · 소매 기준가 · 부가세 별도</span>";}}[a,u,s].forEach(function(e){{e.addEventListener("input",f);e.addEventListener("change",f)}});f();}})();</script></div>'''
-            exh += calc
-        lo = min(p["price"] for p, _, _ in rows)
-        title = f"{nm} 가격 — {rows[0][1].split('(')[0]} 기준가 {lo:,}원부터" + (" · 1평에 얼마" if hasA else (" · 종류별 기준가" if isPlain else " · 1L당 비교" if slug == "oilstain" else " · 1m당 단가" if isLen else " · 1㎡당 비교" if isM2 else " · m당 단가"))
-        desc = f"{nm} 소매 기준가 {lo:,}원부터({rows[0][1]}). " + (f"1평에 몇 {rows[0][1][1:].split('(')[0]} 드는지, 크기별 예상 금액 계산." if hasA else "판매 단위와 품목별 기준가 정리.") + " 대전 영진목재."
-        body = f'''<section class="wrap sec"><p class="crumb"><a href="/gagyeok/">자재 가격 가이드</a> › {E(nm)}</p><h1>{E(nm)} 가격</h1><p class="lead">{E(lead)}</p>
-<p class="small muted">{E(unitdesc)}</p><div class="tw"><table class="rt"><thead>{th}</thead><tbody>{trs}</tbody></table></div><p class="small muted">소매 기준가 · 부가세 별도 · 면적·필요량은 계산 참고치(시공 방법·자르는 양에 따라 달라짐) · 재단·운임은 매장에서 계산</p>
-{exh}
-<p>👉 <a href="/jajae/{js}.html">{E(nm)} 용도·사진</a> · <a href="/sigongbeop/{sg}.html">시공 방법과 예상 자재비</a> · <a href="/calc.html">자재 계산기</a> · <a href="/price.html">전체 기준가</a></p></section>
-<section class="wrap sec"><h2>{E(nm)} 가격 자주 묻는 질문</h2>{faqslide(faq + [(f"{nm} 어디서 사나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 실물을 보고 살 수 있습니다. {HOURS}. 전국 용달 배송도 됩니다.")])}</section>
-<section class="wrap sec"><h2>다른 자재 가격</h2><p>{" · ".join(f'<a href="/gagyeok/{g[0]}.html">{E(g[1])} 가격</a>' for g in GG if g[0] != slug)}</p></section>{CTA}'''
+            p0, u0, a0 = next(r for r in rows if isinstance(r[2], float))
+            ex_c = "".join(f'<div class="gc gx"><div class="gn">{E(t)}</div><div class="gp"><small>{m2:g}㎡ · {m2 / PY:.1f}평</small>약 {math.ceil(m2 / a0 * (1 + loss)) * p0["price"]:,}원</div><ul><li><span>필요량</span><b>{math.ceil(m2 / a0 * (1 + loss))}{uw}</b></li></ul></div>' for t, m2 in exs)
+            opts = "".join(f'<option value="{p["price"]}|{a}">{E(cn(p))} ({p["price"]:,}원)</option>' for p, u, a in rows if isinstance(a, float))
+            exh = f"""<h2 class="gt">이 크기면 얼마?</h2><p class="gs">{E(cn(p0))} 기준 · 로스 {int(loss * 100)}% 포함</p><div class="gcs">{ex_c}</div>
+<div class="gcalc"><b>내 면적으로 계산</b><div class="gcr"><input id="gga" type="number" inputmode="decimal" value="3" min="0" step="0.1" aria-label="면적"><select id="ggu" aria-label="단위"><option value="py">평</option><option value="m2">㎡</option></select></div><select id="ggp" aria-label="제품">{opts}</select><div id="ggr" class="gres"></div></div>
+<script>(function(){{var a=document.getElementById("gga"),u=document.getElementById("ggu"),s=document.getElementById("ggp"),r=document.getElementById("ggr");function f(){{var v=parseFloat(a.value)||0,m=u.value=="py"?v*{PY}:v,x=s.value.split("|"),n=Math.ceil(m/parseFloat(x[1])*{1 + loss});r.innerHTML="<small>필요량 "+n+"{uw}</small><b>약 "+(n*parseInt(x[0])).toLocaleString()+"원</b>";}}[a,u,s].forEach(function(e){{e.addEventListener("input",f);e.addEventListener("change",f)}});f();}})();</script>"""
+        others = "".join(f'<a href="/gagyeok/{g[0]}.html">{E(g[1])}</a>' for g in GG if g[0] != slug)
+        title = f"{nm} 가격 — {rows[0][1].split('(')[0]} 기준가 {lo:,}원부터" + (" · 1평에 얼마" if hasA else (" · 1L당 비교" if slug == "oilstain" else " · 1m당 단가" if isLen else " · 1㎡당 비교" if isM2 else " · 종류별 기준가" if isPlain else " · m당 단가"))
+        desc = f"{nm} 소매 기준가 {lo:,}원부터({rows[0][1]}). " + (f"1평에 몇 {uw} 드는지, 크기별 예상 금액 계산." if hasA else "판매 단위와 종류별 기준가 정리.") + " 대전 영진목재."
+        body = f"""<section class="wrap sec gg"><p class="crumb"><a href="/gagyeok/">자재 가격 가이드</a> › {E(nm)}</p><h1>{E(nm)} 가격</h1>{hero}<p class="glead">{E(lead)}</p>
+<h2 class="gt">종류별 가격 <small>옆으로 넘겨 보세요 ›</small></h2><div class="gcs">{"".join(cards)}</div><p class="gs">{E(unitdesc)} · 소매 기준가(부가세 별도) · 필요량은 계산 참고치 · 재단·운임은 매장에서</p>
+{exh}<div class="glk"><a href="/jajae/{js}.html">용도·사진</a><a href="/sigongbeop/{sg}.html">시공 방법</a><a href="/calc.html">자재 계산기</a><a href="/price.html">전체 기준가</a></div></section>
+<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(faq + [(f"{nm} 어디서 사나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 실물을 보고 살 수 있습니다. {HOURS}. 전국 용달 배송도 됩니다.")])}</section>
+<section class="wrap sec gg"><h2 class="gt">다른 자재 가격</h2><div class="glk">{others}</div></section>{CTA}"""
         ld = [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}]
         ld += prod_ld([{"name": p["name"], "cat": p["cat"], "price": p["price"]} for p, _, _ in rows[:6]], f"{BASE}/gagyeok/{slug}.html")
         if ALLFAQ is not None: ALLFAQ.append(("자재 가격", faq, f"/gagyeok/{slug}.html", nm + " 가격"))
         page(f"gagyeok/{slug}.html", title + " | 대전 영진목재", desc, body, "/price.html", ld)
-        pages.append((slug, nm, lo, rows[0][1], lead))
-    cards = "".join(f'<a class="mc" href="/gagyeok/{s}.html"><b>{E(n)} 가격</b><span>{E(u)} {lo:,}원부터 · {E(l[:50])}…</span></a>' for s, n, lo, u, l in pages)
+        pages.append((slug, nm, hl, hv))
+    cards = "".join(f'<a class="gi" href="/gagyeok/{s}.html"><b>{E(n)}</b><small>{E(hl)}</small><span>{E(hv)}</span></a>' for s, n, hl, hv in pages)
     page("gagyeok/index.html", "자재 가격 가이드 — 합판·석고보드·데크·사이딩·몰딩·방문·루바 1평에 얼마 | 영진목재",
          "합판·석고보드·단열재·집성판·데크·구조재·사이딩·몰딩·방문·루바·템바보드·필름·오일스테인의 판매 단위와 소매 기준가, 1평 예상 금액.",
-         f'<section class="wrap sec"><h1>자재 가격 가이드</h1><p class="lead">"1단에 몇 장이에요?", "1평에 얼마 들어요?" — 자주 묻는 판매 단위와 예상 금액을 자재별로 정리했습니다. 모두 소매 기준가(부가세 별도)입니다.</p><div class="mg m2">{cards}</div><p><a href="/price.html">전체 기준가 보기</a> · <a href="/sigongbeop/">자재 시공법</a></p></section>{CTA}', "/price.html")
+         f'<section class="wrap sec gg"><h1>자재 가격 가이드</h1><p class="glead">"1장에 얼마예요?" "1평에 얼마 들어요?" 자재별로 한눈에 정리했습니다. 모두 소매 기준가(부가세 별도)입니다.</p><div class="gig">{cards}</div><div class="glk"><a href="/price.html">전체 기준가</a><a href="/sigongbeop/">자재 시공법</a><a href="/calc.html">자재 계산기</a></div></section>{CTA}', "/price.html")
     return [(s, n) for s, n, *_ in pages]

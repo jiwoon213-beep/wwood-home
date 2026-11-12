@@ -1140,7 +1140,7 @@ def build():
             hit = next((pp for nn, pp in _PROWS if re.search(prx, nn)), None)
             if hit: _el.append((lab, hit, q))
         _est = ("<h3>기준가 예상 금액</h3><div class=\"tw\"><table class=\"rt\"><thead><tr><th>품목</th><th>기준가</th><th>수량</th><th>예상 금액</th></tr></thead><tbody>"
-                + "".join(f'<tr><th>{E(l)}</th><td data-l="기준가">{p_:,}원</td><td data-l="수량">{q}</td><td data-l="예상 금액">약 {p_ * q:,}원</td></tr>' for l, p_, q in _el)
+                + "".join(f'<tr><th>{E(l)}</th><td data-l="기준가">{p_:,}원</td><td data-l="수량">{q}</td><td data-l="예상 금액"><b>약 {p_ * q:,}원</b></td></tr>' for l, p_, q in _el)
                 + f'</tbody></table></div><div class="est"><b>예상 자재비 약 {sum(p_ * q for l, p_, q in _el):,}원</b><span>위 품목만 더한 금액 · 소매 기준가 · 부가세 별도 · 표에 없는 품목(피스·본드·마감재 등)은 매장 문의 · 규격·길이·제품에 따라 달라져요</span></div>') if _el else ""
         body = f"""<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › {E(nm)}</p><h1>{E(title.split(" — ")[0])}</h1><p class="lead">{E(lead)}</p>{hero}
 <h2>필요한 자재</h2><p class="small muted" style="margin:-4px 0 8px">예시: {E(ex)}</p><div class="tw"><table class="rt"><thead><tr><th>자재</th><th>규격</th><th>예시 수량</th></tr></thead><tbody>{trs}</tbody></table></div>
