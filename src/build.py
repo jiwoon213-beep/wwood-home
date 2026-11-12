@@ -927,6 +927,9 @@ def build():
     for slug, nm, title, lead, rows, steps, mats in MK:
         trs, btns = "", ""
         _mv = mkvids(slug, nm)
+        _hi = os.path.exists(f"{ROOT}/assets/mandeul/{slug}.jpg"); _si = os.path.exists(f"{ROOT}/assets/mandeul/{slug}-steps.jpg")
+        _hero = f'<figure class="mkfig"><img src="/assets/mandeul/{slug}.jpg" width="1200" height="800" alt="{E(nm)} 완성 모습 그림"><figcaption class="small muted">완성 모습 그림 — 표의 크기대로 만들면 이렇게 됩니다.</figcaption></figure>' if _hi else ""
+        _stp = f'<section class="wrap sec"><h2>{E(nm)} 만드는 순서 (그림 설명서)</h2><img class="mkfig" loading="lazy" src="/assets/mandeul/{slug}-steps.jpg" alt="{E(nm)} 만드는 순서 그림 설명서" style="width:100%;height:auto;border-radius:14px;border:1px solid #e6e0d4"><p class="small muted">빨간 테두리가 그 단계에서 새로 붙이는 부재입니다.</p></section>' if _si else ""
         for part, cat, rx, parts, desc in rows:
             c = next(c for c in _cd["cats"] if c["n"] == cat)
             if c["lin"]:
@@ -938,14 +941,14 @@ def build():
             trs += f"<tr><th>{E(part)}</th><td>{E(desc)}</td><td>{cnt}</td></tr>"
             btns += f'<a class="b o" href="{cutlink(cat, rx, parts)}">{E(part)} 재단 그림</a> '
         body = f"""<section class="wrap sec"><p class="crumb"><a href="/mandeul/">만들기 자재</a> › {E(nm)}</p><h1>{E(title.split(" — ")[0])}</h1><p class="lead">{E(lead)}</p>
-<div class="tw"><table><thead><tr><th>부분</th><th>자재·재단 크기</th><th>필요 수량</th></tr></thead><tbody>{trs}</tbody></table></div>
+{_hero}<div class="tw"><table><thead><tr><th>부분</th><th>자재·재단 크기</th><th>필요 수량</th></tr></thead><tbody>{trs}</tbody></table></div>
 <p class="small muted">톱날 3mm를 빼고 계산했습니다. 크기를 바꾸고 싶으면 아래 재단 그림에서 숫자만 고치세요.</p><p>{btns}</p></section>
-<section class="wrap sec g2"><div class="card"><h2>만드는 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol></div>
+{_stp}<section class="wrap sec g2"><div class="card"><h2>만드는 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol></div>
 <div class="card"><h2>준비할 자재</h2><ul>{"".join(f"<li>{E(x)}</li>" for x in mats)}</ul><p>매장({ADDR})에서 위 크기대로 즉석 재단해 드립니다. 이 페이지를 보여주시면 됩니다.</p></div></section>
 {(f'<section class="wrap sec"><h2>{E(nm)} 만들기 영상</h2>' + embed(_mv[0]) + vsplit(_mv[1:], "h3") + '</section>') if _mv else ''}<section class="wrap sec"><h2>다른 만들기</h2><p>{" · ".join(f'<a href="/mandeul/{x[0]}.html">{E(x[1])}</a>' for x in MK if x[0] != slug)} · <a href="/cut.html">재단 미리보기</a> · <a href="/calc.html">자재 계산기</a></p></section>{CTA}"""
         fq = [{"@type": "Question", "name": f"{nm} 만들 때 자재 재단해 주나요?", "acceptedAnswer": {"@type": "Answer", "text": f"네. 대전 {ADDR} 영진종합목재에서 표의 크기대로 즉석 재단해 드립니다. 한 개 소량도 됩니다."}}]
-        page(f"mandeul/{slug}.html", title + " | 영진목재", lead[:120], body, "", {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": fq})
-        mk_cards += f'<a class="mc" href="/mandeul/{slug}.html"><b>{E(nm)}</b><small>{E(lead[:40])}…</small></a>'
+        page(f"mandeul/{slug}.html", title + " | 영진목재", lead[:120], body, "", {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": fq}, (BASE + f"/assets/mandeul/{slug}.jpg") if _hi else (f"https://i.ytimg.com/vi/{_mv[0]['id']}/hqdefault.jpg" if _mv else None))
+        mk_cards += f'<a class="mc" href="/mandeul/{slug}.html">' + (f'<img loading="lazy" src="/assets/mandeul/{slug}.jpg" alt="{E(nm)}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if _hi else "") + f'<b>{E(nm)}</b><small>{E(lead[:40])}…</small></a>'
     # 자재 백과 ↔ 만들기 연결: 자재 페이지에 "이 자재로 만들 수 있는 것"
     MATKW = {"hapan": r"합판", "osb": r"OSB", "mdf": r"MDF", "gujo": r"구조재", "bangbu": r"방부목", "jipseong": r"집성판", "gypsum": r"석고보드",
              "insul": r"아이소핑크|단열재", "stain": r"스테인|오일|바니시", "hardware": r"피스|철물|브라켓|경첩|앵커", "hapdeck": r"합성데크"}
@@ -1144,7 +1147,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     _hp = ["pyeongsang", "chaekjang", "chimdae", "deck", "sinbaljang", "gaejip", "teibeul", "beranda"]
     _hm = [x for k in _hp for x in MK if x[0] == k]
     MKHOME = ('<section class="wrap sec"><h2>직접 만들기 — 자재와 재단 크기</h2><p class="small muted">만들 것을 고르면 필요한 자재, 몇 mm로 몇 개 자를지, 만드는 순서와 영상까지 나옵니다. 매장에서 그 크기대로 잘라 드려요.</p><div class="mg m2">'
-              + "".join(f'<a class="mc" href="/mandeul/{x[0]}.html"><b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in _hm)
+              + "".join(f'<a class="mc" href="/mandeul/{x[0]}.html">' + (f'<img loading="lazy" src="/assets/mandeul/{x[0]}.jpg" alt="{E(x[1])}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if os.path.exists(f"{ROOT}/assets/mandeul/{x[0]}.jpg") else "") + f'<b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in _hm)
               + f'</div><p><a class="b o" href="/mandeul/">만들기 {len(MK)}가지 전체 보기 ›</a></p></section>')
     _ip = f"{OUT}/index.html"; _it = open(_ip, encoding="utf-8").read()
     if "<!--MKHOME-->" in _it: open(_ip, "w", encoding="utf-8").write(_it.replace("<!--MKHOME-->", MKHOME))

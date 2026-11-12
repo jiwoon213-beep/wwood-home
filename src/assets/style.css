@@ -178,3 +178,5 @@ dl.yg dt{font-weight:800;font-size:17px;margin:14px 0 2px}dl.yg dt .muted{font-w
 .pg.hrow>.ph{flex:0 0 72%;max-width:420px}@media(min-width:900px){.pg.hrow>.ph{flex-basis:31%}}
 .top .vcnt{color:#EDE7DD;font-size:12px;opacity:.9;white-space:nowrap;margin-right:4px}
 img{-webkit-user-drag:none;-webkit-touch-callout:none}
+
+.mkfig{margin:6px 0 16px}.mkfig img{width:100%;height:auto;border-radius:14px;border:1px solid #e6e0d4;display:block}figure.mkfig figcaption{margin-top:6px}
