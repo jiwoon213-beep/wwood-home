@@ -1151,6 +1151,31 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
               + f'</div><p><a class="b o" href="/mandeul/">만들기 {len(MK)}가지 전체 보기 ›</a></p></section>')
     _ip = f"{OUT}/index.html"; _it = open(_ip, encoding="utf-8").read()
     if "<!--MKHOME-->" in _it: open(_ip, "w", encoding="utf-8").write(_it.replace("<!--MKHOME-->", MKHOME))
+    # 사이트 전체: 소식·제품·자재 사진·지역×자재 페이지에 "직접 만들어 보기"(완성 그림 카드) 자동 삽입 — 새 글도 빌드 때 자동 적용
+    def _mkcard(x):
+        im = f'<img loading="lazy" src="/assets/mandeul/{x[0]}.jpg" alt="{E(x[1])}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if os.path.exists(f"{ROOT}/assets/mandeul/{x[0]}.jpg") else ""
+        return f'<a class="mc" href="/mandeul/{x[0]}.html">{im}<b>{E(x[1])}</b><small>재단 크기·그림 설명서·영상</small></a>'
+    _MKD = {x[0]: x for x in MK}
+    def _mkrel(title, body):
+        got = []
+        for k, rx in MKV.items():
+            if k in _MKD and k not in ("jakeopdae", "beranda", "sinbaljang") and re.search(rx, title) and _MKD[k] not in got: got.append(_MKD[k])
+        mats = sorted(((m_.start(), ms) for ms, rx in MATKW.items() for m_ in [re.search(rx, title if ms in ("hardware", "stain") else title + " " + body[:3000])] if m_ and ms in _mkmat), key=lambda t: t[0])
+        for _, ms in mats[:2]:
+            for x in _mkmat[ms]:
+                if x not in got: got.append(x)
+        return got[:6]
+    for _f in glob.glob(f"{OUT}/news/*.html") + glob.glob(f"{OUT}/p/*.html") + glob.glob(f"{OUT}/jaryo/*.html") + glob.glob(f"{OUT}/daejeon/*.html") + glob.glob(f"{OUT}/sejong/*.html"):
+        if _f.endswith("index.html"): continue
+        _t = open(_f, encoding="utf-8").read()
+        if "직접 만들어 보기</h2>" in _t or '<section class="cta">' not in _t: continue
+        _h1 = re.search(r"<h1[^>]*>(.*?)</h1>", _t, re.S); _h1 = re.sub(r"<[^>]+>", "", _h1.group(1)) if _h1 else ""
+        _main = re.sub(r"<[^>]+>", " ", _t.split("<main>")[-1].split('<section class="cta">')[0]) if "/news/" in _f else ""
+        _r = _mkrel(_h1, _main)
+        if not _r: continue
+        _sec = ('<section class="wrap sec"><h2>🪚 직접 만들어 보기</h2><p class="small muted">이 자재로 만들 수 있는 것 — 재단 크기, 그림 설명서, 만들기 영상까지 정리했습니다. 매장에서 그 크기대로 잘라 드려요.</p><div class="mg m2">'
+                + "".join(_mkcard(x) for x in _r) + '</div><p><a href="/mandeul/">만들기 전체 보기 ›</a></p></section>')
+        open(_f, "w", encoding="utf-8").write(_t.replace('<section class="cta">', _sec + '<section class="cta">', 1))
     for _f in glob.glob(f"{OUT}/jajae/*.html"):
         _t = open(_f, encoding="utf-8").read()
         _t2 = re.sub(r"<!--MK:([\w-]+)-->", lambda mm: MKMAT_HTML.get(mm.group(1), ""), _t)
