@@ -910,8 +910,22 @@ def build():
       ["MDF 15mm", "MDF 6mm", "목공 피스·목공본드", "수성 페인트"]),
     ]
     mk_cards = ""
+    # 만들기별 관련 유튜브 영상(제목 키워드). 없는 slug는 짧은 이름으로 찾음
+    MKV = {"pyeongsang": r"평상", "chaekjang": r"책장", "tutbat": r"텃밭|화분만들기|방부목 화분", "deck": r"데크 셀프|방부목 데크|데크 시공|데크만들기|데크 만들기",
+           "gabyeok": r"가벽", "byeokseonban": r"^(?!.*온실).*(벽선반|원목선반|선반 만들|선반만들)", "ultari": r"울타리|펜스", "teibeul": r"테이블",
+           "sinbaljang": r"신발장|수납장", "benchi": r"벤치|의자", "chimdae": r"침대", "jakeopdae": r"작업대|가구만들기|합판으로 가구", "monitor": r"모니터|컴퓨터받침대",
+           "beranda": r"^(?!.*온실).*(선반|수납장)", "dannyeolbyeok": r"단열", "saideu": r"협탁|사이드", "hyeongwanbench": r"수납 의자|벤치|의자",
+           "gaejip": r"강아지집|개집", "hwabundae": r"화분", "aichaeksang": r"책상", "geosiljang": r"티비다이|TV 수납|거실장", "seutul": r"스툴|의자",
+           "nopeuntutbat": r"텃밭|화분만들기|방부목 화분", "haenggeo": r"행거|옷장", "yaoeteibeul": r"테이블", "jangjak": r"장작", "gongguborad": r"공구통|타공판|공구 수납|수납장",
+           "cube": r"나무박스|박스만들기|수납박스|정리함"}
+    def mkvids(slug, nm):
+        rx = MKV.get(slug) or re.escape(re.sub(r"^(원목|목재|야외|작은)\s*", "", nm).split()[0])
+        hit = [v for v in V if re.search(rx, v["title"])]
+        hit.sort(key=lambda v: (0 if re.search(rx, v["title"].split("|")[0]) else 1, 0 if v["type"] != "S" else 1, -v["n"]))
+        return hit[:6]
     for slug, nm, title, lead, rows, steps, mats in MK:
         trs, btns = "", ""
+        _mv = mkvids(slug, nm)
         for part, cat, rx, parts, desc in rows:
             c = next(c for c in _cd["cats"] if c["n"] == cat)
             if c["lin"]:
@@ -927,7 +941,7 @@ def build():
 <p class="small muted">톱날 3mm를 빼고 계산했습니다. 크기를 바꾸고 싶으면 아래 재단 그림에서 숫자만 고치세요.</p><p>{btns}</p></section>
 <section class="wrap sec g2"><div class="card"><h2>만드는 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol></div>
 <div class="card"><h2>준비할 자재</h2><ul>{"".join(f"<li>{E(x)}</li>" for x in mats)}</ul><p>매장({ADDR})에서 위 크기대로 즉석 재단해 드립니다. 이 페이지를 보여주시면 됩니다.</p></div></section>
-<section class="wrap sec"><h2>다른 만들기</h2><p>{" · ".join(f'<a href="/mandeul/{x[0]}.html">{E(x[1])}</a>' for x in MK if x[0] != slug)} · <a href="/cut.html">재단 미리보기</a> · <a href="/calc.html">자재 계산기</a></p></section>{CTA}"""
+{(f'<section class="wrap sec"><h2>{E(nm)} 만들기 영상</h2>' + embed(_mv[0]) + vsplit(_mv[1:], "h3") + '</section>') if _mv else ''}<section class="wrap sec"><h2>다른 만들기</h2><p>{" · ".join(f'<a href="/mandeul/{x[0]}.html">{E(x[1])}</a>' for x in MK if x[0] != slug)} · <a href="/cut.html">재단 미리보기</a> · <a href="/calc.html">자재 계산기</a></p></section>{CTA}"""
         fq = [{"@type": "Question", "name": f"{nm} 만들 때 자재 재단해 주나요?", "acceptedAnswer": {"@type": "Answer", "text": f"네. 대전 {ADDR} 영진종합목재에서 표의 크기대로 즉석 재단해 드립니다. 한 개 소량도 됩니다."}}]
         page(f"mandeul/{slug}.html", title + " | 영진목재", lead[:120], body, "", {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": fq})
         mk_cards += f'<a class="mc" href="/mandeul/{slug}.html"><b>{E(nm)}</b><small>{E(lead[:40])}…</small></a>'
