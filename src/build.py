@@ -200,7 +200,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><img class="lm" src="/assets/logo-mark.svg" width="46" height="46" alt=""><span class="lt"><b>영진종합목재</b><small><em>월드건축자재</em> · 충청권 최대규모 목재상</small></span></a>
 <nav>{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">DIY 만들기</a> · <a href="/sigongbeop/">인테리어 자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">DIY 만들기</a> · <a href="/sigongbeop/">인테리어 자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/faq.html">자주 묻는 질문</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로 무단 복제·사용을 금합니다.<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr",seen=false;try{{seen=localStorage.getItem("vcd")===k;}}catch(e){{}}var m=seen?"get":"hit";if(!seen){{try{{var rf=document.referrer||"",src=/youtube|youtu\\.be/.test(rf)?"yt":/naver/.test(rf)?"naver":/google/.test(rf)?"google":/daum|kakao/.test(rf)?"daum":/bing/.test(rf)?"bing":/daangn|karrot/.test(rf)?"daangn":/wwood\\.kr/.test(rf)?"wwoodkr":rf&&rf.indexOf(location.host)<0?"etc":"direct";fetch(b+"hit/"+n+"/src-"+src).catch(function(){{}});fetch(b+"hit/"+n+"/src-"+src+"-d"+k).catch(function(){{}});}}catch(e){{}}}}Promise.all([fetch(b+m+"/"+n+"/d"+k).then(function(r){{return r.json()}}),fetch(b+m+"/"+n+"/total").then(function(r){{return r.json()}})]).then(function(v){{try{{localStorage.setItem("vcd",k)}}catch(e){{}}var t=v[0].value||0,a=v[1].value||0;var el=document.getElementById("vcnt");if(el)el.textContent="오늘 "+t.toLocaleString()+" · 전체 "+a.toLocaleString();}}).catch(function(){{}});}}catch(e){{}}}})();</script>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
@@ -1032,6 +1032,7 @@ def build():
         _qa.append(("지방에서도 자재를 받을 수 있나요?", "대전·세종·공주·계룡·논산·금산·옥천은 배송하고, 그 외 전국은 용달로 보내 드립니다(운임 견적 후 출고)."))
         body = body.replace("<!--MKFAQ-->", f'<section class="wrap sec"><h2>{E(nm)} 자주 묻는 질문</h2>' + faqslide(_qa) + '</section>')
         fq = [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a_}} for q, a_ in _qa]
+        ALLFAQ.append(("DIY 만들기", _qa[:2], f"/mandeul/{slug}.html", nm))
         page(f"mandeul/{slug}.html", title + " | 영진목재", lead[:120], body, "/mandeul/", [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": fq}] + ([{"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": BASE + f"/assets/mandeul/{slug}{sfx}.jpg", "name": f"{nm} " + ("완성 모습 그림" if not sfx else "만드는 순서 그림 설명서"), "creator": {"@type": "Organization", "name": "영진종합목재(월드건축자재)", "url": BASE + "/"}, "copyrightHolder": {"@type": "Organization", "name": "영진종합목재(월드건축자재)"}, "copyrightNotice": "© 영진종합목재(월드건축자재) www.wwood.co.kr", "creditText": "영진종합목재", "license": BASE + "/mandeul/", "acquireLicensePage": BASE + "/visit.html"} for sfx in ([""] if _hi else []) + (["-steps"] if _si else [])]), (BASE + f"/assets/mandeul/{slug}.jpg") if _hi else (f"https://i.ytimg.com/vi/{_mv[0]['id']}/hqdefault.jpg" if _mv else None))
         mk_cards += f'<a class="mc" href="/mandeul/{slug}.html">' + (f'<img loading="lazy" src="/assets/mandeul/{slug}.jpg" alt="{E(nm)}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if _hi else "") + f'<b>{E(nm)}</b><small>{E(lead[:40])}…</small><span hidden>{E(" ".join(r[1] + " " + r[4] for r in rows) + " " + " ".join(mats) + " " + lead)}</span></a>'
     # 자재 백과 ↔ 만들기 연결: 자재 페이지에 "이 자재로 만들 수 있는 것"
@@ -1081,6 +1082,7 @@ def build():
         _sq.append((f"{nm}에 어떤 자재가 필요한가요?", ", ".join(a for a, b, c in rows) + "가 필요합니다. 규격과 예시 수량은 위 표에 있습니다."))
         _sq.append((f"{nm} 시공도 맡길 수 있나요?", "네. 월드아키텍쳐(실내건축공사업 등록)가 대전·세종에서 직접 시공합니다. 전화 042-545-2900으로 문의하세요."))
         _sq.append(("자재를 원하는 크기로 잘라 주나요?", f"네. 대전 {ADDR} 매장에서 원하는 크기로 재단해 드리고, 전국 용달 배송도 됩니다."))
+        ALLFAQ.append(("자재 시공법", _sq[:3], f"/sigongbeop/{slug}.html", nm))
         body = body.replace("<!--SGFAQ-->", f'<section class="wrap sec"><h2>{E(nm)} 자주 묻는 질문</h2>' + faqslide(_sq) + '</section>')
         ld = [{"@context": "https://schema.org", "@type": "HowTo", "name": title.split(" — ")[0], "description": lead,
                "supply": [{"@type": "HowToSupply", "name": a} for a, b, c in rows], "tool": [{"@type": "HowToTool", "name": t} for t in tools],
@@ -1325,6 +1327,27 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         _t = open(_f, encoding="utf-8").read()
         _t2 = re.sub(r"<!--MK:([\w-]+)-->", lambda mm: SGMAT_HTML.get(mm.group(1), "") + MKMAT_HTML.get(mm.group(1), ""), _t)
         if _t2 != _t: open(_f, "w", encoding="utf-8").write(_t2)
+    # 자주 묻는 질문 모음(/faq.html) — 자재·재단·만들기·시공 질문을 한 페이지에
+    _mn = {m["slug"]: m["name"] for m in MATS}
+    _groups = [("재단·배송", [(q, a_, "/cut.html", "재단 미리보기") for q, a_ in _CF])]
+    _mat = []
+    for k_, v_ in MFAQ.items():
+        for q, a_ in v_[:2]: _mat.append((q, a_, f"/jajae/{k_}.html", _mn.get(k_, "자재 백과")))
+    _groups.append(("자재 고르기", _mat))
+    _groups.append(("필요한 양 계산", [(q, a_, "/calc.html", "자재 계산기") for q, a_ in CALC_FAQ]))
+    for g_ in ("DIY 만들기", "자재 시공법"):
+        _groups.append((g_, [(q, a_, u_, n_) for gg, qa_, u_, n_ in ALLFAQ if gg == g_ for q, a_ in qa_]))
+    _fb = ""; _fld = []; _toc = []
+    for gi, (gn, qs) in enumerate(_groups):
+        if not qs: continue
+        _toc.append(f'<a href="#g{gi}">{E(gn)} ({len(qs)})</a>')
+        _fb += f'<h2 id="g{gi}">{E(gn)}</h2><div class="faqx">' + "".join(f'<details><summary>{E(q)}</summary><p>{E(a_)} <a href="{u_}">{E(n_)} 보기 ›</a></p></details>' for q, a_, u_, n_ in qs) + '</div>'
+        _fld += [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a_}} for q, a_, u_, n_ in qs]
+    page("faq.html", f"목재·합판 자주 묻는 질문 {len(_fld)}가지 — 재단·가격·만들기·시공 | 영진목재", "합판 재단, 자재 고르기, 필요한 양 계산, DIY 만들기 자재비, 석고보드·사이딩·마루 시공까지 손님들이 자주 묻는 질문과 답을 모았습니다. 대전 영진종합목재.",
+         f'<section class="wrap sec"><h1>자주 묻는 질문</h1><p class="lead">매장과 전화로 가장 많이 받는 질문을 모았습니다. 찾는 답이 없으면 042-545-2900으로 물어보세요.</p><div class="gsrch"><span>🔍</span><input id="fq" type="search" placeholder="질문 검색 (예: 재단, 몇 장, 평상, 석고보드)" autocomplete="off" aria-label="질문 검색"></div><p class="small">{" · ".join(_toc)}</p>{_fb}</section>'
+         + '<style>.faqx details{background:#fff;border:1px solid var(--line);border-radius:12px;margin:0 0 8px;padding:0 14px}.faqx summary{cursor:pointer;font-weight:700;padding:12px 0;list-style:none}.faqx summary::-webkit-details-marker{display:none}.faqx summary:before{content:"Q. ";color:var(--red)}.faqx p{margin:0 0 12px;color:var(--mut)}</style>'
+         + '<script>(function(){var q=document.getElementById("fq"),D=[].slice.call(document.querySelectorAll(".faqx details"));q.addEventListener("input",function(){var v=q.value.replace(/\\s/g,"");D.forEach(function(d){var ok=!v||d.textContent.replace(/\\s/g,"").indexOf(v)>=0;d.style.display=ok?"":"none";d.open=!!v&&ok})})})();</script>' + CTA, "",
+         {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": _fld[:120]})
     # 속도: 유튜브 iframe → 썸네일+재생 버튼(누르면 그때 영상 로드). 페이지가 훨씬 빨리 뜸(구글 순위 요소)
     _yrx = re.compile(r'<iframe[^>]*src="https://www\.youtube\.com/embed/([A-Za-z0-9_-]{11})[^"]*"([^>]*)></iframe>')
     def _yf(m):
@@ -1417,5 +1440,6 @@ import hashlib
 ASSET_V = hashlib.md5((open(f"{ROOT}/assets/style.css","rb").read()+open(f"{ROOT}/assets/site.js","rb").read())).hexdigest()[:8]
 SITEMAP = []
 VSM = []
+ALLFAQ = []
 SIMG = {}
 build()
