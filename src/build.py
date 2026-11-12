@@ -1343,11 +1343,17 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     SITEMAP[:] = [u for u in SITEMAP if not u.endswith("/r/")]
     _hp = ["pyeongsang", "chaekjang", "chimdae", "deck", "sinbaljang", "gaejip", "teibeul", "beranda"]
     _hm = [x for k in _hp for x in MK if x[0] == k]
+    _nx0 = set(json.load(open(f"{ROOT}/data/new_exclude.json", encoding="utf-8"))) if os.path.exists(f"{ROOT}/data/new_exclude.json") else set()
+    _fsx = json.load(open(f"{ROOT}/data/firstseen.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/firstseen.json") else {}
+    _recent = lambda x, k_: (x[0] in _nx0, -int(_fsx.get(f"{BASE}/{k_}/{x[0]}.html", "9999-99-99").replace("-", "")[:8] or 0) if x[0] not in _nx0 else 0)
+    _newmk = sorted([x for x in MK if x[0] not in _nx0], key=lambda x: _recent(x, "mandeul"))[:4]
+    _hm = (_newmk + [x for x in _hm if x not in _newmk])[:8]
+    _sgh = sorted(SG, key=lambda x: _recent(x, "sigongbeop"))[:8]  # 새 시공법 먼저
     MKHOME = ('<section class="wrap sec"><h2>DIY 만들기 — 자재와 재단 크기</h2><p class="small muted">만들 것을 고르면 필요한 자재, 몇 mm로 몇 개 자를지, 만드는 순서와 영상까지 나옵니다. 매장에서 그 크기대로 잘라 드려요.</p><div class="mg m2">'
               + "".join(f'<a class="mc" href="/mandeul/{x[0]}.html">' + (f'<img loading="lazy" src="/assets/mandeul/{x[0]}.jpg" alt="{E(x[1])}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if os.path.exists(f"{ROOT}/assets/mandeul/{x[0]}.jpg") else "") + f'<b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in _hm)
               + f'</div><p><a class="b o" href="/mandeul/">DIY 만들기 {len(MK)}가지 전체 보기 ›</a></p></section>'
               + '<section class="wrap sec"><h2>인테리어 자재 시공법</h2><p class="small muted">석고보드·루바·사이딩·몰딩·마루·필름·문 교체까지 — 필요한 자재 수량, 그림 설명서, 시공 영상을 정리했습니다. 어려운 공사는 직접 시공도 합니다.</p><div class="mg m2">'
-              + "".join(f'<a class="mc" href="/sigongbeop/{x[0]}.html">' + (f'<img loading="lazy" src="/assets/sigongbeop/{x[0]}.jpg" alt="{E(x[1])}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if os.path.exists(f"{ROOT}/assets/sigongbeop/{x[0]}.jpg") else "") + f'<b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in SG[:8])
+              + "".join(f'<a class="mc" href="/sigongbeop/{x[0]}.html">' + (f'<img loading="lazy" src="/assets/sigongbeop/{x[0]}.jpg" alt="{E(x[1])}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if os.path.exists(f"{ROOT}/assets/sigongbeop/{x[0]}.jpg") else "") + f'<b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in _sgh)
               + f'</div><p><a class="b o" href="/sigongbeop/">시공법 {len(SG)}가지 전체 보기 ›</a></p></section>')
     _ip = f"{OUT}/index.html"; _it = open(_ip, encoding="utf-8").read()
     if "<!--MKHOME-->" in _it: open(_ip, "w", encoding="utf-8").write(_it.replace("<!--MKHOME-->", MKHOME))
