@@ -458,7 +458,7 @@ def build():
                 g.setdefault((typ, size), set()).add(float(th))
             if not g: return ""
             trs = "".join(f"<tr><td>{E(t)}</td><td>{sz}</td><td>{', '.join(('%g' % x) for x in sorted(v))}</td></tr>" for (t, sz), v in g.items())
-            return f'<h2>{label} 규격</h2><p class="muted small">{note}</p><div class="tw"><table><thead><tr><th>종류</th><th>크기(mm)</th><th>두께(mm)</th></tr></thead><tbody>{trs}</tbody></table></div>'
+            return f'<div class="gs" data-l="{label}"><h2>{label} 규격</h2><p class="muted small">{note}</p><div class="tw"><table><thead><tr><th>종류</th><th>크기(mm)</th><th>두께(mm)</th></tr></thead><tbody>{trs}</tbody></table></div></div>'
         def lin(cats, label, note):
             trs = []
             for r in rows:
@@ -467,7 +467,7 @@ def build():
                 if re.search(r"클립|브라켓|캡|지주|본드", n): continue
                 a, _, b = n.partition("@")
                 trs.append(f"<tr><td>{E(a.strip() or n)}</td><td>{E(b.strip())}</td></tr>")
-            return f'<h2>{label} 규격</h2><p class="muted small">{note}</p><div class="tw"><table><thead><tr><th>종류</th><th>단면·길이</th></tr></thead><tbody>{"".join(trs)}</tbody></table></div>' if trs else ""
+            return f'<div class="gs" data-l="{label}"><h2>{label} 규격</h2><p class="muted small">{note}</p><div class="tw"><table><thead><tr><th>종류</th><th>단면·길이</th></tr></thead><tbody>{"".join(trs)}</tbody></table></div></div>' if trs else ""
         body = (sheet("합판", "합판", "4×8 = 1220×2440mm, 3×6 = 900×1800mm. (베)=베트남, (인)=인도네시아, OSB·태고(코팅)·오쿠메 등은 종류별로 따로 표시했습니다.")
               + sheet("엠디", "MDF", "MDF는 4×8(1220×2440) 원판 기준입니다. 고밀도·LPM(백색 코팅)은 따로 표시했습니다.")
               + sheet("집성판", "집성판", "수종에 따라 원판 크기가 1200×2400 또는 1220×2440으로 조금 다릅니다.")
@@ -477,12 +477,27 @@ def build():
               + lin(["방부"], "방부목", "12자는 약 3.6m입니다. 데크재와 각재(2×4, 4×4 등).")
               + lin(["목재", "각재"], "각재·다루끼", "1.0×1.0은 1치×1치(약 30×30mm), 12자는 약 3.6m입니다.")
               + lin(["합성", "데크"], "데크재", "합성데크와 하드우드 데크재(시우리·캠퍼스·큐링)."))
-        return body
+        labs = re.findall(r'class="gs" data-l="([^"]+)"', body)
+        chips = "".join(f'<button type="button" data-i="{i}"{" class=on" if i == 0 else ""}>{E(l)}</button>' for i, l in enumerate(labs))
+        css = ('<style>.gsrch{position:relative;margin:0 0 12px}.gsrch input{width:100%;box-sizing:border-box;font-size:17px;padding:13px 14px 13px 42px;border:2px solid #d9d3c7;border-radius:12px;background:#fff}.gsrch input:focus{outline:0;border-color:#c8101a}.gsrch span{position:absolute;left:14px;top:12px;font-size:18px}'
+               '.gchip{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}.gchip::-webkit-scrollbar{display:none}.gchip button{flex:0 0 auto;border:1px solid #d9d3c7;background:#fff;border-radius:999px;padding:8px 14px;font-size:15px;font-weight:700;color:#333}.gchip button.on{background:#1f1d1a;color:#fff;border-color:#1f1d1a}'
+               '.gyc{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.gyc::-webkit-scrollbar{display:none}.gs{flex:0 0 100%;scroll-snap-align:start;box-sizing:border-box;background:#fff;border:1px solid #e6e0d4;border-radius:16px;padding:16px}.gs h2{margin-top:0}.gs .tw{max-height:70vh;overflow:auto}'
+               '.gnav{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:14px;color:#777}.gnav button{border:1px solid #d9d3c7;background:#fff;border-radius:10px;padding:8px 14px;font-size:15px}.gyc.q{display:block}.gyc.q .gs{margin-bottom:12px}.gyc.q .gs.no{display:none}#gyn{min-height:1em}</style>')
+        js = ('<script>(function(){var c=document.getElementById("gyc"),S=[].slice.call(c.querySelectorAll(".gs")),B=[].slice.call(document.querySelectorAll(".gchip button")),pg=document.getElementById("gpg"),q=document.getElementById("gyq"),n=document.getElementById("gyn");'
+              'function cur(){return Math.round(c.scrollLeft/c.clientWidth)}function mark(i){B.forEach(function(b,k){b.classList.toggle("on",k==i)});if(B[i])B[i].scrollIntoView({block:"nearest",inline:"center"});pg.textContent=(i+1)+" / "+S.length+" · 옆으로 밀어서 넘기기"}'
+              'function go(i){i=Math.max(0,Math.min(S.length-1,i));if(c.classList.contains("q")){q.value="";filt()}c.scrollTo({left:i*c.clientWidth,behavior:"smooth"});mark(i)}'
+              'var t;c.addEventListener("scroll",function(){clearTimeout(t);t=setTimeout(function(){if(!c.classList.contains("q"))mark(cur())},80)});'
+              'B.forEach(function(b){b.onclick=function(){go(+b.dataset.i)}});document.getElementById("gpv").onclick=function(){go(cur()-1)};document.getElementById("gnx").onclick=function(){go(cur()+1)};'
+              'function norm(x){return x.toLowerCase().replace(/[\\s×x*\\-]/g,"").replace(/투바이포|투바이/g,"2by4").replace(/2by4|2x4/g,"2by4")}'
+              'function filt(){var v=norm(q.value),hit=0;c.classList.toggle("q",!!v);S.forEach(function(s){var any=0;[].forEach.call(s.querySelectorAll("tbody tr"),function(r){var ok=!v||norm(r.textContent+" "+s.dataset.l).indexOf(v)>=0;r.style.display=ok?"":"none";if(ok&&v){any++;hit++}});s.classList.toggle("no",!!v&&!any)});n.textContent=v?(hit?hit+"개 찾음":"찾는 규격이 없어요. 매장에 전화로 물어봐 주세요."):"";document.querySelector(".gnav").style.display=v?"none":""}'
+              'q.addEventListener("input",filt);mark(0)})();</script>')
+        return ('<div class="gsrch"><span>🔍</span><input id="gyq" type="search" placeholder="규격 검색 (예: 12T, OSB, 2x4, 방수, 다루끼)" autocomplete="off" aria-label="규격 검색"></div><p id="gyn" class="small muted"></p>'
+                + f'<div class="gchip">{chips}</div><div class="gyc" id="gyc">{body}</div><div class="gnav"><button type="button" id="gpv">‹ 이전</button><span id="gpg"></span><button type="button" id="gnx">다음 ›</button></div>' + css + js)
     _gyb = _gy()
     page("gyugyeok.html", "합판·MDF·석고보드·구조재 규격표 — 두께·크기 한눈에 | 영진목재", "합판 두께, MDF 규격, 석고보드 크기, 구조재 2x4 실제 치수, 방부목·각재·다루끼 규격을 한 표로 정리했습니다. 대전 영진목재 매장 취급 제품 기준.",
          f"""<section class="wrap sec"><h1>목재·합판 규격표</h1><p class="lead">매장에서 실제로 파는 제품 기준으로 크기와 두께를 정리했습니다. 원하는 크기는 매장에서 바로 재단해 드리고, 어떻게 잘리는지는 <a href="/cut.html">재단 미리보기</a>에서 그림으로 볼 수 있습니다.</p>
 <div class="card"><h2>단위 읽는 법</h2><ul><li><b>4×8</b> = 4피트×8피트 = 1220×2440mm, <b>3×6</b> = 900×1800mm</li><li><b>T</b> = 두께(mm). 8.5T = 8.5mm</li><li><b>1치</b> ≈ 30mm, <b>1자</b> ≈ 303mm → <b>12자</b> ≈ 3.6m, 8자 ≈ 2.4m</li><li><b>12ft</b> ≈ 3.6m (구조재)</li><li><b>2×4</b>(투바이포)는 이름일 뿐, 실제 치수는 38×89mm</li></ul></div></section>
-<section class="wrap sec">{_gyb}<p>가격은 <a href="/price.html">기준가</a>, 필요한 양은 <a href="/calc.html">자재 계산기</a>, 자재별 용도는 <a href="/jajae/">자재 백과</a>에서 보세요.</p></section>{CTA}""", "",
+<section class="wrap sec">{_gyb}<p style="margin-top:14px">가격은 <a href="/price.html">기준가</a>, 필요한 양은 <a href="/calc.html">자재 계산기</a>, 자재별 용도는 <a href="/jajae/">자재 백과</a>에서 보세요.</p></section>{CTA}""", "",
          [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
            {"@type": "Question", "name": "합판 4×8은 몇 mm인가요?", "acceptedAnswer": {"@type": "Answer", "text": "4×8 합판은 1220×2440mm입니다. 3×6은 900×1800mm입니다."}},
            {"@type": "Question", "name": "구조재 2×4 실제 치수는?", "acceptedAnswer": {"@type": "Answer", "text": "2×4 구조재의 실제 단면은 38×89mm이고, 12ft 길이는 약 3.6m입니다."}},
