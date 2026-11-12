@@ -1278,9 +1278,18 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     def pcard2(p):
         sub = MCAT.get(subof(p, p["top"]) or "", "")
         return (f'<a class="pd" href="/p/{p["id"]}.html"><span class="pi"><img loading="lazy" src="{E(p["img"])}" alt="{E(p["name"])}"></span><b>{E(p["name"])}</b>{f"<small>{E(sub)}</small>" if sub else ""}</a>')
+    PSPEC = json.load(open(f"{ROOT}/data/pspec.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/pspec.json") else {}
     for p in PROD:
         if not p["tops"] or p["top"] not in jn: continue
         sl, cn, cd = jn[p["top"]]
+        _sp = [r for r in PSPEC.get(str(p["id"]), []) if r and r[0].strip()]
+        _sp = [[c.strip() for c in r] for r in _sp][:40]
+        _cols = [k for k, nm_ in enumerate(["규격", "단위", "원산지", "수종", "비고"]) if any(r[k] for r in _sp)]
+        _sv = lambda v: "재고 문의" if v == "품절" else v
+        spec = (f'<h2>{E(p["name"])} 규격</h2><div class="tw"><table class="rt"><thead><tr>' + "".join(f'<th>{["규격", "단위", "원산지", "수종", "비고"][k]}</th>' for k in _cols) + '</tr></thead><tbody>'
+                + "".join('<tr>' + "".join((f'<th>{E(r[k])}</th>' if k == 0 else f'<td data-l="{["규격", "단위", "원산지", "수종", "비고"][k]}">{E(_sv(r[k]))}</td>') for k in _cols) + '</tr>' for r in _sp)
+                + f'</tbody></table></div><p class="small muted">규격 {len(_sp)}가지 · 표에 없는 크기도 원하는 사이즈로 재단해 드립니다. 가격·재고는 쇼핑몰이나 매장(042-545-2900)에서 확인하세요.</p>') if _sp else ""
+        _sz = ", ".join(dict.fromkeys(r[0] for r in _sp))[:70]
         sb = subof(p, p["top"]); sname = MCAT.get(sb or "", "")
         sim = [q for q in PROD if q is not p and q["tops"] and q["top"] == p["top"] and subof(q, q["top"]) == sb][:12]
         if len(sim) < 6: sim += [q for q in PROD if q is not p and q not in sim and q["tops"] and q["top"] == p["top"]][:12 - len(sim)]
@@ -1291,12 +1300,12 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
             if re.search(rx, p["name"]): mt = mname.get(ms); break
         use = (f'<h2>{E(mt["name"])} — 어디에 쓰나요?</h2><ul>' + "".join(f"<li>{E(w)}</li>" for w in mt["where"]) + f'</ul><p>{E(mt["effect"])}</p><p><a href="/jajae/{mt["slug"]}.html">{E(mt["name"])} 용도·기준가·시공 영상 자세히 ›</a></p>') if mt else ""
         cat = f"{cn}{' · ' + sname if sname else ''}"
-        page(f"p/{p['id']}.html", f"{p['name']} — {cat} | 대전 영진목재", f"{p['name']} ({cat}) 사진. 대전 영진목재(월드건축자재) 매장 취급, 원하는 사이즈 재단·배송.",
+        page(f"p/{p['id']}.html", f"{p['name']} 규격·사진 — {cat} | 대전 영진목재" if _sp else f"{p['name']} — {cat} | 대전 영진목재", (f"{p['name']} 규격: {_sz}. " if _sp else f"{p['name']} ({cat}) 사진. ") + "대전 영진목재(월드건축자재) 매장 취급, 원하는 사이즈 재단·배송.",
              f"""<section class="wrap sec"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/jaryo/{sl}.html">{E(cn)}</a>{f' › {E(sname)}' if sname else ''}</p>
 <div class="g2 pdet"><div><img class="pimg" src="{E(p['img'])}" alt="{E(p['name'])}"></div><div><h1>{E(p['name'])}</h1><p class="muted">{E(cat)}</p>
 <p>대전 유성 영진목재(월드건축자재) 3000평 매장에서 실물을 보고 고를 수 있습니다. 원하는 사이즈로 재단해 드리고 대전·세종·공주·계룡·논산·금산·옥천은 배송하고, 그 외 전국은 용달차로 보내 드립니다(운임 견적 → 입금 확인 후 출고). 가격·재고는 쇼핑몰이나 매장(042-545-2900)에서 확인하세요.</p>
 <div class="row"><a class="b r" href="https://wwood.kr/home/mall/shoplist.php?idx={p['id']}&amp;pmode=view" target="_blank" rel="noopener">쇼핑몰에서 가격 보기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화 문의</a></div>
-<p class="small"><a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장 위치</a> · <a href="/jaryo/{sl}.html">{E(cn)} 전체 보기</a></p></div></div>{use}</section>
+<p class="small"><a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장 위치</a> · <a href="/jaryo/{sl}.html">{E(cn)} 전체 보기</a></p></div></div>{spec}{use}</section>
 <section class="wrap sec"><h2>같은 분류 제품</h2><div class="pg hrow">{"".join(pcard2(q) for q in sim)}</div></section>{CTA}""", "/jaryo/", None, p["img"])
 
     # 매장 카운터 QR 안내판이 여는 페이지(/r/) — 리뷰·채널 링크는 여기서만 바꾸면 됨(재인쇄 불필요)
