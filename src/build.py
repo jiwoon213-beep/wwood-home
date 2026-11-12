@@ -1418,6 +1418,36 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         if "youtube.com/embed/" in _t and "<iframe" in _t:
             _t2 = _yrx.sub(_yf, _t)
             if _t2 != _t: open(_f, "w", encoding="utf-8").write(_t2)
+    # NEW 표시 — 7일 안에 새로 올라온 DIY 만들기·시공법·유튜브 영상/쇼츠·소식 글 카드
+    _nd = datetime.date.today(); _NEWD = 7
+    def _isnew(d):
+        try: return 0 <= (_nd - datetime.date.fromisoformat(d[:10])).days < _NEWD
+        except Exception: return False
+    _fs0 = json.load(open(f"{ROOT}/data/firstseen.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/firstseen.json") else {}
+    _nx = set(json.load(open(f"{ROOT}/data/new_exclude.json", encoding="utf-8"))) if os.path.exists(f"{ROOT}/data/new_exclude.json") else set()
+    _newpg = set()
+    for x in MK + SG:
+        k_ = "mandeul" if x in MK else "sigongbeop"
+        if x[0] not in _nx and _isnew(_fs0.get(f"{BASE}/{k_}/{x[0]}.html", _nd.isoformat())): _newpg.add(f"/{k_}/{x[0]}.html")
+    for p_ in POSTS:
+        if _isnew(p_.get("date", "")): _newpg.add(f"/news/{p_['slug']}.html")
+    _newv = set()
+    for l_ in open(f"{ROOT}/data/yt_all.tsv", encoding="utf-8") if os.path.exists(f"{ROOT}/data/yt_all.tsv") else []:
+        r_ = l_.split("\t")
+        try:
+            if 0 <= (datetime.datetime.now().timestamp() - int(r_[3])) < _NEWD * 86400: _newv.add(r_[0])
+        except Exception: pass
+    _NB = '<i class="newb">NEW</i>'
+    _rxp = re.compile(r'(<a class="(?:mc|pc)" href="(/(?:mandeul|sigongbeop|news)/[^"]+\.html)">)')
+    _rxv = re.compile(r'(<a class="vc[^"]*" href="[^"]*"[^>]*data-yt="([^"]+)">)')
+    for _dp, _dn, _fn in os.walk(OUT):
+        for _n in _fn:
+            if not _n.endswith(".html"): continue
+            _f = os.path.join(_dp, _n); _t = open(_f, encoding="utf-8").read()
+            _t2 = _rxp.sub(lambda m: m.group(1) + (_NB if m.group(2) in _newpg else ""), _t)
+            _t2 = _rxv.sub(lambda m: m.group(1) + (_NB if m.group(2) in _newv else ""), _t2)
+            if _t2 != _t: open(_f, "w", encoding="utf-8").write(_t2)
+    print("NEW:", len(_newpg), "pages,", len(_newv), "videos")
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
     json.dump({"cats": [[c, n, d] for c, n, d in CATS], "v": [[v["id"], v["type"], v["cat"], v["n"], v["title"]] for v in V]}, open(f"{OUT}/assets/videos.json", "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))  # wwood.kr 시공영상 페이지용
