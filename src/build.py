@@ -921,6 +921,36 @@ def build():
       ["옆판 2장 아래쪽 앞·뒤에 걸레받이(1164×60)를 끼워 몸통 틀을 만듭니다.", "아래 선반을 걸레받이 위에, 가운데 선반을 높이 약 450mm에 끼워 고정합니다.", "뒷판 MDF 6mm를 옆판 사이에 붙여 흔들림을 잡습니다.", "고무나무 30T 상판을 올려 아래에서 피스로 고정하고, 물에 강한 오일로 마감합니다."],
       ["집성판 18T", "고무나무 집성판 30T", "MDF 6mm", "목공 피스·목공본드", "목재 오일(식품 안전 등급 권장)"]),
     ]
+    _PRICE = {}
+    for _r in csv.DictReader(open(ROOT + "/data/prices.csv", encoding="utf-8")):
+        _k = re.sub(r"\s+", " ", re.sub(r"^[^-]+-\s*", "", _r["name"])).strip()
+        if _r["price"].strip().isdigit() and _k not in _PRICE: _PRICE[_k] = int(_r["price"])
+    def _bundle(n):
+        m = re.search(r"\((\d+)(?:EA)?\)\s*$", n)
+        return int(m.group(1)) if m and 1 < int(m.group(1)) <= 50 else 1
+    def _sheets(W, H, parts, k=3):
+        return min(_sheets1(W, H, parts, k), _sheets1(H, W, parts, k))
+    def _sheets1(W, H, parts, k=3):
+        ps = sorted([(max(a, b), min(a, b)) for a, b, q in parts for _ in range(q)], key=lambda t: (-t[0], -t[1]))
+        bins = []  # 시트마다 선반 목록 [y사용, [(선반높이, x사용)]]
+        for L, S in ps:
+            done = False
+            for sh in bins:
+                for shelf in sh[1]:
+                    for w_, h_ in ((L, S), (S, L)):
+                        if h_ <= shelf[0] and shelf[1] + w_ + (k if shelf[1] else 0) <= W:
+                            shelf[1] += w_ + (k if shelf[1] else 0); done = True; break
+                    if done: break
+                if not done:
+                    for w_, h_ in ((L, S), (S, L)):
+                        if w_ <= W and sh[0] + h_ + (k if sh[0] else 0) <= H:
+                            sh[0] += h_ + (k if sh[0] else 0); sh[1].append([h_, w_]); done = True; break
+                if done: break
+            if not done:
+                for w_, h_ in ((S, L), (L, S)):
+                    if w_ <= W and h_ <= H: bins.append([h_, [[h_, w_]]]); done = True; break
+                if not done: bins.append([H, [[H, W]]])
+        return len(bins)
     mk_cards = ""
     # 만들기별 관련 유튜브 영상(제목 키워드). 없는 slug는 짧은 이름으로 찾음
     MKV = {"pyeongsang": r"평상(?!형)", "chaekjang": r"책장", "tutbat": r"텃밭|화분만들기|방부목 화분", "deck": r"데크 셀프|방부목 데크|데크 시공|데크만들기|데크 만들기",
@@ -942,18 +972,37 @@ def build():
         _hi = os.path.exists(f"{ROOT}/assets/mandeul/{slug}.jpg"); _si = os.path.exists(f"{ROOT}/assets/mandeul/{slug}-steps.jpg")
         _hero = f'<figure class="mkfig"><img src="/assets/mandeul/{slug}.jpg" width="1200" height="800" alt="{E(nm)} 완성 모습 그림"><figcaption class="small muted">완성 모습 그림 — 표의 크기대로 만들면 이렇게 됩니다.</figcaption></figure>' if _hi else ""
         _stp = f'<section class="wrap sec"><h2>{E(nm)} 만드는 순서 (그림 설명서)</h2><img class="mkfig" loading="lazy" src="/assets/mandeul/{slug}-steps.jpg" alt="{E(nm)} 만드는 순서 그림 설명서" style="width:100%;height:auto;border-radius:14px;border:1px solid #e6e0d4"><p class="small muted">빨간 테두리가 그 단계에서 새로 붙이는 부재입니다.</p></section>' if _si else ""
+        _tot = 0; _grp = {}; _seen = set()
         for part, cat, rx, parts, desc in rows:
             c = next(c for c in _cd["cats"] if c["n"] == cat)
+            it = next((x for x in c["items"] if re.search(rx, x[0])), c["items"][0])
+            _grp.setdefault((cat, it[0]), [c, it, []])[2].extend(parts)
+        for part, cat, rx, parts, desc in rows:
+            c = next(c for c in _cd["cats"] if c["n"] == cat)
+            it = next((x for x in c["items"] if re.search(rx, x[0])), c["items"][0])
+            key = (cat, it[0]); allp = _grp[key][2]
+            pr = _PRICE.get(it[0]); bun = _bundle(it[0])
             if c["lin"]:
-                it = next((x for x in c["items"] if re.search(rx, x[0])), c["items"][0])
-                cnt = f'{ffd(it[1], parts)}개 ({it[1]}mm 기준)'
+                n_ = ffd(it[1], allp); unit = f"{it[1]}mm"
+                units = -(-n_ // bun) if bun > 1 else n_
             else:
-                it = next((x for x in c["items"] if re.search(rx, x[0])), c["items"][0])
-                cnt = "재단 그림에서 확인"
-            trs += f'<tr><th>{E(part)}</th><td data-l="자재·재단 크기">{E(desc)}</td><td data-l="필요 수량">{cnt}</td></tr>'
+                n_ = _sheets(it[1], it[2], allp); unit = f"{it[1]}×{it[2]} 원판"
+                units = n_
+            if key in _seen:
+                cnt = "위 줄과 같은 자재에서 함께 재단"; money = "위 금액에 포함"
+            else:
+                _seen.add(key)
+                cnt = (f'{n_}개 ({unit} 기준)' if c["lin"] else f'약 {n_}장 ({unit})') + (" — 아래 줄 포함" if len([r for r in rows if (r[1], next((x for x in next(cc for cc in _cd["cats"] if cc["n"] == r[1])["items"] if re.search(r[2], x[0])), None) and next((x for x in next(cc for cc in _cd["cats"] if cc["n"] == r[1])["items"] if re.search(r[2], x[0])))[0]) == key]) > 1 else "")
+                if pr:
+                    amt = pr * units; _tot += amt
+                    money = f'약 {amt:,}원' + (f' <small class="muted">({bun}개 1단 {pr:,}원 × {units}단)</small>' if bun > 1 else f' <small class="muted">({pr:,}원 × {units})</small>')
+                else:
+                    money = "매장 문의"
+            trs += f'<tr><th>{E(part)}</th><td data-l="자재·재단 크기">{E(desc)}</td><td data-l="필요 수량">{cnt}</td><td data-l="기준가 예상 금액">{money}</td></tr>'
             btns += f'<a class="b o" href="{cutlink(cat, rx, parts)}">{E(part)} 재단 그림</a> '
         body = f"""<section class="wrap sec"><p class="crumb"><a href="/mandeul/">만들기 자재</a> › {E(nm)}</p><h1>{E(title.split(" — ")[0])}</h1><p class="lead">{E(lead)}</p>
-{_hero}<div class="tw"><table class="rt"><thead><tr><th>부분</th><th>자재·재단 크기</th><th>필요 수량</th></tr></thead><tbody>{trs}</tbody></table></div>
+{_hero}<div class="tw"><table class="rt"><thead><tr><th>부분</th><th>자재·재단 크기</th><th>필요 수량</th><th>기준가 예상 금액</th></tr></thead><tbody>{trs}</tbody></table></div>
+{f'<div class="est"><b>예상 자재비 약 {_tot:,}원</b><span>소매 기준가 기준 · 부가세 별도 · 피스·철물·마감재 제외 · 재단비·운임은 매장에서 계산 · 가격은 바뀔 수 있어요</span></div>' if _tot else ''}
 <p class="small muted">톱날 3mm를 빼고 계산했습니다. 크기를 바꾸고 싶으면 아래 재단 그림에서 숫자만 고치세요.</p><p>{btns}</p></section>
 {_stp}<section class="wrap sec g2"><div class="card"><h2>만드는 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol></div>
 <div class="card"><h2>준비할 자재</h2><ul>{"".join(f"<li>{E(x)}</li>" for x in mats)}</ul><p>매장({ADDR})에서 위 크기대로 즉석 재단해 드립니다. 이 페이지를 보여주시면 됩니다.</p></div></section>
@@ -973,7 +1022,8 @@ def build():
                   + "".join(f'<a class="mc" href="/mandeul/{x[0]}.html"><b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in xs[:12]) + '</div></section>' for ms, xs in _mkmat.items()}
     MKNM = {x[0]: x[1] for x in MK}
     # 자재 시공법(내장재·외장재·바닥·도어 등) — /sigongbeop/
-    from sigong_data import SG
+    from sigong_data import SG, SGP
+    _PROWS = [(r["name"], int(r["price"])) for r in csv.DictReader(open(ROOT + "/data/prices.csv", encoding="utf-8")) if r["price"].strip().isdigit()]
     def sgvids(rx):
         hit = [v for v in V if re.search(rx, v["title"])]
         hit.sort(key=lambda v: (0 if re.match(r"\W*(?:" + rx + ")", v["title"]) else 1 if re.search(rx, v["title"].split("|")[0]) else 2, 0 if v["type"] != "S" else 1, -v["n"]))
@@ -986,9 +1036,16 @@ def build():
         hero = f'<figure class="mkfig"><img src="/assets/sigongbeop/{slug}.jpg" width="1200" height="800" alt="{E(nm)} 완성 모습 그림"><figcaption class="small muted">시공이 끝난 모습 그림</figcaption></figure>' if _hi else ""
         stp = f'<section class="wrap sec"><h2>{E(nm)} 순서 (그림 설명서)</h2><img class="mkfig" loading="lazy" src="/assets/sigongbeop/{slug}-steps.jpg" alt="{E(nm)} 순서 그림 설명서" style="width:100%;height:auto;border-radius:14px;border:1px solid #e6e0d4"><p class="small muted">빨간 테두리가 그 단계에서 새로 붙이는 부분입니다.</p></section>' if _si else ""
         trs = "".join(f'<tr><th>{E(a)}</th><td data-l="규격">{E(b) or "—"}</td><td data-l="예시 수량">{E(c)}</td></tr>' for a, b, c in rows)
+        _el = []
+        for lab, prx, q in SGP.get(slug, []):
+            hit = next((pp for nn, pp in _PROWS if re.search(prx, nn)), None)
+            if hit: _el.append((lab, hit, q))
+        _est = ("<h3>기준가 예상 금액</h3><div class=\"tw\"><table class=\"rt\"><thead><tr><th>품목</th><th>기준가</th><th>수량</th><th>예상 금액</th></tr></thead><tbody>"
+                + "".join(f'<tr><th>{E(l)}</th><td data-l="기준가">{p_:,}원</td><td data-l="수량">{q}</td><td data-l="예상 금액">약 {p_ * q:,}원</td></tr>' for l, p_, q in _el)
+                + f'</tbody></table></div><div class="est"><b>예상 자재비 약 {sum(p_ * q for l, p_, q in _el):,}원</b><span>위 품목만 더한 금액 · 소매 기준가 · 부가세 별도 · 표에 없는 품목(피스·본드·마감재 등)은 매장 문의 · 규격·길이·제품에 따라 달라져요</span></div>') if _el else ""
         body = f"""<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › {E(nm)}</p><h1>{E(title.split(" — ")[0])}</h1><p class="lead">{E(lead)}</p>{hero}
 <h2>필요한 자재</h2><p class="small muted" style="margin:-4px 0 8px">예시: {E(ex)}</p><div class="tw"><table class="rt"><thead><tr><th>자재</th><th>규격</th><th>예시 수량</th></tr></thead><tbody>{trs}</tbody></table></div>
-<p class="small muted">수량은 예시 크기 기준 참고치입니다(로스 포함). 실제 크기를 알려 주시면 매장에서 다시 계산해 드리고, 원하는 크기로 재단해 드립니다. <a href="/calc.html">자재 계산기</a> · <a href="/jajae/{ms}.html">{E(_mname.get(ms, ""))} 용도·기준가</a></p></section>{stp}
+{_est}<p class="small muted">수량은 예시 크기 기준 참고치입니다(로스 포함). 실제 크기를 알려 주시면 매장에서 다시 계산해 드리고, 원하는 크기로 재단해 드립니다. <a href="/calc.html">자재 계산기</a> · <a href="/jajae/{ms}.html">{E(_mname.get(ms, ""))} 용도·기준가</a></p></section>{stp}
 <section class="wrap sec g2"><div class="card"><h2>시공 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol><h3>필요한 공구</h3><p>{" · ".join(E(t) for t in tools)}</p></div>
 <div class="card"><h2>주의할 점</h2><ul>{"".join(f"<li>{E(t)}</li>" for t in tips)}</ul><p>자재는 매장({ADDR})에서 실물 보고 고를 수 있고, 시공이 어려우면 월드아키텍쳐(실내건축공사업 등록)에서 직접 시공합니다.</p></div></section>
 {(f'<section class="wrap sec"><h2>{E(nm)} 영상</h2>' + embed(_sv[0]) + vsplit(_sv[1:], "h3") + '</section>') if _sv else ''}

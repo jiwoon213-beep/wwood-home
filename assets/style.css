@@ -225,3 +225,5 @@ table{font-size:15px}th,td{padding:10px 12px}
 @media(max-width:760px){table.rt{border:0;background:transparent}table.rt thead{display:none}table.rt tr{display:block;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:0 0 8px}table.rt th,table.rt td{display:block;border:0;padding:2px 0;text-align:left;background:transparent}table.rt th{font-size:15.5px;font-weight:900;margin-bottom:2px}table.rt td:before{content:attr(data-l);display:block;color:var(--mut);font-size:12px;font-weight:700;margin-top:4px}}
 
 .gsrch{position:relative;margin:0 0 12px}.gsrch input{width:100%;box-sizing:border-box;font-size:17px;padding:13px 14px 13px 42px;border:2px solid #d9d3c7;border-radius:12px;background:#fff;-webkit-appearance:none}.gsrch input:focus{outline:0;border-color:var(--red)}.gsrch span{position:absolute;left:14px;top:12px;font-size:18px}
+
+.est{display:flex;flex-direction:column;gap:2px;background:#FFF7ED;border:1px solid #F5D9B8;border-radius:12px;padding:12px 14px;margin:10px 0}.est b{font-size:19px;color:#B4361E}.est span{font-size:12.5px;color:var(--mut)}
