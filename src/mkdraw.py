@@ -29,6 +29,36 @@ def shade(c, k):
     return tuple(max(0, min(255, int(v * k))) for v in c)
 
 
+def wmark(img):
+    """오른쪽 아래 저작권 표시 + 옅은 사선 반복 워터마크"""
+    W, H = img.size
+    try:
+        f = ImageFont.truetype("/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc", max(14, W // 60))
+    except OSError:
+        f = ImageFont.load_default()
+    lay = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(lay)
+    t = "© 영진종합목재 wwood.co.kr"
+    step = max(260, W // 4)
+    for yy in range(-H, H * 2, step // 2):
+        for xx in range(-W, W * 2, step):
+            d.text((xx + (yy // (step // 2)) % 2 * step // 2, yy), t, fill=(120, 100, 80, 22), font=f)
+    lay = lay.rotate(22, resample=Image.BICUBIC, center=(W / 2, H / 2))
+    d2 = ImageDraw.Draw(lay)
+    tw = d2.textlength(t, font=f)
+    d2.rounded_rectangle([W - tw - 30, H - 44, W - 10, H - 12], 8, fill=(255, 255, 255, 190))
+    d2.text((W - tw - 20, H - 41), t, fill=(150, 20, 26, 255), font=f)
+    out = img.convert("RGBA"); out.alpha_composite(lay)
+    return out.convert("RGB")
+
+
+def save_c(img, path, q):
+    ex = img.getexif()
+    ex[0x013B] = "영진종합목재(월드건축자재) www.wwood.co.kr".encode("utf-8").decode("latin-1", "ignore") or "Youngjin Wood"
+    ex[0x8298] = "Copyright (c) Youngjin Wood (wwood.co.kr). All rights reserved. Unauthorized use prohibited."
+    ex[0x013B] = "Youngjin Wood (wwood.co.kr)"
+    img.save(path, quality=q, exif=ex)
+
+
 def render(slug, boxes, out=None, label="", hl=None, size=(1200, 800)):
     random.seed(slug)
     W, H = size[0] * S, size[1] * S
@@ -130,7 +160,7 @@ def render(slug, boxes, out=None, label="", hl=None, size=(1200, 800)):
             f = f2 = ImageFont.load_default()
         dr.text((40, 34), label, fill=(40, 34, 28), font=f)
         dr.text((40, 76), "완성 모습 그림 · 영진종합목재 www.wwood.co.kr", fill=(120, 108, 92), font=f2)
-    if out: img.save(out, quality=86)
+    if out: save_c(wmark(img), out, 86)
     return img
 
 
@@ -320,7 +350,7 @@ def render_steps(slug, boxes, out, title, caps, spec):
     dr.line([(600, 70), (600, H)], fill=(225, 218, 205), width=2)
     for r in range(1, rows_): dr.line([(0, 70 + r * 470), (W, 70 + r * 470)], fill=(225, 218, 205), width=2)
     dr.text((W - 20, H - 14), "영진종합목재 www.wwood.co.kr", fill=(150, 138, 120), font=F(fr, 16), anchor="rs")
-    img.save(out, quality=84)
+    save_c(wmark(img), out, 84)
 
 
 if __name__ == "__main__":
