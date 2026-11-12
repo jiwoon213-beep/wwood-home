@@ -1333,6 +1333,18 @@ Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i
         try: return datetime.datetime.strptime(d, "%Y-%m-%d").strftime("%a, %d %b %Y 09:00:00 +0900")
         except Exception: return ""
     items = "".join(f"<item><title>{html.escape(p['title'])}</title><link>{BASE}/news/{p['slug']}.html</link><guid>{BASE}/news/{p['slug']}.html</guid><pubDate>{_rfc(p.get('date',''))}</pubDate><description>{html.escape(p.get('desc',''))}</description><content:encoded><![CDATA[{p['body'].replace(']]>',']]&gt;').replace('href="/', 'href="'+BASE+'/').replace('src="/', 'src="'+BASE+'/')}]]></content:encoded></item>\n" for p in POSTS[:50])
+    # DIY 만들기·시공법도 RSS에(처음 올라간 날짜 기록) — 네이버가 새 글을 빨리 가져가게
+    _fsf = f"{ROOT}/data/firstseen.json"
+    _fs = json.load(open(_fsf, encoding="utf-8")) if os.path.exists(_fsf) else {}
+    _today = datetime.date.today().isoformat(); _ex = []
+    for x in MK:
+        u = f"{BASE}/mandeul/{x[0]}.html"; _fs.setdefault(u, _today); _ex.append((_fs[u], x[2].split(" — ")[0] + " — DIY 만들기 자재·재단 크기", u, x[3], f"/assets/mandeul/{x[0]}.jpg"))
+    for x in SG:
+        u = f"{BASE}/sigongbeop/{x[0]}.html"; _fs.setdefault(u, _today); _ex.append((_fs[u], x[2].split(" — ")[0], u, x[3], f"/assets/sigongbeop/{x[0]}.jpg"))
+    json.dump(_fs, open(_fsf, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+    _ex.sort(key=lambda t: t[0], reverse=True)
+    items += "".join(f"<item><title>{html.escape(t)}</title><link>{u}</link><guid>{u}</guid><pubDate>{_rfc(d)}</pubDate><description>{html.escape(ld)}</description>"
+                     + (f'<content:encoded><![CDATA[<p><img src="{BASE}{im}" alt="{html.escape(t)}"></p><p>{html.escape(ld)}</p>]]></content:encoded>' if os.path.exists(ROOT + im.replace("/assets", "/assets", 1)) or True else "") + "</item>\n" for d, t, u, ld, im in _ex[:60])
     open(f"{OUT}/rss.xml", "w", encoding="utf-8").write(f'<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>영진종합목재 소식·자재 정보</title><link>{BASE}/news/</link><description>대전 영진종합목재(월드건축자재) 자재 정보와 시공 소식</description><language>ko</language>\n{items}</channel></rss>\n')
     # wwood.kr(쇼핑몰) 상품 사이트맵 — 서치콘솔에서 두 사이트 모두 소유 확인되어 교차 제출 가능
     _ids = []
