@@ -92,3 +92,5 @@ document.addEventListener("click", function (e) {
 (function(){function b(e){var t=e.target;if(t&&t.tagName==="IMG"){e.preventDefault();return false}}document.addEventListener("contextmenu",b,true);document.addEventListener("dragstart",b,true);})();
 
 (function(){function p(e){var t=e.target;if(t&&t.tagName==="IMG"&&(t.getAttribute("src")||"").indexOf("/assets/")>-1){e.preventDefault();return false}}document.addEventListener("contextmenu",p,true);document.addEventListener("dragstart",p,true)})();
+
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".ytf");if(!b)return;var f=document.createElement("iframe");f.src="https://www.youtube.com/embed/"+b.dataset.id+"?autoplay=1&rel=0";f.allow="autoplay; encrypted-media; picture-in-picture";f.allowFullscreen=true;f.title=b.getAttribute("aria-label")||"영상";f.style.cssText="position:absolute;inset:0;width:100%;height:100%;border:0";b.replaceWith(f)});

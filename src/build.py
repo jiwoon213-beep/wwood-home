@@ -195,7 +195,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <title>{E(title)}</title><meta name="description" content="{E(desc)}"><link rel="alternate" type="application/rss+xml" title="영진종합목재 소식" href="/rss.xml">
 <link rel="canonical" href="{canon}"><meta name="naver-site-verification" content="a59ff6921fc90666c920da00bf9a23ecb0ba3514"><meta property="og:type" content="website"><meta property="og:title" content="{E(title)}">
 <meta property="og:description" content="{E(desc)}"><meta property="og:url" content="{canon}"><meta property="og:image" content="{E(img or (BASE + "/assets/store/storefront.jpg"))}">{"" if img else '<meta property="og:image:width" content="1280"><meta property="og:image:height" content="853">'}<meta property="og:image:alt" content="영진종합목재(월드건축자재) 매장"><meta property="og:site_name" content="영진종합목재 (월드건축자재)"><meta property="og:locale" content="ko_KR"><meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://i.ytimg.com"><link rel="preconnect" href="https://www.wwood.kr"><link rel="icon" href="/assets/logo-mark.svg" type="image/svg+xml"><link rel="icon" href="/assets/favicon-48.png" sizes="48x48"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"><link rel="stylesheet" href="/assets/style.css?v={ASSET_V}">{'<meta name="robots" content="noindex,nofollow">' if PREVIEW else ''}{ld}</head><body>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&amp;display=swap"><link rel="preconnect" href="https://i.ytimg.com"><link rel="preconnect" href="https://www.wwood.kr"><link rel="icon" href="/assets/logo-mark.svg" type="image/svg+xml"><link rel="icon" href="/assets/favicon-48.png" sizes="48x48"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"><link rel="stylesheet" href="/assets/style.css?v={ASSET_V}">{'<meta name="robots" content="noindex,nofollow">' if PREVIEW else ''}{ld}</head><body>
 <div class="top"><div class="wrap row sb"><span>{HOURS} · {ADDR}</span><span><span id="vcnt" class="vcnt"></span> <a href="/dome.html">업체·도매회원</a> <a href="/visit.html">매장 길찾기</a></span></div></div>
 <header><div class="wrap row sb hd"><a class="logo" href="/"><img class="lm" src="/assets/logo-mark.svg" width="46" height="46" alt=""><span class="lt"><b>영진종합목재</b><small><em>월드건축자재</em> · 충청권 최대규모 목재상</small></span></a>
 <nav>{nav}</nav></div></header>
@@ -1313,6 +1313,16 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         _t = open(_f, encoding="utf-8").read()
         _t2 = re.sub(r"<!--MK:([\w-]+)-->", lambda mm: SGMAT_HTML.get(mm.group(1), "") + MKMAT_HTML.get(mm.group(1), ""), _t)
         if _t2 != _t: open(_f, "w", encoding="utf-8").write(_t2)
+    # 속도: 유튜브 iframe → 썸네일+재생 버튼(누르면 그때 영상 로드). 페이지가 훨씬 빨리 뜸(구글 순위 요소)
+    _yrx = re.compile(r'<iframe[^>]*src="https://www\.youtube\.com/embed/([A-Za-z0-9_-]{11})[^"]*"([^>]*)></iframe>')
+    def _yf(m):
+        t = re.search(r'title="([^"]*)"', m.group(0)); t = t.group(1) if t else "영상"
+        return f'<button type="button" class="ytf" data-id="{m.group(1)}" aria-label="{t} 재생"><img src="https://i.ytimg.com/vi/{m.group(1)}/hqdefault.jpg" loading="lazy" decoding="async" alt="{t}"><span class="ytp"></span></button>'
+    for _f in glob.glob(f"{OUT}/**/*.html", recursive=True):
+        _t = open(_f, encoding="utf-8").read()
+        if "youtube.com/embed/" in _t and "<iframe" in _t:
+            _t2 = _yrx.sub(_yf, _t)
+            if _t2 != _t: open(_f, "w", encoding="utf-8").write(_t2)
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
     json.dump({"cats": [[c, n, d] for c, n, d in CATS], "v": [[v["id"], v["type"], v["cat"], v["n"], v["title"]] for v in V]}, open(f"{OUT}/assets/videos.json", "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))  # wwood.kr 시공영상 페이지용
