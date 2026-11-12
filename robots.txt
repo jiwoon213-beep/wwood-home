@@ -4,3 +4,5 @@ Allow: /
 Sitemap: https://www.wwood.co.kr/sitemap.xml
 Sitemap: https://www.wwood.co.kr/sitemap-video.xml
 Sitemap: https://www.wwood.co.kr/rss.xml
+
+#DaumWebMasterTool:99e0908a419948d27287fb3d562fb5c6a299e4c3c385ed57b261247546dd22cc:VC4npJliHmrJLtJDnWYFDA==

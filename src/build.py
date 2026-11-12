@@ -1560,7 +1560,7 @@ Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i
     open(f"{OUT}/wwoodkr-rss.xml", "w", encoding="utf-8").write('<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>영진종합목재(월드건축자재) 쇼핑몰 새 상품</title><link>https://wwood.kr/home/mall/</link><description>대전 유성 영진종합목재(월드건축자재) 목재·합판·건축자재 쇼핑몰 상품 소식</description><language>ko</language>\n'
         + "".join(f"<item><title>{html.escape(p_['name'])} 규격·주문</title><link>{html.escape(u_)}</link><guid>{html.escape(u_)}</guid><pubDate>{_rfc2(d_)}</pubDate><description>{html.escape(ds_)}</description>" + (f'<enclosure url="{html.escape(p_["img"])}" type="image/jpeg" length="0"/>' if p_.get("img", "").startswith("http") else "") + "</item>\n" for d_, p_, u_, ds_ in _ri)
         + "</channel></rss>\n")
-    open(f"{OUT}/robots.txt", "w").write(f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\nSitemap: {BASE}/sitemap-video.xml\nSitemap: {BASE}/rss.xml\n")
+    open(f"{OUT}/robots.txt", "w").write(f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\nSitemap: {BASE}/sitemap-video.xml\nSitemap: {BASE}/rss.xml\n\n#DaumWebMasterTool:99e0908a419948d27287fb3d562fb5c6a299e4c3c385ed57b261247546dd22cc:VC4npJliHmrJLtJDnWYFDA==\n")
     today = datetime.date.today().isoformat()
     # lastmod: 내용이 실제로 바뀐 날만 갱신(매일 오늘 날짜면 구글이 lastmod를 무시함)
     _lmf = f"{ROOT}/data/lastmod.json"
