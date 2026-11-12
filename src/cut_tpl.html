@@ -49,7 +49,7 @@
 .cchk{display:block;margin-top:12px;font-size:15px}
 .cutgrid{display:block}@media(min-width:960px){.cutgrid{display:grid;grid-template-columns:380px 1fr;gap:22px;align-items:start}.cutgrid .cutbox{position:sticky;top:12px;margin:0}.cout{min-width:0}}
 .cres{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}.cres div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;flex:1;min-width:120px}.cres b{display:block;font-size:24px}.cres small{color:var(--mut)}
-.cres .cerr{background:#fff3f2;border-color:#f3c2bd;color:var(--red);flex-basis:100%}
+.cres .cest{flex-basis:100%;background:#FFF7ED;border-color:#F5D9B8}.cres .cest b{color:#B4361E}.cres .cerr{background:#fff3f2;border-color:#f3c2bd;color:var(--red);flex-basis:100%}
 .csheet{background:linear-gradient(180deg,#fbfaf7,#f1ede6);border:1px solid var(--line);border-radius:16px;padding:14px 14px 10px;margin-bottom:14px;box-shadow:0 2px 10px rgba(40,30,20,.06)}.csheet h3{margin:0 0 2px;font-size:16px;display:flex;justify-content:space-between;gap:8px}.csheet h3 small{font-weight:500;color:var(--mut);font-size:13px}.cleg{display:flex;gap:14px;font-size:12px;color:var(--mut);margin:8px 2px 0}.cleg i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px}
 .csheet svg{width:100%;height:auto;display:block}
 .cemb{margin:10px 0;font-size:15px}.cemb summary{cursor:pointer;font-weight:700}.cemb textarea{font-size:12px;margin-top:6px}
@@ -203,6 +203,8 @@ function run(){
   else{used+=b.pl.reduce(function(a,p){return a+p.w*p.h},0);tot+=st.w*st.h;sv+='<div class="csheet"><h3>'+(i+1)+'번째 원판<small>조각 '+b.pl.length+'개</small></h3>'+svgSheet(st.w,st.h,b)+'</div>'}
  });
  if(n){html+='<div><small>필요한 '+(L?'자재':'원판')+'</small><b>'+r.bins.length+(L?'개':'장')+'</b></div><div><small>자르는 조각</small><b>'+(n-r.err.length)+'개</b></div><div><small>사용률</small><b>'+(tot?Math.round(used/tot*100):0)+'%</b></div>'}
+ var cc=curCat(),pr=(!custom()&&cc.pr)?cc.pr[prod]:0,bu=(!custom()&&cc.bu)?cc.bu[prod]:1;
+ if(n&&pr){var un=L&&bu>1?Math.ceil(r.bins.length/bu):r.bins.length;html+='<div class="cest"><small>기준가 예상 자재비</small><b>약 '+(un*pr).toLocaleString()+'원</b><small>'+(L&&bu>1?bu+'개 1단 '+pr.toLocaleString()+'원 × '+un+'단':pr.toLocaleString()+'원 × '+un)+' · 부가세 별도 · 재단비·운임 별도</small></div>'}
  if(r.err.length)html+='<div class="cerr">'+(L?'원래 길이':'원판')+'보다 큰 조각 '+r.err.length+'개는 한 장에서 안 나와요. 크기를 확인해 주세요.</div>';
  if(!n)html='<div><small>크기를 넣으면 바로 그림이 나와요</small></div>';
  $("cres").innerHTML=html;$("csvg").innerHTML=sv;save();

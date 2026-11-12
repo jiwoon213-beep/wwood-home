@@ -729,6 +729,13 @@ def build():
                 raw = it.pop()  # 원래 이름(맨 끝) — 사진 매칭용
                 for rx, jn in PIC:
                     if re.search(rx, raw) and jn in J: it.append([J[jn], jn]); break
+        _pm = {}
+        for r in rows:
+            k = nm(r["name"])
+            if r["price"].strip().isdigit() and k not in _pm: _pm[k] = int(r["price"])
+        for c in cats:
+            c["pr"] = [_pm.get(it[0], 0) for it in c["items"]]
+            c["bu"] = [(lambda m: int(m.group(1)) if m and 1 < int(m.group(1)) <= 50 else 1)(re.search(r"\((\d+)(?:EA)?\)\s*$", it[0])) for it in c["items"]]
         cats += [{"n": "판재 직접입력", "lin": 0, "custom": 1}, {"n": "각재 직접입력", "lin": 1, "custom": 1}]
         def fx(cn, rx=None):
             for ci, c in enumerate(cats):
