@@ -321,6 +321,8 @@ def build():
         cmpl = {"hapan":"hapan-types","osb":"hapan-osb-mdf","mdf":"hapan-osb-mdf","bangbu":"bangbu-hapdeck","hapdeck":"bangbu-hapdeck","gypsum":"gypsum-types","siding":"siding-types","insul":"insulation-types","maru":"floor-types","tile":"floor-types","door":"door-types","stain":"stain-oil-water","hinoki":"louver-types","jipseong":"jipseong-types","gujo":"gakjae-types","sound":"sound-types","film":"door-types"}.get(m["slug"])
         cutln = f' · <a href="/cut.html#m={m["slug"]}">원하는 크기로 재단 그림 보기</a>' if m["slug"] in {"hapan","osb","mdf","gujo","bangbu","hapdeck","jipseong","hinoki","gypsum","insul"} else ""
         cmpln = f'<p>👉 <a href="/bigyo/{cmpl}.html">비슷한 자재와 비교해 보기</a> · <a href="/calc.html">필요한 양 계산하기</a>{cutln}</p>' if cmpl else (f'<p>👉 <a href="/calc.html#door">문짝·문틀 크기 계산하기</a></p>' if m["slug"] == "door" else f'<p>👉 <a href="/calc.html">필요한 양 계산하기</a>{cutln}</p>')
+        _ggm = {"hinoki": [("hinoki-ruba", "히노끼 루바"), ("spruce-ruba", "스프러스 루바")], "sound": [("tempa-board", "템바보드"), ("tempa-ruba", "템바 루바")], "film": [("interior-film", "인테리어 필름")], "stain": [("oilstain", "오일스테인")]}.get(m["slug"])
+        if _ggm: cmpln += '<p>💰 ' + " · ".join(f'<a href="/gagyeok/{a}.html">{b} 가격 — 1평에 얼마</a>' for a, b in _ggm) + '</p>'
         mf = MFAQ.get(m["slug"], []) + [(f"{m['name']} 지방(전국)으로도 배송되나요?", f"네, 전국 어디든 용달차로 보내 드립니다. 품목·수량·도착지를 알려 주시면 사무실에서 용달 운임 견적을 드리고, 입금 확인 후 바로 출고합니다. 대전·세종·공주·계룡·논산·금산·옥천은 직접 배송·현장 납품합니다. 문의 {TEL}")]
         _seen = {re.sub(r"[^가-힣A-Za-z0-9]|은|는|을|를", "", q) for q, a in mf}
         faq = [x for x in faq if re.sub(r"[^가-힣A-Za-z0-9]|은|는|을|를", "", x["name"]) not in _seen] + [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in mf]
@@ -418,7 +420,7 @@ def build():
              + '<div class="tdots"><button type="button" class="tb" data-d="-1">◀</button><span id="tdot">1–5위 / 6–10위 ▶ 옆으로 밀기</span><button type="button" class="tb" data-d="1">▶</button></div></div>')
     secs = '<div class="pboard">' + board + '</div>' + secs
     page("price.html", "목재 가격 기준가 공개 — 합판·MDF·구조재·방부목·석고보드 | 대전 영진목재", "대전 월드건축자재(영진목재) 소매 기준가. 부가세 별도, 결제·재단은 매장에서.",
-         f'<section class="wrap sec ptsec"><h1>소매 기준가</h1>{psearch}<p class="lead">자주 찾는 자재의 소매 기준가입니다(부가세 별도). 규격·수량에 따라 달라지며 재단비·운임은 매장에서 계산합니다. 도매가는 <a href="/dome.html">도매회원</a> 로그인 후 확인하세요. 크기·두께는 <a href="/gyugyeok.html">규격표</a>, 어떻게 잘리는지는 <a href="/cut.html">재단 미리보기</a>에서 보세요.</p>{secs}</section>{CTA}', "/price.html")
+         f'<section class="wrap sec ptsec"><h1>소매 기준가</h1>{psearch}<p class="lead">자주 찾는 자재의 소매 기준가입니다(부가세 별도). 규격·수량에 따라 달라지며 재단비·운임은 매장에서 계산합니다. 도매가는 <a href="/dome.html">도매회원</a> 로그인 후 확인하세요. 크기·두께는 <a href="/gyugyeok.html">규격표</a>, 어떻게 잘리는지는 <a href="/cut.html">재단 미리보기</a>에서 보세요.</p><p>💰 <b>1평에 얼마?</b> <a href="/gagyeok/hinoki-ruba.html">히노끼 루바</a> · <a href="/gagyeok/spruce-ruba.html">스프러스 루바</a> · <a href="/gagyeok/tempa-board.html">템바보드</a> · <a href="/gagyeok/tempa-ruba.html">템바 루바</a> · <a href="/gagyeok/interior-film.html">인테리어 필름</a> · <a href="/gagyeok/oilstain.html">오일스테인</a> — <a href="/gagyeok/">자재 가격 가이드</a></p>{secs}</section>{CTA}', "/price.html")
 
     # 도매
     page("dome.html", "건축자재 도매·현장 납품 — 인테리어 업체·목수 도매회원 | 대전 월드건축자재", "인테리어 업체·목수·시공사 도매회원. 사업자등록증·명함 확인 후 승인, 회원가 적용, 현장 납품, 세금계산서 월 1회.",
@@ -1107,6 +1109,8 @@ def build():
             if re.search(rx, tx): _mkmat.setdefault(ms, []).append(x)
     MKMAT_HTML = {ms: f'<section class="wrap sec"><h2>이 자재로 만들 수 있는 것</h2><p class="small muted">재단 크기·수량과 만드는 순서, 만들기 영상까지 정리했습니다. 매장에서 그 크기대로 잘라 드려요.</p><div class="mg m2">'
                   + "".join(f'<a class="mc" href="/mandeul/{x[0]}.html"><b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in xs[:12]) + '</div></section>' for ms, xs in _mkmat.items()}
+    import gagyeok as _gg
+    GGLIST = _gg.gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL)
     MKNM = {x[0]: x[1] for x in MK}
     # 자재 시공법(내장재·외장재·바닥·도어 등) — /sigongbeop/
     from sigong_data import SG, SGP
