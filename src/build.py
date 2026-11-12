@@ -130,8 +130,9 @@ def mall_links(m):
     return f'<p class="small" style="margin-top:10px">🛒 쇼핑몰에서 {E(m["name"])} 상품 보기: {lk}</p>'
 def pcard(p):
     sub = MCAT.get(p["sub"] or "", "")
-    return (f'<a class="pd" href="https://wwood.kr/home/mall/shoplist.php?idx={p["id"]}&amp;pmode=view" target="_blank" rel="noopener">'
-            f'<span class="pi"><img loading="lazy" src="{E(p["img"])}" alt="{E(p["name"])}"></span><b>{E(p["name"])}</b>{f"<small>{E(sub)}</small>" if sub else ""}</a>')
+    _own = p.get("tops") and p.get("top") in {c for c, *_ in JCAT}  # 새 홈페이지에 상품 페이지(/p/)가 있으면 그쪽으로 연결(내부 링크 → 색인에 도움)
+    return ((f'<a class="pd" href="/p/{p["id"]}.html">' if _own else f'<a class="pd" href="https://wwood.kr/home/mall/shoplist.php?idx={p["id"]}&amp;pmode=view" target="_blank" rel="noopener">')
+            + f'<span class="pi"><img loading="lazy" src="{E(p["img"])}" alt="{E(p["name"])}"></span><b>{E(p["name"])}</b>{f"<small>{E(sub)}</small>" if sub else ""}</a>')
 # 유튜브 채널 숫자: data/stats.json {"subs": "1.36만", "videos": 940, "date": "YYYY-MM-DD"} (하루 1번 자동 갱신)
 ST = json.load(open(f"{ROOT}/data/stats.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/stats.json") else {"subs": "1.3만", "videos": 900}
 # 최신 영상: data/latest.txt (영상 ID, 최신이 위)
