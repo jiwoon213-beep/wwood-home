@@ -221,3 +221,5 @@ table{font-size:15px}th,td{padding:10px 12px}
  .vc b{font-size:13.5px}
  .cta h2{font-size:21px}
 }
+
+@media(max-width:760px){table.rt{border:0;background:transparent}table.rt thead{display:none}table.rt tr{display:block;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:0 0 8px}table.rt th,table.rt td{display:block;border:0;padding:2px 0;text-align:left;background:transparent}table.rt th{font-size:15.5px;font-weight:900;margin-bottom:2px}table.rt td:before{content:attr(data-l);display:block;color:var(--mut);font-size:12px;font-weight:700;margin-top:4px}}

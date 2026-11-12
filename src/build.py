@@ -938,10 +938,10 @@ def build():
             else:
                 it = next((x for x in c["items"] if re.search(rx, x[0])), c["items"][0])
                 cnt = "재단 그림에서 확인"
-            trs += f"<tr><th>{E(part)}</th><td>{E(desc)}</td><td>{cnt}</td></tr>"
+            trs += f'<tr><th>{E(part)}</th><td data-l="자재·재단 크기">{E(desc)}</td><td data-l="필요 수량">{cnt}</td></tr>'
             btns += f'<a class="b o" href="{cutlink(cat, rx, parts)}">{E(part)} 재단 그림</a> '
         body = f"""<section class="wrap sec"><p class="crumb"><a href="/mandeul/">만들기 자재</a> › {E(nm)}</p><h1>{E(title.split(" — ")[0])}</h1><p class="lead">{E(lead)}</p>
-{_hero}<div class="tw"><table><thead><tr><th>부분</th><th>자재·재단 크기</th><th>필요 수량</th></tr></thead><tbody>{trs}</tbody></table></div>
+{_hero}<div class="tw"><table class="rt"><thead><tr><th>부분</th><th>자재·재단 크기</th><th>필요 수량</th></tr></thead><tbody>{trs}</tbody></table></div>
 <p class="small muted">톱날 3mm를 빼고 계산했습니다. 크기를 바꾸고 싶으면 아래 재단 그림에서 숫자만 고치세요.</p><p>{btns}</p></section>
 {_stp}<section class="wrap sec g2"><div class="card"><h2>만드는 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol></div>
 <div class="card"><h2>준비할 자재</h2><ul>{"".join(f"<li>{E(x)}</li>" for x in mats)}</ul><p>매장({ADDR})에서 위 크기대로 즉석 재단해 드립니다. 이 페이지를 보여주시면 됩니다.</p></div></section>
@@ -973,9 +973,9 @@ def build():
         _hi = os.path.exists(f"{ROOT}/assets/sigongbeop/{slug}.jpg"); _si = os.path.exists(f"{ROOT}/assets/sigongbeop/{slug}-steps.jpg")
         hero = f'<figure class="mkfig"><img src="/assets/sigongbeop/{slug}.jpg" width="1200" height="800" alt="{E(nm)} 완성 모습 그림"><figcaption class="small muted">시공이 끝난 모습 그림</figcaption></figure>' if _hi else ""
         stp = f'<section class="wrap sec"><h2>{E(nm)} 순서 (그림 설명서)</h2><img class="mkfig" loading="lazy" src="/assets/sigongbeop/{slug}-steps.jpg" alt="{E(nm)} 순서 그림 설명서" style="width:100%;height:auto;border-radius:14px;border:1px solid #e6e0d4"><p class="small muted">빨간 테두리가 그 단계에서 새로 붙이는 부분입니다.</p></section>' if _si else ""
-        trs = "".join(f"<tr><th>{E(a)}</th><td>{E(b)}</td><td>{E(c)}</td></tr>" for a, b, c in rows)
+        trs = "".join(f'<tr><th>{E(a)}</th><td data-l="규격">{E(b) or "—"}</td><td data-l="예시 수량">{E(c)}</td></tr>' for a, b, c in rows)
         body = f"""<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › {E(nm)}</p><h1>{E(title.split(" — ")[0])}</h1><p class="lead">{E(lead)}</p>{hero}
-<h2>필요한 자재 <small class="muted">예시: {E(ex)}</small></h2><div class="tw"><table><thead><tr><th>자재</th><th>규격</th><th>예시 수량</th></tr></thead><tbody>{trs}</tbody></table></div>
+<h2>필요한 자재</h2><p class="small muted" style="margin:-4px 0 8px">예시: {E(ex)}</p><div class="tw"><table class="rt"><thead><tr><th>자재</th><th>규격</th><th>예시 수량</th></tr></thead><tbody>{trs}</tbody></table></div>
 <p class="small muted">수량은 예시 크기 기준 참고치입니다(로스 포함). 실제 크기를 알려 주시면 매장에서 다시 계산해 드리고, 원하는 크기로 재단해 드립니다. <a href="/calc.html">자재 계산기</a> · <a href="/jajae/{ms}.html">{E(_mname.get(ms, ""))} 용도·기준가</a></p></section>{stp}
 <section class="wrap sec g2"><div class="card"><h2>시공 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol><h3>필요한 공구</h3><p>{" · ".join(E(t) for t in tools)}</p></div>
 <div class="card"><h2>주의할 점</h2><ul>{"".join(f"<li>{E(t)}</li>" for t in tips)}</ul><p>자재는 매장({ADDR})에서 실물 보고 고를 수 있고, 시공이 어려우면 월드아키텍쳐(실내건축공사업 등록)에서 직접 시공합니다.</p></div></section>
