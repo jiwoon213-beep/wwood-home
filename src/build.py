@@ -348,8 +348,9 @@ def build():
 <section class="wrap sec g2"><div class="card"><h2>어디에 쓰나요?</h2><ul>{where}</ul><h3>인테리어 효과</h3><p>{E(m['effect'])}</p><h3>고를 때 알아둘 것</h3><ul>{tips}</ul>{cmpln}</div>
 <div class="card"><h2>{m['name']} 소매 기준가</h2>{ptable(mat_prices(m))}<a href="/price.html">전체 기준가 →</a>{mall_links(m)}</div></section>
 <section class="wrap sec"><h2>{m['name']} 시공·사용 영상</h2>{vid}</section><!--MK:{m['slug']}-->{faqsec}{CTA}"""
-        page(f"jajae/{m['slug']}.html", f"{m['kw']} — 용도·기준가·시공 영상 | 대전 영진목재",
-             f"{m['name']} 용도와 인테리어 효과, 규격별 소매 기준가, 시공 영상. 대전 유성 월드건축자재 매장에서 즉석 재단.", body, "/jajae/",
+        _mp = mat_prices(m, 200); _lo = min((x["price"] for x in _mp if m["slug"] != "door" or (x["cat"] == "문" and re.search(r"@\d{3}", x["name"]))), default=0)
+        page(f"jajae/{m['slug']}.html", (f"{m['kw']} — {_lo:,}원부터 · 규격 {len(_mp)}종 기준가 | 대전 영진목재" if _lo else f"{m['kw']} — 용도·기준가·시공 영상 | 대전 영진목재"),
+             (f"{m['name']} 기준가 {_lo:,}원부터(부가세 별도), 규격 {len(_mp)}종. " if _lo else f"{m['name']} 용도와 인테리어 효과. ") + (f"실물 사진 {len(ph)}장, " if ph else "") + "시공 영상. 대전 유성 매장 즉석 재단·전국 배송.", body, "/jajae/",
              [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq}] + prod_ld(mat_prices(m, 5), f"{BASE}/jajae/{m['slug']}.html", ph[0]["img"] if ph else None),
              (ph[0]["img"] if ph else (f"https://i.ytimg.com/vi/{vs[0]['id']}/hqdefault.jpg" if vs else None)))
 
