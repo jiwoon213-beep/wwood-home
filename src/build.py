@@ -1237,6 +1237,26 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         vds = (first or st)[:110]
         if len(vds) < 60: vds = (vds + " " + (v["title"] if v["title"] not in vds else "") + f" — 대전 영진종합목재(월드건축자재) {cn} 영상. 자재 재단·전국 배송.").replace("  ", " ")[:150]
         VSM.append((f"{BASE}/v/{v['id']}.html", v, (d or v["title"]), ts, ln))
+        _mfq = json.load(open(f"{ROOT}/data/mat_faq.json", encoding="utf-8")) if "_MFQ" not in globals() else _MFQ
+        globals()["_MFQ"] = _mfq
+        _ms = list(v["mats"])
+        if not _ms:
+            for rx_, sl_ in [(r"OSB", "osb"), (r"MDF", "mdf"), (r"합판", "hapan"), (r"다루끼|각재|구조재|투바이|2[xX×]4|목상", "gujo"), (r"방부", "bangbu"), (r"합성데크|합성목", "hapdeck"), (r"데크", "bangbu"), (r"집성", "jipseong"),
+                             (r"히노끼|편백|삼나무|루바", "hinoki"), (r"석고", "gypsum"), (r"사이딩", "siding"), (r"단열|아이소핑크", "insul"), (r"스테인|오일", "stain"), (r"마루|후로링|장판|데코타일", "maru"),
+                             (r"필름", "film"), (r"몰딩|걸레받이", "molding"), (r"침목", "chimmok"), (r"타일", "tile"), (r"문짝|방문|도어|문틀|중문", "door"), (r"흡음|방음", "sound"), (r"피스|타카|경첩|철물", "hardware"), (r"온실|비닐하우스|골조|파고라|퍼걸러|창고", "gujo"), (r"아트월|원목|라왕|테이블|선반|책상", "jipseong"), (r"벽|천장", "gypsum")]:
+                if re.search(rx_, v["title"]) and sl_ not in _ms: _ms.append(sl_)
+        _mm = [m for sl_ in _ms for m in MATS if m["slug"] == sl_][:2]
+        _vx = '<section class="wrap sec"><h2>영상 정보</h2><div class="tw"><table class="rt"><tbody>' + \
+              f'<tr><th>분류</th><td><a href="/video/{v["cat"]}.html">{E(cn)}</a></td></tr>' + \
+              (f'<tr><th>길이</th><td>{ln // 60}분 {ln % 60}초</td></tr>' if ln else '') + \
+              (f'<tr><th>게시일</th><td>{_dt.datetime.fromtimestamp(ts, _dt.timezone(_dt.timedelta(hours=9))).strftime("%Y년 %m월 %d일")}</td></tr>' if ts else '') + \
+              f'<tr><th>조회수</th><td>{views(v["n"])}</td></tr><tr><th>형식</th><td>{"쇼츠(짧은 영상)" if v["type"] == "S" else "일반 영상"}</td></tr>' + \
+              (f'<tr><th>나온 자재</th><td>{" · ".join(E(m["name"]) for m in _mm)}</td></tr>' if _mm else '') + '</tbody></table></div></section>'
+        for m in _mm:
+            _vx += (f'<section class="wrap sec"><h2>영상에 나온 자재 — {E(m["name"])}</h2><p>{E(m["lead"])}</p><h3>어디에 쓰나요</h3><ul>' + "".join(f"<li>{E(w)}</li>" for w in m["where"][:5]) + '</ul>'
+                    + f'<h3>{E(m["name"])} 소매 기준가</h3>' + ptable(mat_prices(m, 6))
+                    + (('<h3>자주 묻는 질문</h3>' + faqslide([tuple(x) for x in _mfq.get(m["slug"], [])[:3]])) if _mfq.get(m["slug"]) else '')
+                    + f'<p><a href="/jajae/{m["slug"]}.html">{E(m["name"])} 용도·규격·시공 영상 전체 보기 ›</a></p></section>')
         _seg = v["title"].split("|")[0]
         _mks = sorted(((re.search(rx, _seg).start(), k) for k, rx in MKV.items() if k in MKNM and k not in ("jakeopdae", "beranda", "sinbaljang") and re.search(rx, _seg)))
         _mks = [k for _, k in _mks][:2]
@@ -1249,7 +1269,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 <p class="small muted">조회 {views(v['n'])}{' · 쇼츠' if v['type']=='S' else ''} · <a href="{vurl(v)}" target="_blank" rel="noopener">유튜브에서 보기</a></p>
 <div class="vdesc">{vbody(d, v['id'])}</div>
 {f'<p>👉 영상에 나온 자재: {ml}</p>' if ml else ''}{_mkln}<p>👉 <a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장에서 재단해 가기</a></p></section>
-{f'<section class="wrap sec"><h2>비슷한 영상</h2>{vsplit(rel, "h3")}</section>' if rel else ''}{CTA}""", f"/video/", ld, f"https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg")
+{_vx}{f'<section class="wrap sec"><h2>비슷한 영상</h2>{vsplit(rel, "h3")}</section>' if rel else ''}{CTA}""", f"/video/", ld, f"https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg")
 
     # 건축 현장 용어 사전
     YG = json.load(open(f"{ROOT}/data/yongeo.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/yongeo.json") else []
