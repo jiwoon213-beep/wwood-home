@@ -90,3 +90,5 @@ document.addEventListener("click", function (e) {
 
 /* 사진 무단 저장 방지(우클릭·드래그·길게 누르기) */
 (function(){function b(e){var t=e.target;if(t&&t.tagName==="IMG"){e.preventDefault();return false}}document.addEventListener("contextmenu",b,true);document.addEventListener("dragstart",b,true);})();
+
+(function(){function p(e){var t=e.target;if(t&&t.tagName==="IMG"&&(t.getAttribute("src")||"").indexOf("/assets/")>-1){e.preventDefault();return false}}document.addEventListener("contextmenu",p,true);document.addEventListener("dragstart",p,true)})();
