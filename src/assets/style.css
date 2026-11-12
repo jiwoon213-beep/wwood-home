@@ -276,3 +276,10 @@ table{font-size:15px}th,td{padding:10px 12px}
  table.rt td{font-size:16px}table.rt td b{font-size:20px;color:var(--red)}
  .tw:has(table.rt tbody tr:nth-child(2))::after{content:"옆으로 밀어서 더 보기 ›";display:block;text-align:right;font-size:13px;color:var(--mut);margin-top:2px}
 }
+/* 소식 카드(옆으로 넘기기) */
+.pl.hs.nw>.pc{position:relative;border-radius:16px}
+.pl.hs.nw>.pc>small{padding-top:4px}.pl.hs.nw>.pc>b{font-size:17px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pci{display:flex;flex-direction:column;justify-content:center;aspect-ratio:16/9;margin-bottom:8px;padding:0 18px;background:linear-gradient(135deg,#F3E7D6,#E9D5BC);color:#5a3d1e;font-style:normal;font-size:20px;font-weight:900;line-height:1.35;letter-spacing:-.5px;word-break:keep-all}
+.pci em{font-style:normal;font-size:13px;font-weight:800;color:var(--red);margin-bottom:4px}
+.pl.hs.nw .newb{position:absolute;top:10px;left:10px;z-index:1}
+@media(min-width:900px){.pl.hs.nw{flex-wrap:wrap;overflow:visible}.pl.hs.nw>.pc{flex:0 0 calc(25% - 9px);max-width:none}.pl.hs.nw+.hsh{display:none}}

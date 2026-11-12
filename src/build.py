@@ -271,8 +271,15 @@ def build():
         ids = [r[0] for r in rows if r[1] != "S"][:4] + [r[0] for r in rows if r[1] == "S"][:4]
     newv = [byid[i] for i in ids if i in byid][:8]
     newsec = (f'<section class="wrap sec"><h2>새로 올라온 영상</h2>{vsplit(newv, "h3")}</section>' if newv else "")
-    plist = lambda ps: "".join(f'<a class="pc" href="/news/{p["slug"]}.html"><small>{E(p.get("date",""))}</small><b>{E(p["title"])}</b><span>{E(p.get("desc",""))}</span></a>' for p in ps)
-    postsec = (f'<section class="wrap sec"><h2>소식·자재 정보</h2><div class="pl">{plist(POSTS[:6])}</div><p><a href="/news/">전체 글 보기 →</a></p></section>' if POSTS else "")
+    def _pth(p):
+        vs = p.get("videos") or []
+        if vs: return f'<img loading="lazy" decoding="async" width="480" height="270" src="https://i.ytimg.com/vi/{vs[0]}/hqdefault.jpg" alt="">'
+        t = re.sub(r"\s*[—|].*$", "", p["title"])[:18]
+        return f'<i class="pci"><em>자재 정보</em>{E(t)}</i>'
+    plist = lambda ps: "".join(f'<a class="pc" href="/news/{p["slug"]}.html">{_pth(p)}<small>{E(p.get("date",""))}</small><b>{E(p["title"])}</b><span>{E(p.get("desc",""))}</span></a>' for p in ps)
+    _isv = lambda p: p["title"].startswith("[영상]")
+    def nrow(h, ps): return (f'<h2 class="gt">{h} <small>옆으로 넘겨 보세요 ›</small></h2><div class="pl hs nw">{plist(ps)}</div>') if ps else ""
+    postsec = (f'<section class="wrap sec"><h2>소식·자재 정보</h2><div class="pl hs nw">{plist(POSTS[:10])}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p><p><a href="/news/">전체 글 보기 →</a></p></section>' if POSTS else "")
     base8 = [("합판","일반 4×8 · 8.5mm(베트남)",22800),("OSB합판","T&G 4×8 · 18.3mm",35200),("MDF","4×8 · 9mm",14800),("구조재 2×4","38×89 · 12ft",10700),
              ("방부목 데크재","20×120 · 12자",10500),("석고보드","3×6 · 9.5T",5200),("합성데크","20×140 · 3000",21500),("다루끼(소송)","1.0×1.0 · 12자 · 12개",42400)]
     bt = "".join(f"<tr><td>{a}</td><td>{b}</td><td class=r><b>{won(c)}</b></td></tr>" for a, b, c in base8)
@@ -300,7 +307,7 @@ def build():
 
     # 소식·정보
     page("news/index.html", "소식·자재 정보 — 목재·건축자재 가격, 시공 팁 | 대전 월드건축자재", "대전 월드건축자재(영진목재)의 자재 정보, 기준가, 시공 사례, 새 영상 소식.",
-         f'<section class="wrap sec"><h1>소식·자재 정보</h1><p class="lead">자재 고르는 법, 기준가, 시공 사례와 새 영상 소식을 매일 올립니다.</p><div class="pl">{plist(POSTS)}</div></section>{CTA}', "/news/")
+         f'<section class="wrap sec"><h1>소식·자재 정보</h1><p class="lead">자재 고르는 법, 기준가, 시공 사례와 새 영상 소식을 매일 올립니다.</p>{nrow("📘 자재 정보·가격", [p for p in POSTS if not _isv(p)])}{nrow("▶ 새 영상 소식", [p for p in POSTS if _isv(p)])}</section>{CTA}', "/news/")
     for p in POSTS:
         vids = "".join(embed(byid[i]) if i in byid else f'<div class="emb"><iframe loading="lazy" src="https://www.youtube.com/embed/{E(i)}" allowfullscreen></iframe></div>' for i in p.get("videos", [])[:2])
         art = {"@context": "https://schema.org", "@type": "Article", "headline": p["title"], "datePublished": p.get("date", ""), "author": {"@type": "Organization", "name": "월드건축자재(영진종합목재)"}, "publisher": {"@type": "Organization", "name": "월드건축자재(영진종합목재)"}}
