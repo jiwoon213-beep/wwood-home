@@ -1,3 +1,4 @@
+import glob
 import collections, re
 #!/usr/bin/env python3
 """월드건축자재 홍보 사이트 생성기. python3 build.py [BASE_URL]"""
@@ -325,7 +326,7 @@ def build():
 <div class="row"><span class="chip">사용 장소: {E(m['place'])}</span><span class="chip">셀프 난이도: {E(m['diy'])}</span></div></section>{gal}
 <section class="wrap sec g2"><div class="card"><h2>어디에 쓰나요?</h2><ul>{where}</ul><h3>인테리어 효과</h3><p>{E(m['effect'])}</p><h3>고를 때 알아둘 것</h3><ul>{tips}</ul>{cmpln}</div>
 <div class="card"><h2>{m['name']} 소매 기준가</h2>{ptable(mat_prices(m))}<a href="/price.html">전체 기준가 →</a>{mall_links(m)}</div></section>
-<section class="wrap sec"><h2>{m['name']} 시공·사용 영상</h2>{vid}</section>{faqsec}{CTA}"""
+<section class="wrap sec"><h2>{m['name']} 시공·사용 영상</h2>{vid}</section><!--MK:{m['slug']}-->{faqsec}{CTA}"""
         page(f"jajae/{m['slug']}.html", f"{m['kw']} — 용도·기준가·시공 영상 | 대전 영진목재",
              f"{m['name']} 용도와 인테리어 효과, 규격별 소매 기준가, 시공 영상. 대전 유성 월드건축자재 매장에서 즉석 재단.", body, "/jajae/",
              [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faq}] + prod_ld(mat_prices(m, 5), f"{BASE}/jajae/{m['slug']}.html", ph[0]["img"] if ph else None),
@@ -913,7 +914,7 @@ def build():
     # 만들기별 관련 유튜브 영상(제목 키워드). 없는 slug는 짧은 이름으로 찾음
     MKV = {"pyeongsang": r"평상(?!형)", "chaekjang": r"책장", "tutbat": r"텃밭|화분만들기|방부목 화분", "deck": r"데크 셀프|방부목 데크|데크 시공|데크만들기|데크 만들기",
            "gabyeok": r"가벽", "byeokseonban": r"^(?!.*온실).*(벽선반|원목선반|선반 만들|선반만들)", "ultari": r"울타리|펜스", "teibeul": r"테이블",
-           "sinbaljang": r"신발장|수납장", "benchi": r"벤치|의자", "chimdae": r"침대", "jakeopdae": r"작업대|가구만들기|합판으로 가구", "monitor": r"모니터|컴퓨터받침대",
+           "sinbaljang": r"신발장|수납장", "benchi": r"벤치|의자", "chimdae": r"(?<!받)침대", "jakeopdae": r"작업대|가구만들기|합판으로 가구", "monitor": r"모니터|컴퓨터받침대",
            "beranda": r"^(?!.*온실).*(선반|수납장)", "dannyeolbyeok": r"단열", "saideu": r"협탁|사이드", "hyeongwanbench": r"수납 의자|벤치|의자",
            "gaejip": r"강아지집|개집", "hwabundae": r"화분", "aichaeksang": r"책상", "geosiljang": r"티비다이|TV 수납|거실장", "seutul": r"스툴|의자",
            "nopeuntutbat": r"텃밭|화분만들기|방부목 화분", "haenggeo": r"행거|옷장", "yaoeteibeul": r"테이블", "jangjak": r"장작", "gongguborad": r"공구통|타공판|공구 수납|수납장",
@@ -945,6 +946,17 @@ def build():
         fq = [{"@type": "Question", "name": f"{nm} 만들 때 자재 재단해 주나요?", "acceptedAnswer": {"@type": "Answer", "text": f"네. 대전 {ADDR} 영진종합목재에서 표의 크기대로 즉석 재단해 드립니다. 한 개 소량도 됩니다."}}]
         page(f"mandeul/{slug}.html", title + " | 영진목재", lead[:120], body, "", {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": fq})
         mk_cards += f'<a class="mc" href="/mandeul/{slug}.html"><b>{E(nm)}</b><small>{E(lead[:40])}…</small></a>'
+    # 자재 백과 ↔ 만들기 연결: 자재 페이지에 "이 자재로 만들 수 있는 것"
+    MATKW = {"hapan": r"합판", "osb": r"OSB", "mdf": r"MDF", "gujo": r"구조재", "bangbu": r"방부목", "jipseong": r"집성판", "gypsum": r"석고보드",
+             "insul": r"아이소핑크|단열재", "stain": r"스테인|오일|바니시", "hardware": r"피스|철물|브라켓|경첩|앵커", "hapdeck": r"합성데크"}
+    _mkmat = {}
+    for x in MK:
+        tx = " ".join(r[1] + " " + r[4] for r in x[4]) + " " + " ".join(x[6])
+        for ms, rx in MATKW.items():
+            if re.search(rx, tx): _mkmat.setdefault(ms, []).append(x)
+    MKMAT_HTML = {ms: f'<section class="wrap sec"><h2>이 자재로 만들 수 있는 것</h2><p class="small muted">재단 크기·수량과 만드는 순서, 만들기 영상까지 정리했습니다. 매장에서 그 크기대로 잘라 드려요.</p><div class="mg m2">'
+                  + "".join(f'<a class="mc" href="/mandeul/{x[0]}.html"><b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in xs[:12]) + '</div></section>' for ms, xs in _mkmat.items()}
+    MKNM = {x[0]: x[1] for x in MK}
     page("mandeul/index.html", "만들기 자재 목록 — 평상·책장·침대·신발장·작업대·데크·개집 재단 크기 | 영진목재", "평상, 책장, 신발장, 침대 프레임, 작업대, 벤치, 베란다 선반, 벽 단열, 데크, 가벽, 울타리, 테이블, 강아지집을 만들 때 필요한 자재와 재단 크기를 정리했습니다. 재단 그림까지 바로 확인하세요.",
          f'<section class="wrap sec"><h1>만들기 자재 목록</h1><p class="lead">자주 만드는 것들의 자재와 재단 크기를 정리했습니다. 크기만 바꿔서 재단 그림으로 확인하고, 매장에 보여주시면 그대로 잘라 드려요.</p><div class="mg m2">{mk_cards}</div></section><section class="wrap sec"><div class="card"><h2>직접 만드신 작품을 보내 주세요</h2><p>영진종합목재 자재로 만든 평상·선반·데크·가구 사진을 메일로 보내 주시면 이 페이지 「손님이 만든 작품」에 소개해 드립니다(이름은 원하시는 대로, 얼굴·주소가 나온 사진은 빼고 올립니다).</p><p><a class="b r" href="mailto:{EMAIL}?subject=%EC%9E%91%ED%92%88%20%EC%82%AC%EC%A7%84%20%EB%B3%B4%EB%83%85%EB%8B%88%EB%8B%A4&body=%EB%A7%8C%EB%93%A0%20%EA%B2%83%3A%0A%EC%93%B4%20%EC%9E%90%EC%9E%AC%3A%0A%EC%86%8C%EA%B0%9C%ED%95%A0%20%EC%9D%B4%EB%A6%84(%EB%8B%89%EB%84%A4%EC%9E%84)%3A%0A">작품 사진 메일로 보내기</a></p></div></section>{CTA}', "")
     page("cut.html", "합판·MDF 재단 미리보기 — 원하는 사이즈 재단 그림 | 대전 영진목재", "합판·MDF·집성판·석고보드·구조재를 원하는 사이즈로 넣으면 원판에서 어떻게 잘리는지, 몇 장 필요한지 그림으로 보여드립니다. 대전 영진목재 즉석 재단.",
@@ -1056,12 +1068,16 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         vds = (first or st)[:110]
         if len(vds) < 60: vds = (vds + " " + (v["title"] if v["title"] not in vds else "") + f" — 대전 영진종합목재(월드건축자재) {cn} 영상. 자재 재단·전국 배송.").replace("  ", " ")[:150]
         VSM.append((f"{BASE}/v/{v['id']}.html", v, (d or v["title"]), ts, ln))
+        _seg = v["title"].split("|")[0]
+        _mks = sorted(((re.search(rx, _seg).start(), k) for k, rx in MKV.items() if k in MKNM and k not in ("jakeopdae", "beranda", "sinbaljang") and re.search(rx, _seg)))
+        _mks = [k for _, k in _mks][:2]
+        _mkln = ('<p>🪚 직접 만들어 보기: ' + " · ".join(f'<a href="/mandeul/{k}.html">{E(MKNM[k])} 자재·재단 크기</a>' for k in _mks) + '</p>') if _mks else ""
         page(f"v/{v['id']}.html", f"{st} — 영상 | 대전 영진목재", vds,
              f"""<section class="wrap sec"><p class="crumb"><a href="/video/">영상</a> › <a href="/video/{v['cat']}.html">{E(cn)}</a></p><h1 class="vt1">{E(v['title'])}</h1>
 <div class="{'emb sh1' if v['type']=='S' else 'emb'}"><iframe loading="lazy" src="https://www.youtube.com/embed/{v['id']}" title="{E(st)}" allowfullscreen></iframe></div>
 <p class="small muted">조회 {views(v['n'])}{' · 쇼츠' if v['type']=='S' else ''} · <a href="{vurl(v)}" target="_blank" rel="noopener">유튜브에서 보기</a></p>
 <div class="vdesc">{vbody(d, v['id'])}</div>
-{f'<p>👉 영상에 나온 자재: {ml}</p>' if ml else ''}<p>👉 <a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장에서 재단해 가기</a></p></section>
+{f'<p>👉 영상에 나온 자재: {ml}</p>' if ml else ''}{_mkln}<p>👉 <a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장에서 재단해 가기</a></p></section>
 {f'<section class="wrap sec"><h2>비슷한 영상</h2>{vsplit(rel, "h3")}</section>' if rel else ''}{CTA}""", f"/video/", ld, f"https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg")
 
     # 건축 현장 용어 사전
@@ -1125,6 +1141,10 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
          + rbtn("/jajae/", "#333", "#fff", "자재 사진·기준가 보기", "합판·각재·데크·사이딩 등 용도와 기준가")
          + f'<p class="small muted">{ADDR} · {TEL} · {HOURS}</p></section>', "")
     SITEMAP[:] = [u for u in SITEMAP if not u.endswith("/r/")]
+    for _f in glob.glob(f"{OUT}/jajae/*.html"):
+        _t = open(_f, encoding="utf-8").read()
+        _t2 = re.sub(r"<!--MK:([\w-]+)-->", lambda mm: MKMAT_HTML.get(mm.group(1), ""), _t)
+        if _t2 != _t: open(_f, "w", encoding="utf-8").write(_t2)
     # robots, sitemap
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
     json.dump({"cats": [[c, n, d] for c, n, d in CATS], "v": [[v["id"], v["type"], v["cat"], v["n"], v["title"]] for v in V]}, open(f"{OUT}/assets/videos.json", "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))  # wwood.kr 시공영상 페이지용
