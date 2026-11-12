@@ -184,3 +184,40 @@ img{-webkit-user-drag:none;-webkit-touch-callout:none}
 img[src*="/assets/"]{-webkit-touch-callout:none;-webkit-user-drag:none;user-select:none;-webkit-user-select:none}
 
 .row.hb2{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:560px}.row.hb2 .b{margin:0;text-align:center;justify-content:center;box-sizing:border-box;width:100%}
+
+/* ── 2026-11 가독성·심플 정리 ── */
+body{line-height:1.7;-webkit-font-smoothing:antialiased;word-break:keep-all}
+p,li{max-width:72ch}
+.sec{padding:36px 20px}
+h2{letter-spacing:-.3px;line-height:1.3}
+.lead{line-height:1.7}
+.mc,.uc{border-radius:12px;padding:14px;gap:6px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.mc b,.uc b{font-size:16px;line-height:1.35}
+.mc small,.uc small{font-size:13px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mc img{border-radius:8px}
+.card{border-radius:14px}
+table{font-size:15px}th,td{padding:10px 12px}
+.b{border-radius:10px}
+.chip.red{font-size:12px;padding:4px 10px}
+@media(max-width:760px){
+ h1{font-size:28px;line-height:1.3;letter-spacing:-.6px;margin:4px 0 10px}
+ h2{font-size:21px;margin-bottom:8px}
+ h3{font-size:16px}
+ .lead{font-size:15.5px}
+ .sec{padding:26px 16px}
+ .wrap{padding-left:16px;padding-right:16px}
+ .hero{padding:26px 0}
+ .hero .row,.row.hb2{margin-top:14px}
+ .b{min-height:46px;font-size:15px;padding:0 14px}
+ .row.hb2{gap:8px}
+ header .hd{padding:8px 16px}
+ .logo b{font-size:21px}.logo .lm{width:40px;height:40px}
+ nav{gap:6px;font-size:13px;padding-bottom:10px}
+ nav a{padding:8px 2px;border-radius:9px;background:#fff}
+ .top{font-size:12px}
+ .stat .g4{padding:18px 16px;gap:12px}.stat b{font-size:20px}.stat small{font-size:12px}
+ .mg.m2 .mc{padding:12px}.mc b{font-size:15px}
+ table{font-size:14px}th,td{padding:8px 9px}
+ .vc b{font-size:13.5px}
+ .cta h2{font-size:21px}
+}
