@@ -182,3 +182,5 @@ img{-webkit-user-drag:none;-webkit-touch-callout:none}
 .mkfig{margin:6px 0 16px}.mkfig img{width:100%;height:auto;border-radius:14px;border:1px solid #e6e0d4;display:block}figure.mkfig figcaption{margin-top:6px}
 
 img[src*="/assets/"]{-webkit-touch-callout:none;-webkit-user-drag:none;user-select:none;-webkit-user-select:none}
+
+.row.hb2{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:560px}.row.hb2 .b{margin:0;text-align:center;justify-content:center;box-sizing:border-box;width:100%}
