@@ -1541,6 +1541,24 @@ Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i
     _cu = [("https://wwood.kr/home/mall/shoplist.php?depth=1&amp;code1_idx=" + c) if "-" not in c else ("https://wwood.kr/home/mall/shoplist.php?depth=2&amp;code1_idx=%s&amp;code2_idx=%s" % tuple(c.split("-"))) for c in _cats]
     _pu = ["https://wwood.kr/home/mall/shoplist.php?idx=%d&amp;pmode=view" % i for i in _ids]
     open(f"{OUT}/wwoodkr-sitemap.xml", "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<url><loc>https://wwood.kr/home/mall/</loc></url>\n<url><loc>https://wwood.kr/home/sub05/video.php</loc></url>\n' + "".join(f"<url><loc>{u}</loc></url>\n" for u in _cu + _pu) + "</urlset>\n")
+    # wwood.kr(쇼핑몰)용 RSS — wwood.kr/home/mall/rss.php 가 이 파일을 그대로 내보냄(네이버 RSS 제출용). 가격 없음.
+    _psx = json.load(open(f"{ROOT}/data/pspec.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/pspec.json") else {}
+    _fsf2 = f"{ROOT}/data/firstseen.json"; _fs2 = json.load(open(_fsf2, encoding="utf-8")) if os.path.exists(_fsf2) else {}
+    _ri = []
+    for _p in sorted(PROD, key=lambda q: -int(q["id"]))[:60]:
+        _u = f"https://wwood.kr/home/mall/shoplist.php?idx={_p['id']}&pmode=view"
+        _d = _fs2.setdefault(_u, datetime.date.today().isoformat())
+        _sz = ", ".join(dict.fromkeys(r[0].strip() for r in _psx.get(str(_p["id"]), []) if r and r[0].strip()))[:120]
+        _ds = f"{_p['name']}" + (f" 규격: {_sz}." if _sz else ".") + " 대전 유성 영진종합목재(월드건축자재) 매장에서 실물 확인, 원하는 사이즈 재단, 전국 용달 배송."
+        _ri.append((_d, _p, _u, _ds))
+    json.dump(_fs2, open(_fsf2, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+    _ri.sort(key=lambda t: (t[0], int(t[1]["id"])), reverse=True)
+    def _rfc2(d):
+        try: return datetime.datetime.strptime(d, "%Y-%m-%d").strftime("%a, %d %b %Y 09:00:00 +0900")
+        except Exception: return ""
+    open(f"{OUT}/wwoodkr-rss.xml", "w", encoding="utf-8").write('<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>영진종합목재(월드건축자재) 쇼핑몰 새 상품</title><link>https://wwood.kr/home/mall/</link><description>대전 유성 영진종합목재(월드건축자재) 목재·합판·건축자재 쇼핑몰 상품 소식</description><language>ko</language>\n'
+        + "".join(f"<item><title>{html.escape(p_['name'])} 규격·주문</title><link>{html.escape(u_)}</link><guid>{html.escape(u_)}</guid><pubDate>{_rfc2(d_)}</pubDate><description>{html.escape(ds_)}</description>" + (f'<enclosure url="{html.escape(p_["img"])}" type="image/jpeg" length="0"/>' if p_.get("img", "").startswith("http") else "") + "</item>\n" for d_, p_, u_, ds_ in _ri)
+        + "</channel></rss>\n")
     open(f"{OUT}/robots.txt", "w").write(f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\nSitemap: {BASE}/sitemap-video.xml\nSitemap: {BASE}/rss.xml\n")
     today = datetime.date.today().isoformat()
     # lastmod: 내용이 실제로 바뀐 날만 갱신(매일 오늘 날짜면 구글이 lastmod를 무시함)
