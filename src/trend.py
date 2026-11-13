@@ -1,6 +1,6 @@
 # 인테리어 트렌드 — 느낌(스타일)별로 예림 중문·도어와 매장 자재를 묶어 보여 줌 — /trend/
 import os, re
-from yerim import IMG as YIMG
+from yerim import IMG as YIMG, LB
 
 # slug, 이름, 한 줄, 설명, 색·자재 팁, 예림 제품 이름 정규식(제외 정규식), 같이 쓰는 매장 자재 [(주소, 이름)]
 STYLES = [
@@ -55,15 +55,15 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
         its = [r for r in rows if re.search(rx, r[3]) and not (nx and re.search(nx, r[3]))]
         jm = [r for r in its if r[0] in ("544", "545", "34", "556", "207")]
         dr = [r for r in its if r not in jm]
-        grid = lambda xs: '<div class="yrg">' + "".join(f'<a class="yri" href="https://www.yerim.net/kor/products/products-view.html?uid={r[2]}" target="_blank" rel="noopener nofollow"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{YIMG(r[4])}" alt="{E(nm)} 인테리어 예림 {E(r[3])}"><span>{E(r[3])}</span></a>' for r in xs) + '</div>'
+        grid = lambda xs: '<div class="yrg">' + "".join(f'<a class="yri" href="#" data-big="{YIMG(r[4])}" data-n="{E(r[3])}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{YIMG(r[4])}" alt="{E(nm)} 인테리어 예림 {E(r[3])}"><span>{E(r[3])}</span></a>' for r in xs) + '</div>'
         body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/trend/">인테리어 트렌드</a> › {E(nm)}</p><h1>{E(nm)} 인테리어</h1><p class="glead">{E(one)}. {E(desc)}</p>{nav(slug)}'
                 f'<h2 class="gt">이렇게 맞추세요</h2><ul class="gtip">{"".join(f"<li>{E(t)}</li>" for t in tips)}</ul>'
                 + (f'<h2 class="gt">어울리는 중문 {len(jm)}가지 <small>옆으로 넘겨 보세요 ›</small></h2>{grid(jm)}' if jm else "")
                 + (f'<h2 class="gt">어울리는 방문·문틀 {len(dr)}가지 <small>옆으로 넘겨 보세요 ›</small></h2>{grid(dr)}' if dr else "")
                 + f'<h2 class="gt">같이 쓰는 자재</h2><div class="glk">{"".join(f"<a href={chr(34)}{h}{chr(34)}>{E(t)}</a>" for h, t in rel)}<a href="/yerim/">예림 중문·도어 전체</a></div>'
-                f'<p class="gs">중문·도어 사진은 예림(YERIM) 제품이며 누르면 제조사 상세 페이지가 열립니다. 색상·규격·가격은 매장에 문의해 주세요.</p></section>')
+                f'<p class="gs">중문·도어 사진은 예림(YERIM) 제품이며 누르면 크게 볼 수 있습니다. 색상·규격·가격은 매장에 문의해 주세요.</p></section>')
         fq = [(f"{nm} 인테리어 자재는 어디서 보나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 문·중문 샘플과 루바·몰딩·필름 실물을 보고 고를 수 있습니다. {HOURS}. 대전·세종은 설치 시공(월드아키텍쳐)도 상담합니다.")]
-        body += f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>{CTA}'
+        body += f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>{CTA}' + LB
         img = YIMG(its[0][4]) if its else None
         page(f"trend/{slug}.html", f"{nm} 인테리어 — {one}, 어울리는 중문·도어 {len(its)}가지 | 대전 영진목재",
              f"{nm} 인테리어 꾸미는 법과 어울리는 중문·방문 {len(its)}가지, 같이 쓰는 루바·몰딩·필름. 대전 유성 영진종합목재.", body, "/trend/", None, img)

@@ -347,3 +347,14 @@ main .glk a{text-decoration:none}
 .yrg .yri{flex:0 0 190px;scroll-snap-align:start}
 @media(max-width:560px){.yrg .yri{flex:0 0 44vw}}
 .yrg::-webkit-scrollbar{height:6px}.yrg::-webkit-scrollbar-thumb{background:#d8d2c8;border-radius:3px}
+/* 사진 크게 보기 */
+.ylb{position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center}
+.ylb[hidden]{display:none}
+.ylb figure{margin:0;max-width:min(92vw,900px);text-align:center}
+.ylb img{max-width:100%;max-height:70vh;background:#fff;border-radius:12px;display:block;margin:0 auto}
+.ylb figcaption{color:#fff;margin-top:12px;line-height:1.6}.ylb figcaption b{display:block;font-size:18px}.ylb figcaption span{display:block;font-size:13px;opacity:.8}
+.ylb .yla{opacity:1!important;display:flex!important;gap:8px;justify-content:center;margin-top:10px}
+.ylx{position:absolute;top:10px;right:14px;font-size:40px;color:#fff;background:none;border:0;cursor:pointer;line-height:1}
+.ylp,.yln{position:absolute;top:45%;font-size:48px;color:#fff;background:rgba(255,255,255,.12);border:0;border-radius:50%;width:56px;height:56px;cursor:pointer;line-height:1}
+.ylp{left:10px}.yln{right:10px}
+@media(max-width:560px){.ylp,.yln{width:44px;height:44px;font-size:36px;top:auto;bottom:18px}}

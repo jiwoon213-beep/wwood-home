@@ -1,5 +1,14 @@
 # 예림(YERIM) 중문·도어·문틀 — /yerim/ (회사 허락, 사진은 yerim.net/upload/product/ 링크)
 import os, csv
+LB = r'''<div id="ylb" class="ylb" hidden><button class="ylx" aria-label="닫기">×</button><button class="ylp" aria-label="이전">‹</button><figure><img alt=""><figcaption><b></b><span>예림(YERIM) 제품 · 색상·규격·가격은 매장 문의</span><span class="yla"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:0425452900">전화 문의</a></span></figcaption></figure><button class="yln" aria-label="다음">›</button></div>
+<script>(function(){var lb=document.getElementById("ylb");if(!lb)return;var im=lb.querySelector("img"),nm=lb.querySelector("figcaption b"),L=[],i=0;
+function show(){var a=L[i];im.src=a.getAttribute("data-big");im.alt=a.getAttribute("data-n");nm.textContent=a.getAttribute("data-n")+"  ("+(i+1)+"/"+L.length+")";}
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest(".yri");if(!a)return;e.preventDefault();L=[].slice.call(a.parentNode.querySelectorAll(".yri"));i=L.indexOf(a);show();lb.hidden=false;document.body.style.overflow="hidden";});
+function cl(){lb.hidden=true;im.src="";document.body.style.overflow="";}
+lb.querySelector(".ylx").onclick=cl;lb.onclick=function(e){if(e.target===lb)cl();};
+lb.querySelector(".ylp").onclick=function(){i=(i-1+L.length)%L.length;show();};lb.querySelector(".yln").onclick=function(){i=(i+1)%L.length;show();};
+document.addEventListener("keydown",function(e){if(lb.hidden)return;if(e.key=="Escape")cl();if(e.key=="ArrowLeft")lb.querySelector(".ylp").click();if(e.key=="ArrowRight")lb.querySelector(".yln").click();});
+var sx=0;lb.addEventListener("touchstart",function(e){sx=e.touches[0].clientX},{passive:true});lb.addEventListener("touchend",function(e){var d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)(d>0?lb.querySelector(".ylp"):lb.querySelector(".yln")).click();});})();</script>'''
 IMG = lambda p: "https://www.yerim.net/upload/product/2039376550_" + p[1:]
 D3 = {"97": "슈퍼 슬림", "99": "슬림", "98": "자동문", "551": "리안", "550": "뉴 밸런스", "549": "피봇", "553": "프레임리스 글래스", "555": "클래식", "554": "폴딩", "574": "시스템 프레임·연결", "546": "LED", "547": "간살", "548": "슈퍼슬림 간살",
       "557": "이지", "558": "이지 슬림", "534": "AL 모듈러", "535": "벨로체", "536": "벨리니", "537": "올글래스", "77": "ABS", "80": "리얼 텍스처", "82": "라인", "540": "우드데코 포인트", "541": "완자·격자·갤러리", "83": "키즈", "84": "칠판", "539": "합판·도장용",
@@ -77,13 +86,13 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
         sec = ""
         for g, its in groups.items():
             sec += (f'<h2 class="gt">{E(g) + " " if g else ""}{len(its)}가지 <small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">' if len(groups) > 1 else f'<h2 class="gt">디자인 {len(its)}가지 <small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">')
-            sec += "".join(f'<a class="yri" href="https://www.yerim.net/kor/products/products-view.html?uid={uid}" target="_blank" rel="noopener nofollow"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{IMG(im)}" alt="예림 {E(n)}"><span>{E(n)}</span></a>' for uid, n, im in its) + '</div>'
+            sec += "".join(f'<a class="yri" href="#" data-big="{IMG(im)}" data-n="{E(n)}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{IMG(im)}" alt="예림 {E(n)}"><span>{E(n)}</span></a>' for uid, n, im in its) + '</div>'
         fq = faq + [(f"예림 {nm} 어디서 보고 살 수 있나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 상담·주문할 수 있습니다. {HOURS}. 문 크기·벽 두께를 재 오시면 맞는 규격을 찾아 드리고, 대전·세종 설치 시공(월드아키텍쳐)도 상담합니다.")]
         body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/yerim/">예림 중문·도어</a> › {E(nm)}</p><h1>예림 {E(nm)}</h1><p class="glead">{E(lead)}</p>{nav(slug)}'
-                f'{sec}<p class="gs">예림(YERIM) 제품입니다. 사진을 누르면 제조사 상세 페이지가 열립니다. 색상·규격·가격·납기는 매장에 문의해 주세요(주문 제작품 포함).</p>'
+                f'{sec}<p class="gs">예림(YERIM) 제품입니다. 사진을 누르면 크게 볼 수 있습니다. 색상·규격·가격·납기는 매장에 문의해 주세요(주문 제작품 포함).</p>'
                 f'<h2 class="gt">고를 때 알아둘 것</h2><ul class="gtip">{"".join(f"<li>{E(t)}</li>" for t in tips)}</ul>'
                 f'<div class="glk"><a href="/gagyeok/door-gagyeok.html">방문·문틀 기준가</a><a href="/calc.html#door">문 크기 계산기</a><a href="/sigong.html">설치 시공 맡기기</a><a href="/visit.html">매장 길찾기</a></div></section>'
-                f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>{CTA}')
+                f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>{CTA}' + LB)
         ld = [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}]
         if ALLFAQ is not None: ALLFAQ.append(("예림 중문·도어", faq, f"/yerim/{slug}.html", nm))
         page(f"yerim/{slug}.html", f"예림 {nm} — {tail} {len(items)}종 | 대전 영진목재", f"예림 {nm} {len(items)}가지 사진. {lead} 대전 유성 영진종합목재 매장 상담·주문, 대전·세종 시공.", body, "/jaryo/", ld, IMG(items[0][4]) if items else None)
