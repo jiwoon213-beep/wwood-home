@@ -422,3 +422,6 @@ ul.mli li .mlks{margin-top:auto;padding-top:8px}
 ul.mli::-webkit-scrollbar{height:5px}ul.mli::-webkit-scrollbar-thumb{background:#d8d2c8;border-radius:3px}
 @media(max-width:600px){ul.mli li{flex-basis:76vw}}
 .card ul.mli li{background:#faf8f4}
+.g2 > .card,.card{min-width:0}
+ul.mli{max-width:100%;align-items:flex-start}
+ul.mli li .mlks{margin-top:0}
