@@ -391,3 +391,6 @@ p.hsh{margin:6px 0 0}
  .gg .gt{margin:30px 0 10px}
  .gg > .row .b{flex:1 1 auto;text-align:center}
 }
+@media(max-width:760px){.sec > h2:not(:first-child),.sec > h3:not(:first-child){margin-top:28px}}
+@media(min-width:761px){.sec > h2:not(:first-child){margin-top:36px}}
+.crumb + h1,.crumb + h2{margin-top:6px!important}
