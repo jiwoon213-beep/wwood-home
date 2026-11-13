@@ -285,3 +285,12 @@ table{font-size:15px}th,td{padding:10px 12px}
 @media(min-width:900px){.pl.hs.nw{flex-wrap:wrap;overflow:visible}.pl.hs.nw>.pc{flex:0 0 calc(25% - 9px);max-width:none}.pl.hs.nw+.hsh{display:none}}
 .gpc{padding:0;overflow:hidden;gap:0;text-decoration:none;color:var(--ink)}.gpc img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#eee}.gpc span{padding:10px 12px;font-size:14px;font-weight:700;line-height:1.4}
 @media(min-width:900px){.gcs .gpc{flex:0 0 calc(20% - 8px)}}
+/* 링크 정리: 본문 링크는 진한 글씨+옅은 밑줄, '더 보기'는 둥근 버튼, 가격 바로가기는 칩 */
+main a:not([class]){color:var(--ink);font-weight:700;text-decoration:underline;text-decoration-color:rgba(200,40,30,.35);text-decoration-thickness:2px;text-underline-offset:4px}
+main a:not([class]):hover{color:var(--red);text-decoration-color:var(--red)}
+.mr{display:inline-flex;align-items:center;gap:6px;min-height:46px;padding:0 18px;border:1.5px solid var(--ink);border-radius:999px;background:#fff;color:var(--ink)!important;font-weight:800;font-size:15px;text-decoration:none;margin:6px 6px 6px 0;vertical-align:middle}
+.mr i{font-style:normal;color:var(--red);font-size:20px;line-height:1}.mr:hover{border-color:var(--red);color:var(--red)!important}
+.qk{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0 4px}.qk b{width:100%;font-size:16px;font-weight:900}
+.qk a{padding:10px 15px;border-radius:999px;background:#FBEAE8;color:var(--red);font-weight:800;font-size:15px;text-decoration:none}.qk a:hover{background:var(--red);color:#fff}
+main .qk a{text-decoration:none;color:var(--red);font-weight:800}main .qk a:hover{color:#fff}
+.qk2 a{background:#fff;border:1px solid var(--line);color:var(--ink)!important}.qk2 a:hover{border-color:var(--red);background:#fff;color:var(--red)!important}

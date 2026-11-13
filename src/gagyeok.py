@@ -152,7 +152,7 @@ BYMAT = {"molding": [("molding-gagyeok", "몰딩·걸레받이")], "siding": [("
 BYCAT = {"합판": [("hapan-gagyeok", "합판")], "MDF": [("mdf-gagyeok", "MDF")], "집성판": [("jipseong-gagyeok", "집성판")], "석고보드": [("seokgo-gagyeok", "석고보드")], "단열재": [("danyeol-gagyeok", "단열재")], "구조재": [("gakjae-gagyeok", "구조재")], "방부목": [("gakjae-gagyeok", "방부목")], "각재·다루끼": [("gakjae-gagyeok", "각재")], "데크": [("deck-gagyeok", "데크재")]}
 def links(pairs):
     seen = []; [seen.append(p) for p in pairs if p not in seen]
-    return ('<p>💰 <b>가격 가이드</b> ' + " · ".join(f'<a href="/gagyeok/{a}.html">{b} 가격 — 1평에 얼마</a>' for a, b in seen) + '</p>') if seen else ""
+    return ('<div class="qk"><b>💰 1평에 얼마?</b>' + "".join(f'<a href="/gagyeok/{a}.html">{b} 가격</a>' for a, b in seen) + '</div>') if seen else ""
 
 def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ=None, MP=None):
     pages = []

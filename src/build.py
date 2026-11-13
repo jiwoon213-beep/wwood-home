@@ -300,7 +300,7 @@ def build():
 <section class="wrap sec"><h2>🏆 많이 본 영상 TOP</h2><p class="small muted">조회수가 많은 순서입니다.</p>{hot}<p><a class="b o" href="/video/top.html">많이 본 영상 TOP 50 전체 보기 ›</a> <a href="{YT}" target="_blank" rel="noopener">유튜브 채널 →</a></p></section></div>
 <section class="wrap sec g2"><div class="card"><h2>기본 자재 기준가</h2><p class="muted small">부가세 별도 · 규격·수량에 따라 달라집니다</p>
 <div class="tw"><table><thead><tr><th>자재</th><th>규격</th><th class=r>기준가</th></tr></thead><tbody>{bt}</tbody></table></div>
-<p class="small">재단비·운임·수량 할인은 매장에서 계산 · 고재·수입목·특수목은 매장 문의 · 도매가는 회원 로그인 후</p><a href="/price.html">기준가 전체 보기 →</a><p class="small" style="margin-top:8px">💰 <b>1평에 얼마?</b> <a href="/gagyeok/hapan-gagyeok.html">합판</a> · <a href="/gagyeok/seokgo-gagyeok.html">석고보드</a> · <a href="/gagyeok/deck-gagyeok.html">데크</a> · <a href="/gagyeok/danyeol-gagyeok.html">아이소핑크</a> · <a href="/gagyeok/hinoki-ruba.html">루바</a> · <a href="/gagyeok/tempa-board.html">템바보드</a> · <a href="/gagyeok/">전체 가격 가이드 →</a></p></div>
+<p class="small">재단비·운임·수량 할인은 매장에서 계산 · 고재·수입목·특수목은 매장 문의 · 도매가는 회원 로그인 후</p><a href="/price.html">기준가 전체 보기 →</a><div class="qk"><b>💰 1평에 얼마?</b><a href="/gagyeok/hapan-gagyeok.html">합판</a><a href="/gagyeok/seokgo-gagyeok.html">석고보드</a><a href="/gagyeok/deck-gagyeok.html">데크</a><a href="/gagyeok/danyeol-gagyeok.html">아이소핑크</a><a href="/gagyeok/hinoki-ruba.html">루바</a><a href="/gagyeok/tempa-board.html">템바보드</a><a href="/gagyeok/">전체 가격 가이드</a></div></div>
 <div class="card dark"><h2>직접 하기 어렵다면, 시공까지</h2><p>자재를 가장 잘 아는 목재상이 직접 시공합니다. 월드아키텍쳐({LIC})가 대전·세종 전 공정을 시공하고, 모든 현장은 유튜브에 공개합니다.</p>
 <a class="b r" href="/sigong.html">시공 사례 보기</a></div></section>{CTA}"""
     page("index.html", "대전 목재·세종 목재 영진목재 | 3000평 목재소, 원하는 사이즈 즉석 재단", "대전 목재·세종 목재 영진목재(월드건축자재). 3000평 목재소, 합판·방부목·데크 즉석 재단, 기준가·시공 영상.", body, "", BIZ)
@@ -433,7 +433,7 @@ def build():
              + '<div class="tdots"><button type="button" class="tb" data-d="-1">◀</button><span id="tdot">1–5위 / 6–10위 ▶ 옆으로 밀기</span><button type="button" class="tb" data-d="1">▶</button></div></div>')
     secs = '<div class="pboard">' + board + '</div>' + secs
     page("price.html", "목재 가격 기준가 공개 — 합판·MDF·구조재·방부목·석고보드 | 대전 영진목재", "대전 월드건축자재(영진목재) 소매 기준가. 부가세 별도, 결제·재단은 매장에서.",
-         f'<section class="wrap sec ptsec"><h1>소매 기준가</h1>{psearch}<p class="lead">자주 찾는 자재의 소매 기준가입니다(부가세 별도). 규격·수량에 따라 달라지며 재단비·운임은 매장에서 계산합니다. 도매가는 <a href="/dome.html">도매회원</a> 로그인 후 확인하세요. 크기·두께는 <a href="/gyugyeok.html">규격표</a>, 어떻게 잘리는지는 <a href="/cut.html">재단 미리보기</a>에서 보세요.</p><p>💰 <b>1평에 얼마?</b> <a href="/gagyeok/hapan-gagyeok.html">합판</a> · <a href="/gagyeok/seokgo-gagyeok.html">석고보드</a> · <a href="/gagyeok/osb-gagyeok.html">OSB</a> · <a href="/gagyeok/mdf-gagyeok.html">MDF</a> · <a href="/gagyeok/danyeol-gagyeok.html">아이소핑크</a> · <a href="/gagyeok/jipseong-gagyeok.html">집성판</a> · <a href="/gagyeok/deck-gagyeok.html">데크재</a> · <a href="/gagyeok/gakjae-gagyeok.html">구조재·각재</a> · <a href="/gagyeok/siding-gagyeok.html">사이딩</a> · <a href="/gagyeok/molding-gagyeok.html">몰딩</a> · <a href="/gagyeok/door-gagyeok.html">방문·문틀</a> · <a href="/gagyeok/hinoki-ruba.html">히노끼 루바</a> · <a href="/gagyeok/spruce-ruba.html">스프러스 루바</a> · <a href="/gagyeok/tempa-board.html">템바보드</a> · <a href="/gagyeok/tempa-ruba.html">템바 루바</a> · <a href="/gagyeok/interior-film.html">인테리어 필름</a> · <a href="/gagyeok/oilstain.html">오일스테인</a> — <a href="/gagyeok/">자재 가격 가이드</a></p>{secs}</section>{CTA}', "/price.html")
+         f'<section class="wrap sec ptsec"><h1>소매 기준가</h1>{psearch}<p class="lead">자주 찾는 자재의 소매 기준가입니다(부가세 별도). 규격·수량에 따라 달라지며 재단비·운임은 매장에서 계산합니다. 도매가는 <a href="/dome.html">도매회원</a> 로그인 후 확인하세요. 크기·두께는 <a href="/gyugyeok.html">규격표</a>, 어떻게 잘리는지는 <a href="/cut.html">재단 미리보기</a>에서 보세요.</p><div class="qk"><b>💰 1평에 얼마?</b><a href="/gagyeok/hapan-gagyeok.html">합판</a><a href="/gagyeok/seokgo-gagyeok.html">석고보드</a><a href="/gagyeok/osb-gagyeok.html">OSB</a><a href="/gagyeok/mdf-gagyeok.html">MDF</a><a href="/gagyeok/danyeol-gagyeok.html">아이소핑크</a><a href="/gagyeok/jipseong-gagyeok.html">집성판</a><a href="/gagyeok/deck-gagyeok.html">데크재</a><a href="/gagyeok/gakjae-gagyeok.html">구조재·각재</a><a href="/gagyeok/siding-gagyeok.html">사이딩</a><a href="/gagyeok/molding-gagyeok.html">몰딩</a><a href="/gagyeok/door-gagyeok.html">방문·문틀</a><a href="/gagyeok/hinoki-ruba.html">히노끼 루바</a><a href="/gagyeok/spruce-ruba.html">스프러스 루바</a><a href="/gagyeok/tempa-board.html">템바보드</a><a href="/gagyeok/tempa-ruba.html">템바 루바</a><a href="/gagyeok/interior-film.html">인테리어 필름</a><a href="/gagyeok/oilstain.html">오일스테인</a><a href="/gagyeok/">자재 가격 가이드</a></div>{secs}</section>{CTA}', "/price.html")
 
     # 도매
     page("dome.html", "건축자재 도매·현장 납품 — 인테리어 업체·목수 도매회원 | 대전 월드건축자재", "인테리어 업체·목수·시공사 도매회원. 사업자등록증·명함 확인 후 승인, 회원가 적용, 현장 납품, 세금계산서 월 1회.",
@@ -1515,6 +1515,15 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
             _f = os.path.join(_dp, _n); _t = open(_f, encoding="utf-8").read()
             _t2 = _rxp.sub(lambda m: m.group(1) + (_NB if m.group(2) in _newpg else ""), _t)
             _t2 = _rxv.sub(lambda m: m.group(1) + (_NB if m.group(2) in _newv else ""), _t2)
+            if "<main>" in _t2:
+                _h, _m = _t2.split("<main>", 1); _m, _e = _m.split("</main>", 1) if "</main>" in _m else (_m, "")
+                _m = re.sub(r'<a href="([^"]+)"((?: target="_blank" rel="noopener")?)>([^<>]{1,40}?)\s*(?:→|›)</a>', lambda m: f'<a class="mr" href="{m.group(1)}"{m.group(2)}>{m.group(3).strip()}<i>›</i></a>', _m)
+                def _q2(m):
+                    ls = re.findall(r'<a (?:class="mr" )?href="[^"]+"[^>]*>.*?</a>', m.group(1))
+                    rest = re.sub(r'<a [^>]*>.*?</a>|\s|·|<i>›</i>', "", m.group(1))
+                    return ('<div class="qk qk2"><b>👉 함께 보기</b>' + "".join(re.sub(r'class="mr" |<i>›</i>', "", l) for l in ls) + '</div>') if ls and not rest else m.group(0)
+                _m = re.sub(r'<p>👉 (.*?)</p>', _q2, _m)
+                _t2 = _h + "<main>" + _m + ("</main>" + _e if _e or "</main>" in _t2 else "")
             if _t2 != _t: open(_f, "w", encoding="utf-8").write(_t2)
     print("NEW:", len(_newpg), "pages,", len(_newv), "videos")
     # robots, sitemap
