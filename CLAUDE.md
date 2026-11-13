@@ -21,3 +21,4 @@
 - 전국 배송 지역(/jeonguk/): src/nation.py REG 12개(서울·경기남부·경기북부·인천·강원·충북·충남·전북·광주전남·대구경북·부산울산경남·제주). 운임·거리·소요시간 숫자 금지(견적). 제주는 배편 별도 상담.
 - 철물·공구·부속(/bupum/): 철물박사(철물박사.com, 주식회사 철물박사 — 회사 허락) 전체 상품 사진·이름. 데이터 src/data/cmbs.tsv·cmbs_cats.tsv 는 vendors.yml 이 .github/scripts/fetch_cmbs.py 로 매일 자동 갱신(같은 상품번호 중복 제거). 가격 = 철물박사 판매가 × 1.4, 100원 올림, 끝에 '~' 표시, 부가세 포함(이 품목들만)(사장님 지시 2026-11-13). 다른 회사 워터마크가 찍힌 사진의 상품은 뺌(.github/workflows/wm_scan.yml OCR 검사 → src/data/cmbs_block.txt). 생성 src/cmbs.py. 인테리어 트렌드에는 넣지 않음.
 - DIY 만들기·자재 시공법의 준비할 자재·공구: src/matinfo.py — 피스 길이(판 두께×약 2.2 → 표준 길이) 안내, 판재·각재는 /cut.html 해당 자재 선택 링크, 부자재·공구는 /bupum/ 해당 분류 링크(cmbs.catlink).
+- 본덱스 스테인·페인트·오일(/bondex/): 이몰링(emalling.co.kr, 본덱스코리아 — 회사 허락). 데이터 src/data/emall.tsv·emall_cats.tsv 는 vendors.yml(매일)·emall.yml(수동)이 .github/scripts/fetch_emall.py 로 갱신. 가격 = 판매가 × 1.3, 100원 올림, '~', 부가세 포함(사장님 지시 2026-11-14). 같은 상품·같은 이름 한 번만, 철물박사의 본덱스 계열 상품은 /bupum/에서 뺌. 생성 src/emall.py, 전체 자재 페이지 페인트·스테인(35) 줄에 연결.

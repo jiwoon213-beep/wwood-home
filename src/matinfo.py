@@ -14,6 +14,10 @@ B = {"목공피스": 277, "목공피스봉": 281, "직결피스": 278, "스텐�
      "장갑": 241, "보안경": 242, "마스크": 244, "에어공구": 249, "모서리몰딩": 457, "논슬립": 89, "보양재": 486}
 
 
+import os
+BONDEX = os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "emall.tsv"))
+
+
 class M:
     def __init__(self, E, cutlink, catlink):
         self.E, self.cut, self.cl = E, cutlink, catlink
@@ -122,8 +126,8 @@ class M:
             elif re.search("가구 발|미끄럼|패드", t): links += self.bl("조절발", "가구 발 보기")
             elif "다리" in t: links += self.bl("다리", "다리 보기")
             elif re.search("고리", t): links += self.bl("고리", "고리 보기")
-            elif re.search("오일스테인", t): links += '<a class="mlk" href="/gagyeok/oilstain.html">오일스테인 가격 ›</a>' + self.bl("페인트공구", "붓·롤러 보기")
-            elif re.search("오일|바니시|페인트", t): links += self.bl("페인트", "도료 보기") + self.bl("페인트공구", "붓·롤러 보기")
+            elif re.search("오일스테인", t): links += ('<a class="mlk" href="/bondex/stain.html">본덱스 스테인 ›</a>' if BONDEX else "") + '<a class="mlk" href="/gagyeok/oilstain.html">오일스테인 가격 ›</a>' + ('<a class="mlk" href="/bondex/brush.html">붓·로울러 ›</a>' if BONDEX else self.bl("페인트공구", "붓·롤러 보기"))
+            elif re.search("오일|바니시|페인트", t): links += (('<a class="mlk" href="/bondex/paint.html">페인트 보기 ›</a>' if "페인트" in t else '<a class="mlk" href="/bondex/oil.html">오일·바니쉬 보기 ›</a>') if BONDEX else self.bl("페인트", "도료 보기")) + ('<a class="mlk" href="/bondex/brush.html">붓·로울러 ›</a>' if BONDEX else self.bl("페인트공구", "붓·롤러 보기"))
             elif "사포" in t: note = '<span class="mnote">#120으로 모서리 → #220으로 마감</span>'; links += self.bl("사포", "사포 보기")
             elif "우레탄폼" in t: links += self.bl("우레탄폼", "폼 보기")
             elif re.search("퍼티|조인트", t): links += self.bl("미장공구", "헤라 보기")
@@ -164,7 +168,7 @@ class M:
         if re.search("실리콘", t): l += self.bl("실리콘", "실리콘")
         if re.search("우레탄폼|폼본드", t): l += self.bl("우레탄폼", "폼")
         if re.search("테이프", t): l += self.bl("테이프", "테이프")
-        if re.search("오일스테인", t): l += '<a class="mlk" href="/gagyeok/oilstain.html">가격 ›</a>'
+        if re.search("오일스테인", t): l += ('<a class="mlk" href="/bondex/stain.html">본덱스 ›</a>' if BONDEX else "") + '<a class="mlk" href="/gagyeok/oilstain.html">가격 ›</a>'
         if re.search("사포", t): l += self.bl("사포", "사포")
         if re.search("붓|롤러|헤라", t): l += self.bl("페인트공구" if re.search("붓|롤러", t) else "미장공구", "공구")
         if re.search("몰딩|걸레받이", t): l += '<a class="mlk" href="/gagyeok/molding-gagyeok.html">몰딩 가격 ›</a>'

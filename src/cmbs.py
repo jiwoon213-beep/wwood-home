@@ -40,10 +40,12 @@ def load(ROOT):
         if len(x) >= 3: cats[int(x[0])] = (int(x[1]), x[2])
     bp = os.path.join(d, "cmbs_block.txt")
     block = set(open(bp).read().split()) if os.path.exists(bp) else set()  # 다른 회사 워터마크 사진 상품은 뺌
+    dup = os.path.exists(os.path.join(d, "emall.tsv"))  # 본덱스 계열은 /bondex/ 에 있으니 여기서 뺌(중복 제거)
+    BR = re.compile(r"본덱스|bondex|비오파|드라이락|그레이코|에어렉스|실카|마코", re.I)
     rows = []
     for l in open(pr, encoding="utf-8"):
         x = l.rstrip("\n").split("|")
-        if len(x) >= 4 and x[0].isdigit() and x[1] not in block: rows.append((int(x[0]), x[1], nice(x[2]), x[3], (price(x[4]) if len(x) > 4 else None), x[2]))
+        if len(x) >= 4 and x[0].isdigit() and x[1] not in block and not (dup and BR.search(x[2])): rows.append((int(x[0]), x[1], nice(x[2]), x[3], (price(x[4]) if len(x) > 4 else None), x[2]))
     seen = {}
     for i, r in enumerate(rows):  # 같은 상품번호가 두 줄이면 가격 있는 줄만
         if r[1] not in seen or (rows[seen[r[1]]][4] is None and r[4] is not None): seen[r[1]] = i
