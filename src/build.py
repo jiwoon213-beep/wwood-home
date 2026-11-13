@@ -177,7 +177,7 @@ def mat_prices(m, k=10):
     return sorted(rows, key=lambda p: -p["qty"])[:k]
 
 # ---------- layout ----------
-NAV = [("/jajae/", "자재 백과"), ("/jaryo/", "전체 자재"), ("/mandeul/", "DIY 만들기"), ("/sigongbeop/", "자재 시공법"), ("/cut.html", "재단"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/calc.html", "계산기"), ("/video/", "영상"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/visit.html", "매장 안내")]
+NAV = [("/jajae/", "자재 백과"), ("/jaryo/", "전체 자재"), ("/cheolmul/", "목재 철물"), ("/mandeul/", "DIY 만들기"), ("/sigongbeop/", "자재 시공법"), ("/cut.html", "재단"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/gagyeok/", "가격 가이드"), ("/calc.html", "계산기"), ("/video/", "영상"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/visit.html", "매장 안내")]
 
 def page(path, title, desc, body, active="", jsonld=None, img=None):
     if len(desc) > 80:  # 네이버 권장: 설명 80자 이내 — 문장·쉼표 경계에서 자름

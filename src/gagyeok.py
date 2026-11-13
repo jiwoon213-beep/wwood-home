@@ -220,10 +220,10 @@ def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ=None,
         ld = [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}]
         ld += prod_ld([{"name": p["name"], "cat": p["cat"], "price": p["price"]} for p, _, _ in rows[:6]], f"{BASE}/gagyeok/{slug}.html")
         if ALLFAQ is not None: ALLFAQ.append(("자재 가격", faq, f"/gagyeok/{slug}.html", nm + " 가격"))
-        page(f"gagyeok/{slug}.html", title + " | 대전 영진목재", desc, body, "/price.html", ld, (_ph[0]["img"] if _ph else None))
+        page(f"gagyeok/{slug}.html", title + " | 대전 영진목재", desc, body, "/gagyeok/", ld, (_ph[0]["img"] if _ph else None))
         pages.append((slug, nm, hl, hv))
     cards = "".join(f'<a class="gi" href="/gagyeok/{s}.html"><b>{E(n)}</b><small>{E(hl)}</small><span>{E(hv)}</span></a>' for s, n, hl, hv in pages)
     page("gagyeok/index.html", "자재 가격 가이드 — 합판·석고보드·데크·사이딩·몰딩·방문·루바 1평에 얼마 | 영진목재",
          "합판·석고보드·단열재·집성판·데크·구조재·사이딩·몰딩·방문·루바·템바보드·필름·오일스테인의 판매 단위와 소매 기준가, 1평 예상 금액.",
-         f'<section class="wrap sec gg"><h1>자재 가격 가이드</h1><p class="glead">"1장에 얼마예요?" "1평에 얼마 들어요?" 자재별로 한눈에 정리했습니다. 모두 소매 기준가(부가세 별도)입니다.</p><div class="gig">{cards}</div><div class="glk"><a href="/price.html">전체 기준가</a><a href="/sigongbeop/">자재 시공법</a><a href="/calc.html">자재 계산기</a></div></section>{CTA}', "/price.html")
+         f'<section class="wrap sec gg"><h1>자재 가격 가이드</h1><p class="glead">"1장에 얼마예요?" "1평에 얼마 들어요?" 자재별로 한눈에 정리했습니다. 모두 소매 기준가(부가세 별도)입니다.</p><div class="gig">{cards}</div><div class="glk"><a href="/price.html">전체 기준가</a><a href="/sigongbeop/">자재 시공법</a><a href="/calc.html">자재 계산기</a></div></section>{CTA}', "/gagyeok/")
     return [(s, n) for s, n, *_ in pages]
