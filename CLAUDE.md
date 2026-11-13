@@ -14,3 +14,4 @@
 - wwood.kr 메뉴 "소식·자재정보"(PC 상단 3번째·모바일 메뉴) → /home/mall/info.php(모바일 /home/mobile/info.php). 내용은 서버 /www/home/include/ww_info.php(목재 철물 8칸 + 게시판 글 목록 + 가격 가이드 칩). 새 게시글을 올리면 ww_info.php 글 목록 맨 위에도 한 줄 추가. 철물(code1 32)·데크철물(code2 266) 목록 상단 배너는 include/ww_chban.php(header.php·m_header.php 끝에서 include). 원본 백업: 내 PC Downloads\wwood_c71\header.php·m_header.php.
 - 타카·타카핀·콤프레셔(/taka/): 제일타카(JITOOL, jitool.com — 회사 허락) 제품. 데이터 src/taka_data.py, 생성 src/taka.py. 사진은 jitool.com/upload/prod/thumb_l/ 링크(referrerpolicy no-referrer). 제조사 규격표(갑당 수량)와 매장 기준가(prices.csv '타카' 행)는 섞지 말고 따로 표시.
 - 예림 중문·도어·문틀(/yerim/): 예림(yerim.net — 회사 허락) 제품 416종. 데이터 src/data/yerim.tsv(depth2|depth3|uid|이름|~이미지), 생성 src/yerim.py(PAGES 13개). 사진은 yerim.net/upload/product/2039376550_ 링크. 가격은 넣지 않음(매장 문의).
+- 인테리어 트렌드(/trend/, 상단 메뉴): src/trend.py STYLES 8개(모던·내추럴·간살 재팬디·호텔·클래식·한옥·키즈·카페). 예림 yerim.tsv 이름을 정규식으로 분류 + 같이 쓰는 자재 링크.
