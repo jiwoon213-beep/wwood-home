@@ -98,3 +98,23 @@ document.addEventListener("click",function(e){var b=e.target.closest&&e.target.c
 (function(){try{[].forEach.call(document.querySelectorAll(".mg"),function(g){[].slice.call(g.children).filter(function(c){return c.classList.contains("mc")&&c.querySelector(".newb")}).reverse().forEach(function(c){g.insertBefore(c,g.firstChild)})})}catch(e){}})();
 // 앱(PWA) 등록
 if ("serviceWorker" in navigator) window.addEventListener("load", function () { navigator.serviceWorker.register("/sw.js").catch(function () {}); });
+// 홈 화면에 추가(앱 설치) 버튼
+(function () {
+  var b = document.getElementById("appi"), g = document.getElementById("appg"), gt = document.getElementById("appgt"); if (!b) return;
+  var st = window.matchMedia && matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+  if (st) { b.hidden = true; return; }
+  var dp = null, ua = navigator.userAgent;
+  window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); dp = e; });
+  function guide(t) { gt.innerHTML = t; g.hidden = false; }
+  document.getElementById("appgx").onclick = function () { g.hidden = true; };
+  g.addEventListener("click", function (e) { if (e.target === g) g.hidden = true; });
+  b.addEventListener("click", function (e) {
+    e.preventDefault();
+    if (dp) { dp.prompt(); dp.userChoice.then(function () { dp = null; }); return; }
+    var inapp = /KAKAOTALK|NAVER\(inapp|Instagram|FBAN|FBAV|Line\/|DaumApps|everytimeApp|; wv\)/i.test(ua);
+    if (/Android/i.test(ua) && inapp) { location.href = "intent://" + location.host + location.pathname + "#Intent;scheme=https;package=com.android.chrome;end"; return; }
+    if (/iPhone|iPad|iPod/i.test(ua)) return guide(inapp ? "지금 화면은 앱 안 브라우저라 추가가 안 돼요. 오른쪽 아래 <b>⋯</b> → <b>Safari로 열기</b> 후, 아래 <b>공유(□↑)</b> → <b>홈 화면에 추가</b>를 누르세요." : "아래쪽 <b>공유(□↑)</b> 버튼 → <b>홈 화면에 추가</b> → <b>추가</b>를 누르세요.");
+    if (/SamsungBrowser/i.test(ua)) return guide("아래쪽 <b>≡</b> → <b>현재 페이지 추가</b> → <b>홈 화면</b>을 누르세요.");
+    guide("오른쪽 위 <b>⋮</b> → <b>홈 화면에 추가</b>(또는 <b>앱 설치</b>) → <b>설치</b>를 누르세요.");
+  });
+})();
