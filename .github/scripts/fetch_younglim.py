@@ -22,7 +22,7 @@ for c in CODES:
             if rc != c and c not in full: continue
             if idx in seen: continue
             n += 1
-            seen[idx] = [c, rc, idx, code or "", re.sub(r"[|\n\t]", " ", name).strip(), sty or "", img.replace("https://s3.ap-northeast-2.amazonaws.com/younglim-bucket/", "")]
+            seen[idx] = [c, rc, idx, code or "", re.sub(r"\s*\|\s*", " · ", re.sub(r"[\n\t]", " ", name)).strip(), sty or "", img.replace("https://s3.ap-northeast-2.amazonaws.com/younglim-bucket/", "")]
         if not n: break
         time.sleep(0.3)
 rows = list(seen.values())

@@ -1,6 +1,10 @@
 # 인테리어 트렌드 — 느낌(스타일)별로 예림 중문·도어와 매장 자재를 묶어 보여 줌 — /trend/
 import os, re
 from yerim import IMG as YIMG, LB
+import younglim as _yl
+YLSTY = {"modern": "1301", "natural": "1302", "classic": "1303", "unique": "1304"}
+YLRX = {"hanok": r"완자|격자|고방|한옥|창살", "hotel": r"프레임리스|피봇|아치|상부구동|포켓|히든|글라스 도어|LED|무문틀"}
+YLONLY = {"kids": ("030600",), "cafe": ("040400", "040500")}
 
 # slug, 이름, 한 줄, 설명, 색·자재 팁, 예림 제품 이름 정규식(제외 정규식), 같이 쓰는 매장 자재 [(주소, 이름)]
 STYLES = [
@@ -39,6 +43,11 @@ STYLES = [
   ["손 끼임 방지 쿠션·도어 스토퍼를 같이 다세요.", "칠판 도어는 분필·마커로 씁니다.", "아이방 벽은 닦기 쉬운 필름·페인트."],
   r"키즈|냥이|프렌즈|YA-301|YAT-301|YMT-306|칠판|펫", r"",
   [("/gagyeok/interior-film.html", "인테리어 필름"), ("/mandeul/", "DIY 만들기")]),
+ ("unique", "유니크·포인트", "컬러·패턴으로 개성 있게",
+  "한 가지 색이나 무늬로 공간에 확실한 포인트를 주는 스타일입니다. 컬러 도어, 패턴 필름, 장식 월판넬로 거실·아이방·매장을 개성 있게 꾸밉니다.",
+  ["포인트는 한 공간에 한 곳만 — 나머지는 무채색으로.", "문 색을 바꾸기 어려우면 인테리어 필름으로 먼저 시도.", "벽 한 면만 월판넬·벽장식으로."],
+  r"컬러|패턴|포인트|체커|큐브|애로우|스테인드", r"",
+  [("/gagyeok/interior-film.html", "인테리어 필름"), ("/gagyeok/tempa-board.html", "템바보드")]),
  ("cafe", "카페·오픈 공간", "폴딩·자동문으로 활짝",
   "폴딩도어로 벽 전체를 열거나, 자동문·파티션으로 공간을 나누는 카페·상가 스타일입니다. 베란다 확장·테라스에도 씁니다.",
   ["바깥과 맞닿는 곳은 단열형 폴딩도어.", "상가 출입구는 자동문(전기 배선 확인).", "파티션은 반투명 유리로 시선만 가리기."],
@@ -50,9 +59,20 @@ STYLES = [
 def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
     rows = [l.rstrip("\n").split("|") for l in open(os.path.join(ROOT, "data", "yerim.tsv"), encoding="utf-8") if l.strip()]
     nav = lambda cur: '<div class="glk tkn">' + "".join(f'<a href="/trend/{s[0]}.html"{" class=on" if s[0] == cur else ""}>{E(s[1])}</a>' for s in STYLES) + '</div>'
+    yrows = [r for r in _yl.load(ROOT) if r[0] not in ("030801",)]
+    ygrid = lambda xs, nm: '<div class="yrg">' + "".join(f'<a class="yri" href="#" data-big="{_yl.IMG(r[6])}" data-n="{E(_yl.card(r)[0])}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{_yl.IMG(r[6])}" alt="{E(nm)} 인테리어 영림 {E(_yl.card(r)[0])}"><span>{E(_yl.card(r)[0])}</span></a>' for r in xs) + '</div>'
+    def ylsec(slug, rx, nx):
+        nm = next(x[1] for x in STYLES if x[0] == slug)
+        xs = [r for r in yrows if (YLSTY.get(slug) == r[5]) or (r[0] in YLONLY.get(slug, ())) or (re.search(YLRX.get(slug, rx), r[4] + " " + r[3]) and not (nx and re.search(nx, r[4])))]
+        h = ""
+        for lab, pre in (("영림 중문", "040"), ("영림 방문", "03"), ("영림 몰딩·벽재·마루", "060"), ("영림 인테리어 필름", "080")):
+            g = [r for r in xs if r[0].startswith(pre)]
+            if g: h += f'<h2 class="gt">어울리는 {lab} {len(g)}가지 <small>옆으로 넘겨 보세요 ›</small></h2>{ygrid(g, nm)}'
+        return h
     out = []
     for slug, nm, one, desc, tips, rx, nx, rel in STYLES:
         its = [r for r in rows if re.search(rx, r[3]) and not (nx and re.search(nx, r[3]))]
+        nyl = sum(1 for r in yrows if (YLSTY.get(slug) == r[5]) or (r[0] in YLONLY.get(slug, ())) or (re.search(YLRX.get(slug, rx), r[4] + ' ' + r[3]) and not (nx and re.search(nx, r[4]))))
         jm = [r for r in its if r[0] in ("544", "545", "34", "556", "207")]
         dr = [r for r in its if r not in jm]
         grid = lambda xs: '<div class="yrg">' + "".join(f'<a class="yri" href="#" data-big="{YIMG(r[4])}" data-n="{E(r[3])}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{YIMG(r[4])}" alt="{E(nm)} 인테리어 예림 {E(r[3])}"><span>{E(r[3])}</span></a>' for r in xs) + '</div>'
@@ -60,16 +80,17 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
                 f'<h2 class="gt">이렇게 맞추세요</h2><ul class="gtip">{"".join(f"<li>{E(t)}</li>" for t in tips)}</ul>'
                 + (f'<h2 class="gt">어울리는 중문 {len(jm)}가지 <small>옆으로 넘겨 보세요 ›</small></h2>{grid(jm)}' if jm else "")
                 + (f'<h2 class="gt">어울리는 방문·문틀 {len(dr)}가지 <small>옆으로 넘겨 보세요 ›</small></h2>{grid(dr)}' if dr else "")
+                + ylsec(slug, rx, nx)
                 + f'<h2 class="gt">같이 쓰는 자재</h2><div class="glk">{"".join(f"<a href={chr(34)}{h}{chr(34)}>{E(t)}</a>" for h, t in rel)}<a href="/yerim/">예림 중문·도어 전체</a></div>'
-                f'<p class="gs">중문·도어 사진은 예림(YERIM) 제품이며 누르면 크게 볼 수 있습니다. 색상·규격·가격은 매장에 문의해 주세요.</p></section>')
+                f'<p class="gs">사진은 예림(YERIM)·영림(YOUNGLIM) 제품이며 누르면 크게 볼 수 있습니다. 색상·규격·가격은 매장에 문의해 주세요.</p></section>')
         fq = [(f"{nm} 인테리어 자재는 어디서 보나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 문·중문 샘플과 루바·몰딩·필름 실물을 보고 고를 수 있습니다. {HOURS}. 대전·세종은 설치 시공(월드아키텍쳐)도 상담합니다.")]
         body += f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>{CTA}' + LB
         img = YIMG(its[0][4]) if its else None
-        page(f"trend/{slug}.html", f"{nm} 인테리어 — {one}, 어울리는 중문·도어 {len(its)}가지 | 대전 영진목재",
+        page(f"trend/{slug}.html", f"{nm} 인테리어 — {one}, 어울리는 중문·도어·마감재 {len(its) + nyl}가지 | 대전 영진목재",
              f"{nm} 인테리어 꾸미는 법과 어울리는 중문·방문 {len(its)}가지, 같이 쓰는 루바·몰딩·필름. 대전 유성 영진종합목재.", body, "/trend/", None, img)
-        out.append((slug, nm, one, len(its), img or ""))
+        out.append((slug, nm, one, len(its) + nyl, img or ""))
     cards = "".join(f'<a class="gi gim" href="/trend/{s}.html"><img loading="lazy" referrerpolicy="no-referrer" src="{im}" alt=""><b>{E(n)}</b><small>{E(o)} · {k}가지</small></a>' for s, n, o, k, im in out)
-    page("trend/index.html", "인테리어 트렌드 — 모던·내추럴·간살 재팬디·호텔·클래식·한옥 스타일별 중문·도어 | 대전 영진목재",
+    page("trend/index.html", "인테리어 트렌드 — 모던·내추럴·간살 재팬디·호텔·클래식·한옥 스타일별 중문·도어·필름·몰딩 | 대전 영진목재",
          "인테리어 느낌(스타일)별로 어울리는 중문·방문·루바·몰딩을 모았습니다. 모던 미니멀, 내추럴 우드, 간살 재팬디, 호텔 럭셔리, 클래식 프로방스, 한옥, 아이방, 카페.",
          f'<section class="wrap sec gg"><h1>인테리어 트렌드</h1><p class="glead">원하는 집 느낌을 먼저 고르세요. 그 느낌에 어울리는 중문·방문과 같이 쓰는 자재를 모아 두었습니다. 사진을 캡처해 매장에 보여 주시면 맞는 자재를 바로 찾아 드립니다.</p><div class="gig">{cards}</div></section>{CTA}', "/trend/")
     return out

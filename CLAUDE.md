@@ -15,3 +15,4 @@
 - 타카·타카핀·콤프레셔(/taka/): 제일타카(JITOOL, jitool.com — 회사 허락) 제품. 데이터 src/taka_data.py, 생성 src/taka.py. 사진은 jitool.com/upload/prod/thumb_l/ 링크(referrerpolicy no-referrer). 제조사 규격표(갑당 수량)와 매장 기준가(prices.csv '타카' 행)는 섞지 말고 따로 표시.
 - 예림 중문·도어·문틀(/yerim/): 예림(yerim.net — 회사 허락) 제품 416종. 데이터 src/data/yerim.tsv(depth2|depth3|uid|이름|~이미지), 생성 src/yerim.py(PAGES 13개). 사진은 yerim.net/upload/product/2039376550_ 링크. 가격은 넣지 않음(매장 문의). 사진은 예림 사이트로 링크하지 않고 우리 페이지에서 크게 보기(LB 라이트박스).
 - 인테리어 트렌드(/trend/, 상단 메뉴): src/trend.py STYLES 8개(모던·내추럴·간살 재팬디·호텔·클래식·한옥·키즈·카페). 예림 yerim.tsv 이름을 정규식으로 분류 + 같이 쓰는 자재 링크.
+- 영림 도어·중문·몰딩/월/마루·인테리어 필름(/younglim/): 영림(yl.co.kr — 회사 허락, 키친·붙박이장·바스·타일 제외). 데이터 src/data/younglim.tsv 는 GitHub Actions '제조사 제품 동기화(영림)'(.github/workflows/vendors.yml, 매일 20:23 KST)가 .github/scripts/fetch_younglim.py 로 자동 갱신·빌드. 생성 src/younglim.py(PAGES 17개). 스타일코드 1301 모던·1302 내추럴·1303 클래식·1304 유니크 → 인테리어 트렌드에도 자동 반영.
