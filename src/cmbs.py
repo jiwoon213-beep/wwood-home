@@ -38,10 +38,12 @@ def load(ROOT):
     for l in open(pc, encoding="utf-8"):
         x = l.rstrip("\n").split("|")
         if len(x) >= 3: cats[int(x[0])] = (int(x[1]), x[2])
+    bp = os.path.join(d, "cmbs_block.txt")
+    block = set(open(bp).read().split()) if os.path.exists(bp) else set()  # 다른 회사 워터마크 사진 상품은 뺌
     rows = []
     for l in open(pr, encoding="utf-8"):
         x = l.rstrip("\n").split("|")
-        if len(x) >= 4 and x[0].isdigit(): rows.append((int(x[0]), x[1], nice(x[2]), x[3], (price(x[4]) if len(x) > 4 else None), x[2]))
+        if len(x) >= 4 and x[0].isdigit() and x[1] not in block: rows.append((int(x[0]), x[1], nice(x[2]), x[3], (price(x[4]) if len(x) > 4 else None), x[2]))
     return cats, rows
 
 

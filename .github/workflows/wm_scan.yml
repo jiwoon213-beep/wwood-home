@@ -1,0 +1,26 @@
+name: 철물박사 사진 워터마크 검사
+on:
+  schedule: [{ cron: '50 12 * * *' }]   # 매일 21:50 KST (제조사 동기화 뒤, 새 상품만 검사)
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: { group: wmscan, cancel-in-progress: false }
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: sudo apt-get update -q && sudo apt-get install -y -q tesseract-ocr tesseract-ocr-kor && pip install -q pillow
+      - run: python3 .github/scripts/wm_scan.py
+      - name: build if changed
+        run: |
+          git stash -q && git pull -q --rebase && git stash pop -q || true
+          [ -z "$(git status --porcelain src/data/cmbs_block.txt src/data/cmbs_wm.tsv)" ] && { echo "no change"; exit 0; }
+          cd src && python3 build.py https://www.wwood.co.kr && cp -r out/. .. && rm -rf out && cd ..
+          test -f CNAME && test -f .nojekyll && test -f googlebdb67d0a828cfb44.html && test -f naverba93ea476932b627cd632929e26465dd.html
+          git config user.name "wwood-build-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A && git commit -m "철물박사 워터마크 사진 상품 제외 갱신" && git pull --rebase -X theirs && git push

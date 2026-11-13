@@ -1,0 +1,57 @@
+# 철물박사 상품 사진에 다른 회사(쇼핑몰·업체) 워터마크가 있는지 OCR로 검사 → src/data/cmbs_block.txt (빼는 상품번호)
+# 검사 결과 캐시: src/data/cmbs_wm.tsv (상품번호|판정 1/0|읽힌 글자 일부). 철물박사 로고는 허용.
+import os, re, subprocess, sys, time, urllib.request, concurrent.futures as cf
+from PIL import Image, ImageOps
+B = "https://m.xn--392bopf4iwtp.com/web/product/medium/"
+D = "src/data/"
+rows = [l.rstrip("\n").split("|") for l in open(D + "cmbs.tsv", encoding="utf-8") if l.count("|") >= 3]
+cache = {}
+if os.path.exists(D + "cmbs_wm.tsv"):
+    for l in open(D + "cmbs_wm.tsv", encoding="utf-8"):
+        x = l.rstrip("\n").split("|")
+        if len(x) >= 2: cache[x[0]] = (x[1], x[2] if len(x) > 2 else "")
+# 워터마크로 보는 표시: 주소·저작권 문구·쇼핑몰 단어
+WM = re.compile(r"(www\.|https?|\.co\.kr|\.com|\.kr\b|\.net|©|copyright|무단|도용|복제|스토어|STORE|store|SHOP|shop|Shop|쇼핑|마켓|몰\b|MALL|mall|오피스|office|OFFICE|아름|arum|ARUM|쿠팡|coupang|11번가|지마켓|gmarket|옥션|auction|인터파크|네이버|naver)", re.I)
+OK = re.compile(r"철물박사|chulmulbaksa|철물박사닷컴", re.I)
+os.makedirs("/tmp/wm", exist_ok=True)
+def scan(r):
+    pno, img = r[1], r[3]
+    f = f"/tmp/wm/{pno}.png"
+    for i in range(3):
+        try:
+            data = urllib.request.urlopen(urllib.request.Request(B + img, headers={"User-Agent": "Mozilla/5.0 wwood.co.kr check"}), timeout=30).read(); break
+        except Exception:
+            time.sleep(2); data = None
+    if not data: return pno, None, ""
+    try:
+        open(f + ".src", "wb").write(data)
+        im = Image.open(f + ".src").convert("L")
+        im = im.resize((im.width * 2, im.height * 2))
+        im.save(f)
+        txt = ""
+        for g in (im, ImageOps.invert(im)):
+            g.save(f)
+            txt += " " + subprocess.run(["tesseract", f, "-", "-l", "kor+eng", "--psm", "11"], capture_output=True, text=True, timeout=60).stdout
+    except Exception:
+        return pno, None, ""
+    finally:
+        for x in (f, f + ".src"):
+            try: os.remove(x)
+            except Exception: pass
+    txt = re.sub(r"\s+", " ", txt).strip()
+    hit = bool(WM.search(OK.sub("", txt)))
+    return pno, "1" if hit else "0", txt[:120].replace("|", "/")
+todo = [r for r in rows if r[1] not in cache]
+print("todo", len(todo), file=sys.stderr)
+t0 = time.time()
+with cf.ThreadPoolExecutor(6) as ex:
+    futs = [ex.submit(scan, r) for r in todo]
+    for k, fu in enumerate(cf.as_completed(futs)):
+        pno, v, txt = fu.result()
+        if v is not None: cache[pno] = (v, txt)
+        if k % 500 == 0: print(k, time.time() - t0, file=sys.stderr)
+live = {r[1] for r in rows}
+open(D + "cmbs_wm.tsv", "w", encoding="utf-8").write("".join(f"{k}|{v[0]}|{v[1]}\n" for k, v in cache.items() if k in live))
+bl = sorted(k for k, v in cache.items() if v[0] == "1" and k in live)
+open(D + "cmbs_block.txt", "w").write("\n".join(bl) + ("\n" if bl else ""))
+print("blocked", len(bl), "of", len(cache), file=sys.stderr)
