@@ -59,7 +59,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
         while n in cats and cats[n][0] != 1: n = cats[n][0]
         return n
     url = lambda n: f"/bupum/{TOP[n][0]}.html" if n in TOP else f"/bupum/{TOP[top_of(n)][0]}-{n}.html"
-    card = lambda r, pre="": f'<a class="yri" href="#" data-big="{IMG(r[3])}" data-n="{E(r[2])}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{IMG(r[3])}" alt="{E(pre + r[2])}"><span>{E(r[2])}</span>{"" if r[4] is None else (f'<em class="cbp">{r[4]:,}원~</em>' if r[4] else '<em class="cbp q">매장 문의</em>')}</a>'
+    card = lambda r, pre="": f'<a class="yri" href="#" data-big="{IMG(r[3])}" data-n="{E(r[2])}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{IMG(r[3])}" alt="{E(pre + r[2])}"><span>{E(r[2])}</span>{"" if r[4] is None else (f'<em class="cbp">{r[4]:,}원~ <small>부가세 포함</small></em>' if r[4] else '<em class="cbp q">매장 문의</em>')}</a>'
     topnav = lambda cur: '<div class="glk tkn">' + "".join(f'<a href="{url(t)}"{" class=on" if t == cur else ""}>{E(TOP[t][1])}</a>' for t in TOP if items(t)) + '</div>'
     note = ''
     def fq(nm):
