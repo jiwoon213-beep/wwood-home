@@ -309,3 +309,6 @@ main .glk a{text-decoration:none}
 .gpc img{background:#fff;object-fit:contain!important;padding:8px;box-sizing:border-box}
 .gim img{width:100%;aspect-ratio:4/3;object-fit:contain;background:#fff;border-radius:10px;margin-bottom:8px}
 #cheolmul .gc{flex-basis:44%;max-width:200px}@media(min-width:900px){#cheolmul .gcs{flex-wrap:nowrap;overflow-x:auto}#cheolmul .gc{flex:0 0 180px}}
+.chr{margin:6px 0 14px;padding:12px;border:1px solid var(--line);border-radius:14px;background:#faf8f5}.chl{margin:0 0 8px;font-size:14px;color:var(--mut)}.chl b{color:var(--ink);font-size:16px;margin-right:6px}
+.chr .gc{flex-basis:40%;max-width:170px}.chr .gpc span{font-size:13px;padding:8px 10px}
+.cha{color:var(--red);font-weight:800;text-decoration:none;white-space:nowrap}
