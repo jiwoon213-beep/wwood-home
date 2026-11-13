@@ -1475,13 +1475,17 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         if _cbr: _bc.append(("/bupum/", "철물·공구·부속", f"{len(_cbr)}종", _cbH.IMG(_cbr[0][3])))
     except Exception: pass
     _bc.append(("/cheolmul/", "목재 철물", "데크·정자·목조주택", "https://megatie.cafe24.com/web/product/" + _mtj["janseon"][0][1][1:]))
-    MKHOME += ('<section class="wrap sec gg"><h2 class="gt">제품 사진으로 고르기 <small>옆으로 넘겨 보세요 ›</small></h2><div class="gcs">'
+    MKTAIL = ('<div class="gg hmt" style="grid-column:1/-1;min-width:0"><h2 class="gt">제품 사진으로 고르기 <small>옆으로 넘겨 보세요 ›</small></h2><div class="gcs">'
                + "".join(f'<a class="gc gpc" href="{h}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{im}" alt="{E(n)}"><span>{E(n)} <small>{E(k)}</small></span></a>' for h, n, k, im in _bc) + '</div>'
                + '<div class="qk"><a href="/trend/">인테리어 트렌드</a>' + "".join(f'<a href="/trend/{a}.html">{b}</a>' for a, b in (("modern", "모던"), ("natural", "내추럴·우드"), ("japandi", "간살·재팬디"), ("hotel", "호텔·럭셔리"), ("classic", "클래식"))) + '</div>'
                + '<h2 class="gt">우리 동네 시공 (대전·세종)</h2><div class="qk">' + "".join(f'<a href="/local/{a}-{b}.html">{c} {d}</a>' for b, c in (("daejeon", "대전"), ("sejong", "세종")) for a, d in (("jungmun", "중문"), ("door", "방문 교체"), ("film", "필름"), ("molding", "몰딩"), ("wall", "템바보드 벽"))) + '<a href="/local/">동네별 보기 ›</a></div>'
-               + '<h2 class="gt">전국 배송 — 재단해서 용달로</h2><div class="qk">' + "".join(f'<a href="/jeonguk/{a}.html">{b}</a>' for a, b, *_ in __import__("nation").REG) + '</div></section>')
+               + '<h2 class="gt">전국 배송 — 재단해서 용달로</h2><div class="qk">' + "".join(f'<a href="/jeonguk/{a}.html">{b}</a>' for a, b, *_ in __import__("nation").REG) + '</div></div>')
     _ip = f"{OUT}/index.html"; _it = open(_ip, encoding="utf-8").read()
-    if "<!--MKHOME-->" in _it: open(_ip, "w", encoding="utf-8").write(_it.replace("<!--MKHOME-->", MKHOME))
+    if "<!--MKHOME-->" in _it:
+        _it = _it.replace("<!--MKHOME-->", MKHOME)
+        _k = _it.find('<div class="card dark"><h2>직접 하기')
+        if _k > 0: _it = _it[:_k] + MKTAIL + _it[_k:]
+        open(_ip, "w", encoding="utf-8").write(_it)
     # 사이트 전체: 소식·제품·자재 사진·지역×자재 페이지에 "직접 만들어 보기"(완성 그림 카드) 자동 삽입 — 새 글도 빌드 때 자동 적용
     def _mkcard(x):
         im = f'<img loading="lazy" src="/assets/mandeul/{x[0]}.jpg" alt="{E(x[1])}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if os.path.exists(f"{ROOT}/assets/mandeul/{x[0]}.jpg") else ""
