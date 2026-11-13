@@ -44,6 +44,10 @@ def load(ROOT):
     for l in open(pr, encoding="utf-8"):
         x = l.rstrip("\n").split("|")
         if len(x) >= 4 and x[0].isdigit() and x[1] not in block: rows.append((int(x[0]), x[1], nice(x[2]), x[3], (price(x[4]) if len(x) > 4 else None), x[2]))
+    seen = {}
+    for i, r in enumerate(rows):  # 같은 상품번호가 두 줄이면 가격 있는 줄만
+        if r[1] not in seen or (rows[seen[r[1]]][4] is None and r[4] is not None): seen[r[1]] = i
+    rows = [r for i, r in enumerate(rows) if seen[r[1]] == i]
     return cats, rows
 
 
