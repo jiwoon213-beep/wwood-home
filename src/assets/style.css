@@ -336,3 +336,9 @@ main .glk a{text-decoration:none}
 .tkt td,.tkt th{white-space:nowrap}
 @media(max-width:760px){.tkp{grid-template-columns:1fr}.tkp>img{width:100%;height:180px}}
 @media(max-width:760px){.tkn{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}.tkn a{flex:0 0 auto;white-space:nowrap}}
+/* 예림 중문·도어 갤러리 */
+.yrg{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.yri{display:block;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;text-decoration:none!important;color:var(--ink)!important}
+.yri:hover{border-color:var(--red)}.yri img{width:100%;aspect-ratio:1/1;object-fit:contain;background:#fff;border-radius:8px;display:block}
+.yri span{display:block;font-size:13px;font-weight:700;margin-top:6px;line-height:1.35}
+@media(max-width:900px){.yrg{grid-template-columns:repeat(3,1fr)}}@media(max-width:560px){.yrg{grid-template-columns:repeat(2,1fr);gap:8px}}
