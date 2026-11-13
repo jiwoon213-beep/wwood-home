@@ -14,7 +14,7 @@
  <div class="cinfo" id="cinfo"></div>
 
  <div class="cstep"><span class="cn">2</span>자를 크기 <small id="cunit">(mm)</small></div>
- <div id="cparts"></div>
+ <div id="cparts"></div><div id="cdots" class="cdots"></div>
  <button class="cadd" id="cadd" type="button">＋ 다른 크기 추가</button>
  <label class="cchk" id="cgrainw"><input type="checkbox" id="cgrain"> 나뭇결 방향 유지 (조각 안 돌리기)</label>
 </div>
@@ -77,6 +77,16 @@ html.emb header,html.emb footer,html.emb .top,html.emb .mbar,html.emb .cta,html.
 .cm{height:46px!important;font-size:22px!important;border-radius:10px!important}
 .cadd{height:46px!important;font-size:16px!important}
 @media(min-width:700px){.cpc .cf2{display:grid;grid-template-columns:1fr 1fr;gap:12px}}
+
+/* 여러 크기: 옆으로 넘기기 */
+#cparts{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px}#cparts::-webkit-scrollbar{display:none}
+#cparts .cpc{flex:0 0 88%;scroll-snap-align:start;margin-bottom:0!important;box-sizing:border-box}
+#cparts .cpc:only-child{flex-basis:100%}
+.cdots{display:flex;align-items:center;gap:6px;margin:8px 0 10px;flex-wrap:wrap}.cdots:empty{display:none}
+.cdots button{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:#fff;font:inherit;font-size:14px;font-weight:800;cursor:pointer}
+.cdots button.on{background:var(--red);border-color:var(--red);color:#fff}.cdots span{font-size:13px;color:var(--mut);margin-left:4px}
+@media(min-width:900px){#cparts .cpc{flex-basis:48%}}
+#cparts .cqs button{font-size:12.5px!important;white-space:nowrap;letter-spacing:-.6px!important}#cparts .cfi span{font-size:13px!important}
 </style>
 <script>
 (function(){
@@ -112,6 +122,7 @@ function presets(f){
  [[2,"반"],[3,"3등분"],[4,"4등분"]].forEach(function(d){var v=Math.floor((M-KERF*(d[0]-1))/d[0]);if(v>=100)o.push([v,d[1]+" "+v])});
  o.push([M,"통째 "+M]);return o;
 }
+function cdots(){var cp=$("cparts"),n=parts.length,d=$("cdots");if(!d)return;if(n<2){d.innerHTML="";return}var i=Math.round(cp.scrollLeft/(cp.firstChild.offsetWidth+10));d.innerHTML=parts.map(function(_,k){return '<button type="button" class="'+(k==i?"on":"")+'" data-k="'+k+'">'+(k+1)+'</button>'}).join("")+'<span>옆으로 밀어서 보기 ›</span>';[].forEach.call(d.querySelectorAll("button"),function(b){b.onclick=function(){var c=cp.children[+b.dataset.k];cp.scrollTo({left:c.offsetLeft-cp.offsetLeft,behavior:"smooth"})}})}
 function drawParts(){
  var L=isLin(),st=stock();
  function fld(k,f,lab,v){var M=L?st.L:(f==0?st.w:st.h);
@@ -128,6 +139,7 @@ function drawParts(){
  [].forEach.call($("cparts").querySelectorAll(".cm"),function(b){b.onclick=function(){var k=+b.dataset.k;parts[k][2]=Math.max(1,(parts[k][2]||1)+(+b.dataset.d));
   $("cparts").querySelector('input[data-k="'+k+'"][data-f="2"]').value=parts[k][2];run()}});
  [].forEach.call($("cparts").querySelectorAll(".cdel"),function(x){x.onclick=function(){parts.splice(+x.dataset.k,1);if(!parts.length)parts=[[0,0,1]];drawParts();run()}});
+ $("cparts").onscroll=function(){clearTimeout(window.__cdt);window.__cdt=setTimeout(cdots,80)};setTimeout(cdots,0);
 }
 /* 판재: 길로틴(직선 재단) 방식 — 패널쏘로 그대로 자를 수 있는 배치 */
 var SORTS=[function(a,b){return Math.max(b.w,b.h)-Math.max(a.w,a.h)||b.w*b.h-a.w*a.h},function(a,b){return b.w*b.h-a.w*a.h},function(a,b){return b.w-a.w||b.h-a.h},function(a,b){return b.h-a.h||b.w-a.w},function(a,b){return Math.min(b.w,b.h)-Math.min(a.w,a.h)||b.w*b.h-a.w*a.h}];
@@ -268,7 +280,7 @@ function load(){
   if(q.s)parts=q.s.split('_').map(function(t){return t.split('x').map(Number)});drawParts();run();return true}
 }
 $("cprod").onchange=function(){prod=+this.value;drawParts();run()};$("cw").onchange=$("ch").onchange=function(){drawParts();run()};$("cw").oninput=$("ch").oninput=run;$("cgrain").onchange=run;
-$("cadd").onclick=function(){parts.push(isLin()?[0,0,1]:[0,0,1]);act={k:parts.length-1,f:0};drawParts();$("cparts").lastChild.scrollIntoView({behavior:"smooth",block:"center"})};
+$("cadd").onclick=function(){parts.push(isLin()?[0,0,1]:[0,0,1]);act={k:parts.length-1,f:0};drawParts();var cp=$("cparts");setTimeout(function(){cp.scrollTo({left:cp.scrollWidth,behavior:"smooth"})},30)};
 $("cprint").onclick=function(){window.print()};
 if(/[?&]embed=1/.test(location.search)){document.documentElement.className+=" emb";[].forEach.call(document.querySelectorAll('.cutp a[href^="/"]'),function(a){a.target="_blank";a.href="https://www.wwood.co.kr"+a.getAttribute("href")})}
 function summary(){var c=curCat(),it=custom()?null:c.items[prod],L=isLin(),t=(it?it[0]:c.n)+"\n";parts.forEach(function(p){if(p[0])t+=(L?p[0]+"mm":p[0]+"×"+p[1]+"mm")+" × "+(p[2]||1)+"개\n"});var e=document.querySelector("#cres .cest"),rb=document.querySelector("#cres b");if(rb)t+="\n필요한 "+(L?"자재":"원판")+": "+rb.textContent+"\n";if(e)t+="기준가 예상 자재비: "+e.querySelector("b").textContent+" ("+e.querySelectorAll("small")[1].textContent+")\n";return t}
