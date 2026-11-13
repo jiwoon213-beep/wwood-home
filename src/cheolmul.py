@@ -82,6 +82,9 @@ CH = [
 
 
 def gen(page, P, E, CTA, faqslide, BASE, ADDR, HOURS, ALLFAQ=None):
+    import json, os
+    PH = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "megatie.json"), encoding="utf-8"))
+    def img(p): return "https://megatie.cafe24.com/web/product/" + p[1:]
     out = []
     for slug, nm, tail, lead, items, tips, faq, rel in CH:
         cards = []; ld_items = []
@@ -91,9 +94,12 @@ def gen(page, P, E, CTA, faqslide, BASE, ADDR, HOURS, ALLFAQ=None):
             cards.append(f'<div class="gc"><div class="gn">{E(t)}</div><div class="gp{"" if hit else " gq"}">{pv}</div><ul><li><span>용도</span><b>{E(spec)}</b></li></ul></div>')
             if hit: ld_items.append(hit)
         n_price = len(ld_items)
+        ph = PH.get(slug, [])
+        phs = (f'<h2 class="gt">제품 사진 {len(ph)}가지 <small>옆으로 넘겨 보세요 ›</small></h2><div class="gcs">' + "".join(f'<div class="gc gpc"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{img(p)}" alt="{E(n)}"><span>{E(n)}</span></div>' for n, p in ph) + '</div>') if ph else ""
         others = "".join(f'<a href="/cheolmul/{c[0]}.html">{E(c[1])}</a>' for c in CH if c[0] != slug)
         body = f'''<section class="wrap sec gg"><p class="crumb"><a href="/cheolmul/">목재 철물</a> › {E(nm)}</p><h1>{E(nm)}</h1>
 <p class="glead">{E(lead)}</p>
+{phs}
 <h2 class="gt">취급 품목 {len(items)}가지 <small>옆으로 넘겨 보세요 ›</small></h2><div class="gcs">{"".join(cards)}</div>
 <p class="gs">소매 기준가(부가세 별도)가 없는 품목은 재고·규격에 따라 달라 매장에서 안내합니다. 대량·현장 납품은 따로 견적.</p>
 <h2 class="gt">고를 때 알아둘 것</h2><ul class="gtip">{"".join(f"<li>{E(x)}</li>" for x in tips)}</ul>
@@ -104,9 +110,9 @@ def gen(page, P, E, CTA, faqslide, BASE, ADDR, HOURS, ALLFAQ=None):
         title = f"{nm} — {tail} | 대전 영진목재"
         desc = f"{nm} 종류 {len(items)}가지와 고르는 법" + (f", 소매 기준가 {min(x['price'] for x in ld_items):,}원부터" if ld_items else "") + ". 대전 유성 영진목재 매장에서 목재와 함께 준비."
         if ALLFAQ is not None: ALLFAQ.append(("목재 철물", faq, f"/cheolmul/{slug}.html", nm))
-        page(f"cheolmul/{slug}.html", title, desc, body, "/jajae/", ld)
-        out.append((slug, nm, tail, len(items)))
-    cards = "".join(f'<a class="gi" href="/cheolmul/{s}.html"><b>{E(n)}</b><small>{E(t)}</small><span>{k}가지</span></a>' for s, n, t, k in out)
+        page(f"cheolmul/{slug}.html", title, desc, body, "/jajae/", ld, (img(ph[0][1]) if ph else None))
+        out.append((slug, nm, tail, len(items), img(ph[0][1]) if ph else ""))
+    cards = "".join(f'<a class="gi gim" href="/cheolmul/{s}.html">' + (f'<img loading="lazy" referrerpolicy="no-referrer" src="{im}" alt="">' if im else "") + f'<b>{E(n)}</b><small>{E(t)}</small></a>' for s, n, t, k, im in out)
     page("cheolmul/index.html", "목재 철물 — 장선걸이·기둥받침·주춧돌·정자 철물·목조주택 철물 | 대전 영진목재",
          "데크·파고라·정자·목조주택·농막에 쓰는 장선걸이, 기둥받침, 주춧돌, 허리케인 타이, 앙카볼트 등 목재 철물 종류와 고르는 법.",
          f'<section class="wrap sec gg"><h1>목재 철물</h1><p class="glead">데크·정자·파고라·목조주택·농막을 튼튼하게 잇는 철물을 종류별로 정리했습니다. 목재를 사실 때 맞는 철물까지 한 번에 챙겨 드립니다.</p><div class="gig">{cards}</div><div class="glk"><a href="/jajae/hardware.html">피스·타카·철물</a><a href="/gagyeok/">자재 가격 가이드</a><a href="/mandeul/">DIY 만들기</a></div></section>{CTA}', "/jajae/")
