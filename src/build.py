@@ -205,7 +205,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><img class="lm" src="/assets/logo-mark.svg" width="46" height="46" alt=""><span class="lt"><b>영진종합목재</b><small><em>월드건축자재</em> · 충청권 최대규모 목재상</small></span></a>
 <button class="mnb" type="button" aria-expanded="false" aria-controls="gnav" onclick="var h=this.closest('header'),o=h.classList.toggle('open');this.setAttribute('aria-expanded',o);this.innerHTML=o?'✕ 닫기':'☰ 메뉴'">☰ 메뉴</button><nav id="gnav">{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">DIY 만들기</a> · <a href="/sigongbeop/">인테리어 자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/jajae/">자재 백과</a> · <a href="/calc.html">자재 계산기</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/gagyeok/">자재 가격 가이드</a> · <a href="/cheolmul/">목재 철물</a> · <a href="/taka/">타카·타카핀</a> · <a href="/yerim/">예림 중문·도어</a> · <a href="/younglim/">영림 도어·중문·필름</a> · <a href="/shenu/">쉐누 도어·몰딩</a> · <a href="/local/">지역별 시공</a> · <a href="/faq.html">자주 묻는 질문</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">DIY 만들기</a> · <a href="/sigongbeop/">인테리어 자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/jeonguk/">배송 지역</a> · <a href="/jajae/">자재 백과</a> · <a href="/calc.html">자재 계산기</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/gagyeok/">자재 가격 가이드</a> · <a href="/cheolmul/">목재 철물</a> · <a href="/taka/">타카·타카핀</a> · <a href="/yerim/">예림 중문·도어</a> · <a href="/younglim/">영림 도어·중문·필름</a> · <a href="/shenu/">쉐누 도어·몰딩</a> · <a href="/local/">지역별 시공</a> · <a href="/faq.html">자주 묻는 질문</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로(제조사 제품 사진 제외) 무단 복제·사용을 금합니다.<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr";
 function rd(x){{var v=null;try{{v=localStorage.getItem(x)}}catch(e){{}}if(v===null){{var m=document.cookie.match(new RegExp("(?:^|; )"+x+"=([^;]*)"));v=m?m[1]:null}}return v}}
@@ -551,12 +551,13 @@ def build():
            {"@type": "Question", "name": "합판 4×8은 몇 mm인가요?", "acceptedAnswer": {"@type": "Answer", "text": "4×8 합판은 1220×2440mm입니다. 3×6은 900×1800mm입니다."}},
            {"@type": "Question", "name": "구조재 2×4 실제 치수는?", "acceptedAnswer": {"@type": "Answer", "text": "2×4 구조재의 실제 단면은 38×89mm이고, 12ft 길이는 약 3.6m입니다."}},
            {"@type": "Question", "name": "다루끼 1치는 몇 mm인가요?", "acceptedAnswer": {"@type": "Answer", "text": "1치는 약 30mm입니다. 다루끼 1.0×1.0은 약 30×30mm, 12자는 약 3.6m입니다."}}]}])
+    import nation as _nt0
     page("baesong.html", "전국 목재 배송 — 합판·구조재 재단해서 용달로 | 영진목재(대전)", "합판·MDF·구조재·방부목·데크재를 원하는 크기로 재단해 전국에 용달로 보내 드립니다. 경기·서울·충청·영남·호남·강원. 운임은 미리 견적. 대전 영진목재.",
          f"""<section class="wrap sec"><h1>전국 목재 배송 — 재단해서 용달로 보내 드립니다</h1><p class="lead">영진종합목재(월드건축자재) 쇼핑몰 회원의 절반 이상이 대전 밖에 계십니다. 합판·MDF·집성판·구조재·방부목·데크재·석고보드·몰딩·도어까지 원하는 크기로 재단해서 전국 현장으로 보내 드립니다.</p>
 <div class="row"><a class="b r" href="mailto:{EMAIL}?subject=%EB%B0%B0%EC%86%A1%20%EA%B2%AC%EC%A0%81%20%EC%9A%94%EC%B2%AD&body=%ED%92%88%EB%AA%A9%C2%B7%EA%B7%9C%EA%B2%A9%C2%B7%EC%88%98%EB%9F%89%3A%0A%EB%B0%9B%EB%8A%94%20%EC%A3%BC%EC%86%8C%3A%0A%EB%B0%9B%EB%8A%94%20%EB%B6%84%20%EC%97%B0%EB%9D%BD%EC%B2%98%3A%0A%ED%9D%AC%EB%A7%9D%20%EB%82%A0%EC%A7%9C%3A%0A">메일로 배송 견적 요청</a><a class="b d" href="tel:{TEL.replace('-','')}">전화 {TEL}</a><a class="b o" href="/cut.html">재단 그림 만들기</a></div></section>
 <section class="wrap sec g2"><div class="card"><h2>배송 방법</h2><ul><li><b>대전·세종·공주·계룡·논산·금산·옥천</b>: 직접 배송·현장 납품</li><li><b>그 밖의 전국</b>: 용달(화물차) 배송 — 운임 별도, 미리 견적</li><li>원하는 크기로 재단한 뒤 출고</li></ul></div>
 <div class="card"><h2>주문 순서</h2><ol><li>품목·규격·수량·받는 주소를 전화나 메일로 알려 주세요.</li><li>사무실에서 자재값과 운임을 알려 드립니다.</li><li>입금 확인 후 재단·상차하고 출고합니다.</li></ol></div></section>
-<section class="wrap sec"><h2>지역별로 많이 보내는 자재</h2><ul>{"".join(f"<li><b>{E(a)}</b> — {E(b)}</li>" for a, b in _BR)}</ul><p>자재별 용도와 규격은 <a href="/jajae/">자재 백과</a>, 기준가는 <a href="/price.html">기준가</a>, 필요한 양은 <a href="/calc.html">자재 계산기</a>에서 미리 보실 수 있습니다.</p></section>
+<section class="wrap sec gg"><h2 class="gt">지역별 배송 안내</h2><div class="qk">{"".join(f'<a href="/jeonguk/{a}.html">{b}</a>' for a, b, *_ in _nt0.REG)}</div></section><section class="wrap sec"><h2>지역별로 많이 보내는 자재</h2><ul>{"".join(f"<li><b>{E(a)}</b> — {E(b)}</li>" for a, b in _BR)}</ul><p>자재별 용도와 규격은 <a href="/jajae/">자재 백과</a>, 기준가는 <a href="/price.html">기준가</a>, 필요한 양은 <a href="/calc.html">자재 계산기</a>에서 미리 보실 수 있습니다.</p></section>
 <section class="wrap sec"><h2>자주 묻는 질문</h2>{faqslide(_BF)}</section>{CTA}""", "", [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in _BF]}], BASE + "/assets/store/delivery.jpg")
     page("visit.html", "대전 목재소 영진목재 위치·영업시간 — 유성대로 44, 즉석 재단", f"월드건축자재(영진종합목재) {ADDR}. {HOURS}. 3000평 매장, 즉석 재단, 대전·세종 배송. {TEL}.",
          f"""<section class="wrap sec g2"><div>{embed(tour) if tour else ''}</div><div><h1>매장 오시는 길</h1>
@@ -1166,6 +1167,8 @@ def build():
     SHLIST = _shn.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
     import local as _lc
     LCLIST = _lc.gen(page, E, CTA, faqslide, ADDR, HOURS, TEL, ROOT, CASES, top, vsplit)
+    import nation as _nt
+    NTLIST = _nt.gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, CASES, top, vsplit, P)
     import trend as _trd
     TRLIST = _trd.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
     MKNM = {x[0]: x[1] for x in MK}

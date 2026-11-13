@@ -18,3 +18,4 @@
 - 영림 도어·중문·몰딩/월/마루·인테리어 필름(/younglim/): 영림(yl.co.kr — 회사 허락, 키친·붙박이장·바스·타일 제외). 데이터 src/data/younglim.tsv 는 GitHub Actions '제조사 제품 동기화(영림)'(.github/workflows/vendors.yml, 매일 20:23 KST)가 .github/scripts/fetch_younglim.py 로 자동 갱신·빌드. 생성 src/younglim.py(PAGES 17개). 스타일코드 1301 모던·1302 내추럴·1303 클래식·1304 유니크 → 인테리어 트렌드에도 자동 반영.
 - 쉐누 도어·중문·몰딩(/shenu/): 쉐누(namuip.com/cnd_home — 회사 허락). 데이터 src/data/shenu.tsv(페이지|이미지|이름|부가설명)는 vendors.yml이 .github/scripts/fetch_shenu.py로 매일 자동 갱신(같은 사진·같은 이름+색상 중복 제거). 생성 src/shenu.py(PAGES 6개). 인테리어 트렌드에도 반영(trend.py SHPG·SHRX).
 - 지역별 시공(/local/): src/local.py — 서비스 5개(중문·방문 교체·필름·몰딩·템바보드 벽) × 지역 6개(대전·유성·서구·대덕·중구동구·세종). 시공비·소요일 등 확인 안 된 숫자 금지. 제품 사진은 예림·영림·쉐누 데이터에서.
+- 전국 배송 지역(/jeonguk/): src/nation.py REG 12개(서울·경기남부·경기북부·인천·강원·충북·충남·전북·광주전남·대구경북·부산울산경남·제주). 운임·거리·소요시간 숫자 금지(견적). 제주는 배편 별도 상담.
