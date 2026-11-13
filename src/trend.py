@@ -58,8 +58,8 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
         grid = lambda xs: '<div class="yrg">' + "".join(f'<a class="yri" href="https://www.yerim.net/kor/products/products-view.html?uid={r[2]}" target="_blank" rel="noopener nofollow"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{YIMG(r[4])}" alt="{E(nm)} 인테리어 예림 {E(r[3])}"><span>{E(r[3])}</span></a>' for r in xs) + '</div>'
         body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/trend/">인테리어 트렌드</a> › {E(nm)}</p><h1>{E(nm)} 인테리어</h1><p class="glead">{E(one)}. {E(desc)}</p>{nav(slug)}'
                 f'<h2 class="gt">이렇게 맞추세요</h2><ul class="gtip">{"".join(f"<li>{E(t)}</li>" for t in tips)}</ul>'
-                + (f'<h2 class="gt">어울리는 중문 {len(jm)}가지</h2>{grid(jm)}' if jm else "")
-                + (f'<h2 class="gt">어울리는 방문·문틀 {len(dr)}가지</h2>{grid(dr)}' if dr else "")
+                + (f'<h2 class="gt">어울리는 중문 {len(jm)}가지 <small>옆으로 넘겨 보세요 ›</small></h2>{grid(jm)}' if jm else "")
+                + (f'<h2 class="gt">어울리는 방문·문틀 {len(dr)}가지 <small>옆으로 넘겨 보세요 ›</small></h2>{grid(dr)}' if dr else "")
                 + f'<h2 class="gt">같이 쓰는 자재</h2><div class="glk">{"".join(f"<a href={chr(34)}{h}{chr(34)}>{E(t)}</a>" for h, t in rel)}<a href="/yerim/">예림 중문·도어 전체</a></div>'
                 f'<p class="gs">중문·도어 사진은 예림(YERIM) 제품이며 누르면 제조사 상세 페이지가 열립니다. 색상·규격·가격은 매장에 문의해 주세요.</p></section>')
         fq = [(f"{nm} 인테리어 자재는 어디서 보나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 문·중문 샘플과 루바·몰딩·필름 실물을 보고 고를 수 있습니다. {HOURS}. 대전·세종은 설치 시공(월드아키텍쳐)도 상담합니다.")]

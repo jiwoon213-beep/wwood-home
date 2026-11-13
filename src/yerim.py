@@ -76,7 +76,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
             groups.setdefault(D3.get(d3, ""), []).append((uid, n, im))
         sec = ""
         for g, its in groups.items():
-            sec += (f'<h2 class="gt">{E(g) + " " if g else ""}{len(its)}가지</h2><div class="yrg">' if len(groups) > 1 else f'<h2 class="gt">디자인 {len(its)}가지</h2><div class="yrg">')
+            sec += (f'<h2 class="gt">{E(g) + " " if g else ""}{len(its)}가지 <small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">' if len(groups) > 1 else f'<h2 class="gt">디자인 {len(its)}가지 <small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">')
             sec += "".join(f'<a class="yri" href="https://www.yerim.net/kor/products/products-view.html?uid={uid}" target="_blank" rel="noopener nofollow"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{IMG(im)}" alt="예림 {E(n)}"><span>{E(n)}</span></a>' for uid, n, im in its) + '</div>'
         fq = faq + [(f"예림 {nm} 어디서 보고 살 수 있나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 상담·주문할 수 있습니다. {HOURS}. 문 크기·벽 두께를 재 오시면 맞는 규격을 찾아 드리고, 대전·세종 설치 시공(월드아키텍쳐)도 상담합니다.")]
         body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/yerim/">예림 중문·도어</a> › {E(nm)}</p><h1>예림 {E(nm)}</h1><p class="glead">{E(lead)}</p>{nav(slug)}'
