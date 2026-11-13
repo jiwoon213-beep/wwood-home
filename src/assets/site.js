@@ -98,23 +98,31 @@ document.addEventListener("click",function(e){var b=e.target.closest&&e.target.c
 (function(){try{[].forEach.call(document.querySelectorAll(".mg"),function(g){[].slice.call(g.children).filter(function(c){return c.classList.contains("mc")&&c.querySelector(".newb")}).reverse().forEach(function(c){g.insertBefore(c,g.firstChild)})})}catch(e){}})();
 // 앱(PWA) 등록
 if ("serviceWorker" in navigator) window.addEventListener("load", function () { navigator.serviceWorker.register("/sw.js").catch(function () {}); });
-// 홈 화면에 추가(앱 설치) 버튼
+// 홈 화면에 추가(앱 설치) 버튼 — 크롬·엣지·삼성인터넷(폰·PC)은 '설치' 한 번 누르면 바로 생김
 (function () {
   var b = document.getElementById("appi"), g = document.getElementById("appg"), gt = document.getElementById("appgt"); if (!b) return;
   var st = window.matchMedia && matchMedia("(display-mode: standalone)").matches || navigator.standalone;
   if (st) { b.hidden = true; return; }
-  var dp = null, ua = navigator.userAgent;
-  window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); dp = e; });
+  var dp = null, ua = navigator.userAgent, waiters = [];
+  window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); dp = e; waiters.splice(0).forEach(function (f) { f(); }); if (/[?&]app=1/.test(location.search)) offer(); });
+  window.addEventListener("appinstalled", function () { b.hidden = true; g.hidden = true; });
   function guide(t) { gt.innerHTML = t; g.hidden = false; }
+  function install() { if (!dp) return; var d = dp; dp = null; g.hidden = true; d.prompt(); d.userChoice.then(function (c) { if (c && c.outcome === "accepted") b.hidden = true; }); }
+  function offer() { guide('<button type="button" class="b r appgo" style="width:100%;font-size:18px;padding:14px">📲 영진목재 앱 설치</button><br><small>누르고 <b>설치</b>만 한 번 더 누르면 ' + (/Mobi|Android/i.test(ua) ? "홈 화면" : "바탕화면·시작 메뉴") + '에 생겨요.</small>'); gt.querySelector(".appgo").onclick = install; }
   document.getElementById("appgx").onclick = function () { g.hidden = true; };
   g.addEventListener("click", function (e) { if (e.target === g) g.hidden = true; });
   b.addEventListener("click", function (e) {
     e.preventDefault();
-    if (dp) { dp.prompt(); dp.userChoice.then(function () { dp = null; }); return; }
+    if (dp) return install();
     var inapp = /KAKAOTALK|NAVER\(inapp|Instagram|FBAN|FBAV|Line\/|DaumApps|everytimeApp|; wv\)/i.test(ua);
-    if (/Android/i.test(ua) && inapp) { location.href = "intent://" + location.host + location.pathname + "#Intent;scheme=https;package=com.android.chrome;end"; return; }
-    if (/iPhone|iPad|iPod/i.test(ua)) return guide(inapp ? "지금 화면은 앱 안 브라우저라 추가가 안 돼요. 오른쪽 아래 <b>⋯</b> → <b>Safari로 열기</b> 후, 아래 <b>공유(□↑)</b> → <b>홈 화면에 추가</b>를 누르세요." : "아래쪽 <b>공유(□↑)</b> 버튼 → <b>홈 화면에 추가</b> → <b>추가</b>를 누르세요.");
-    if (/SamsungBrowser/i.test(ua)) return guide("아래쪽 <b>≡</b> → <b>현재 페이지 추가</b> → <b>홈 화면</b>을 누르세요.");
-    guide("오른쪽 위 <b>⋮</b> → <b>홈 화면에 추가</b>(또는 <b>앱 설치</b>) → <b>설치</b>를 누르세요.");
+    if (/Android/i.test(ua) && inapp) { location.href = "intent://" + location.host + location.pathname + "?app=1#Intent;scheme=https;package=com.android.chrome;end"; return; }
+    if (/iPhone|iPad|iPod/i.test(ua)) return guide(inapp ? "지금 화면은 앱 안 브라우저라 추가가 안 돼요. 오른쪽 아래 <b>⋯</b> → <b>Safari로 열기</b> 후, 아래 <b>공유(□↑)</b> → <b>홈 화면에 추가</b>를 누르세요.<br><small>아이폰은 애플 정책상 자동 설치가 안 되고 이 방법만 돼요.</small>" : "아래쪽 <b>공유(□↑)</b> 버튼 → <b>홈 화면에 추가</b> → <b>추가</b>를 누르세요.<br><small>아이폰은 애플 정책상 자동 설치가 안 되고 이 방법만 돼요.</small>");
+    var done = false; waiters.push(function () { if (!done) { done = true; offer(); } });
+    setTimeout(function () { if (done) return; done = true;
+      if (/SamsungBrowser/i.test(ua)) return guide("아래쪽 <b>≡</b> → <b>현재 페이지 추가</b> → <b>홈 화면</b>을 누르세요.");
+      if (/Firefox/i.test(ua) && !/Android/i.test(ua)) return guide("PC 파이어폭스는 앱 설치가 안 돼요. <b>크롬</b>이나 <b>엣지</b>로 열고 이 버튼을 누르세요.");
+      if (/Mobi|Android/i.test(ua)) return guide("오른쪽 위 <b>⋮</b> → <b>홈 화면에 추가</b>(또는 <b>앱 설치</b>) → <b>설치</b>를 누르세요.");
+      guide("주소창 오른쪽 <b>설치 아이콘(⊕ 또는 모니터 모양)</b>을 누르거나, <b>⋮</b> → <b>앱 설치</b>(엣지: <b>앱</b> → <b>이 사이트를 앱으로 설치</b>)를 누르세요.");
+    }, 1200);
   });
 })();
