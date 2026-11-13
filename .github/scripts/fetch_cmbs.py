@@ -60,11 +60,9 @@ if os.path.exists(DP):
         x = l.rstrip("\n").split("|")
         if len(x) >= 4: det[x[0]] = x[1:4]
 t0 = time.time(); live = {l.split("|")[1] for l in out}
-for pno in [l.split("|")[1] for l in out]:
-    if pno in det: continue
-    if time.time() - t0 > 45 * 60: break
+def one(pno):
     try: h = get(f"{B}/product/detail.html?product_no={pno}")
-    except Exception: continue
+    except Exception: return pno, None
     opts = []
     for sel in re.findall(r'<select[^>]*id="product_option_id\d+"[\s\S]*?</select>', h):
         for v, txt in re.findall(r'<option[^>]*value="([^"]*)"[^>]*>([\s\S]*?)</option>', sel):
@@ -81,8 +79,17 @@ for pno in [l.split("|")[1] for l in out]:
             if j > 0: seg = seg[:j]
         d = re.sub(r"#\S+", "", T(re.sub(r"<(script|style|iframe)[\s\S]*?</\1>", " ", seg)))
         d = re.sub(r"\s+", " ", d).strip()[:220].replace("|", "/")
-    det[pno] = [";".join(opts[:40]), T(org.group(1)) if org else "", d]
-    time.sleep(0.1)
+    return pno, [";".join(opts[:40]), T(org.group(1)) if org else "", d]
+import concurrent.futures as cf
+todo = [l.split("|")[1] for l in out if l.split("|")[1] not in det]
+with cf.ThreadPoolExecutor(6) as ex:
+    futs = [ex.submit(one, p) for p in todo]
+    for fu in cf.as_completed(futs):
+        if time.time() - t0 > 45 * 60:
+            for f2 in futs: f2.cancel()
+            break
+        pno, v = fu.result()
+        if v: det[pno] = v
 open(DP, "w", encoding="utf-8").write("".join(f"{k}|{v[0]}|{v[1]}|{v[2]}\n" for k, v in det.items() if k in live))
 print("detail", len(det), file=sys.stderr)
 open("src/data/cmbs.tsv", "w", encoding="utf-8").write("\n".join(out) + "\n")
