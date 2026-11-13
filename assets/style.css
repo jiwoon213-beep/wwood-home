@@ -308,3 +308,4 @@ header.open .mnb{background:var(--ink);color:#fff}
 main .glk a{text-decoration:none}
 .gpc img{background:#fff;object-fit:contain!important;padding:8px;box-sizing:border-box}
 .gim img{width:100%;aspect-ratio:4/3;object-fit:contain;background:#fff;border-radius:10px;margin-bottom:8px}
+#cheolmul .gc{flex-basis:44%;max-width:200px}@media(min-width:900px){#cheolmul .gcs{flex-wrap:nowrap;overflow-x:auto}#cheolmul .gc{flex:0 0 180px}}

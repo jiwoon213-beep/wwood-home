@@ -177,7 +177,7 @@ def mat_prices(m, k=10):
     return sorted(rows, key=lambda p: -p["qty"])[:k]
 
 # ---------- layout ----------
-NAV = [("/jajae/", "자재 백과"), ("/jaryo/", "전체 자재"), ("/cheolmul/", "목재 철물"), ("/mandeul/", "DIY 만들기"), ("/sigongbeop/", "자재 시공법"), ("/cut.html", "재단"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/gagyeok/", "가격 가이드"), ("/calc.html", "계산기"), ("/video/", "영상"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/visit.html", "매장 안내")]
+NAV = [("/jajae/", "자재 백과"), ("/jaryo/", "전체 자재"), ("/mandeul/", "DIY 만들기"), ("/sigongbeop/", "자재 시공법"), ("/cut.html", "재단"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/gagyeok/", "가격 가이드"), ("/calc.html", "계산기"), ("/video/", "영상"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/visit.html", "매장 안내")]
 
 def page(path, title, desc, body, active="", jsonld=None, img=None):
     if len(desc) > 80:  # 네이버 권장: 설명 80자 이내 — 문장·쉼표 경계에서 자름
@@ -369,8 +369,11 @@ def build():
     jl = "".join(f'<a class="pd" href="/jaryo/{sl}.html"><span class="pi"><img loading="lazy" src="{E(thumb[c])}" alt="{n}"></span><b>{n}</b><small>{d} · {cnt[c]}종</small></a>' for c, sl, n, d in JCAT if cnt[c])
     jchips = "".join(f'<a class="chip" href="#c{sl}">{n} <small>{cnt[c]}</small></a>' for c, sl, n, d in JCAT if cnt[c])
     jrows = "".join(f'<section class="wrap sec jall" id="c{sl}"><h2>{n} <small class="muted">{cnt[c]}종</small> <a class="small" href="/jaryo/{sl}.html">전체 보기 ›</a></h2><p class="small muted">{d}</p><div class="pg hrow">' + "".join(pcard(p) for p in [p for p in PROD if c in p["tops"]][:16]) + f'<a class="pd more" href="/jaryo/{sl}.html"><span class="pi"><b>+{max(0,cnt[c]-16)}</b></span><b>{n} 전체 보기 ›</b><small>{cnt[c]}종</small></a></div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>' for c, sl, n, d in JCAT if cnt[c])
+    import cheolmul as _cm0
+    _mtj = json.load(open(f"{ROOT}/data/megatie.json", encoding="utf-8"))
+    _chsec = '<section class="wrap sec gg" id="cheolmul"><h2 class="gt">🔩 목재 철물 <small>옆으로 넘겨 보세요 ›</small></h2><p class="gs" style="margin:0 0 10px">데크·정자·파고라·목조주택·농막을 잇는 철물 — 목재와 함께 한 번에 준비해 드립니다.</p><div class="gcs">' + "".join(f'<a class="gc gpc" href="/cheolmul/{c[0]}.html">' + (f'<img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="https://megatie.cafe24.com/web/product/{_mtj[c[0]][0][1][1:]}" alt="{E(c[1])}">' if _mtj.get(c[0]) else "") + f'<span>{E(c[1])}</span></a>' for c in _cm0.CH) + '</div><div class="glk"><a href="/cheolmul/">목재 철물 전체 보기</a></div></section>'
     page("jaryo/index.html", f"전체 자재 사진 {len([p for p in PROD if p['tops']])}종 — 각재·합판·데크·사이딩·철물 | 대전 영진목재", "대전 월드건축자재(영진목재) 매장 취급 자재를 사진으로 확인하세요. 각재, 합판, 집성판, 데크, 마루, 내장재, 타일, 사이딩, 철물, 스테인.",
-         f'<section class="wrap sec"><h1>전체 자재</h1>{SEARCH}<p class="lead">매장에서 취급하는 자재를 사진으로 모았습니다. 실물은 대전 매장에서 보고, 원하는 사이즈로 재단해 가세요. 가격은 <a href="/price.html">기준가</a> 또는 매장에서 안내합니다.</p><div class="chips jall jchips">{jchips}</div></section>{jrows}{CTA}', "/jaryo/", None, thumb.get("24"))
+         f'<section class="wrap sec"><h1>전체 자재</h1>{SEARCH}<p class="lead">매장에서 취급하는 자재를 사진으로 모았습니다. 실물은 대전 매장에서 보고, 원하는 사이즈로 재단해 가세요. 가격은 <a href="/price.html">기준가</a> 또는 매장에서 안내합니다.</p><div class="chips jall jchips">{jchips}<a class="chip" href="#cheolmul">목재 철물</a></div></section>{_chsec}{jrows}{CTA}', "/jaryo/", None, thumb.get("24"))
     for c, sl, n, d in JCAT:
         ps = [p for p in PROD if c in p["tops"]]
         if not ps: continue
