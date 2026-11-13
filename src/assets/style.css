@@ -283,3 +283,5 @@ table{font-size:15px}th,td{padding:10px 12px}
 .pci em{font-style:normal;font-size:13px;font-weight:800;color:var(--red);margin-bottom:4px}
 .pl.hs.nw .newb{position:absolute;top:10px;left:10px;z-index:1}
 @media(min-width:900px){.pl.hs.nw{flex-wrap:wrap;overflow:visible}.pl.hs.nw>.pc{flex:0 0 calc(25% - 9px);max-width:none}.pl.hs.nw+.hsh{display:none}}
+.gpc{padding:0;overflow:hidden;gap:0;text-decoration:none;color:var(--ink)}.gpc img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#eee}.gpc span{padding:10px 12px;font-size:14px;font-weight:700;line-height:1.4}
+@media(min-width:900px){.gcs .gpc{flex:0 0 calc(20% - 8px)}}

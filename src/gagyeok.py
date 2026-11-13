@@ -154,7 +154,7 @@ def links(pairs):
     seen = []; [seen.append(p) for p in pairs if p not in seen]
     return ('<p>💰 <b>가격 가이드</b> ' + " · ".join(f'<a href="/gagyeok/{a}.html">{b} 가격 — 1평에 얼마</a>' for a, b in seen) + '</p>') if seen else ""
 
-def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ=None):
+def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ=None, MP=None):
     pages = []
     def won(x): return f"{int(round(x, -2)):,}원"
     for slug, nm, js, sg, specs, lead, unitdesc, loss, exs, faq in GG:
@@ -206,18 +206,21 @@ def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ=None)
             exh = f"""<h2 class="gt">이 크기면 얼마?</h2><p class="gs">{E(cn(p0))} 기준 · 로스 {int(loss * 100)}% 포함</p><div class="gcs">{ex_c}</div>
 <div class="gcalc"><b>내 면적으로 계산</b><div class="gcr"><input id="gga" type="number" inputmode="decimal" value="3" min="0" step="0.1" aria-label="면적"><select id="ggu" aria-label="단위"><option value="py">평</option><option value="m2">㎡</option></select></div><select id="ggp" aria-label="제품">{opts}</select><div id="ggr" class="gres"></div></div>
 <script>(function(){{var a=document.getElementById("gga"),u=document.getElementById("ggu"),s=document.getElementById("ggp"),r=document.getElementById("ggr");function f(){{var v=parseFloat(a.value)||0,m=u.value=="py"?v*{PY}:v,x=s.value.split("|"),n=Math.ceil(m/parseFloat(x[1])*{1 + loss});r.innerHTML="<small>필요량 "+n+"{uw}</small><b>약 "+(n*parseInt(x[0])).toLocaleString()+"원</b>";}}[a,u,s].forEach(function(e){{e.addEventListener("input",f);e.addEventListener("change",f)}});f();}})();</script>"""
+        _k = {"hinoki-ruba": "히노끼", "spruce-ruba": "스프러스", "tempa-board": "템바보드", "tempa-ruba": "템바", "deck-gagyeok": "데크", "gakjae-gagyeok": "구조|방부|각재", "door-gagyeok": "문", "molding-gagyeok": "몰딩|걸레", "siding-gagyeok": "사이딩", "oilstain": "오일|스테인", "osb-gagyeok": "OSB|osb", "hapan-gagyeok": "합판", "jipseong-gagyeok": "집성"}.get(slug)
+        _ph = [x for x in (MP(js) if MP else []) if not _k or re.search(_k, x["name"])][:10]
+        phs = (f'<h2 class="gt">매장 실물 사진 <small>옆으로 넘겨 보세요 ›</small></h2><div class="gcs">' + "".join(f'<a class="gc gpc" href="/jajae/{js}.html"><img loading="lazy" decoding="async" src="{E(x["img"])}" alt="{E(x["name"])}"><span>{E(re.sub(r"^[^-]+-\s*", "", x["name"]).replace("*", "×").replace("@", " "))}</span></a>' for x in _ph) + '</div>') if len(_ph) >= 2 else ""
         others = "".join(f'<a href="/gagyeok/{g[0]}.html">{E(g[1])}</a>' for g in GG if g[0] != slug)
         title = f"{nm} 가격 — {rows[0][1].split('(')[0]} 기준가 {lo:,}원부터" + (" · 1평에 얼마" if hasA else (" · 1L당 비교" if slug == "oilstain" else " · 1m당 단가" if isLen else " · 1㎡당 비교" if isM2 else " · 종류별 기준가" if isPlain else " · m당 단가"))
         desc = f"{nm} 소매 기준가 {lo:,}원부터({rows[0][1]}). " + (f"1평에 몇 {uw} 드는지, 크기별 예상 금액 계산." if hasA else "판매 단위와 종류별 기준가 정리.") + " 대전 영진목재."
         body = f"""<section class="wrap sec gg"><p class="crumb"><a href="/gagyeok/">자재 가격 가이드</a> › {E(nm)}</p><h1>{E(nm)} 가격</h1>{hero}<p class="glead">{E(lead)}</p>
-<h2 class="gt">종류별 가격 <small>옆으로 넘겨 보세요 ›</small></h2><div class="gcs">{"".join(cards)}</div><p class="gs">{E(unitdesc)} · 소매 기준가(부가세 별도) · 필요량은 계산 참고치 · 재단·운임은 매장에서</p>
+{phs}<h2 class="gt">종류별 가격 <small>옆으로 넘겨 보세요 ›</small></h2><div class="gcs">{"".join(cards)}</div><p class="gs">{E(unitdesc)} · 소매 기준가(부가세 별도) · 필요량은 계산 참고치 · 재단·운임은 매장에서</p>
 {exh}<div class="glk"><a href="/jajae/{js}.html">용도·사진</a><a href="/sigongbeop/{sg}.html">시공 방법</a><a href="/calc.html">자재 계산기</a><a href="/price.html">전체 기준가</a></div></section>
 <section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(faq + [(f"{nm} 어디서 사나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 실물을 보고 살 수 있습니다. {HOURS}. 전국 용달 배송도 됩니다.")])}</section>
 <section class="wrap sec gg"><h2 class="gt">다른 자재 가격</h2><div class="glk">{others}</div></section>{CTA}"""
         ld = [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}]
         ld += prod_ld([{"name": p["name"], "cat": p["cat"], "price": p["price"]} for p, _, _ in rows[:6]], f"{BASE}/gagyeok/{slug}.html")
         if ALLFAQ is not None: ALLFAQ.append(("자재 가격", faq, f"/gagyeok/{slug}.html", nm + " 가격"))
-        page(f"gagyeok/{slug}.html", title + " | 대전 영진목재", desc, body, "/price.html", ld)
+        page(f"gagyeok/{slug}.html", title + " | 대전 영진목재", desc, body, "/price.html", ld, (_ph[0]["img"] if _ph else None))
         pages.append((slug, nm, hl, hv))
     cards = "".join(f'<a class="gi" href="/gagyeok/{s}.html"><b>{E(n)}</b><small>{E(hl)}</small><span>{E(hv)}</span></a>' for s, n, hl, hv in pages)
     page("gagyeok/index.html", "자재 가격 가이드 — 합판·석고보드·데크·사이딩·몰딩·방문·루바 1평에 얼마 | 영진목재",
