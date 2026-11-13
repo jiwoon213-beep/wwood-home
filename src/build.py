@@ -115,6 +115,13 @@ for p in PROD:
                 if re.search(rx, p["name"]): p["cats"].append(c); ok = [c.split("/")[0]]; break
         p["tops"] = ok; p["top"] = ok[0]
     p["sub"] = next((c for c in p["cats"] if c.split("/")[0] == p["top"] and c.split("/")[1]), None)
+# 페인트·스테인(35): 본덱스(이몰링)에 없는 제품은 홈페이지에서 뺌(사장님 지시 2026-11-14). 본덱스에 같은 제품이 있는 것만 남김.
+if os.path.exists(f"{ROOT}/data/emall.tsv"):
+    _EMN = [l.split("|")[2] for l in open(f"{ROOT}/data/emall.tsv", encoding="utf-8") if l.count("|") >= 3]
+    def _inbd(n):
+        toks = [w for w in re.split(r"[\s\-\(\)\[\]/,]+", re.sub(r"천연|내추럴|식물성|목재보수제", " ", n)) if len(w) >= 2]
+        return bool(toks) and any(sum(w.replace(" ", "") in e.replace(" ", "") for w in toks) >= (len(toks) if len(toks) <= 3 else len(toks) - 1) for e in _EMN)
+    PROD = [p for p in PROD if "35" not in p["tops"] or _inbd(p["name"])]
 def subof(p, top): return next((c for c in p["cats"] if c.split("/")[0] == top and c.split("/")[1]), None)
 # 자재 백과 사진: slug → (쇼핑몰 분류, 이름 정규식, 제외 정규식)
 MPHOTO = {"hapan": (["24/140"], "합판|판넬|보드", "OSB|O\\.S\\.B|M\\.?D\\.?F|석고|아이소|스티로|본드|실리콘|프라이머|에이스|문$"), "osb": ([], "OSB|O\\.S\\.B|스마트랩", None),
