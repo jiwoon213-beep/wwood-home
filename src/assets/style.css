@@ -375,3 +375,19 @@ main .qk a{background:#fff;border:1px solid #e3ddd3;color:#1a1a1a;font-weight:70
 main .qk a:hover{background:#fff;border-color:#1a1a1a;color:#1a1a1a}
 @media(max-width:600px){.olk{grid-template-columns:none;grid-template-rows:repeat(3,auto);grid-auto-flow:column;grid-auto-columns:44vw;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:8px}.olk a{scroll-snap-align:start}.olk::-webkit-scrollbar{height:5px}.olk::-webkit-scrollbar-thumb{background:#d8d2c8;border-radius:3px}}
 @media(min-width:601px){.olh{display:none}}
+/* 간격·비율 정리 */
+.gg > .row{margin:18px 0 6px}
+.gg .gt{margin:36px 0 12px;line-height:1.3}
+.gg h1 + .glead,.gg h1 + .lead{margin-top:2px}
+.gtip li{margin:6px 0}
+.glk{margin-top:24px}
+.yri span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.7em}
+.yri{display:flex;flex-direction:column}
+p.hsh{margin:6px 0 0}
+@media(max-width:600px){
+ .gg h1{font-size:27px;line-height:1.32;letter-spacing:-.6px}
+ .gt{font-size:19.5px}
+ .glead{font-size:16px;line-height:1.75}
+ .gg .gt{margin:30px 0 10px}
+ .gg > .row .b{flex:1 1 auto;text-align:center}
+}
