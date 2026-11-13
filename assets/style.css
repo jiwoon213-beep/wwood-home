@@ -425,3 +425,4 @@ ul.mli::-webkit-scrollbar{height:5px}ul.mli::-webkit-scrollbar-thumb{background:
 .g2 > .card,.card{min-width:0}
 ul.mli{max-width:100%;align-items:flex-start}
 ul.mli li .mlks{margin-top:0}
+@media(max-width:600px){ul.mli li{flex-basis:calc(100% - 64px)}}
