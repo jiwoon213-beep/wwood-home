@@ -96,3 +96,5 @@ document.addEventListener("click", function (e) {
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".ytf");if(!b)return;var f=document.createElement("iframe");f.src="https://www.youtube.com/embed/"+b.dataset.id+"?autoplay=1&rel=0";f.allow="autoplay; encrypted-media; picture-in-picture";f.allowFullscreen=true;f.title=b.getAttribute("aria-label")||"영상";f.style.cssText="position:absolute;inset:0;width:100%;height:100%;border:0";b.replaceWith(f)});
 /* NEW 표시가 붙은 DIY 만들기·시공법 카드는 목록 맨 앞으로 */
 (function(){try{[].forEach.call(document.querySelectorAll(".mg"),function(g){[].slice.call(g.children).filter(function(c){return c.classList.contains("mc")&&c.querySelector(".newb")}).reverse().forEach(function(c){g.insertBefore(c,g.firstChild)})})}catch(e){}})();
+// 앱(PWA) 등록
+if ("serviceWorker" in navigator) window.addEventListener("load", function () { navigator.serviceWorker.register("/sw.js").catch(function () {}); });
