@@ -51,6 +51,40 @@ for n, pno, nm, im, pr in rows:
     if pno in used: continue
     used.add(pno); out.append(f"{n}|{pno}|{nm}|{im}|{pr}")
 if len(out) < 1000: sys.exit(f"too few: {len(out)}")
+# 상세(옵션·원산지·짧은 설명) — 캐시에 없는 상품만, 한 번에 최대 45분
+import os
+DP = "src/data/cmbs_detail.tsv"
+det = {}
+if os.path.exists(DP):
+    for l in open(DP, encoding="utf-8"):
+        x = l.rstrip("\n").split("|")
+        if len(x) >= 4: det[x[0]] = x[1:4]
+t0 = time.time(); live = {l.split("|")[1] for l in out}
+for pno in [l.split("|")[1] for l in out]:
+    if pno in det: continue
+    if time.time() - t0 > 45 * 60: break
+    try: h = get(f"{B}/product/detail.html?product_no={pno}")
+    except Exception: continue
+    opts = []
+    for sel in re.findall(r'<select[^>]*id="product_option_id\d+"[\s\S]*?</select>', h):
+        for v, txt in re.findall(r'<option[^>]*value="([^"]*)"[^>]*>([\s\S]*?)</option>', sel):
+            txt = T(txt)
+            if v in ("*", "**", "") or txt.startswith("-"): continue
+            opts.append(txt.replace("|", "/").replace(";", ","))
+    org = re.search(r'원산지</span></th>\s*<td><span[^>]*>([^<]*)<', h)
+    d = ""
+    k = h.find('id="prdDetailContent"')
+    if k > 0:
+        seg = h[k:k + 60000]
+        for stop in ('id="prdInfo"', 'xans-product-additional', 'id="prdReview"'):
+            j = seg.find(stop)
+            if j > 0: seg = seg[:j]
+        d = re.sub(r"#\S+", "", T(re.sub(r"<(script|style|iframe)[\s\S]*?</\1>", " ", seg)))
+        d = re.sub(r"\s+", " ", d).strip()[:220].replace("|", "/")
+    det[pno] = [";".join(opts[:40]), T(org.group(1)) if org else "", d]
+    time.sleep(0.1)
+open(DP, "w", encoding="utf-8").write("".join(f"{k}|{v[0]}|{v[1]}|{v[2]}\n" for k, v in det.items() if k in live))
+print("detail", len(det), file=sys.stderr)
 open("src/data/cmbs.tsv", "w", encoding="utf-8").write("\n".join(out) + "\n")
 open("src/data/cmbs_cats.tsv", "w", encoding="utf-8").write("\n".join(f'{n}|{byno[n]["parent_cate_no"]}|{byno[n]["name"]}' for n in order if not under_skip(n)) + "\n")
 print("rows", len(out), file=sys.stderr)

@@ -396,3 +396,10 @@ p.hsh{margin:6px 0 0}
 .crumb + h1,.crumb + h2{margin-top:6px!important}
 .yri .cbp{display:block;font-style:normal;font-weight:900;font-size:15px;color:var(--red);margin-top:4px}.yri .cbp.q{color:var(--mut);font-size:13px;font-weight:700}
 .yri .cbp small{font-size:11px;font-weight:700;color:var(--mut);margin-left:2px}
+.ylb .ylsp{max-width:560px;margin:10px auto 0;text-align:left;background:rgba(255,255,255,.08);border-radius:12px;padding:10px 14px;max-height:30vh;overflow:auto}
+.ylb .ylsp[hidden]{display:none}
+.ylb .ylsp div{display:flex;gap:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:14px;line-height:1.5}
+.ylb .ylsp div:last-child{border-bottom:0}
+.ylb .ylsp b{flex:0 0 72px;font-size:13px;color:#cfc8bd;font-weight:700;display:block}
+.ylb .ylsp span{flex:1;opacity:1!important;font-size:14px;display:block;word-break:keep-all}
+@media(max-width:600px){.ylb img{max-height:52vh}}
