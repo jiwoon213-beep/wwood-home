@@ -394,3 +394,4 @@ p.hsh{margin:6px 0 0}
 @media(max-width:760px){.sec > h2:not(:first-child),.sec > h3:not(:first-child){margin-top:28px}}
 @media(min-width:761px){.sec > h2:not(:first-child){margin-top:36px}}
 .crumb + h1,.crumb + h2{margin-top:6px!important}
+.yri .cbp{display:block;font-style:normal;font-weight:900;font-size:15px;color:var(--red);margin-top:4px}.yri .cbp.q{color:var(--mut);font-size:13px;font-weight:700}

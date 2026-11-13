@@ -19,4 +19,4 @@
 - 쉐누 도어·중문·몰딩(/shenu/): 쉐누(namuip.com/cnd_home — 회사 허락). 데이터 src/data/shenu.tsv(페이지|이미지|이름|부가설명)는 vendors.yml이 .github/scripts/fetch_shenu.py로 매일 자동 갱신(같은 사진·같은 이름+색상 중복 제거). 생성 src/shenu.py(PAGES 6개). 인테리어 트렌드에도 반영(trend.py SHPG·SHRX).
 - 지역별 시공(/local/): src/local.py — 서비스 5개(중문·방문 교체·필름·몰딩·템바보드 벽) × 지역 6개(대전·유성·서구·대덕·중구동구·세종). 시공비·소요일 등 확인 안 된 숫자 금지. 제품 사진은 예림·영림·쉐누 데이터에서.
 - 전국 배송 지역(/jeonguk/): src/nation.py REG 12개(서울·경기남부·경기북부·인천·강원·충북·충남·전북·광주전남·대구경북·부산울산경남·제주). 운임·거리·소요시간 숫자 금지(견적). 제주는 배편 별도 상담.
-- 철물·공구·부속(/bupum/): 철물박사(철물박사.com, 주식회사 철물박사 — 회사 허락) 전체 상품 사진·이름. 데이터 src/data/cmbs.tsv·cmbs_cats.tsv 는 vendors.yml 이 .github/scripts/fetch_cmbs.py 로 매일 자동 갱신(같은 상품번호 중복 제거, 가격 안 가져옴). 생성 src/cmbs.py. 인테리어 트렌드에는 넣지 않음.
+- 철물·공구·부속(/bupum/): 철물박사(철물박사.com, 주식회사 철물박사 — 회사 허락) 전체 상품 사진·이름. 데이터 src/data/cmbs.tsv·cmbs_cats.tsv 는 vendors.yml 이 .github/scripts/fetch_cmbs.py 로 매일 자동 갱신(같은 상품번호 중복 제거). 가격 = 철물박사 판매가 × 1.4, 100원 올림, 끝에 '~' 표시(사장님 지시 2026-11-13). 생성 src/cmbs.py. 인테리어 트렌드에는 넣지 않음.

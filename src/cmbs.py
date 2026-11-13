@@ -23,6 +23,12 @@ def nice(n):
     return re.sub(r"\s+", " ", n)
 
 
+def price(v):  # 철물박사 판매가 × 1.4, 100원 단위 올림
+    try: n = int(v)
+    except Exception: return 0
+    return 0 if n <= 0 else -(-int(n * 1.4 + 0.5) // 100) * 100
+
+
 def load(ROOT):
     d = os.path.join(ROOT, "data")
     pc, pr = os.path.join(d, "cmbs_cats.tsv"), os.path.join(d, "cmbs.tsv")
@@ -34,7 +40,7 @@ def load(ROOT):
     rows = []
     for l in open(pr, encoding="utf-8"):
         x = l.rstrip("\n").split("|")
-        if len(x) >= 4 and x[0].isdigit(): rows.append((int(x[0]), x[1], nice(x[2]), x[3]))
+        if len(x) >= 4 and x[0].isdigit(): rows.append((int(x[0]), x[1], nice(x[2]), x[3], (price(x[4]) if len(x) > 4 else None)))
     return cats, rows
 
 
@@ -53,7 +59,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
         while n in cats and cats[n][0] != 1: n = cats[n][0]
         return n
     url = lambda n: f"/bupum/{TOP[n][0]}.html" if n in TOP else f"/bupum/{TOP[top_of(n)][0]}-{n}.html"
-    card = lambda r, pre="": f'<a class="yri" href="#" data-big="{IMG(r[3])}" data-n="{E(r[2])}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{IMG(r[3])}" alt="{E(pre + r[2])}"><span>{E(r[2])}</span></a>'
+    card = lambda r, pre="": f'<a class="yri" href="#" data-big="{IMG(r[3])}" data-n="{E(r[2])}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{IMG(r[3])}" alt="{E(pre + r[2])}"><span>{E(r[2])}</span>{"" if r[4] is None else (f'<em class="cbp">{r[4]:,}원~</em>' if r[4] else '<em class="cbp q">매장 문의</em>')}</a>'
     topnav = lambda cur: '<div class="glk tkn">' + "".join(f'<a href="{url(t)}"{" class=on" if t == cur else ""}>{E(TOP[t][1])}</a>' for t in TOP if items(t)) + '</div>'
     note = ''
     def fq(nm):
