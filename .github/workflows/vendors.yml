@@ -1,4 +1,4 @@
-name: 제조사 제품 동기화 (영림·쉐누)
+name: 제조사 제품 동기화 (영림·쉐누·철물박사)
 on:
   schedule: [{ cron: '23 11 * * *' }]   # 매일 20:23 KST
   workflow_dispatch:
@@ -8,6 +8,7 @@ concurrency: { group: build, cancel-in-progress: false }
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -16,11 +17,12 @@ jobs:
         run: |
           python3 .github/scripts/fetch_younglim.py || echo "younglim failed"
           python3 .github/scripts/fetch_shenu.py || echo "shenu failed"
+          python3 .github/scripts/fetch_cmbs.py || echo "cmbs failed"
       - name: build if changed
         run: |
-          [ -z "$(git status --porcelain src/data/younglim.tsv src/data/shenu.tsv)" ] && { echo "no change"; exit 0; }
+          [ -z "$(git status --porcelain src/data/younglim.tsv src/data/shenu.tsv src/data/cmbs.tsv src/data/cmbs_cats.tsv)" ] && { echo "no change"; exit 0; }
           cd src && python3 build.py https://www.wwood.co.kr && cp -r out/. .. && rm -rf out && cd ..
           test -f CNAME && test -f .nojekyll && test -f googlebdb67d0a828cfb44.html && test -f naverba93ea476932b627cd632929e26465dd.html
           git config user.name "wwood-build-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add -A && git commit -m "제조사(영림·쉐누) 제품 목록 자동 갱신" && git pull --rebase -X theirs && git push
+          git add -A && git commit -m "제조사(영림·쉐누·철물박사) 제품 목록 자동 갱신" && git pull --rebase -X theirs && git push
