@@ -122,6 +122,10 @@ if os.path.exists(f"{ROOT}/data/emall.tsv"):
         toks = [w for w in re.split(r"[\s\-\(\)\[\]/,]+", re.sub(r"천연|내추럴|식물성|목재보수제", " ", n)) if len(w) >= 2]
         return bool(toks) and any(sum(w.replace(" ", "") in e.replace(" ", "") for w in toks) >= (len(toks) if len(toks) <= 3 else len(toks) - 1) for e in _EMN)
     PROD = [p for p in PROD if "35" not in p["tops"] or not _inbd(p["name"])]  # 본덱스에 같은 제품이 있으면 본덱스 쪽만(중복 제거)
+# 외장재·사이딩(31): 니치하 페이지(/nichiha/)에 같은 품번이 있는 기존 제품은 뺌(중복 제거)
+if os.path.exists(f"{ROOT}/data/nichiha.tsv"):
+    _NHC = [l.split("|")[1] for l in open(f"{ROOT}/data/nichiha.tsv", encoding="utf-8") if l.strip() and not l.startswith("#")]
+    PROD = [p for p in PROD if "31" not in p["tops"] or not any(re.search(c + r"(?!\d)", p["name"]) for c in _NHC)]
 def subof(p, top): return next((c for c in p["cats"] if c.split("/")[0] == top and c.split("/")[1]), None)
 # 자재 백과 사진: slug → (쇼핑몰 분류, 이름 정규식, 제외 정규식)
 MPHOTO = {"hapan": (["24/140"], "합판|판넬|보드", "OSB|O\\.S\\.B|M\\.?D\\.?F|석고|아이소|스티로|본드|실리콘|프라이머|에이스|문$"), "osb": ([], "OSB|O\\.S\\.B|스마트랩", None),
