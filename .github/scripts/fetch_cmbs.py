@@ -32,7 +32,7 @@ for n in order:
         t = t.split("xans-product-listnormal", 1)[-1]
         new = 0
         for li in re.split(r'<div class="thumbnail">', t)[1:]:
-            m = re.search(r'href="/product/[^"]*?/(\d+)/category/', li)
+            m = re.search(r'href="/product/[^"]*?/(\d+)/category/' + str(n) + "/", li)
             im = re.search(r'<img src="(?:https?:)?//[^/]+/web/product/(?:medium|small|big|tiny)/([^"]+)"', li)
             nm = re.search(r'<strong class="name[^"]*">([\s\S]*?)</strong>', li)
             if not (m and im and nm): continue
