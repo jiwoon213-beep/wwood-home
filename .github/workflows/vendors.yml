@@ -20,6 +20,7 @@ jobs:
           python3 .github/scripts/fetch_cmbs.py || echo "cmbs failed"
       - name: build if changed
         run: |
+          git stash -q && git pull -q --rebase && git stash pop -q || true
           [ -z "$(git status --porcelain src/data/younglim.tsv src/data/shenu.tsv src/data/cmbs.tsv src/data/cmbs_cats.tsv)" ] && { echo "no change"; exit 0; }
           cd src && python3 build.py https://www.wwood.co.kr && cp -r out/. .. && rm -rf out && cd ..
           test -f CNAME && test -f .nojekyll && test -f googlebdb67d0a828cfb44.html && test -f naverba93ea476932b627cd632929e26465dd.html
