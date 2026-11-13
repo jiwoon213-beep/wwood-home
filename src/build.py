@@ -194,7 +194,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
     doc = f"""<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{E(title)}</title><meta name="description" content="{E(desc)}"><link rel="alternate" type="application/rss+xml" title="영진종합목재 소식" href="/rss.xml">
-<link rel="canonical" href="{canon}"><meta name="naver-site-verification" content="a59ff6921fc90666c920da00bf9a23ecb0ba3514"><meta property="og:type" content="website"><meta property="og:title" content="{E(title)}">
+<link rel="canonical" href="{canon}">{'<meta name="robots" content="noindex,follow">' if path.startswith("p/") else ""}<meta name="naver-site-verification" content="a59ff6921fc90666c920da00bf9a23ecb0ba3514"><meta property="og:type" content="website"><meta property="og:title" content="{E(title)}">
 <meta property="og:description" content="{E(desc)}"><meta property="og:url" content="{canon}"><meta property="og:image" content="{E(img or (BASE + "/assets/store/storefront.jpg"))}">{"" if img else '<meta property="og:image:width" content="1280"><meta property="og:image:height" content="853">'}<meta property="og:image:alt" content="영진종합목재(월드건축자재) 매장"><meta property="og:site_name" content="영진종합목재 (월드건축자재)"><meta property="og:locale" content="ko_KR"><meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&amp;display=swap"><link rel="preconnect" href="https://i.ytimg.com"><link rel="preconnect" href="https://www.wwood.kr"><link rel="icon" href="/assets/logo-mark.svg" type="image/svg+xml"><link rel="icon" href="/assets/favicon-48.png" sizes="48x48"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"><link rel="stylesheet" href="/assets/style.css?v={ASSET_V}">{'<meta name="robots" content="noindex,nofollow">' if PREVIEW else ''}{ld}</head><body>
 <div class="top"><div class="wrap row sb"><span>{HOURS} · {ADDR}</span><span><span id="vcnt" class="vcnt"></span> <a href="/dome.html">업체·도매회원</a> <a href="/visit.html">매장 길찾기</a></span></div></div>
@@ -214,7 +214,7 @@ Promise.all([fetch(b+(nd?"hit":"get")+"/"+n+"/d"+k).then(function(r){{return r.j
     if PREFIX: doc = doc.replace('href="/', f'href="{PREFIX}/').replace('src="/', f'src="{PREFIX}/')
     fp = os.path.join(OUT, path); os.makedirs(os.path.dirname(fp), exist_ok=True)
     open(fp, "w", encoding="utf-8").write(doc)
-    SITEMAP.append(canon); SIMG[canon] = img
+    if not path.startswith("p/"): SITEMAP.append(canon); SIMG[canon] = img  # 상품 상세(/p/)는 얇은 페이지라 색인 제외(구글: 크롤링됨-색인 안 됨 734건)
 
 def vcard(v, big=False):
     return f"""<a class="vc{' big' if big else ''}{' sh' if v['type']=='S' else ''}" href="{vpage(v)}"{'' if v['id'] in VD else ' target="_blank" rel="noopener"'} data-yt="{v['id']}">
