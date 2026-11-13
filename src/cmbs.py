@@ -84,8 +84,10 @@ def spec(raw, det):
             def cv(o):  # 옵션 추가금도 같은 방식(×1.4, 100원 올림)
                 return re.sub(r"\(\s*([+-])\s*([\d,]+)\s*원\s*\)", lambda m: f"({m.group(1)}{price(m.group(2).replace(',', '')):,}원)", o)
             out.append(("선택 옵션", " · ".join(cv(o) for o in op[:16]) + (f" 외 {len(op) - 16}가지" if len(op) > 16 else "")))
-        if det[1] and det[1] not in ("기타", "상세설명참조"): out.append(("원산지", det[1]))
-        if len(det[2]) >= 15: out.append(("설명", det[2][:160] + ("…" if len(det[2]) > 160 else "")))
+        if det[1] and det[1] not in ("기타", "기타국가", "상세설명참조", "상세페이지 참조"): out.append(("원산지", det[1]))
+        ds = re.sub(r'^id="prdDetailContent">\s*', "", det[2])
+        ds = re.sub(r"<[^>]*$|<[^>]*>|\s+", " ", ds).strip()
+        if len(re.findall(r"[가-힣]", ds)) >= 10 and not re.search(r"https?:|www\.|다운로드|\.zip|복사", ds): out.append(("설명", ds[:160] + ("…" if len(ds) > 160 else "")))
     return out
 
 
