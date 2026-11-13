@@ -121,7 +121,7 @@ if os.path.exists(f"{ROOT}/data/emall.tsv"):
     def _inbd(n):
         toks = [w for w in re.split(r"[\s\-\(\)\[\]/,]+", re.sub(r"천연|내추럴|식물성|목재보수제", " ", n)) if len(w) >= 2]
         return bool(toks) and any(sum(w.replace(" ", "") in e.replace(" ", "") for w in toks) >= (len(toks) if len(toks) <= 3 else len(toks) - 1) for e in _EMN)
-    PROD = [p for p in PROD if "35" not in p["tops"] or _inbd(p["name"])]
+    PROD = [p for p in PROD if "35" not in p["tops"]]  # 본덱스로 합침(사장님 지시 2026-11-14)
 def subof(p, top): return next((c for c in p["cats"] if c.split("/")[0] == top and c.split("/")[1]), None)
 # 자재 백과 사진: slug → (쇼핑몰 분류, 이름 정규식, 제외 정규식)
 MPHOTO = {"hapan": (["24/140"], "합판|판넬|보드", "OSB|O\\.S\\.B|M\\.?D\\.?F|석고|아이소|스티로|본드|실리콘|프라이머|에이스|문$"), "osb": ([], "OSB|O\\.S\\.B|스마트랩", None),
@@ -407,12 +407,13 @@ def build():
     _bdrow = ""
     if _emr:
         _bdrow = '<div class="chr" id="bondex"><p class="chl"><b>본덱스 스테인·페인트·오일</b> 오일스테인·바니쉬·페인트·도장도구 ' + str(len(_emr)) + '종 · <a class="cha" href="/bondex/">전체 보기 ›</a></p><div class="gcs">' + "".join(f'<a class="gc gpc" href="/bondex/{sl}.html"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{_em0.IMG(next(r for r in _emr if r[0] == t or _emc.get(r[0], (0,))[0] == t)[3])}" alt="본덱스 {E(_emc[t][1])}"><span>{E(_emc[t][1].replace("/", "·"))}</span></a>' for t, sl in _em0.SLUG.items() if t in _emc and any(r[0] == t or _emc.get(r[0], (0,))[0] == t for r in _emr)) + '</div></div>'
+        if not cnt.get("35"): cnt["35"] = len(_emr); thumb["35"] = _em0.IMG(_emr[0][3])
     jrows = "".join(f'<section class="wrap sec jall" id="c{sl}"><h2>{n} <small class="muted">{cnt[c]}종</small> <a class="small" href="/jaryo/{sl}.html">전체 보기 ›</a></h2><p class="small muted">{d}</p>{_chrow if c == "32" else ""}{_yrrow if c == "29" else ""}{_bdrow if c == "35" else ""}<div class="pg hrow">' + "".join(pcard(p) for p in [p for p in PROD if c in p["tops"]][:16]) + f'<a class="pd more" href="/jaryo/{sl}.html"><span class="pi"><b>+{max(0,cnt[c]-16)}</b></span><b>{n} 전체 보기 ›</b><small>{cnt[c]}종</small></a></div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>' for c, sl, n, d in JCAT if cnt[c])
     page("jaryo/index.html", f"전체 자재 사진 {len([p for p in PROD if p['tops']])}종 — 각재·합판·데크·사이딩·철물 | 대전 영진목재", "대전 월드건축자재(영진목재) 매장 취급 자재를 사진으로 확인하세요. 각재, 합판, 집성판, 데크, 마루, 내장재, 타일, 사이딩, 철물, 스테인.",
          f'<section class="wrap sec"><h1>전체 자재</h1>{SEARCH}<p class="lead">매장에서 취급하는 자재를 사진으로 모았습니다. 실물은 대전 매장에서 보고, 원하는 사이즈로 재단해 가세요. 가격은 <a href="/price.html">기준가</a> 또는 매장에서 안내합니다.</p><div class="chips jall jchips">{jchips}</div></section>{jrows}{CTA}', "/jaryo/", None, thumb.get("24"))
     for c, sl, n, d in JCAT:
         ps = [p for p in PROD if c in p["tops"]]
-        if not ps: continue
+        if not ps and not (c == "35" and _bdrow): continue
         subs = []
         for p in ps:
             if subof(p, c) not in subs: subs.append(subof(p, c))
@@ -422,10 +423,11 @@ def build():
             title = MCAT.get(sb or "", "") or "기타"
             secs += f'<h2 id="s{(sb or "x").split("/")[-1] or "x"}">{E(title)} <small class="muted">{len(g)}종</small></h2>{_chrow if "건축철물" in title else ""}<div class="pg hrow">{"".join(pcard(p) for p in g)}</div>' + ('<p class="hsh">옆으로 밀어서 더 보기 ›</p>' if len(g) > 2 else '')
         toc = " · ".join(f'<a href="#s{(sb or "x").split("/")[-1] or "x"}">{E(MCAT.get(sb or "", "") or "기타")}</a>' for sb in subs)
-        page(f"jaryo/{sl}.html", f"{n} 종류 사진 {len(ps)}종 — {d} | 대전 월드건축자재", f"{n} 종류를 사진으로 확인하세요: {d}. 대전 유성 월드건축자재(영진목재) 매장 취급, 즉석 재단.",
+        if not ps: ps_n = cnt[c]
+        page(f"jaryo/{sl}.html", f"{n} 종류 사진 {len(ps) or cnt[c]}종 — {d} | 대전 월드건축자재", f"{n} 종류를 사진으로 확인하세요: {d}. 대전 유성 월드건축자재(영진목재) 매장 취급, 즉석 재단.",
              f'<section class="wrap sec"><p class="crumb"><a href="/jaryo/">전체 자재</a> › {n}</p><h1>{n} <small class="muted">{len(ps)}종</small></h1><p class="lead">{d}. 사진을 누르면 상세 사진이 열립니다. 실물 확인·재단은 대전 매장에서 합니다.</p>{SEARCH}<div class="jall"><p class="small">{toc}</p>{secs}</div></section>{CTA}', "/jaryo/",
              {"@context": "https://schema.org", "@type": "ItemList", "name": f"{n} 종류", "numberOfItems": len(ps),
-              "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": p["name"], "image": p["img"]} for i, p in enumerate(ps[:100])]}, ps[0]["img"])
+              "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": p["name"], "image": p["img"]} for i, p in enumerate(ps[:100])]}, ps[0]["img"] if ps else thumb.get(c))
 
     # 영상
     vl = "".join(f'<a class="uc" href="/video/{c}.html"><b>{n}</b><small>{d} · {sum(1 for v in V if v["cat"]==c)}편</small></a>' for c, n, d in CATS)
@@ -1710,6 +1712,25 @@ Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i
                 + "<video:family_friendly>yes</video:family_friendly></video:video></url>\n" for u, v, dd, ts, ln in VSM) + "</urlset>\n")
     open(f"{OUT}/sitemap.xml", "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' +
         "".join(f"<url><loc>{u}</loc><lastmod>{LMD[u]}</lastmod>" + (f"<image:image><image:loc>{html.escape(SIMG[u])}</image:loc></image:image>" if SIMG.get(u) else "") + "".join(f"<image:image><image:loc>{BASE}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg</image:loc></image:image>" for d_ in ("mandeul", "sigongbeop") if f"/{d_}/" in u and not u.endswith("/") and os.path.exists(f"{ROOT}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg")) + "</url>\n" for u in SITEMAP) + "</urlset>\n")
+    # 전체 자재 검색: 쇼핑몰 자재 + 제조사·철물·본덱스 사진 카드(.yri) 전부 → /assets/search.json
+    _sx, _seen = list(idx), set()
+    for d_ in ("bondex", "bupum", "yerim", "younglim", "shenu"):
+        for fn in sorted(os.listdir(f"{OUT}/{d_}")) if os.path.isdir(f"{OUT}/{d_}") else []:
+            if not fn.endswith(".html"): continue
+            tx = open(f"{OUT}/{d_}/{fn}", encoding="utf-8").read()
+            sec = re.search(r"<title>([^<|—]*)", tx); sec = (sec.group(1).strip() if sec else "")
+            for m in re.finditer(r'<a class="yri" href="#" data-big="([^"]*)" data-n="([^"]*)"[^>]*>.*?</a>', tx, re.S):
+                k_ = (m.group(2), m.group(1))
+                if k_ in _seen: continue
+                _seen.add(k_)
+                pz = re.search(r'class="cbp">([\d,]+원~)', m.group(0))
+                _sx.append({"n": html.unescape(m.group(2)), "i": m.group(1), "c": sec, "s": (pz.group(1) + " · " if pz else "") + sec, "l": f"/{d_}/{fn}".replace("/index.html", "/")})
+    _PF = ["https://m.xn--392bopf4iwtp.com/web/product/medium/", "https://www.emalling.co.kr/web/product/medium/", "https://s3.ap-northeast-2.amazonaws.com/younglim-bucket/", "https://www.yerim.net/upload/product/", "https://namuip.com/cnd_home/assets/img/", "https://www.wwood.kr/"]
+    for x in _sx:
+        for k_, pf in enumerate(_PF):
+            if x["i"].startswith(pf): x["i"] = f"~{k_}" + x["i"][len(pf):]; break
+        if x.get("l"): x.pop("c", None)
+    json.dump({"p": _PF, "d": _sx}, open(f"{OUT}/assets/search.json", "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
     print(len(SITEMAP), "pages →", OUT)
 
 import hashlib

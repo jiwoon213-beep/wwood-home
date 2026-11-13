@@ -17,7 +17,7 @@ document.addEventListener("click", function (e) {
   var box = document.getElementById("jsr"), cnt = document.getElementById("jqn"), all = document.querySelectorAll(".jall"), data = null;
   var norm = function (s) { return (s || "").toLowerCase().replace(/[\s·\-_.,()\[\]]/g, ""); };
   var esc = function (s) { return (s || "").replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
-  function load(cb) { if (data) return cb(); fetch("/assets/jaryo.json").then(function (r) { return r.json(); }).then(function (j) { data = j; j.forEach(function (p) { p.k = norm(p.n + p.c + p.s); }); cb(); }); }
+  function load(cb) { if (data) return cb(); fetch("/assets/search.json").then(function (r) { return r.json(); }).then(function (J) { var j = J.d || J; data = j; j.forEach(function (p) { if (J.p && p.i && p.i.charAt(0) === "~") p.i = J.p[+p.i.charAt(1)] + p.i.slice(2); p.k = norm(p.n + (p.c || "") + (p.s || "")); }); cb(); }); }
   function run() {
     var v = norm(q.value);
     if (!v) { box.innerHTML = ""; cnt.textContent = ""; all.forEach(function (e) { e.style.display = ""; }); return; }
@@ -26,7 +26,7 @@ document.addEventListener("click", function (e) {
       all.forEach(function (e) { e.style.display = "none"; });
       cnt.textContent = r.length ? "검색 결과 " + r.length + "종" + (r.length > 120 ? " (앞 120종 표시)" : "") : "검색 결과가 없습니다. 매장(042-545-2900)에 문의하시면 취급 여부를 알려드립니다.";
       box.innerHTML = r.slice(0, 120).map(function (p) {
-        return '<a class="pd" href="' + (p.d ? "https://wwood.kr/home/" + (/Mobi|Android|iPhone|iPod|iPad/i.test(navigator.userAgent) ? "mobile" : "mall") + "/shoplist.php?idx=" + p.d + "&pmode=view" : "/jaryo/" + esc(p.u) + ".html") + '" target="_blank" rel="noopener"><span class="pi"><img loading="lazy" src="' + esc(p.i) + '" alt="' + esc(p.n) + '"></span><b>' + esc(p.n) + "</b><small>" + esc(p.s || p.c) + "</small></a>";
+        return '<a class="pd" href="' + (p.l ? esc(p.l) : p.d ? "https://wwood.kr/home/" + (/Mobi|Android|iPhone|iPod|iPad/i.test(navigator.userAgent) ? "mobile" : "mall") + "/shoplist.php?idx=" + p.d + "&pmode=view" : "/jaryo/" + esc(p.u) + ".html") + '"' + (p.l ? "" : ' target="_blank" rel="noopener"') + '><span class="pi"><img loading="lazy" referrerpolicy="no-referrer" src="' + esc(p.i) + '" alt="' + esc(p.n) + '"></span><b>' + esc(p.n) + "</b><small>" + esc(p.s || p.c) + "</small></a>";
       }).join("");
     });
   }
