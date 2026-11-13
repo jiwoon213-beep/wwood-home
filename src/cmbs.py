@@ -55,7 +55,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
     url = lambda n: f"/bupum/{TOP[n][0]}.html" if n in TOP else f"/bupum/{TOP[top_of(n)][0]}-{n}.html"
     card = lambda r, pre="": f'<a class="yri" href="#" data-big="{IMG(r[3])}" data-n="{E(r[2])}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{IMG(r[3])}" alt="{E(pre + r[2])}"><span>{E(r[2])}</span></a>'
     topnav = lambda cur: '<div class="glk tkn">' + "".join(f'<a href="{url(t)}"{" class=on" if t == cur else ""}>{E(TOP[t][1])}</a>' for t in TOP if items(t)) + '</div>'
-    note = '<p class="gs">사진은 철물박사(철물박사.com)에서 허락받아 싣습니다. 사진을 누르면 크게 볼 수 있습니다. 매장 재고·가격·주문 가능 여부는 전화나 매장에서 확인해 주세요. 없는 품목은 비슷한 제품을 찾아 드립니다.</p>'
+    note = ''
     def fq(nm):
         return faqslide([(f"{nm} 어디서 사나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 상담·주문할 수 있습니다. {HOURS}. 사진이나 쓰던 부품을 가져오시면 맞는 규격을 찾기 쉽습니다."),
                          (f"{nm} 가격은 얼마인가요?", "품목·수량·재고에 따라 달라서 매장이나 전화로 안내해 드립니다. 목재·합판과 같이 사시면 한 번에 실어 드립니다(전국 용달 배송 가능).")])
