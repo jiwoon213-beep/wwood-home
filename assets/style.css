@@ -373,3 +373,5 @@ main .olk a.ac{background:#fbf3ef;border-color:#f0d8cd;color:var(--red)}
 @media(max-width:560px){.yrg.cbg{grid-template-columns:1fr 1fr!important}}
 main .qk a{background:#fff;border:1px solid #e3ddd3;color:#1a1a1a;font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.04)}
 main .qk a:hover{background:#fff;border-color:#1a1a1a;color:#1a1a1a}
+@media(max-width:600px){.olk{grid-template-columns:none;grid-template-rows:repeat(3,auto);grid-auto-flow:column;grid-auto-columns:44vw;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:8px}.olk a{scroll-snap-align:start}.olk::-webkit-scrollbar{height:5px}.olk::-webkit-scrollbar-thumb{background:#d8d2c8;border-radius:3px}}
+@media(min-width:601px){.olh{display:none}}
