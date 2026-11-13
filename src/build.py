@@ -184,6 +184,9 @@ def mat_prices(m, k=10):
 NAV = [("/visit.html", "매장 안내"), ("/jaryo/", "전체 자재"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/mandeul/", "DIY 만들기"), ("/sigongbeop/", "자재 시공법"), ("/trend/", "인테리어 트렌드"), ("/cut.html", "목재 재단"), ("/video/", "영상"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공")]
 
 def page(path, title, desc, body, active="", jsonld=None, img=None):
+    if len(desc) < 45:  # 너무 짧은 설명은 매장 정보로 보강(80자 이내)
+        for add in (" 대전 유성 3000평 매장, 즉석 재단·전국 용달 배송.", " 대전 유성 매장·전국 배송."):
+            if len(desc) + len(add) <= 80: desc = desc.rstrip() + add; break
     if len(desc) > 80:  # 네이버 권장: 설명 80자 이내 — 문장·쉼표 경계에서 자름
         cut = desc[:80]; k = cut.rfind(".")
         if k < 40: k = cut.rfind(", ")

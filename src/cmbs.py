@@ -87,7 +87,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
                 for l in leaves:
                     ls = items(l)
                     more = f'<a class="yri ymore" href="{url(l)}"><span>전체 {len(ls)}가지 보기 ›</span></a>' if len(ls) > CAP else ""
-                    sec += f'<h2 class="gt" id="c{l}"><span><a href="{url(l)}" style="color:inherit;text-decoration:none">{E(cats[l][1])}</a> <small style="font-size:14px">{len(ls)}가지</small></span><small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">{"".join(card(r, cats[l][1] + " ") for r in ls[:CAP])}{more}</div>'
+                    sec += f'<h2 class="gt" id="c{l}"><span>{(f'<a href="{url(l)}" style="color:inherit;text-decoration:none">' + E(cats[l][1]) + '</a>') if len(ls) > CAP else E(cats[l][1])} <small style="font-size:14px">{len(ls)}가지</small></span><small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">{"".join(card(r, cats[l][1] + " ") for r in ls[:CAP])}{more}</div>'
                     if len(ls) > CAP: grid_page(l, t)
                 chips = '<div class="qk">' + "".join(f'<a href="#c{l}">{E(cats[l][1])}</a>' for l in leaves) + '</div>'
                 nm = cats[m][1]
