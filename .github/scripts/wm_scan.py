@@ -14,7 +14,7 @@ if os.path.exists(D + "cmbs_wm.tsv"):
 def judge(txt): return "1" if WM.search(OK.sub("", txt)) else "0"
 # 워터마크로 보는 표시: 주소·저작권 문구·쇼핑몰 단어
 WM = re.compile(r"(www\.|https?:|\b[a-z0-9][a-z0-9-]{2,}\.(?:com|co\.kr|kr|net|shop|store)\b|copyright|무단\s*(?:도용|복제|사용)|스토어|STORE|SHOP|쇼핑몰|MALL|쿠팡|coupang|11번가|지마켓|gmarket|옥션|auction|인터파크|네이버\s*쇼핑|naver)", re.I)
-OK = re.compile(r"철물박사|chulmulbaksa|철물박사닷컴", re.I)
+OK = re.compile(r"철물박사|chulmulbaksa|철물박사닷컴|[a-z]*bond\s*\.?\s*co[m.]*|axia[. ]*co[. ]*k?r|ISO\s*\d+", re.I)  # 제품 포장에 인쇄된 제조사 주소는 허용
 os.makedirs("/tmp/wm", exist_ok=True)
 def scan(r):
     pno, img = r[1], r[3]
