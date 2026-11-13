@@ -22,6 +22,10 @@ TEL = "042-545-2900"
 ADDR = "대전 유성대로 44, 1층"
 EMAIL = "yjwood2021@naver.com"
 NPLACE = "https://naver.me/GEdDcn2S"  # 네이버 플레이스(스마트플레이스 승인)
+RVBOX = ('<div class="rvw"><p class="rvh">다녀가셨다면 리뷰 한 줄 부탁드려요</p><div class="rvg">'
+  f'<a class="rv nv" href="{NPLACE}" target="_blank" rel="noopener"><span class="rvi">N</span><span class="rvt"><b>네이버 리뷰 쓰기</b><span class="rvs">★★★★★</span><small>네이버 지도 · 영수증 인증</small></span></a>'
+  '<a class="rv gg" href="https://g.page/r/CZcZc9J-M0L0EAE/review" target="_blank" rel="noopener"><span class="rvi">G</span><span class="rvt"><b>구글 리뷰 쓰기</b><span class="rvs">★★★★★</span><small>누르면 바로 별점 화면</small></span></a>'
+  '</div></div>')
 HOURS = "평일 07:00~18:00 · 토·일 07:00~15:00 · 공휴일 07:00~16:00"
 LIC = "실내건축공사업 대전서구24-나-19"
 E = html.escape
@@ -546,7 +550,7 @@ def build():
          f"""<section class="wrap sec g2"><div>{embed(tour) if tour else ''}</div><div><h1>매장 오시는 길</h1>
 <div class="tw"><table><tbody><tr><th>주소</th><td>{ADDR} 월드건축자재(영진목재)</td></tr><tr><th>영업</th><td>{HOURS}</td></tr><tr><th>전화</th><td><a href="tel:{TEL.replace('-','')}">{TEL}</a></td></tr>
 <tr><th>재단</th><td>원하는 사이즈로 즉석 재단</td></tr><tr><th>배송</th><td>대전·세종·공주·계룡·논산·금산·옥천 배송 · 현장 납품 · 그 외 전국은 용달 배송(전화로 운임 견적 → 입금 확인 후 출고)</td></tr><tr><th>도매</th><td>사업자등록증·명함 확인 후 도매회원 승인</td></tr><tr><th>시공</th><td>월드아키텍쳐 · 대전·세종 · 전화 상담</td></tr></tbody></table></div>
-<div class="row"><a class="b g" href="{NPLACE}" target="_blank" rel="noopener">네이버 지도로 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a><a class="b o" href="mailto:{EMAIL}?subject=%EB%AC%B8%EC%9D%98">메일 문의</a></div><p class="small" style="margin-top:10px">다녀가셨다면 리뷰 한 줄 부탁드려요 → <a href="{NPLACE}" target="_blank" rel="noopener">네이버 리뷰</a> · <a href="https://g.page/r/CZcZc9J-M0L0EAE/review" target="_blank" rel="noopener">구글 리뷰</a></p></div></section>{"" if not os.path.exists(ROOT+"/data/store_photos.json") else '<section class="wrap sec"><h2>매장 사진</h2><div class="pg hrow">' + "".join(f'<a class="ph" href="/assets/store/{n}.jpg" target="_blank"><img loading="lazy" src="/assets/store/{n}.jpg" alt="{E(t)}"><small>{E(t)}</small></a>' for n, t in json.load(open(ROOT+"/data/store_photos.json", encoding="utf-8"))) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>'}""", "/visit.html", BIZ, BASE+"/assets/store/storefront.jpg")
+<div class="row"><a class="b g" href="{NPLACE}" target="_blank" rel="noopener">네이버 지도로 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a><a class="b o" href="mailto:{EMAIL}?subject=%EB%AC%B8%EC%9D%98">메일 문의</a></div>{RVBOX}</div></section>{"" if not os.path.exists(ROOT+"/data/store_photos.json") else '<section class="wrap sec"><h2>매장 사진</h2><div class="pg hrow">' + "".join(f'<a class="ph" href="/assets/store/{n}.jpg" target="_blank"><img loading="lazy" src="/assets/store/{n}.jpg" alt="{E(t)}"><small>{E(t)}</small></a>' for n, t in json.load(open(ROOT+"/data/store_photos.json", encoding="utf-8"))) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>'}""", "/visit.html", BIZ, BASE+"/assets/store/storefront.jpg")
 
     # 지역 시공 사례 (data/cases.json — 영상 설명에 지역이 확인된 실제 현장만)
     CASES = json.load(open(f"{ROOT}/data/cases.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/cases.json") else []
@@ -1404,8 +1408,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     rbtn = lambda href, bg, fg, t, sub: f'<a href="{href}" target="_blank" rel="noopener" style="display:block;background:{bg};color:{fg};border-radius:14px;padding:18px 20px;margin:12px 0;text-decoration:none;font-size:20px;font-weight:800">{t}<small style="display:block;font-size:14px;font-weight:500;opacity:.85;margin-top:4px">{sub}</small></a>'
     page("r/index.html", "영진종합목재 방문 리뷰 남기기", "영진종합목재(월드건축자재) 방문 리뷰 남기기(네이버·구글·카카오맵), 자재 정보 보기.",
          '<section class="wrap sec" style="max-width:520px"><h1 style="font-size:26px">방문해 주셔서 감사합니다</h1><p class="lead">리뷰 한 줄이 동네 손님들께 큰 도움이 됩니다.</p>'
-         + rbtn(RV_NAVER, "#03c75a", "#fff", "네이버 리뷰 쓰기", "지도에서 영진종합목재 → 리뷰 → 영수증 인증")
-         + rbtn(RV_GOOGLE, "#1a73e8", "#fff", "구글 리뷰 쓰기", "누르면 바로 별점·리뷰 쓰는 화면이 열려요")
+         + RVBOX
          + rbtn(RV_KAKAOMAP, "#3b82f6", "#fff", "카카오맵 후기 쓰기", "카카오맵에서 영진종합목재 검색")
          + rbtn("/jajae/", "#333", "#fff", "자재 사진·기준가 보기", "합판·각재·데크·사이딩 등 용도와 기준가")
          + f'<p class="small muted">{ADDR} · {TEL} · {HOURS}</p></section>', "")
