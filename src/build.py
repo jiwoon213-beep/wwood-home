@@ -205,7 +205,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><img class="lm" src="/assets/logo-mark.svg" width="46" height="46" alt=""><span class="lt"><b>영진종합목재</b><small><em>월드건축자재</em> · 충청권 최대규모 목재상</small></span></a>
 <button class="mnb" type="button" aria-expanded="false" aria-controls="gnav" onclick="var h=this.closest('header'),o=h.classList.toggle('open');this.setAttribute('aria-expanded',o);this.innerHTML=o?'✕ 닫기':'☰ 메뉴'">☰ 메뉴</button><nav id="gnav">{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">DIY 만들기</a> · <a href="/sigongbeop/">인테리어 자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/jajae/">자재 백과</a> · <a href="/calc.html">자재 계산기</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/gagyeok/">자재 가격 가이드</a> · <a href="/cheolmul/">목재 철물</a> · <a href="/faq.html">자주 묻는 질문</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">DIY 만들기</a> · <a href="/sigongbeop/">인테리어 자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/jajae/">자재 백과</a> · <a href="/calc.html">자재 계산기</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/gagyeok/">자재 가격 가이드</a> · <a href="/cheolmul/">목재 철물</a> · <a href="/taka/">타카·타카핀</a> · <a href="/faq.html">자주 묻는 질문</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로 무단 복제·사용을 금합니다.<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr";
 function rd(x){{var v=null;try{{v=localStorage.getItem(x)}}catch(e){{}}if(v===null){{var m=document.cookie.match(new RegExp("(?:^|; )"+x+"=([^;]*)"));v=m?m[1]:null}}return v}}
@@ -375,6 +375,9 @@ def build():
     import cheolmul as _cm0
     _mtj = json.load(open(f"{ROOT}/data/megatie.json", encoding="utf-8"))
     _chrow = '<div class="chr" id="cheolmul"><p class="chl"><b>🔩 목재 철물</b> 데크·정자·파고라·목조주택·농막용 · <a class="cha" href="/cheolmul/">전체 보기 ›</a></p><div class="gcs">' + "".join(f'<a class="gc gpc" href="/cheolmul/{c[0]}.html">' + (f'<img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="https://megatie.cafe24.com/web/product/{_mtj[c[0]][0][1][1:]}" alt="{E(c[1])}">' if _mtj.get(c[0]) else "") + f'<span>{E(c[1])}</span></a>' for c in _cm0.CH) + '</div></div>'
+    import taka as _tk0, taka_data as _tkd
+    _tkimg = {s: _tk0.IMG(_tkd.TOOLS[s][2][0][5]) for s in _tk0.ORDER}; _tkimg.update(pin=_tk0.IMG("4단위.jpg"), nail=_tk0.IMG("코일 네일못(플랫).png"), compressor=_tk0.IMG("JQS225-870.jpg"), etc=_tk0.IMG("폴리우레탄-연질-호스.jpg"))
+    _chrow += '<div class="chr" id="taka"><p class="chl"><b>타카·타카핀·콤프레셔</b> 제일타카 422·F30·실핀·콘크리트 타카 · <a class="cha" href="/taka/">전체 보기 ›</a></p><div class="gcs">' + "".join(f'<a class="gc gpc" href="/taka/{s}.html"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{_tkimg[s]}" alt="{E(v[0])}"><span>{E(v[0])}</span></a>' for s, v in [(k, _tk0.PG[k]) for k in _tk0.ORDER + ["pin", "nail", "compressor", "etc"]]) + '</div></div>'
     jrows = "".join(f'<section class="wrap sec jall" id="c{sl}"><h2>{n} <small class="muted">{cnt[c]}종</small> <a class="small" href="/jaryo/{sl}.html">전체 보기 ›</a></h2><p class="small muted">{d}</p>{_chrow if c == "32" else ""}<div class="pg hrow">' + "".join(pcard(p) for p in [p for p in PROD if c in p["tops"]][:16]) + f'<a class="pd more" href="/jaryo/{sl}.html"><span class="pi"><b>+{max(0,cnt[c]-16)}</b></span><b>{n} 전체 보기 ›</b><small>{cnt[c]}종</small></a></div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>' for c, sl, n, d in JCAT if cnt[c])
     page("jaryo/index.html", f"전체 자재 사진 {len([p for p in PROD if p['tops']])}종 — 각재·합판·데크·사이딩·철물 | 대전 영진목재", "대전 월드건축자재(영진목재) 매장 취급 자재를 사진으로 확인하세요. 각재, 합판, 집성판, 데크, 마루, 내장재, 타일, 사이딩, 철물, 스테인.",
          f'<section class="wrap sec"><h1>전체 자재</h1>{SEARCH}<p class="lead">매장에서 취급하는 자재를 사진으로 모았습니다. 실물은 대전 매장에서 보고, 원하는 사이즈로 재단해 가세요. 가격은 <a href="/price.html">기준가</a> 또는 매장에서 안내합니다.</p><div class="chips jall jchips">{jchips}</div></section>{jrows}{CTA}', "/jaryo/", None, thumb.get("24"))
@@ -1144,6 +1147,8 @@ def build():
     GGLIST = _gg.gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ, mat_photos)
     import cheolmul as _ch
     CHLIST = _ch.gen(page, P, E, CTA, faqslide, BASE, ADDR, HOURS, ALLFAQ)
+    import taka as _tk
+    TKLIST = _tk.gen(page, P, E, CTA, faqslide, BASE, ADDR, HOURS, ALLFAQ)
     MKNM = {x[0]: x[1] for x in MK}
     # 자재 시공법(내장재·외장재·바닥·도어 등) — /sigongbeop/
     from sigong_data import SG, SGP
@@ -1473,7 +1478,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         for q, a_ in v_[:2]: _mat.append((q, a_, f"/jajae/{k_}.html", _mn.get(k_, "자재 백과")))
     _groups.append(("자재 고르기", _mat))
     _groups.append(("필요한 양 계산", [(q, a_, "/calc.html", "자재 계산기") for q, a_ in CALC_FAQ]))
-    for g_ in ("DIY 만들기", "자재 시공법", "자재 가격", "목재 철물"):
+    for g_ in ("DIY 만들기", "자재 시공법", "자재 가격", "목재 철물", "타카·콤프레셔"):
         _groups.append((g_, [(q, a_, u_, n_) for gg, qa_, u_, n_ in ALLFAQ if gg == g_ for q, a_ in qa_]))
     _fb = ""; _fld = []; _toc = []
     for gi, (gn, qs) in enumerate(_groups):
