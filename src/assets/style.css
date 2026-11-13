@@ -431,7 +431,7 @@ ul.mli li .mlks{margin-top:0}
 .appg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;display:flex;align-items:flex-end;justify-content:center}
 .appg[hidden]{display:none}
 .appgb{background:#fff;border-radius:18px 18px 0 0;padding:20px 20px 28px;max-width:520px;width:100%;font-size:16px;line-height:1.7}
-.appgb b:first-child{display:block;font-size:18px;margin-bottom:6px}
+.appgb > b:first-child{display:block;font-size:18px;margin-bottom:6px}
 .appgb .b{margin-top:10px}
 @media(max-width:600px){.top .wrap > span:first-child{display:none}}
 @media(max-width:600px){.top a.tvis{display:none}.top .wrap span{white-space:nowrap}}
