@@ -15,6 +15,7 @@ jobs:
         with: { python-version: '3.12' }
       - run: sudo apt-get update -q && sudo apt-get install -y -q tesseract-ocr tesseract-ocr-kor && pip install -q pillow
       - run: python3 .github/scripts/wm_scan.py
+        env: { OMP_THREAD_LIMIT: "1" }
       - name: build if changed
         run: |
           git stash -q && git pull -q --rebase && git stash pop -q || true

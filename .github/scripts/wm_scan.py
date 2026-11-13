@@ -13,7 +13,7 @@ if os.path.exists(D + "cmbs_wm.tsv"):
 # 이미 읽은 글자로 판정만 다시 계산(정규식을 고쳤을 때)
 def judge(txt): return "1" if WM.search(OK.sub("", txt)) else "0"
 # 워터마크로 보는 표시: 주소·저작권 문구·쇼핑몰 단어
-WM = re.compile(r"(www\.|https?|\.co\.kr|\.com|\.kr\b|\.net|©|copyright|무단|도용|복제|스토어|STORE|store|SHOP|shop|Shop|쇼핑|마켓|몰\b|MALL|mall|오피스|office|OFFICE|아름|arum|ARUM|쿠팡|coupang|11번가|지마켓|gmarket|옥션|auction|인터파크|네이버|naver)", re.I)
+WM = re.compile(r"(www\.|https?:|\b[a-z0-9][a-z0-9-]{2,}\.(?:com|co\.kr|kr|net|shop|store)\b|copyright|무단\s*(?:도용|복제|사용)|스토어|STORE|SHOP|쇼핑몰|MALL|쿠팡|coupang|11번가|지마켓|gmarket|옥션|auction|인터파크|네이버\s*쇼핑|naver)", re.I)
 OK = re.compile(r"철물박사|chulmulbaksa|철물박사닷컴", re.I)
 os.makedirs("/tmp/wm", exist_ok=True)
 def scan(r):
@@ -28,12 +28,12 @@ def scan(r):
     try:
         open(f + ".src", "wb").write(data)
         im = Image.open(f + ".src").convert("L")
-        im = im.resize((im.width * 2, im.height * 2))
+        if im.width < 600: im = im.resize((im.width * 2, im.height * 2))
         im.save(f)
         txt = ""
-        for g in (im, ImageOps.invert(im)):
+        for g in (im,):
             g.save(f)
-            txt += " " + subprocess.run(["tesseract", f, "-", "-l", "kor+eng", "--psm", "11"], capture_output=True, text=True, timeout=60).stdout
+            txt += " " + subprocess.run(["tesseract", f, "-", "-l", "eng", "--psm", "11"], capture_output=True, text=True, timeout=60).stdout
     except Exception:
         return pno, None, ""
     finally:
@@ -43,10 +43,10 @@ def scan(r):
     txt = re.sub(r"\s+", " ", txt).strip()
     hit = bool(WM.search(OK.sub("", txt)))
     return pno, "1" if hit else "0", txt[:120].replace("|", "/")
-todo = [r for r in rows if r[1] not in cache][:2500]  # 한 번에 최대 2500장(시간 제한), 나머지는 다음 실행에
+todo = [r for r in rows if r[1] not in cache][:9000]  # 한 번에 최대 2500장(시간 제한), 나머지는 다음 실행에
 print("todo", len(todo), file=sys.stderr)
 t0 = time.time()
-with cf.ThreadPoolExecutor(6) as ex:
+with cf.ThreadPoolExecutor(4) as ex:
     futs = [ex.submit(scan, r) for r in todo]
     for k, fu in enumerate(cf.as_completed(futs)):
         if time.time() - t0 > 110 * 60:
