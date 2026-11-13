@@ -2,6 +2,9 @@
 import os, re
 from yerim import IMG as YIMG, LB
 import younglim as _yl
+import shenu as _sh
+SHPG = {"modern": ("door_tot_line.php", "door_frt_al3.php"), "natural": ("door_tot_ntr.php",), "classic": ("door_glass_at.php",), "unique": ("door_tot_pit.php",)}
+SHRX = {"modern": r"화이트|그레이|백색|블랙|슬림", "natural": r"오크|애쉬|월넛|우드|원목", "classic": r"클래식|고딕|아치", "japandi": r"간살", "hanok": r"5구|격자|완자", "hotel": r"브론즈|블랙유리", "unique": r"아크릴|큐빅|포인트"}
 YLSTY = {"modern": "1301", "natural": "1302", "classic": "1303", "unique": "1304"}
 YLRX = {"hanok": r"완자|격자|고방|한옥|창살", "hotel": r"프레임리스|피봇|아치|상부구동|포켓|히든|글라스 도어|LED|무문틀"}
 YLONLY = {"kids": ("030600",), "cafe": ("040400", "040500")}
@@ -60,6 +63,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
     rows = [l.rstrip("\n").split("|") for l in open(os.path.join(ROOT, "data", "yerim.tsv"), encoding="utf-8") if l.strip()]
     nav = lambda cur: '<div class="glk tkn">' + "".join(f'<a href="/trend/{s[0]}.html"{" class=on" if s[0] == cur else ""}>{E(s[1])}</a>' for s in STYLES) + '</div>'
     yrows = [r for r in _yl.load(ROOT) if r[0] not in ("030801",)]
+    shrows = [r for r in _sh.load(ROOT) if r[0] not in ("hardware.php", "color.php") and not r[0].startswith("moulding")]
     ygrid = lambda xs, nm: '<div class="yrg">' + "".join(f'<a class="yri" href="#" data-big="{_yl.IMG(r[6])}" data-n="{E(_yl.card(r)[0])}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{_yl.IMG(r[6])}" alt="{E(nm)} 인테리어 영림 {E(_yl.card(r)[0])}"><span>{E(_yl.card(r)[0])}</span></a>' for r in xs) + '</div>'
     def ylsec(slug, rx, nx):
         nm = next(x[1] for x in STYLES if x[0] == slug)
@@ -68,11 +72,14 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
         for lab, pre in (("영림 중문", "040"), ("영림 방문", "03"), ("영림 몰딩·벽재·마루", "060"), ("영림 인테리어 필름", "080")):
             g = [r for r in xs if r[0].startswith(pre)]
             if g: h += f'<h2 class="gt">어울리는 {lab} {len(g)}가지 <small>옆으로 넘겨 보세요 ›</small></h2>{ygrid(g, nm)}'
+        shx = [r for r in shrows if r[0] in SHPG.get(slug, ()) or (SHRX.get(slug) and re.search(SHRX[slug], r[2] + " " + r[3]))]
+        if shx: h += f'<h2 class="gt">어울리는 쉐누 도어·중문 {len(shx)}가지 <small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">' + "".join(f'<a class="yri" href="#" data-big="{_sh.IMG(r[1])}" data-n="{E(_sh.name(r))}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{_sh.IMG(r[1])}" alt="{E(nm)} 인테리어 쉐누 {E(_sh.name(r))}"><span>{E(_sh.name(r))}</span></a>' for r in shx) + '</div>'
         return h
     out = []
     for slug, nm, one, desc, tips, rx, nx, rel in STYLES:
         its = [r for r in rows if re.search(rx, r[3]) and not (nx and re.search(nx, r[3]))]
-        nyl = sum(1 for r in yrows if (YLSTY.get(slug) == r[5]) or (r[0] in YLONLY.get(slug, ())) or (re.search(YLRX.get(slug, rx), r[4] + ' ' + r[3]) and not (nx and re.search(nx, r[4]))))
+        nsh = sum(1 for r in shrows if r[0] in SHPG.get(slug, ()) or (SHRX.get(slug) and re.search(SHRX[slug], r[2] + ' ' + r[3])))
+        nyl = nsh + sum(1 for r in yrows if (YLSTY.get(slug) == r[5]) or (r[0] in YLONLY.get(slug, ())) or (re.search(YLRX.get(slug, rx), r[4] + ' ' + r[3]) and not (nx and re.search(nx, r[4]))))
         jm = [r for r in its if r[0] in ("544", "545", "34", "556", "207")]
         dr = [r for r in its if r not in jm]
         grid = lambda xs: '<div class="yrg">' + "".join(f'<a class="yri" href="#" data-big="{YIMG(r[4])}" data-n="{E(r[3])}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{YIMG(r[4])}" alt="{E(nm)} 인테리어 예림 {E(r[3])}"><span>{E(r[3])}</span></a>' for r in xs) + '</div>'
@@ -82,7 +89,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
                 + (f'<h2 class="gt">어울리는 방문·문틀 {len(dr)}가지 <small>옆으로 넘겨 보세요 ›</small></h2>{grid(dr)}' if dr else "")
                 + ylsec(slug, rx, nx)
                 + f'<h2 class="gt">같이 쓰는 자재</h2><div class="glk">{"".join(f"<a href={chr(34)}{h}{chr(34)}>{E(t)}</a>" for h, t in rel)}<a href="/yerim/">예림 중문·도어 전체</a></div>'
-                f'<p class="gs">사진은 예림(YERIM)·영림(YOUNGLIM) 제품이며 누르면 크게 볼 수 있습니다. 색상·규격·가격은 매장에 문의해 주세요.</p></section>')
+                f'<p class="gs">사진은 예림(YERIM)·영림(YOUNGLIM)·쉐누(SHENU) 제품이며 누르면 크게 볼 수 있습니다. 색상·규격·가격은 매장에 문의해 주세요.</p></section>')
         fq = [(f"{nm} 인테리어 자재는 어디서 보나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 문·중문 샘플과 루바·몰딩·필름 실물을 보고 고를 수 있습니다. {HOURS}. 대전·세종은 설치 시공(월드아키텍쳐)도 상담합니다.")]
         body += f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>{CTA}' + LB
         img = YIMG(its[0][4]) if its else None
