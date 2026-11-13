@@ -367,4 +367,4 @@ main .olk a{display:flex;align-items:center;min-height:46px;padding:10px 14px;ba
 main .olk a:after{content:"›";margin-left:auto;padding-left:8px;color:#bbb;font-weight:400}
 main .olk a:hover{border-color:var(--red);color:var(--red)}
 main .olk a.ac{background:#fbf3ef;border-color:#f0d8cd;color:var(--red)}
-@media(max-width:600px){.olk{grid-template-columns:1fr 1fr}.olk a{font-size:14.5px;padding:10px 12px}}
+@media(max-width:600px){.olk{grid-template-columns:1fr 1fr}main .olk a{font-size:14.5px;padding:10px 12px}}
