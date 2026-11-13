@@ -1454,6 +1454,20 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
               + '<section class="wrap sec"><h2>인테리어 자재 시공법</h2><p class="small muted">석고보드·루바·사이딩·몰딩·마루·필름·문 교체까지 — 필요한 자재 수량, 그림 설명서, 시공 영상을 정리했습니다. 어려운 공사는 직접 시공도 합니다.</p><div class="mg m2">'
               + "".join(f'<a class="mc" href="/sigongbeop/{x[0]}.html">' + (f'<img loading="lazy" src="/assets/sigongbeop/{x[0]}.jpg" alt="{E(x[1])}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if os.path.exists(f"{ROOT}/assets/sigongbeop/{x[0]}.jpg") else "") + f'<b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in _sgh)
               + f'</div><p><a class="b o" href="/sigongbeop/">시공법 {len(SG)}가지 전체 보기 ›</a></p></section>')
+    # 첫 화면: 제품 사진(제조사)·인테리어 트렌드·우리 동네 시공·전국 배송 — 주요 섹션으로 내부 링크
+    import taka as _tkH, taka_data as _tkdH
+    _bc = []
+    try: _bc.append(("/yerim/", "예림 중문·도어", f"{len(_yrows)}종", _yr0.IMG(_yrows[0][4])))
+    except Exception: pass
+    if _ylr: _bc.append(("/younglim/", "영림 도어·중문·필름", f"{len(_ylr)}종", _yl0.IMG(next(r for r in _ylr if r[0] == "040300")[6]) if any(r[0] == "040300" for r in _ylr) else _yl0.IMG(_ylr[0][6])))
+    if _shr: _bc.append(("/shenu/", "쉐누 도어·몰딩", f"{len(_shr)}종", _sh0.IMG(_shr[0][1])))
+    _bc.append(("/taka/", "제일타카 타카·핀", "타카·핀·콤프레셔", _tkH.IMG(_tkdH.TOOLS["interior"][2][0][5])))
+    _bc.append(("/cheolmul/", "목재 철물", "데크·정자·목조주택", "https://megatie.cafe24.com/web/product/" + _mtj["janseon"][0][1][1:]))
+    MKHOME += ('<section class="wrap sec gg"><h2 class="gt">제품 사진으로 고르기 <small>옆으로 넘겨 보세요 ›</small></h2><div class="gcs">'
+               + "".join(f'<a class="gc gpc" href="{h}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{im}" alt="{E(n)}"><span>{E(n)} <small>{E(k)}</small></span></a>' for h, n, k, im in _bc) + '</div>'
+               + '<div class="qk"><a href="/trend/">인테리어 트렌드</a>' + "".join(f'<a href="/trend/{a}.html">{b}</a>' for a, b in (("modern", "모던"), ("natural", "내추럴·우드"), ("japandi", "간살·재팬디"), ("hotel", "호텔·럭셔리"), ("classic", "클래식"))) + '</div>'
+               + '<h2 class="gt">우리 동네 시공 (대전·세종)</h2><div class="qk">' + "".join(f'<a href="/local/{a}-{b}.html">{c} {d}</a>' for b, c in (("daejeon", "대전"), ("sejong", "세종")) for a, d in (("jungmun", "중문"), ("door", "방문 교체"), ("film", "필름"), ("molding", "몰딩"), ("wall", "템바보드 벽"))) + '<a href="/local/">동네별 보기 ›</a></div>'
+               + '<h2 class="gt">전국 배송 — 재단해서 용달로</h2><div class="qk">' + "".join(f'<a href="/jeonguk/{a}.html">{b}</a>' for a, b, *_ in __import__("nation").REG) + '</div></section>')
     _ip = f"{OUT}/index.html"; _it = open(_ip, encoding="utf-8").read()
     if "<!--MKHOME-->" in _it: open(_ip, "w", encoding="utf-8").write(_it.replace("<!--MKHOME-->", MKHOME))
     # 사이트 전체: 소식·제품·자재 사진·지역×자재 페이지에 "직접 만들어 보기"(완성 그림 카드) 자동 삽입 — 새 글도 빌드 때 자동 적용

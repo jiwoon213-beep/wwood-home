@@ -358,3 +358,6 @@ main .glk a{text-decoration:none}
 .ylp,.yln{position:absolute;top:45%;font-size:48px;color:#fff;background:rgba(255,255,255,.12);border:0;border-radius:50%;width:56px;height:56px;cursor:pointer;line-height:1}
 .ylp{left:10px}.yln{right:10px}
 @media(max-width:560px){.ylp,.yln{width:44px;height:44px;font-size:36px;top:auto;bottom:18px}}
+.yri.ymore{display:flex;align-items:center;justify-content:center;background:#faf6ef;text-align:center;min-height:160px}.yri.ymore span{font-size:15px;color:var(--red)}
+.yri img{height:auto}
+.gpc img{height:auto}

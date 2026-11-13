@@ -64,7 +64,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
     nav = lambda cur: '<div class="glk tkn">' + "".join(f'<a href="/trend/{s[0]}.html"{" class=on" if s[0] == cur else ""}>{E(s[1])}</a>' for s in STYLES) + '</div>'
     yrows = [r for r in _yl.load(ROOT) if r[0] not in ("030801",)]
     shrows = [r for r in _sh.load(ROOT) if r[0] not in ("hardware.php", "color.php") and not r[0].startswith("moulding")]
-    ygrid = lambda xs, nm: '<div class="yrg">' + "".join(f'<a class="yri" href="#" data-big="{_yl.IMG(r[6])}" data-n="{E(_yl.card(r)[0])}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{_yl.IMG(r[6])}" alt="{E(nm)} 인테리어 영림 {E(_yl.card(r)[0])}"><span>{E(_yl.card(r)[0])}</span></a>' for r in xs) + '</div>'
+    ygrid = lambda xs, nm: '<div class="yrg">' + "".join(f'<a class="yri" href="#" data-big="{_yl.IMG(r[6])}" data-n="{E(_yl.card(r)[0])}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{_yl.IMG(r[6])}" alt="{E(nm)} 인테리어 영림 {E(_yl.card(r)[0])}"><span>{E(_yl.card(r)[0])}</span></a>' for r in xs[:24]) + (f'<a class="yri ymore" href="/younglim/"><span>영림 전체 {len(xs)}가지 보기 ›</span></a>' if len(xs) > 24 else '') + '</div>'
     def ylsec(slug, rx, nx):
         nm = next(x[1] for x in STYLES if x[0] == slug)
         xs = [r for r in yrows if (YLSTY.get(slug) == r[5]) or (r[0] in YLONLY.get(slug, ())) or (re.search(YLRX.get(slug, rx), r[4] + " " + r[3]) and not (nx and re.search(nx, r[4])))]
@@ -73,7 +73,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
             g = [r for r in xs if r[0].startswith(pre)]
             if g: h += f'<h2 class="gt">어울리는 {lab} {len(g)}가지 <small>옆으로 넘겨 보세요 ›</small></h2>{ygrid(g, nm)}'
         shx = [r for r in shrows if r[0] in SHPG.get(slug, ()) or (SHRX.get(slug) and re.search(SHRX[slug], r[2] + " " + r[3]))]
-        if shx: h += f'<h2 class="gt">어울리는 쉐누 도어·중문 {len(shx)}가지 <small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">' + "".join(f'<a class="yri" href="#" data-big="{_sh.IMG(r[1])}" data-n="{E(_sh.name(r))}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{_sh.IMG(r[1])}" alt="{E(nm)} 인테리어 쉐누 {E(_sh.name(r))}"><span>{E(_sh.name(r))}</span></a>' for r in shx) + '</div>'
+        if shx: h += f'<h2 class="gt">어울리는 쉐누 도어·중문 {len(shx)}가지 <small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">' + "".join(f'<a class="yri" href="#" data-big="{_sh.IMG(r[1])}" data-n="{E(_sh.name(r))}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{_sh.IMG(r[1])}" alt="{E(nm)} 인테리어 쉐누 {E(_sh.name(r))}"><span>{E(_sh.name(r))}</span></a>' for r in shx[:24]) + (f'<a class="yri ymore" href="/shenu/"><span>쉐누 전체 {len(shx)}가지 보기 ›</span></a>' if len(shx) > 24 else '') + '</div>'
         return h
     out = []
     for slug, nm, one, desc, tips, rx, nx, rel in STYLES:
@@ -82,7 +82,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
         nyl = nsh + sum(1 for r in yrows if (YLSTY.get(slug) == r[5]) or (r[0] in YLONLY.get(slug, ())) or (re.search(YLRX.get(slug, rx), r[4] + ' ' + r[3]) and not (nx and re.search(nx, r[4]))))
         jm = [r for r in its if r[0] in ("544", "545", "34", "556", "207")]
         dr = [r for r in its if r not in jm]
-        grid = lambda xs: '<div class="yrg">' + "".join(f'<a class="yri" href="#" data-big="{YIMG(r[4])}" data-n="{E(r[3])}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{YIMG(r[4])}" alt="{E(nm)} 인테리어 예림 {E(r[3])}"><span>{E(r[3])}</span></a>' for r in xs) + '</div>'
+        grid = lambda xs: '<div class="yrg">' + "".join(f'<a class="yri" href="#" data-big="{YIMG(r[4])}" data-n="{E(r[3])}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{YIMG(r[4])}" alt="{E(nm)} 인테리어 예림 {E(r[3])}"><span>{E(r[3])}</span></a>' for r in xs[:24]) + (f'<a class="yri ymore" href="/yerim/"><span>예림 전체 {len(xs)}가지 보기 ›</span></a>' if len(xs) > 24 else '') + '</div>'
         body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/trend/">인테리어 트렌드</a> › {E(nm)}</p><h1>{E(nm)} 인테리어</h1><p class="glead">{E(one)}. {E(desc)}</p>{nav(slug)}'
                 f'<h2 class="gt">이렇게 맞추세요</h2><ul class="gtip">{"".join(f"<li>{E(t)}</li>" for t in tips)}</ul>'
                 + (f'<h2 class="gt">어울리는 중문 {len(jm)}가지 <small>옆으로 넘겨 보세요 ›</small></h2>{grid(jm)}' if jm else "")

@@ -57,7 +57,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
             sec += f'<h2 class="gt">{(E(g) + " 스타일 ") if g else ("기타 " if len(order) > 1 else "")}{len(xs)}가지 <small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">'
             for r in xs:
                 n, im = card(r)
-                sec += f'<a class="yri" href="#" data-big="{im}" data-n="{E(n)}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{im}" alt="영림 {E(n)}"><span>{E(n)}</span></a>'
+                sec += f'<a class="yri" href="#" data-big="{im}" data-n="{E(n)}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{im}" alt="영림 {E(n)}"><span>{E(n)}</span></a>'
             sec += '</div>'
         fq = [(f"영림 {nm} 어디서 보고 주문하나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 상담·주문할 수 있습니다. {HOURS}. 크기를 재 오시면 맞는 규격을 찾아 드리고, 대전·세종은 설치 시공(월드아키텍쳐)도 상담합니다.")]
         body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/younglim/">영림 도어·중문·마감재</a> › {E(nm)}</p><h1>영림 {E(nm)}</h1><p class="glead">{E(lead)} 총 {len(its)}가지.</p>{nav(slug)}{sec}'

@@ -68,7 +68,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, TEL, ROOT, CASES, top, vsplit):
     for ss, sn, tail, desc, steps, links, gk, vrx, crx in SVC:
         gal = gallery(gk, E, ROOT)
         gsec = ('<h2 class="gt">고를 수 있는 제품 예시 <small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">' + "".join(
-            f'<a class="yri" href="#" data-big="{im}" data-n="{E(b + " " + n)}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{im}" alt="{E(b)} {E(n)}"><span>{E(b)} · {E(n)}</span></a>' for b, im, n in gal) + '</div>') if gal else ""
+            f'<a class="yri" href="#" data-big="{im}" data-n="{E(b + " " + n)}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{im}" alt="{E(b)} {E(n)}"><span>{E(b)} · {E(n)}</span></a>' for b, im, n in gal) + '</div>') if gal else ""
         vs = top(lambda v: re.search(vrx, v["title"]), 8)
         for rs, rn, hood in REG:
             area_set = {"daejeon": {"yuseong", "seogu", "daedeok", "junggu-donggu"}, "sejong": {"sejong-sinsi", "sejong-eupmyeon"}}.get(rs, {rs})

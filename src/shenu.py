@@ -42,7 +42,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
             xs = [r for r in its if r[0] == pg]
             if not xs: continue
             sec += f'<h2 class="gt">{E(LINE.get(pg, ""))} {len(xs)}가지 <small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">'
-            sec += "".join(f'<a class="yri" href="#" data-big="{IMG(r[1])}" data-n="{E(name(r))}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{IMG(r[1])}" alt="쉐누 {E(name(r))}"><span>{E(name(r))}</span></a>' for r in xs) + '</div>'
+            sec += "".join(f'<a class="yri" href="#" data-big="{IMG(r[1])}" data-n="{E(name(r))}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{IMG(r[1])}" alt="쉐누 {E(name(r))}"><span>{E(name(r))}</span></a>' for r in xs) + '</div>'
         fq = [(f"쉐누 {nm} 어디서 보고 주문하나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 상담·주문할 수 있습니다. {HOURS}. 문 크기·벽 두께를 재 오시면 맞는 규격을 찾아 드리고, 대전·세종은 설치 시공(월드아키텍쳐)도 상담합니다.")]
         body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/shenu/">쉐누 도어·몰딩</a> › {E(nm)}</p><h1>쉐누 {E(nm)}</h1><p class="glead">{E(lead)} 총 {len(its)}가지.</p>{nav(slug)}{sec}'
                 f'<p class="gs">쉐누(SHENU) 제품입니다. 사진을 누르면 크게 볼 수 있습니다. 색상·규격·가격·납기는 매장에 문의해 주세요.</p>'
