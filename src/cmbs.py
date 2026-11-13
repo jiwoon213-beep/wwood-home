@@ -182,15 +182,19 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
                      f"{nm} {len(xs)}가지 사진: " + ", ".join(cats[l][1] for l in leaves[:8]) + ". 대전 유성 영진종합목재 매장 상담·주문.", body, "/jaryo/", None, IMG(xs[0][3]))
             else:
                 grid_page(m, t)
-            tsec += f'<a class="gi gim" href="{url(m)}"><img loading="lazy" referrerpolicy="no-referrer" src="{IMG(xs[0][3])}" alt=""><b>{E(cats[m][1])} <small>{len(xs)}가지</small></b></a>'
+            tsec += (f'<h2 class="gt" id="c{m}"><span><a href="{url(m)}" style="color:inherit;text-decoration:none">{E(cats[m][1])}</a> <small style="font-size:14px">{len(xs)}가지</small></span><small>옆으로 넘겨 보세요 ›</small></h2>'
+                     f'<div class="yrg">{"".join(card(r, cats[m][1] + " ") for r in xs[:12])}<a class="yri ymore" href="{url(m)}"><span>{E(cats[m][1])} 전체 {len(xs)}가지 보기 ›</span></a></div>')
         tx = items(t)
         tn = TOP[t][1]
-        body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/bupum/">철물·공구·부속</a> › {E(tn)}</p><h1>{E(tn)} <small>{len(tx)}가지</small></h1><p class="glead">{E(TOP[t][2])}.</p>{topnav(t)}<div class="gig">{tsec}</div>{note}</section>{CTA}')
+        tch = '<div class="qk">' + "".join(f'<a href="#c{m}">{E(cats[m][1])}</a>' for m in mids) + '</div>'
+        body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/bupum/">철물·공구·부속</a> › {E(tn)}</p><h1>{E(tn)} <small>{len(tx)}가지</small></h1><p class="glead">{E(TOP[t][2])}.</p>{topnav(t)}{tch}{tsec}{note}</section>{CTA}' + LB)
         page(url(t)[1:], f"{tn} {len(tx)}종 사진 — {TOP[t][2][:30]} | 대전 영진목재", f"{tn} {len(tx)}가지: {TOP[t][2]}. 대전 유성 영진종합목재 매장 상담·주문, 전국 용달 배송.", body, "/jaryo/", None, IMG(tx[0][3]))
-        out.append((t, tn, TOP[t][2], len(tx), IMG(tx[0][3])))
+        out.append((t, tn, TOP[t][2], len(tx), IMG(tx[0][3]), [(m, cats[m][1], len(items(m)), IMG(items(m)[0][3])) for m in mids]))
     tot = sum(x[3] for x in out)
-    cards = "".join(f'<a class="gi gim" href="{url(t)}"><img loading="lazy" referrerpolicy="no-referrer" src="{im}" alt=""><b>{E(n)} <small>{k}가지</small></b><small>{E(d[:36])}</small></a>' for t, n, d, k, im in out)
+    cards = "".join(f'<h2 class="gt"><span><a href="{url(t)}" style="color:inherit;text-decoration:none">{E(n)}</a> <small style="font-size:14px">{k}가지</small></span><small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">'
+                    + "".join(f'<a class="yri" href="{url(m)}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{mi}" alt="{E(mn)}"><span>{E(mn)}</span><em class="cbp q">{mk}가지</em></a>' for m, mn, mk, mi in ms)
+                    + f'<a class="yri ymore" href="{url(t)}"><span>{E(n)} 전체 보기 ›</span></a></div>' for t, n, d, k, im, ms in out)
     page("bupum/index.html", f"철물·공구·욕실·전기 부속 {tot}종 사진 | 대전 영진목재",
          f"손잡이·경첩·도어부속·공구·수전·배수구·콘센트·피스·앙카 등 {tot}가지 사진. 대전 유성 영진종합목재 매장 상담·주문, 전국 용달 배송.",
-         f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › 철물·공구·부속</p><h1>철물·공구·부속</h1><p class="glead">문 손잡이·경첩부터 공구·욕실 수전·전기 부품·피스·앙카까지 {tot}가지를 종류별로 모았습니다(같은 제품은 한 번만).</p><div class="gig">{cards}</div>{note}<div class="glk"><a href="/cheolmul/">목재 철물(데크·정자·목조주택)</a><a href="/taka/">타카·타카핀</a><a href="/visit.html">매장 길찾기</a></div></section>{CTA}', "/jaryo/")
-    return out
+         f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › 철물·공구·부속</p><h1>철물·공구·부속</h1><p class="glead">문 손잡이·경첩부터 공구·욕실 수전·전기 부품·피스·앙카까지 {tot}가지를 종류별로 모았습니다(같은 제품은 한 번만).</p>{cards}{note}<div class="glk"><a href="/cheolmul/">목재 철물(데크·정자·목조주택)</a><a href="/taka/">타카·타카핀</a><a href="/visit.html">매장 길찾기</a></div></section>{CTA}', "/jaryo/")
+    return [x[:5] for x in out]
