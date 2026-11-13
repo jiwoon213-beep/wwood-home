@@ -10,6 +10,8 @@ if os.path.exists(D + "cmbs_wm.tsv"):
     for l in open(D + "cmbs_wm.tsv", encoding="utf-8"):
         x = l.rstrip("\n").split("|")
         if len(x) >= 2: cache[x[0]] = (x[1], x[2] if len(x) > 2 else "")
+# 이미 읽은 글자로 판정만 다시 계산(정규식을 고쳤을 때)
+def judge(txt): return "1" if WM.search(OK.sub("", txt)) else "0"
 # 워터마크로 보는 표시: 주소·저작권 문구·쇼핑몰 단어
 WM = re.compile(r"(www\.|https?|\.co\.kr|\.com|\.kr\b|\.net|©|copyright|무단|도용|복제|스토어|STORE|store|SHOP|shop|Shop|쇼핑|마켓|몰\b|MALL|mall|오피스|office|OFFICE|아름|arum|ARUM|쿠팡|coupang|11번가|지마켓|gmarket|옥션|auction|인터파크|네이버|naver)", re.I)
 OK = re.compile(r"철물박사|chulmulbaksa|철물박사닷컴", re.I)
@@ -41,15 +43,19 @@ def scan(r):
     txt = re.sub(r"\s+", " ", txt).strip()
     hit = bool(WM.search(OK.sub("", txt)))
     return pno, "1" if hit else "0", txt[:120].replace("|", "/")
-todo = [r for r in rows if r[1] not in cache]
+todo = [r for r in rows if r[1] not in cache][:2500]  # 한 번에 최대 2500장(시간 제한), 나머지는 다음 실행에
 print("todo", len(todo), file=sys.stderr)
 t0 = time.time()
 with cf.ThreadPoolExecutor(6) as ex:
     futs = [ex.submit(scan, r) for r in todo]
     for k, fu in enumerate(cf.as_completed(futs)):
+        if time.time() - t0 > 110 * 60:
+            for f2 in futs: f2.cancel()
+            break
         pno, v, txt = fu.result()
         if v is not None: cache[pno] = (v, txt)
         if k % 500 == 0: print(k, time.time() - t0, file=sys.stderr)
+cache = {k: (judge(v[1]) if v[1] else v[0], v[1]) for k, v in cache.items()}
 live = {r[1] for r in rows}
 open(D + "cmbs_wm.tsv", "w", encoding="utf-8").write("".join(f"{k}|{v[0]}|{v[1]}\n" for k, v in cache.items() if k in live))
 bl = sorted(k for k, v in cache.items() if v[0] == "1" and k in live)

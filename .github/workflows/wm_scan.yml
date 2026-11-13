@@ -1,6 +1,6 @@
 name: 철물박사 사진 워터마크 검사
 on:
-  schedule: [{ cron: '50 12 * * *' }]   # 매일 21:50 KST (제조사 동기화 뒤, 새 상품만 검사)
+  schedule: [{ cron: '50 12 * * *' }, { cron: '50 16 * * *' }, { cron: '50 20 * * *' }]   # 21:50·01:50·05:50 KST (새 상품만, 한 번에 2500장)
   workflow_dispatch:
 permissions:
   contents: write
