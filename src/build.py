@@ -201,7 +201,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><img class="lm" src="/assets/logo-mark.svg" width="46" height="46" alt=""><span class="lt"><b>영진종합목재</b><small><em>월드건축자재</em> · 충청권 최대규모 목재상</small></span></a>
 <button class="mnb" type="button" aria-expanded="false" aria-controls="gnav" onclick="var h=this.closest('header'),o=h.classList.toggle('open');this.setAttribute('aria-expanded',o);this.innerHTML=o?'✕ 닫기':'☰ 메뉴'">☰ 메뉴</button><nav id="gnav">{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">DIY 만들기</a> · <a href="/sigongbeop/">인테리어 자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/gagyeok/">자재 가격 가이드</a> · <a href="/faq.html">자주 묻는 질문</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">DIY 만들기</a> · <a href="/sigongbeop/">인테리어 자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/gagyeok/">자재 가격 가이드</a> · <a href="/cheolmul/">목재 철물</a> · <a href="/faq.html">자주 묻는 질문</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로 무단 복제·사용을 금합니다.<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr";
 function rd(x){{var v=null;try{{v=localStorage.getItem(x)}}catch(e){{}}if(v===null){{var m=document.cookie.match(new RegExp("(?:^|; )"+x+"=([^;]*)"));v=m?m[1]:null}}return v}}
@@ -335,6 +335,7 @@ def build():
         cmpln = f'<p>👉 <a href="/bigyo/{cmpl}.html">비슷한 자재와 비교해 보기</a> · <a href="/calc.html">필요한 양 계산하기</a>{cutln}</p>' if cmpl else (f'<p>👉 <a href="/calc.html#door">문짝·문틀 크기 계산하기</a></p>' if m["slug"] == "door" else f'<p>👉 <a href="/calc.html">필요한 양 계산하기</a>{cutln}</p>')
         import gagyeok as _g0
         cmpln += _g0.links(_g0.BYMAT.get(m["slug"], []))
+        if m["slug"] in ("hardware", "bangbu", "hapdeck", "gujo"): cmpln += '<div class="qk qk2"><b>🔩 목재 철물</b><a href="/cheolmul/janseon.html">장선걸이</a><a href="/cheolmul/gidungbatchim.html">기둥받침</a><a href="/cheolmul/juchudol.html">주춧돌</a><a href="/cheolmul/mokjo.html">목조주택 철물</a><a href="/cheolmul/">전체 철물</a></div>'
         mf = MFAQ.get(m["slug"], []) + [(f"{m['name']} 지방(전국)으로도 배송되나요?", f"네, 전국 어디든 용달차로 보내 드립니다. 품목·수량·도착지를 알려 주시면 사무실에서 용달 운임 견적을 드리고, 입금 확인 후 바로 출고합니다. 대전·세종·공주·계룡·논산·금산·옥천은 직접 배송·현장 납품합니다. 문의 {TEL}")]
         _seen = {re.sub(r"[^가-힣A-Za-z0-9]|은|는|을|를", "", q) for q, a in mf}
         faq = [x for x in faq if re.sub(r"[^가-힣A-Za-z0-9]|은|는|을|를", "", x["name"]) not in _seen] + [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in mf]
@@ -1134,6 +1135,8 @@ def build():
                   + "".join(f'<a class="mc" href="/mandeul/{x[0]}.html"><b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in xs[:12]) + '</div></section>' for ms, xs in _mkmat.items()}
     import gagyeok as _gg
     GGLIST = _gg.gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ, mat_photos)
+    import cheolmul as _ch
+    CHLIST = _ch.gen(page, P, E, CTA, faqslide, BASE, ADDR, HOURS, ALLFAQ)
     MKNM = {x[0]: x[1] for x in MK}
     # 자재 시공법(내장재·외장재·바닥·도어 등) — /sigongbeop/
     from sigong_data import SG, SGP
@@ -1464,7 +1467,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         for q, a_ in v_[:2]: _mat.append((q, a_, f"/jajae/{k_}.html", _mn.get(k_, "자재 백과")))
     _groups.append(("자재 고르기", _mat))
     _groups.append(("필요한 양 계산", [(q, a_, "/calc.html", "자재 계산기") for q, a_ in CALC_FAQ]))
-    for g_ in ("DIY 만들기", "자재 시공법", "자재 가격"):
+    for g_ in ("DIY 만들기", "자재 시공법", "자재 가격", "목재 철물"):
         _groups.append((g_, [(q, a_, u_, n_) for gg, qa_, u_, n_ in ALLFAQ if gg == g_ for q, a_ in qa_]))
     _fb = ""; _fld = []; _toc = []
     for gi, (gn, qs) in enumerate(_groups):

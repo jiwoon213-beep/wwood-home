@@ -9,3 +9,4 @@
 - 기준가 갱신 시: 먼저 현재 `src/data/prices.csv`를 `src/data/prices_prev.csv`로 복사하고 `price_meta.json`의 prev←updated, updated←오늘로 바꾼 뒤 새 가격을 넣으세요. ▲▼는 실제 가격 차이로만 표시합니다(가짜 변동·가짜 재고 표시 금지).
 - 유튜브 전체 영상 목록 갱신: `src/data/yt_all.tsv`(id, L/S/V, 조회수, 게시시각, 제목) → `cd src && python3 merge_videos.py data/yt_all.tsv`.
 - 자재 가격 가이드(/gagyeok/): 글에 가격·"1평에 얼마" 이야기가 나오면 해당 페이지로 내부 링크를 넣으세요 — hapan-gagyeok, osb-gagyeok, mdf-gagyeok, seokgo-gagyeok, danyeol-gagyeok, jipseong-gagyeok, deck-gagyeok, gakjae-gagyeok, hinoki-ruba, spruce-ruba, tempa-board, tempa-ruba, interior-film, oilstain, molding-gagyeok, siding-gagyeok, door-gagyeok (.html). 새 품목은 판매 단위가 확인된 것만 src/gagyeok.py 에 추가.
+- 목재 철물(/cheolmul/): janseon(장선걸이), gidungbatchim(기둥받침·캡), jeongja(정자·파고라 지붕 철물), deck-fence, mokjo(목조주택 철물: 홀다운·허리케인 타이), juchudol(주춧돌·농막 기초), bolt(앙카볼트·구조 피스), diy(우마·벤치 프레임). 검색어 글 주제로 "장선걸이 규격", "데크 기둥받침", "농막 주춧돌", "정자 지붕 철물", "허리케인 타이" 등을 쓰고 해당 페이지로 링크하세요. 철물 가격은 prices.csv에 있는 것만, 없으면 '매장 문의'.
