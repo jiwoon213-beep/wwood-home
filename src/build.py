@@ -205,7 +205,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><img class="lm" src="/assets/logo-mark.svg" width="46" height="46" alt=""><span class="lt"><b>영진종합목재</b><small><em>월드건축자재</em> · 충청권 최대규모 목재상</small></span></a>
 <button class="mnb" type="button" aria-expanded="false" aria-controls="gnav" onclick="var h=this.closest('header'),o=h.classList.toggle('open');this.setAttribute('aria-expanded',o);this.innerHTML=o?'✕ 닫기':'☰ 메뉴'">☰ 메뉴</button><nav id="gnav">{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">DIY 만들기</a> · <a href="/sigongbeop/">인테리어 자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/jeonguk/">배송 지역</a> · <a href="/jajae/">자재 백과</a> · <a href="/calc.html">자재 계산기</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/gagyeok/">자재 가격 가이드</a> · <a href="/cheolmul/">목재 철물</a> · <a href="/taka/">타카·타카핀</a> · <a href="/yerim/">예림 중문·도어</a> · <a href="/younglim/">영림 도어·중문·필름</a> · <a href="/shenu/">쉐누 도어·몰딩</a> · <a href="/local/">지역별 시공</a> · <a href="/faq.html">자주 묻는 질문</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">DIY 만들기</a> · <a href="/sigongbeop/">인테리어 자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/jeonguk/">배송 지역</a> · <a href="/jajae/">자재 백과</a> · <a href="/calc.html">자재 계산기</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/gagyeok/">자재 가격 가이드</a> · <a href="/cheolmul/">목재 철물</a> · <a href="/taka/">타카·타카핀</a> · <a href="/yerim/">예림 중문·도어</a> · <a href="/younglim/">영림 도어·중문·필름</a> · <a href="/shenu/">쉐누 도어·몰딩</a> · <a href="/bupum/">철물·공구·부속</a> · <a href="/local/">지역별 시공</a> · <a href="/faq.html">자주 묻는 질문</a> · <a href="/yongeo.html">현장 용어</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로(제조사 제품 사진 제외) 무단 복제·사용을 금합니다.<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr";
 function rd(x){{var v=null;try{{v=localStorage.getItem(x)}}catch(e){{}}if(v===null){{var m=document.cookie.match(new RegExp("(?:^|; )"+x+"=([^;]*)"));v=m?m[1]:null}}return v}}
@@ -378,6 +378,11 @@ def build():
     import taka as _tk0, taka_data as _tkd
     _tkimg = {s: _tk0.IMG(_tkd.TOOLS[s][2][0][5]) for s in _tk0.ORDER}; _tkimg.update(pin=_tk0.IMG("4단위.jpg"), nail=_tk0.IMG("코일 네일못(플랫).png"), compressor=_tk0.IMG("JQS225-870.jpg"), etc=_tk0.IMG("폴리우레탄-연질-호스.jpg"))
     _chrow += '<div class="chr" id="taka"><p class="chl"><b>타카·타카핀·콤프레셔</b> 제일타카 422·F30·실핀·콘크리트 타카 · <a class="cha" href="/taka/">전체 보기 ›</a></p><div class="gcs">' + "".join(f'<a class="gc gpc" href="/taka/{s}.html"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{_tkimg[s]}" alt="{E(v[0])}"><span>{E(v[0])}</span></a>' for s, v in [(k, _tk0.PG[k]) for k in _tk0.ORDER + ["pin", "nail", "compressor", "etc"]]) + '</div></div>'
+    import cmbs as _cb0
+    _cbc0, _cbr0 = _cb0.load(ROOT)
+    if _cbr0:
+        _cbt = {t: [r for r in _cbr0 if (lambda n: (lambda f: f(f, n))(lambda f, n: n if _cbc0.get(n, (1,))[0] == 1 else f(f, _cbc0[n][0])))(r[0]) == t] for t in _cb0.TOP}
+        _chrow += '<div class="chr" id="bupum"><p class="chl"><b>철물·공구·부속</b> 손잡이·경첩·공구·욕실·전기·피스 ' + str(len(_cbr0)) + '종 · <a class="cha" href="/bupum/">전체 보기 ›</a></p><div class="gcs">' + "".join(f'<a class="gc gpc" href="/bupum/{v[0]}.html"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{_cb0.IMG(_cbt[t][0][3])}" alt="{E(v[1])}"><span>{E(v[1])}</span></a>' for t, v in _cb0.TOP.items() if _cbt[t]) + '</div></div>'
     import yerim as _yr0
     _yrows = [l.rstrip("\n").split("|") for l in open(f"{ROOT}/data/yerim.tsv", encoding="utf-8") if l.strip()]
     _yrrow = '<div class="chr" id="yerim"><p class="chl"><b>예림 중문·도어·문틀</b> 3연동 중문·간살·ABS 도어·방화문 · <a class="cha" href="/yerim/">전체 보기 ›</a></p><div class="gcs">' + "".join(f'<a class="gc gpc" href="/yerim/{pg[0]}.html"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="{_yr0.IMG(next(r for r in _yrows if pg[4](r[0], r[1]))[4])}" alt="{E(pg[1])}"><span>{E(pg[1])}</span></a>' for pg in _yr0.PAGES) + '</div></div>'
@@ -1165,6 +1170,8 @@ def build():
     YLLIST = _yl.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
     import shenu as _shn
     SHLIST = _shn.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
+    import cmbs as _cmb
+    CBLIST = _cmb.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
     import local as _lc
     LCLIST = _lc.gen(page, E, CTA, faqslide, ADDR, HOURS, TEL, ROOT, CASES, top, vsplit)
     import nation as _nt
@@ -1462,6 +1469,11 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     if _ylr: _bc.append(("/younglim/", "영림 도어·중문·필름", f"{len(_ylr)}종", _yl0.IMG(next(r for r in _ylr if r[0] == "040300")[6]) if any(r[0] == "040300" for r in _ylr) else _yl0.IMG(_ylr[0][6])))
     if _shr: _bc.append(("/shenu/", "쉐누 도어·몰딩", f"{len(_shr)}종", _sh0.IMG(_shr[0][1])))
     _bc.append(("/taka/", "제일타카 타카·핀", "타카·핀·콤프레셔", _tkH.IMG(_tkdH.TOOLS["interior"][2][0][5])))
+    try:
+        import cmbs as _cbH
+        _cbc, _cbr = _cbH.load(ROOT)
+        if _cbr: _bc.append(("/bupum/", "철물·공구·부속", f"{len(_cbr)}종", _cbH.IMG(_cbr[0][3])))
+    except Exception: pass
     _bc.append(("/cheolmul/", "목재 철물", "데크·정자·목조주택", "https://megatie.cafe24.com/web/product/" + _mtj["janseon"][0][1][1:]))
     MKHOME += ('<section class="wrap sec gg"><h2 class="gt">제품 사진으로 고르기 <small>옆으로 넘겨 보세요 ›</small></h2><div class="gcs">'
                + "".join(f'<a class="gc gpc" href="{h}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{im}" alt="{E(n)}"><span>{E(n)} <small>{E(k)}</small></span></a>' for h, n, k, im in _bc) + '</div>'
