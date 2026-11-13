@@ -294,3 +294,13 @@ main a:not([class]):hover{color:var(--red);text-decoration-color:var(--red)}
 .qk a{padding:10px 15px;border-radius:999px;background:#FBEAE8;color:var(--red);font-weight:800;font-size:15px;text-decoration:none}.qk a:hover{background:var(--red);color:#fff}
 main .qk a{text-decoration:none;color:var(--red);font-weight:800}main .qk a:hover{color:#fff}
 .qk2 a{background:#fff;border:1px solid var(--line);color:var(--ink)!important}.qk2 a:hover{border-color:var(--red);background:#fff;color:var(--red)!important}
+/* 모바일 메뉴 접기 */
+.mnb{display:none;align-items:center;justify-content:center;gap:6px;height:46px;min-width:92px;padding:0 14px;border:1.5px solid var(--ink);border-radius:12px;background:#fff;font:inherit;font-weight:800;font-size:16px;color:var(--ink);cursor:pointer;flex:none}
+header.open .mnb{background:var(--ink);color:#fff}
+@media(max-width:900px){
+ header .hd{flex-direction:row!important;flex-wrap:wrap;align-items:center;justify-content:space-between}
+ .mnb{display:inline-flex}
+ header nav{display:none!important;width:100%}
+ header.open nav{display:grid!important}
+ .logo small{font-size:12px}
+}

@@ -64,6 +64,19 @@
 html.emb header,html.emb footer,html.emb .top,html.emb .mbar,html.emb .cta,html.emb .cemb,html.emb main>section:not(.cutp){display:none!important}html.emb .cutp{padding-top:8px}
 .cact{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.cact .b{flex:1;min-width:120px}
 @media print{header,footer,.top,.cutbox,.cact,.lead,.mbar,.cta{display:none!important}.csheet{break-inside:avoid}}
+
+/* 계산기 비율 정리(작게) */
+.cpc{padding:12px 12px 10px!important;border-radius:14px!important}
+.cph b{font-size:16px!important}.cph .cdel{height:34px!important;font-size:13px!important;padding:0 10px!important}
+.cf{margin-top:8px!important}.cfl{font-size:15px!important;margin-bottom:4px!important}.cfl small{font-size:12px!important}
+.cbig{font-size:19px!important;height:46px!important;padding:0 12px!important;border-width:1.5px!important;border-radius:10px!important}
+.cfi span{font-size:14px!important}
+.cqs{grid-template-columns:repeat(4,1fr)!important;gap:5px!important;padding-top:6px!important}
+.cqs button{height:38px!important;font-size:13.5px!important;border-radius:9px!important;letter-spacing:-.4px!important;padding:0 2px!important}
+.cnum{grid-template-columns:46px 1fr 46px!important;gap:6px!important;max-width:240px}
+.cm{height:46px!important;font-size:22px!important;border-radius:10px!important}
+.cadd{height:46px!important;font-size:16px!important}
+@media(min-width:700px){.cpc .cf2{display:grid;grid-template-columns:1fr 1fr;gap:12px}}
 </style>
 <script>
 (function(){
@@ -102,7 +115,7 @@ function presets(f){
 function drawParts(){
  var L=isLin(),st=stock();
  function fld(k,f,lab,v){var M=L?st.L:(f==0?st.w:st.h);
-  return '<div class="cf"><div class="cfl">'+lab+' <small>숫자를 누르거나 직접 입력 (최대 '+M+')</small></div><div class="cfi"><input class="cin cbig" type="number" inputmode="numeric" data-k="'+k+'" data-f="'+f+'" value="'+(v||"")+'" placeholder="숫자 입력"><span>mm</span></div>'+
+  return '<div class="cf"><div class="cfl">'+lab+' <small>최대 '+M+'mm</small></div><div class="cfi"><input class="cin cbig" type="number" inputmode="numeric" data-k="'+k+'" data-f="'+f+'" value="'+(v||"")+'" placeholder="숫자 입력"><span>mm</span></div>'+
   '<div class="cqs">'+presets(f).map(function(x){return '<button type="button" data-k="'+k+'" data-f="'+f+'" data-v="'+x[0]+'"'+(x[0]==v?' class="on"':'')+'>'+x[1]+'</button>'}).join("")+'</div></div>'}
  $("cparts").innerHTML=parts.map(function(p,k){
   return '<div class="cpc"><div class="cph"><b>'+(k+1)+'번 크기</b>'+(parts.length>1?'<button type="button" class="cdel" data-k="'+k+'">지우기</button>':'')+'</div>'+
