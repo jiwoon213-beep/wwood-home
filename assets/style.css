@@ -434,3 +434,4 @@ ul.mli li .mlks{margin-top:0}
 .appgb b:first-child{display:block;font-size:18px;margin-bottom:6px}
 .appgb .b{margin-top:10px}
 @media(max-width:600px){.top .wrap > span:first-child{display:none}}
+@media(max-width:600px){.top a.tvis{display:none}.top .wrap span{white-space:nowrap}}
