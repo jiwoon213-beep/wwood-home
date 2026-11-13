@@ -1,0 +1,21 @@
+name: 안드로이드 앱 만들기(서명 전 AAB)
+on: { workflow_dispatch: {} }
+permissions: { contents: write }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '17' }
+      - uses: gradle/actions/setup-gradle@v4
+        with: { gradle-version: '8.13' }
+      - run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0" > /dev/null || true
+      - run: cd android && VERSION_CODE=${{ github.run_number }} gradle --no-daemon bundleRelease
+      - run: |
+          mkdir -p /tmp/o && cp android/app/build/outputs/bundle/release/app-release.aab /tmp/o/wwood-${{ github.run_number }}-unsigned.aab
+          git fetch origin android-out || true
+          git checkout --orphan android-out-tmp && git rm -rqf . && cp /tmp/o/*.aab . && echo "서명 전 앱 묶음(AAB). 업로드 키로 서명 후 Play Console에 올림." > README.md
+          git config user.name "wwood-build-bot"; git config user.email "actions@users.noreply.github.com"
+          git add -A && git commit -qm "AAB ${{ github.run_number }}" && git push -f origin HEAD:android-out

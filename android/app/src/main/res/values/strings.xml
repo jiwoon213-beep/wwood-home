@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="appName">영진목재</string>
+    <string name="launchUrl">https://www.wwood.co.kr/?utm_source=app</string>
+    <string name="assetStatements">[{\"relation\": [\"delegate_permission/common.handle_all_urls\"], \"target\": {\"namespace\": \"web\", \"site\": \"https://www.wwood.co.kr\"}}]</string>
+</resources>

@@ -1,0 +1,15 @@
+plugins { id "com.android.application" }
+android {
+    namespace "kr.co.wwood.app"
+    compileSdk 36
+    defaultConfig {
+        applicationId "kr.co.wwood.app"
+        minSdk 21
+        targetSdk 36
+        versionCode Integer.parseInt(System.getenv("VERSION_CODE") ?: "1")
+        versionName "1.0." + (System.getenv("VERSION_CODE") ?: "1")
+    }
+    buildTypes { release { minifyEnabled false } }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
+dependencies { implementation "com.google.androidbrowserhelper:androidbrowserhelper:2.5.0" }
