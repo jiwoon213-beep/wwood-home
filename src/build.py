@@ -1090,6 +1090,8 @@ def build():
         hit.sort(key=lambda v: (0 if re.match(r"\W*(?:" + rx + ")", v["title"]) else 1 if re.search(rx, v["title"].split("|")[0]) else 2, 0 if v["type"] != "S" else 1, -v["n"]))
         return hit[:6]
     import gagyeok as _gg0
+    import matinfo as _mi, cmbs as _cmx
+    MI = _mi.M(E, cutlink, lambda n: _cmx.catlink(ROOT, n))
     for slug, nm, title, lead, rows, steps, mats in MK:
         trs, btns = "", ""
         _mv = mkvids(slug, nm)
@@ -1139,7 +1141,7 @@ def build():
 {f'<div class="est"><b>예상 자재비 약 {_tot:,}원</b><span>소매 기준가 기준 · 부가세 별도 · 피스·철물·마감재 제외 · 재단비·운임은 매장에서 계산 · 가격은 바뀔 수 있어요</span></div>' if _tot else ''}
 <p class="small muted">톱날 3mm를 빼고 계산했습니다. 크기를 바꾸고 싶으면 아래 재단 그림에서 숫자만 고치세요.</p><p>{btns}</p><p><a class="b r" href="mailto:{EMAIL}?subject={quote(nm + ' 재단·견적 요청')}&amp;body={quote('안녕하세요. 아래 목록대로 재단·견적 부탁드립니다.' + chr(10) + chr(10) + nm + ' (' + BASE + '/mandeul/' + slug + '.html)' + chr(10) + chr(10).join(_ml) + chr(10) + (f'예상 자재비(기준가): 약 {_tot:,}원' if _tot else '') + chr(10) + chr(10) + '수량·크기 변경:' + chr(10) + '이름:' + chr(10) + '연락처:' + chr(10) + '방문(또는 배송) 희망일:' + chr(10))}">✉ 이 목록으로 재단·견적 요청</a> <a class="b d" href="tel:{TEL.replace('-', '')}">전화 문의</a></p></section>
 {_gal}{_stp}<section class="wrap sec g2"><div class="card"><h2>만드는 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol></div>
-<div class="card"><h2>준비할 자재</h2><ul>{"".join(f"<li>{E(x)}</li>" for x in mats)}</ul><p>매장({ADDR})에서 위 크기대로 즉석 재단해 드립니다. 이 페이지를 보여주시면 됩니다.</p></div></section>
+<div class="card"><h2>준비할 자재</h2><ul class="mli">{MI.mk_list(mats, rows, steps)}</ul><h3>필요한 공구</h3><ul class="mli">{MI.mk_tools(mats, rows, steps)}</ul><p class="small muted">피스 길이는 고정할 판 두께의 약 2~2.5배 기준 참고치입니다. 매장에서 실물 보고 맞춰 드려요.</p><p>매장({ADDR})에서 위 크기대로 즉석 재단해 드립니다. 이 페이지를 보여주시면 됩니다.</p></div></section>
 {(f'<section class="wrap sec"><h2>{E(nm)} 만들기 영상</h2>' + embed(_mv[0]) + vsplit(_mv[1:], "h3") + '</section>') if _mv else ''}<!--MKFAQ--><section class="wrap sec"><p class="small muted">© 영진종합목재(월드건축자재). 이 페이지의 완성 그림·그림 설명서·재단표는 영진종합목재가 직접 만든 저작물입니다. 무단 복제·배포·상업적 사용을 금합니다(링크 공유는 환영합니다).</p></section><section class="wrap sec">{_gg0.links([p for r_ in rows for p in _gg0.BYCAT.get(r_[1], [])])}<h2>다른 만들기</h2><div class="olk">{"".join(f'<a href="/mandeul/{x[0]}.html">{E(x[1])}</a>' for x in MK if x[0] != slug)}<a class="ac" href="/cut.html">✂ 재단 미리보기</a><a class="ac" href="/calc.html">🧮 자재 계산기</a></div><p class="hsh olh">옆으로 넘겨 보세요 ›</p></section>{CTA}"""
         _qa = []
         if _tot: _qa.append((f"{nm} 만들려면 자재비가 얼마나 드나요?", f"이 페이지의 크기 기준으로 소매 기준가 약 {_tot:,}원입니다(부가세 별도, 피스·철물·마감재 제외). 크기를 바꾸면 재단 그림 페이지에서 다시 계산됩니다."))
@@ -1196,7 +1198,7 @@ def build():
         _hi = os.path.exists(f"{ROOT}/assets/sigongbeop/{slug}.jpg"); _si = os.path.exists(f"{ROOT}/assets/sigongbeop/{slug}-steps.jpg")
         hero = f'<figure class="mkfig"><img src="/assets/sigongbeop/{slug}.jpg" width="1200" height="800" alt="{E(nm)} 완성 모습 그림"><figcaption class="small muted">시공이 끝난 모습 그림</figcaption></figure>' if _hi else ""
         stp = f'<section class="wrap sec"><h2>{E(nm)} 순서 (그림 설명서)</h2><img class="mkfig" loading="lazy" src="/assets/sigongbeop/{slug}-steps.jpg" alt="{E(nm)} 순서 그림 설명서" style="width:100%;height:auto;border-radius:14px;border:1px solid #e6e0d4"><p class="small muted">빨간 테두리가 그 단계에서 새로 붙이는 부분입니다.</p></section>' if _si else ""
-        trs = "".join(f'<tr><th>{E(a)}</th><td data-l="규격">{E(b) or "—"}</td><td data-l="예시 수량">{E(c)}</td></tr>' for a, b, c in rows)
+        trs = "".join(f'<tr><th>{E(a)}{MI.sg_links(a, b)}</th><td data-l="규격">{E(b) or "—"}</td><td data-l="예시 수량">{E(c)}</td></tr>' for a, b, c in rows)
         _ph = mat_photos(ms)[:10]
         _gal = (f'<section class="wrap sec"><h2>{E(_mname.get(ms, ""))} 실물 사진</h2><p class="small muted">매장에서 실제로 파는 제품 사진입니다. 누르면 상세 사진과 규격이 열립니다.</p><div class="pg hrow">' + "".join(pcard(q) for q in _ph) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>') if _ph else ""
         _el = []
@@ -1209,7 +1211,7 @@ def build():
         body = f"""<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › {E(nm)}</p><h1>{E(title.split(" — ")[0])}</h1><p class="lead">{E(lead)}</p>{hero}
 <h2>필요한 자재</h2><p class="small muted" style="margin:-4px 0 8px">예시: {E(ex)}</p><div class="tw"><table class="rt"><thead><tr><th>자재</th><th>규격</th><th>예시 수량</th></tr></thead><tbody>{trs}</tbody></table></div>
 {_est}<p><a class="b r" href="mailto:{EMAIL}?subject={quote(nm + ' 자재 견적 요청')}&amp;body={quote('안녕하세요. ' + nm + ' 자재 견적 부탁드립니다.' + chr(10) + '(' + BASE + '/sigongbeop/' + slug + '.html)' + chr(10) + chr(10) + '시공할 곳 크기(가로×세로):' + chr(10) + chr(10) + chr(10).join(f'- {a}: {b} / {c}' for a, b, c in rows) + chr(10) + chr(10) + '이름:' + chr(10) + '연락처:' + chr(10) + '시공도 맡기실지(예/아니오):' + chr(10))}">✉ 내 크기로 자재 견적 요청</a> <a class="b d" href="tel:{TEL.replace('-', '')}">전화 문의</a></p><p class="small muted">수량은 예시 크기 기준 참고치입니다(로스 포함). 실제 크기를 알려 주시면 매장에서 다시 계산해 드리고, 원하는 크기로 재단해 드립니다. <a href="/calc.html">자재 계산기</a> · <a href="/jajae/{ms}.html">{E(_mname.get(ms, ""))} 용도·기준가</a></p>{_gg.links(_gg.BYMAT.get(ms, []))}</section>{_gal}{stp}
-<section class="wrap sec g2"><div class="card"><h2>시공 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol><h3>필요한 공구</h3><p>{" · ".join(E(t) for t in tools)}</p></div>
+<section class="wrap sec g2"><div class="card"><h2>시공 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol><h3>필요한 공구</h3><ul class="mli">{MI.sg_tools(tools)}</ul></div>
 <div class="card"><h2>주의할 점</h2><ul>{"".join(f"<li>{E(t)}</li>" for t in tips)}</ul><p>자재는 매장({ADDR})에서 실물 보고 고를 수 있고, 시공이 어려우면 월드아키텍쳐(실내건축공사업 등록)에서 직접 시공합니다.</p></div></section>
 {(f'<section class="wrap sec"><h2>{E(nm)} 영상</h2>' + embed(_sv[0]) + vsplit(_sv[1:], "h3") + '</section>') if _sv else ''}
 <!--SGFAQ--><section class="wrap sec"><p class="small muted">© 영진종합목재(월드건축자재). 이 페이지의 그림·그림 설명서·자재표는 영진종합목재가 직접 만든 저작물입니다. 무단 복제·배포·상업적 사용을 금합니다(링크 공유는 환영합니다).</p><h2>다른 시공법</h2><div class="olk">{"".join(f'<a href="/sigongbeop/{x[0]}.html">{E(x[1])}</a>' for x in SG if x[0] != slug)}<a class="ac" href="/mandeul/">🔨 만들기 자재</a></div><p class="hsh olh">옆으로 넘겨 보세요 ›</p></section>{CTA}"""

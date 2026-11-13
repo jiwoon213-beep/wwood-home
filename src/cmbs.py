@@ -101,6 +101,30 @@ def load_det(ROOT):
     return d
 
 
+_CL = {}
+def catlink(ROOT, n):
+    """철물·공구·부속 분류번호 → 우리 사이트 페이지 주소(없으면 '')"""
+    if not _CL:
+        cats, rows = load(ROOT)
+        kids, cnt = {}, {}
+        for k, (p, _) in cats.items(): kids.setdefault(p, []).append(k)
+        for r in rows: cnt[r[0]] = cnt.get(r[0], 0) + 1
+        def tot(k): return cnt.get(k, 0) + sum(tot(c) for c in kids.get(k, []))
+        def top(k):
+            while k in cats and cats[k][0] != 1: k = cats[k][0]
+            return k
+        for k, (p, _) in cats.items():
+            t = top(k)
+            if t not in TOP or not tot(k): continue
+            base = f"/bupum/{TOP[t][0]}"
+            if k in TOP: _CL[k] = base + ".html"
+            elif p in TOP: _CL[k] = f"{base}-{k}.html"
+            elif tot(k) > CAP: _CL[k] = f"{base}-{k}.html"
+            else: _CL[k] = f"{base}-{p}.html#c{k}"
+        _CL[0] = "x"
+    return _CL.get(n, "")
+
+
 def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
     cats, rows = load(ROOT)
     if not rows: return []
