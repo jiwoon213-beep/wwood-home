@@ -58,5 +58,5 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
             f'<div class="glk"><a href="/jaryo/siding.html">외장재·사이딩 전체</a><a href="/sigongbeop/">자재 시공법</a><a href="/gagyeok/siding-gagyeok.html">사이딩 가격 가이드</a><a href="/visit.html">매장 길찾기</a></div></section>'
             f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{fq}</section>{CTA}' + LB)
     page("nichiha/index.html", f"니치하 세라믹 사이딩 {len(rows)}종 — 16×455×3030 규격·기준가 | 대전 영진목재",
-         f"니치하(NICHIHA) 세라믹 사이딩 3,030mm {len(rows)}가지 — 우드·스톤·타일벽돌·심플 무늬, 규격·1평 장수·기준가. 대전 유성 영진종합목재 상담·전국 배송.", body, "/jaryo/", None, BIG(rows[0][3]))
+         f"니치하(NICHIHA) 세라믹 사이딩 3,030mm {len(rows)}가지 — 우드·스톤·타일벽돌·심플 무늬, 규격·1평 장수·기준가. 대전 유성 영진종합목재 상담·전국 배송.", body, "/jaryo/", {"@context": "https://schema.org", "@type": "ItemList", "name": "니치하 세라믹 사이딩 3,030mm", "numberOfItems": len(rows), "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": "니치하 세라믹 사이딩 " + r[1], "image": BIG(r[3])} for i, r in enumerate(rows)]}, BIG(rows[0][3]))
     return rows

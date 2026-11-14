@@ -154,6 +154,15 @@ def links(pairs):
     seen = []; [seen.append(p) for p in pairs if p not in seen]
     return ('<div class="qk"><b>💰 1평에 얼마?</b>' + "".join(f'<a href="/gagyeok/{a}.html">{b} 가격</a>' for a, b in seen) + '</div>') if seen else ""
 
+# 가격 페이지 → 같은 자재 제품 사진 카탈로그 연결(내부 링크)
+XLINK = {"oilstain": [("/bondex/stain.html", "본덱스 스테인·바니쉬 제품"), ("/bondex/oil.html", "원목가구 오일"), ("/bondex/brush.html", "붓·로울러")],
+         "siding-gagyeok": [("/nichiha/", "니치하 세라믹 사이딩 85종"), ("/jaryo/siding.html", "외장재·사이딩 전체")],
+         "door-gagyeok": [("/yerim/", "예림 도어·중문"), ("/younglim/door-abs.html", "영림 ABS 도어"), ("/shenu/door-abs.html", "쉐누 ABS 도어"), ("/younglim/door-frame.html", "문틀")],
+         "molding-gagyeok": [("/younglim/molding.html", "영림 몰딩"), ("/shenu/molding.html", "쉐누 몰딩")],
+         "interior-film": [("/younglim/film.html", "영림 인테리어 필름")],
+         "tempa-board": [("/younglim/wall.html", "영림 월판넬"), ("/trend/japandi.html", "간살·재팬디 인테리어")]}
+
+
 def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ=None, MP=None):
     pages = []
     def won(x): return f"{int(round(x, -2)):,}원"
@@ -212,7 +221,7 @@ def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ=None,
         others = "".join(f'<a href="/gagyeok/{g[0]}.html">{E(g[1])}</a>' for g in GG if g[0] != slug)
         title = f"{nm} 가격 — {rows[0][1].split('(')[0]} 기준가 {lo:,}원부터" + (" · 1평에 얼마" if hasA else (" · 1L당 비교" if slug == "oilstain" else " · 1m당 단가" if isLen else " · 1㎡당 비교" if isM2 else " · 종류별 기준가" if isPlain else " · m당 단가"))
         desc = f"{nm} 소매 기준가 {lo:,}원부터({rows[0][1]}). " + (f"1평에 몇 {uw} 드는지, 크기별 예상 금액 계산." if hasA else "판매 단위와 종류별 기준가 정리.") + " 대전 영진목재."
-        body = f"""<section class="wrap sec gg"><p class="crumb"><a href="/gagyeok/">자재 가격 가이드</a> › {E(nm)}</p><h1>{E(nm)} 가격</h1>{hero}<p class="glead">{E(lead)}</p>
+        body = f"""<section class="wrap sec gg"><p class="crumb"><a href="/gagyeok/">자재 가격 가이드</a> › {E(nm)}</p><h1>{E(nm)} 가격</h1>{hero}<p class="glead">{E(lead)}</p>{('<div class="qk"><b style="align-self:center">제품 사진 보기 ›</b>' + "".join(f'<a href="{u}">{E(t)}</a>' for u, t in XLINK[slug]) + '</div>') if slug in XLINK else ""}
 {phs}<h2 class="gt">종류별 가격 <small>옆으로 넘겨 보세요 ›</small></h2><div class="gcs">{"".join(cards)}</div><p class="gs">{E(unitdesc)} · 소매 기준가(부가세 별도) · 필요량은 계산 참고치 · 재단·운임은 매장에서</p>
 {exh}<div class="glk"><a href="/jajae/{js}.html">용도·사진</a><a href="/sigongbeop/{sg}.html">시공 방법</a><a href="/calc.html">자재 계산기</a><a href="/price.html">전체 기준가</a></div></section>
 <section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(faq + [(f"{nm} 어디서 사나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 실물을 보고 살 수 있습니다. {HOURS}. 전국 용달 배송도 됩니다.")])}</section>

@@ -82,7 +82,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
         body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/paint.html">페인트·스테인</a> › <a href="/bondex/">본덱스</a> › {E(nm)}</p><h1>{E(nm)} <small>{len(tx)}가지</small></h1><p class="glead">{E(DESC.get(t, ""))}.</p>{nav(t)}{ch}{sec}'
                 f'<div class="glk"><a href="/gagyeok/oilstain.html">오일스테인 가격 가이드</a><a href="/sigongbeop/">자재 시공법</a><a href="/bupum/">철물·공구·부속</a></div></section>'
                 f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{fq(nm)}</section>{CTA}' + LB)
-        page(url(t)[1:], f"본덱스 {nm} {len(tx)}종 — 가격·색상 | 대전 영진목재", f"본덱스 {nm} {len(tx)}가지 사진·가격·색상. {DESC.get(t, '')}. 대전 유성 영진종합목재 매장 상담·주문, 전국 배송.", body, "/jaryo/", None, IMG(tx[0][3]))
+        page(url(t)[1:], f"본덱스 {nm} {len(tx)}종 — 가격·색상 | 대전 영진목재", f"본덱스 {nm} {len(tx)}가지 사진·가격·색상. {DESC.get(t, '')}. 대전 유성 영진종합목재 매장 상담·주문, 전국 배송.", body, "/jaryo/", {"@context": "https://schema.org", "@type": "ItemList", "name": f"본덱스 {nm}", "numberOfItems": len(tx), "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": r[2], "image": IMG(r[3])} for i, r in enumerate(tx[:60])]}, IMG(tx[0][3]))
         out.append((t, nm, len(tx), tx))
     tot = sum(x[2] for x in out)
     rws = "".join(f'<h2 class="gt"><span><a href="{url(t)}" style="color:inherit;text-decoration:none">{E(nm)}</a> <small style="font-size:14px">{k}가지</small></span><small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">{"".join(card(r) for r in tx[:12])}<a class="yri ymore" href="{url(t)}"><span>{E(nm)} 전체 {k}가지 보기 ›</span></a></div>' for t, nm, k, tx in out)
