@@ -133,6 +133,7 @@ class M:
             elif re.search("퍼티|조인트", t): links += self.bl("미장공구", "헤라 보기")
             elif re.search("주춧돌|받침|기초|블록|레미탈", t): links += '<a class="mlk" href="/cheolmul/juchudol.html">주춧돌·기초 ›</a>'
             elif "직소" in t: links += self.bl("절단", "직소 보기")
+            if not links and not note: note = '<span class="mnote">매장에서 원하는 길이·크기로 잘라 드려요</span>'; links = '<a class="mlk" href="/cut.html">재단 미리보기 ›</a>'
             li.append(f"<li><b>{E(t)}</b>{note}{('<span class=mlks>' + links + '</span>') if links else ''}</li>")
         for lab, what, key in rec:  # 자재 목록에 피스가 없었던 경우에도 안내
             if lab in used: continue
