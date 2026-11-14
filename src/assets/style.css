@@ -485,3 +485,13 @@ ul.mli li{flex:0 0 min(72%,280px)!important}ul.mli .mnote{-webkit-line-clamp:2!i
 .hcam{display:inline-flex!important;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:46px!important;min-width:56px!important;padding:0 8px!important;border:1.5px solid var(--ink)!important;border-radius:12px!important;background:#fff!important;color:var(--ink)!important;text-decoration:none!important;line-height:1;transition:transform .12s}
 .hcam i{display:flex;color:#c41a1f}.hcam small{font-size:10.5px!important;font-weight:800;letter-spacing:-.02em;margin:0!important;color:var(--ink)}.hcam:active{transform:scale(.95)}
 .scam{color:#c41a1f!important;text-decoration:none!important;background:#fff!important;border:1.5px solid #e6dfd5}
+nav a .ni{display:none}
+@media(max-width:900px){
+header.open nav{grid-template-columns:repeat(3,1fr)!important;gap:8px!important;padding:12px 0 6px!important;margin-top:10px;border-top:1px solid #eee6da}
+header.open nav a{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:6px;height:78px;padding:6px 4px!important;border:1px solid #ece6dc!important;border-radius:14px!important;background:#fff!important;color:var(--ink)!important;font-size:13.5px;font-weight:700;letter-spacing:-.03em;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.03);transition:transform .1s}
+header.open nav a .ni{display:block;width:24px;height:24px;color:#8a7f72}
+header.open nav a:active{transform:scale(.96)}
+header.open nav a.on{background:#1D1B18!important;border-color:#1D1B18!important;color:#fff!important}
+header.open nav a.on .ni{color:#f5d27a}
+header.open nav a[href="/sajin.html"] .ni{color:#c41a1f}
+}

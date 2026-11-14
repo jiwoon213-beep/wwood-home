@@ -217,6 +217,7 @@ def mat_prices(m, k=10):
 # ---------- layout ----------
 NAV = [("/visit.html", "매장 안내"), ("/jaryo/", "전체 자재"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/mandeul/", "DIY 만들기"), ("/sigongbeop/", "자재 시공법"), ("/trend/", "인테리어 트렌드"), ("/cut.html", "목재 재단"), ("/sajin.html", "사진으로 찾기"), ("/video/", "영상"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공")]
 
+NAVI = {'/visit.html': '<path d="M12 21s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>', '/jaryo/': '<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>', '/news/': '<path d="M5 4.5h11.5v15H6.5A1.5 1.5 0 0 1 5 18z"/><path d="M16.5 8.5H19v9.5a1.5 1.5 0 0 1-3 0"/><path d="M8 8.5h5.5M8 12h5.5M8 15.5h3.5"/>', '/price.html': '<path d="M3.5 12.5 11.5 4.5H19.5v8l-8 8z"/><circle cx="15.5" cy="8.5" r="1.4"/>', '/mandeul/': '<path d="M14.5 5.5l4 4L9 19H5v-4z"/><path d="M12.5 7.5l4 4"/>', '/sigongbeop/': '<path d="M4 20h16"/><path d="M6 20V9l6-4.5L18 9v11"/><path d="M10 20v-5h4v5"/>', '/trend/': '<path d="M12 3.5l2.4 5 5.4.6-4 3.7 1.1 5.4L12 15.5l-4.9 2.7 1.1-5.4-4-3.7 5.4-.6z"/>', '/cut.html': '<circle cx="6.5" cy="6.5" r="2.5"/><circle cx="6.5" cy="17.5" r="2.5"/><path d="M8.6 8 20 19M8.6 16 20 5"/>', '/sajin.html': '<path d="M3.5 8.5A2.5 2.5 0 0 1 6 6h1.7l1.4-1.9h5.8L16.3 6H18a2.5 2.5 0 0 1 2.5 2.5v8.5A2.5 2.5 0 0 1 18 19.5H6A2.5 2.5 0 0 1 3.5 17z"/><circle cx="12" cy="12.6" r="3.5"/>', '/video/': '<rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M10.5 9.5v5l4.5-2.5z"/>', '/dome.html': '<path d="M3.5 17V8h10v9"/><path d="M13.5 11h4l3 3v3h-7"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>', '/sigong.html': '<path d="M14 6.5a4 4 0 0 0-5 5L4 16.5 7.5 20l5-5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z"/>'}
 def page(path, title, desc, body, active="", jsonld=None, img=None):
     if ' data-big="' in body and 'id="ylb"' not in body:
         import yerim as _ylb; body += _ylb.LB
@@ -234,7 +235,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
         for add in (" 대전 유성 3000평 매장, 즉석 재단·전국 용달 배송.", " 대전 유성 매장·전국 배송.", " 대전 영진목재."):
             if len(desc) + len(add) <= 80: desc = desc.rstrip() + add; break
     canon = BASE + ("/" + path if path != "index.html" else "/").replace("index.html", "")
-    nav = "".join(f'<a href="{h}"{" class=on" if active==h else ""}>{t}</a>' for h, t in NAV)
+    nav = "".join(f'<a href="{h}"{" class=on" if active==h else ""}><svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{NAVI.get(h, "")}</svg><span>{t}</span></a>' for h, t in NAV)
     lds = jsonld if isinstance(jsonld, list) else ([jsonld] if jsonld else [])
     lds = lds + [{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "홈", "item": BASE + "/"}] +
                  ([{"@type": "ListItem", "position": 2, "name": dict(NAV)[active], "item": BASE + active}] if active in dict(NAV) and active != "/" else []) +
