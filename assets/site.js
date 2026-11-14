@@ -106,9 +106,9 @@ if ("serviceWorker" in navigator) window.addEventListener("load", function () { 
   var dp = null, ua = navigator.userAgent, waiters = [];
   window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); dp = e; waiters.splice(0).forEach(function (f) { f(); }); if (/[?&]app=1/.test(location.search)) offer(); });
   window.addEventListener("appinstalled", function () { b.hidden = true; g.hidden = true; });
-  function guide(t) { gt.innerHTML = t; g.hidden = false; }
+  function guide(t) { gt.innerHTML = /appgl/.test(t) ? t : '<div class="appgs2">' + t + '</div>'; g.hidden = false; }
   function install() { if (!dp) return; var d = dp; dp = null; g.hidden = true; d.prompt(); d.userChoice.then(function (c) { if (c && c.outcome === "accepted") b.hidden = true; }); }
-  function offer() { guide('<button type="button" class="b r appgo" style="width:100%;font-size:18px;padding:14px">📲 영진목재 앱 설치</button><br><small>누르고 <b>설치</b>만 한 번 더 누르면 ' + (/Mobi|Android/i.test(ua) ? "홈 화면" : "바탕화면·시작 메뉴") + '에 생겨요.</small>'); gt.querySelector(".appgo").onclick = install; }
+  function offer() { guide('<ul class="appgl"><li><i>💰</i>기준가·1평 가격 <b>한 번에</b></li><li><i>✂️</i>재단 미리보기·자재 계산기 <b>바로 실행</b></li><li><i>🔍</i>자재 1만 가지 <b>사진으로 검색</b></li><li><i>📶</i>인터넷 약해도 <b>본 페이지 그대로</b></li></ul><button type="button" class="appgo"><span>앱 설치하기</span><small>무료 · 1초 · 용량 거의 안 차지해요</small></button><p class="appgs">누르고 <b>설치</b>만 한 번 더 누르면 ' + (/Mobi|Android/i.test(ua) ? "홈 화면" : "바탕화면") + '에 생겨요</p>'); gt.querySelector(".appgo").onclick = install; }
   document.getElementById("appgx").onclick = function () { g.hidden = true; };
   g.addEventListener("click", function (e) { if (e.target === g) g.hidden = true; });
   b.addEventListener("click", function (e) {
