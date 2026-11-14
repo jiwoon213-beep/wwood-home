@@ -327,7 +327,7 @@ def build():
         vs = p.get("videos") or []
         if vs: return f'<img loading="lazy" decoding="async" width="480" height="270" src="https://i.ytimg.com/vi/{vs[0]}/hqdefault.jpg" alt="">'
         t = re.sub(r"\s*[—|].*$", "", p["title"])[:18]
-        return f'<i class="pci"><em>자재·인테리어 소식</em>{E(t)}</i>'
+        return f'<i class="pci"><em>{"자재·인테리어 소식" if "-news-" in p.get("slug", "") else "자재 정보"}</em>{E(t)}</i>'
     plist = lambda ps: "".join(f'<a class="pc" href="/news/{p["slug"]}.html">{_pth(p)}<small>{E(p.get("date",""))}</small><b>{E(p["title"])}</b><span>{E(p.get("desc",""))}</span></a>' for p in ps)
     _isv = lambda p: p["title"].startswith("[영상]")
     def nrow(h, ps): return (f'<h2 class="gt">{h} <small>옆으로 넘겨 보세요 ›</small></h2><div class="pl hs nw">{plist(ps)}</div>') if ps else ""
@@ -359,7 +359,7 @@ def build():
 
     # 소식·정보
     page("news/index.html", "소식·자재 정보 — 목재·건축자재 가격, 시공 팁 | 대전 월드건축자재", "대전 월드건축자재(영진목재)의 자재 정보, 기준가, 시공 사례, 새 영상 소식.",
-         f'<section class="wrap sec"><h1>소식·자재 정보</h1><p class="lead">자재 고르는 법, 기준가, 시공 사례와 새 영상 소식을 매일 올립니다.</p>{nrow("▶ 새 영상 소식", [p for p in POSTS if _isv(p)])}{nrow("📰 자재·인테리어 소식", [p for p in POSTS if not _isv(p)])}</section>{CTA}', "/news/")
+         f'<section class="wrap sec"><h1>소식·자재 정보</h1><p class="lead">자재 고르는 법, 기준가, 시공 사례와 새 영상 소식을 매일 올립니다.</p>{nrow("▶ 새 영상 소식", [p for p in POSTS if _isv(p)])}{nrow("📰 자재·인테리어 소식", [p for p in POSTS if "-news-" in p.get("slug", "")])}{nrow("📘 자재 정보 글", [p for p in POSTS if not _isv(p) and "-news-" not in p.get("slug", "")])}</section>{CTA}', "/news/")
     for p in POSTS:
         vids = "".join(embed(byid[i]) if i in byid else f'<div class="emb"><iframe loading="lazy" src="https://www.youtube.com/embed/{E(i)}" allowfullscreen></iframe></div>' for i in p.get("videos", [])[:2])
         art = {"@context": "https://schema.org", "@type": "Article", "headline": p["title"], "datePublished": p.get("date", ""), "author": {"@type": "Organization", "name": "월드건축자재(영진종합목재)"}, "publisher": {"@type": "Organization", "name": "월드건축자재(영진종합목재)"}}
