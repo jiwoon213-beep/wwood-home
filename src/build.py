@@ -195,6 +195,10 @@ def mat_prices(m, k=10):
 NAV = [("/visit.html", "매장 안내"), ("/jaryo/", "전체 자재"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/mandeul/", "DIY 만들기"), ("/sigongbeop/", "자재 시공법"), ("/trend/", "인테리어 트렌드"), ("/cut.html", "목재 재단"), ("/video/", "영상"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공")]
 
 def page(path, title, desc, body, active="", jsonld=None, img=None):
+    if jsonld is None and 'class="yri" href="#" data-big=' in body:  # 제품 사진 카드가 있는 페이지는 제품 목록(ItemList) 정보 자동 추가
+        _it = re.findall(r'<a class="yri" href="#" data-big="([^"]+)" data-n="([^"]+)"', body)[:60]
+        if _it: jsonld = {"@context": "https://schema.org", "@type": "ItemList", "name": title.split(" | ")[0].split(" — ")[0], "numberOfItems": len(_it),
+                          "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": html.unescape(n_), "image": u_} for i, (u_, n_) in enumerate(_it)]}
     if len(desc) < 45:  # 너무 짧은 설명은 매장 정보로 보강(80자 이내)
         for add in (" 대전 유성 3000평 매장, 즉석 재단·전국 용달 배송.", " 대전 유성 매장·전국 배송."):
             if len(desc) + len(add) <= 80: desc = desc.rstrip() + add; break
