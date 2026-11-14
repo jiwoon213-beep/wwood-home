@@ -482,3 +482,6 @@ ul.mli li{flex:0 0 min(72%,280px)!important}ul.mli .mnote{-webkit-line-clamp:2!i
 .ylvc .ylvf{position:relative;aspect-ratio:16/9}.ylvc .ylvf iframe{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:12px}
 .ylb .ylvc b{color:#fff}
 .pdet>div,.g2>div{min-width:0}
+.hcam{display:inline-flex!important;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:46px!important;min-width:56px!important;padding:0 8px!important;border:1.5px solid var(--ink)!important;border-radius:12px!important;background:#fff!important;color:var(--ink)!important;text-decoration:none!important;line-height:1;transition:transform .12s}
+.hcam i{display:flex;color:#c41a1f}.hcam small{font-size:10.5px!important;font-weight:800;letter-spacing:-.02em;margin:0!important;color:var(--ink)}.hcam:active{transform:scale(.95)}
+.scam{color:#c41a1f!important;text-decoration:none!important;background:#fff!important;border:1.5px solid #e6dfd5}
