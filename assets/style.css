@@ -496,3 +496,4 @@ header.open nav a.on .ni{color:#f5d27a}
 header.open nav a[href="/sajin.html"] .ni{color:#c41a1f}
 }
 @media(min-width:700px){header.open nav{grid-template-columns:repeat(6,1fr)!important}}
+.pl .pc>img,.pl .pc>.pci{display:flex;width:100%!important;height:auto!important;aspect-ratio:16/9!important;object-fit:cover;min-height:0!important;max-height:none!important}.pl .pc>.pci{flex-direction:column;justify-content:center}.pl.hs{align-items:flex-start}
