@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""삼익산업(siwood.com — 회사 허락) 구조재·외장재·지붕재·내장재·창호·도어·기능재·조경·기타 — /samik/
+"""삼익산업(siwood.com — 회사 허락) 구조재·외장재·지붕재·내장재·창호·도어·기능재·조경·기타 — /geonjae/ (화면에는 업체 이름 표기 안 함, 사장님 지시 2026-11-14)
 데이터: src/data/samik.tsv (1차|2차|idx|이름|사진|브랜드·두께|규격 설명) — .github/scripts/fetch_samik.py 가 매일 갱신.
 같은 상품번호·같은 이름은 한 번만. 우리 쇼핑몰 자재(products.tsv)와 이름이 같은 건 build.py 에서 기존 쪽을 뺌. 가격은 매장 문의."""
 import os, re
@@ -21,7 +21,8 @@ def load(ROOT):
     rows, si, sn = [], set(), set()
     for l in open(p, encoding="utf-8"):
         x = l.rstrip("\n").split("|")
-        if len(x) < 7 or x[2] in si or key(x[3]) in sn: continue
+        if len(x) < 7 or x[2] in si or key(x[3]) in sn or re.search("카탈로그|카다로그", x[3]): continue
+        x = [re.sub(r"\(주\)\s*|삼익산업의?\s*|삼익\s*", "", v).strip() if i in (3, 5, 6) else v for i, v in enumerate(x)]  # 업체 이름 표기 안 함
         si.add(x[2]); sn.add(key(x[3])); rows.append(x)
     return rows
 
@@ -47,7 +48,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
         return (f'<a class="yri" href="#" data-big="{IMG(r[4])}" data-n="{E(r[3])}"' + (f' data-sp="{E(sp)}"' if sp else "") +
                 f'><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{IMG(r[4])}" alt="{E(r[1] + " " + r[3])}"><span>{E(r[3])}</span><em class="cbp q">매장 문의</em></a>')
     tops = [t for t in SLUG if any(r[0] == t for r in rows)]
-    nav = lambda cur: '<div class="glk tkn">' + "".join(f'<a href="/samik/{SLUG[t]}.html"{" class=on" if t == cur else ""}>{E(t)}</a>' for t in tops) + '</div>'
+    nav = lambda cur: '<div class="glk tkn">' + "".join(f'<a href="/geonjae/{SLUG[t]}.html"{" class=on" if t == cur else ""}>{E(t)}</a>' for t in tops) + '</div>'
     out = []
     for t in tops:
         xs = [r for r in rows if r[0] == t]
@@ -56,12 +57,12 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
         ch = ('<div class="qk">' + "".join(f'<a href="#s{i}">{E(s)}</a>' for i, s in enumerate(subs)) + '</div>') if len(subs) > 1 else ""
         fq = faqslide([(f"{t} 어디서 사나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 상담·주문합니다. {HOURS}. 전국 용달 배송도 됩니다."),
                        (f"{t} 가격은 얼마인가요?", "제품·규격·수량에 따라 달라서 매장이나 전화(042-545-2900)로 견적을 드립니다.")])
-        body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/samik/">삼익산업</a> › {E(t)}</p><h1>삼익산업 {E(t)} <small>{len(xs)}가지</small></h1><p class="glead">{E(DESC.get(t, ""))}. 사진을 누르면 크게 보고 규격을 확인할 수 있습니다.</p>{nav(t)}{ch}{sec}</section>'
+        body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/geonjae/">건축자재</a> › {E(t)}</p><h1>{E(t)} <small>{len(xs)}가지</small></h1><p class="glead">{E(DESC.get(t, ""))}. 사진을 누르면 크게 보고 규격을 확인할 수 있습니다.</p>{nav(t)}{ch}{sec}</section>'
                 f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{fq}</section>{CTA}' + LB)
-        page(f"samik/{SLUG[t]}.html", f"삼익산업 {t} {len(xs)}종 — {', '.join(subs[:4])} | 대전 영진목재", f"삼익산업 {t} {len(xs)}가지 사진·규격: {DESC.get(t, '')}. 대전 유성 영진종합목재 상담·전국 배송.", body, "/jaryo/", None, IMG(xs[0][4]))
+        page(f"geonjae/{SLUG[t]}.html", f"{t} {len(xs)}종 — {', '.join(subs[:4])} | 대전 영진목재", f"{t} {len(xs)}가지 사진·규격: {DESC.get(t, '')}. 대전 유성 영진종합목재 상담·전국 배송.", body, "/jaryo/", None, IMG(xs[0][4]))
         out.append((t, xs))
-    rws = "".join(f'<h2 class="gt"><span><a href="/samik/{SLUG[t]}.html" style="color:inherit;text-decoration:none">{E(t)}</a> <small style="font-size:14px">{len(xs)}가지</small></span><small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">{"".join(card(r) for r in xs[:12])}<a class="yri ymore" href="/samik/{SLUG[t]}.html"><span>{E(t)} 전체 {len(xs)}가지 보기 ›</span></a></div>' for t, xs in out)
-    page("samik/index.html", f"삼익산업 건축자재 {len(rows)}종 — 사이딩·지붕재·내장재·창호·단열재 | 대전 영진목재",
-         f"삼익산업 세라믹 사이딩·지붕재·내장목재·시스템창·도어·단열재 {len(rows)}가지 사진과 규격. 대전 유성 영진종합목재 상담·전국 배송.",
-         f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › 삼익산업</p><h1>삼익산업 건축자재</h1><p class="glead">목조주택·외장·지붕·내장·창호·단열까지 {len(rows)}가지(같은 제품은 한 번만). 사진을 누르면 규격을 볼 수 있습니다.</p>{nav(None)}{rws}</section>{CTA}' + LB, "/jaryo/", None, IMG(rows[0][4]))
+    rws = "".join(f'<h2 class="gt"><span><a href="/geonjae/{SLUG[t]}.html" style="color:inherit;text-decoration:none">{E(t)}</a> <small style="font-size:14px">{len(xs)}가지</small></span><small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">{"".join(card(r) for r in xs[:12])}<a class="yri ymore" href="/geonjae/{SLUG[t]}.html"><span>{E(t)} 전체 {len(xs)}가지 보기 ›</span></a></div>' for t, xs in out)
+    page("geonjae/index.html", f"목조·외장·내장 건축자재 {len(rows)}종 — 사이딩·지붕재·내장재·창호·단열재 | 대전 영진목재",
+         f"세라믹 사이딩·지붕재·내장목재·시스템창·도어·단열재 {len(rows)}가지 사진과 규격. 대전 유성 영진종합목재 상담·전국 배송.",
+         f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › 건축자재</p><h1>목조·외장·내장 건축자재</h1><p class="glead">목조주택·외장·지붕·내장·창호·단열까지 {len(rows)}가지(같은 제품은 한 번만). 사진을 누르면 규격을 볼 수 있습니다.</p>{nav(None)}{rws}</section>{CTA}' + LB, "/jaryo/", None, IMG(rows[0][4]))
     return out
