@@ -18,14 +18,19 @@ jobs:
       - run: pip install -q numpy
       - run: mkdir -p /tmp/vn && cd /tmp/vn && npm init -y >/dev/null && npm i -s @tensorflow/tfjs-node@4.22.0 @tensorflow/tfjs@4.22.0 sharp@0.33.5
       - uses: actions/cache/restore@v4
-        with: { path: /tmp/viscache, key: vis-${{ github.run_id }}, restore-keys: vis- }
+        with:
+          path: /tmp/viscache
+          key: vis-${{ github.run_id }}
+          restore-keys: vis-
       - name: embed
         run: |
           cp .github/scripts/vis_embed.mjs /tmp/vn/
           VIS_MIN=75 node /tmp/vn/vis_embed.mjs "$PWD/assets/search.json" /tmp/viscache "$PWD/src/assets/vis/model"
       - uses: actions/cache/save@v4
         if: always()
-        with: { path: /tmp/viscache, key: vis-${{ github.run_id }} }
+        with:
+          path: /tmp/viscache
+          key: vis-${{ github.run_id }}
       - name: pack & commit
         run: |
           python3 .github/scripts/vis_pack.py assets/search.json /tmp/viscache src/assets/vis
