@@ -40,4 +40,20 @@ for tn, sn, idx in rows:
     time.sleep(0.15)
 if len(out) < 100: sys.exit(f"too few {len(out)}")
 open("src/data/samik.tsv", "w", encoding="utf-8").write("\n".join(out) + "\n")
+# 사진을 우리 사이트에 저장(화면·사진 주소에 업체 사이트 주소가 안 남게) — src/assets/gj/<idx>.jpg, 가로 최대 800px
+import os, io
+os.makedirs("src/assets/gj", exist_ok=True)
+try:
+    from PIL import Image
+    for l in out:
+        x = l.split("|"); f = f"src/assets/gj/{x[2]}.jpg"
+        if os.path.exists(f): continue
+        try:
+            raw = urllib.request.urlopen(urllib.request.Request(B + urllib.parse.quote(x[4]), headers={"User-Agent": "Mozilla/5.0 wwood.co.kr"}), timeout=30).read()
+            im = Image.open(io.BytesIO(raw)).convert("RGB")
+            if im.width > 800: im = im.resize((800, round(im.height * 800 / im.width)))
+            im.save(f, "JPEG", quality=82, optimize=True)
+        except Exception as e: print("img fail", x[2], e, file=sys.stderr)
+        time.sleep(0.1)
+except ImportError: print("no PIL", file=sys.stderr)
 print("rows", len(out), file=sys.stderr)

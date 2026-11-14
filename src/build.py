@@ -436,7 +436,7 @@ def build():
         ts = [t for t, cc in _sm0.JC.items() if cc == c and any(r[0] == t for r in _smr)]
         if not ts: return ""
         return ('<div class="chr" id="gjr' + c + '"><p class="chl"><b>건축자재 ' + "·".join(ts) + '</b> ' + str(sum(1 for r in _smr if r[0] in ts)) + '종 · <a class="cha" href="/geonjae/' + _sm0.SLUG[ts[0]] + '.html">전체 보기 ›</a></p><div class="gcs">'
-                + "".join(f'<a class="gc gpc" href="/geonjae/{_sm0.SLUG[t]}.html#s{i}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{_sm0.IMG(next(r for r in _smr if r[0] == t and r[1] == sb)[4])}" alt="{E(sb)}"><span>{E(sb)}</span></a>' for t in ts for i, sb in enumerate(dict.fromkeys(r[1] for r in _smr if r[0] == t))) + '</div></div>')
+                + "".join(f'<a class="gc gpc" href="/geonjae/{_sm0.SLUG[t]}.html#s{i}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{(lambda r_: _sm0.IMG(r_[4], r_[2]))(next(r for r in _smr if r[0] == t and r[1] == sb))}" alt="{E(sb)}"><span>{E(sb)}</span></a>' for t in ts for i, sb in enumerate(dict.fromkeys(r[1] for r in _smr if r[0] == t))) + '</div></div>')
     import nichiha as _nh0
     _nhr = _nh0.load(ROOT)
     _nhrow = ('<div class="chr" id="nichiha"><p class="chl"><b>니치하 세라믹 사이딩</b> 16×455×3,030mm · 우드·스톤·타일벽돌 ' + str(len(_nhr)) + '종 · <a class="cha" href="/nichiha/">전체 보기 ›</a></p><div class="gcs">'
@@ -1532,7 +1532,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     try:
         import samik as _smH
         _smh = _smH.load(ROOT)
-        if _smh: _bc.append(("/geonjae/", "목조·외장·내장 건축자재", f"{len(_smh)}종", _smH.IMG(_smh[0][4])))
+        if _smh: _bc.append(("/geonjae/", "목조·외장·내장 건축자재", f"{len(_smh)}종", _smH.IMG(_smh[0][4], _smh[0][2])))
     except Exception: pass
     try:
         import nichiha as _nhH

@@ -13,6 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
+      - run: pip install -q pillow
       - name: fetch
         run: |
           python3 .github/scripts/fetch_younglim.py || echo "younglim failed"
@@ -23,7 +24,7 @@ jobs:
       - name: build if changed
         run: |
           git stash -q && git pull -q --rebase && git stash pop -q || true
-          [ -z "$(git status --porcelain src/data/younglim.tsv src/data/shenu.tsv src/data/cmbs.tsv src/data/cmbs_cats.tsv src/data/cmbs_detail.tsv src/data/emall.tsv src/data/emall_cats.tsv src/data/samik.tsv)" ] && { echo "no change"; exit 0; }
+          [ -z "$(git status --porcelain src/data/younglim.tsv src/data/shenu.tsv src/data/cmbs.tsv src/data/cmbs_cats.tsv src/data/cmbs_detail.tsv src/data/emall.tsv src/data/emall_cats.tsv src/data/samik.tsv src/assets/gj)" ] && { echo "no change"; exit 0; }
           cd src && python3 build.py https://www.wwood.co.kr && cp -r out/. .. && rm -rf out && cd ..
           test -f CNAME && test -f .nojekyll && test -f googlebdb67d0a828cfb44.html && test -f naverba93ea476932b627cd632929e26465dd.html
           git config user.name "wwood-build-bot"

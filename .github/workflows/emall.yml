@@ -10,6 +10,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
+      - run: pip install -q pillow
       - run: python3 .github/scripts/fetch_emall.py || echo "emall failed"
       - run: python3 .github/scripts/fetch_samik.py || echo "samik failed"
       - run: |
