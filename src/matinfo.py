@@ -172,6 +172,7 @@ class M:
         if re.search("사포", t): l += self.bl("사포", "사포")
         if re.search("붓|롤러|헤라", t): l += self.bl("페인트공구" if re.search("붓|롤러", t) else "미장공구", "공구")
         if re.search("몰딩|걸레받이", t): l += '<a class="mlk" href="/gagyeok/molding-gagyeok.html">몰딩 가격 ›</a>'
+        if re.search("사이딩", t) and not re.search("스타터|코너|마감재|못|피스", t): l += '<a class="mlk" href="/nichiha/">세라믹 사이딩 ›</a><a class="mlk" href="/gagyeok/siding-gagyeok.html">가격 ›</a>'
         if re.search("템바보드", t): l += '<a class="mlk" href="/gagyeok/tempa-board.html">가격 ›</a>'
         if re.search("루바", t): l += '<a class="mlk" href="/gagyeok/hinoki-ruba.html">가격 ›</a>'
         if re.search("필름", t): l += '<a class="mlk" href="/gagyeok/interior-film.html">가격 ›</a>'
