@@ -153,10 +153,23 @@ def mall_links(m):
     if not cats: return ""
     lk = " · ".join(f'<a href="https://wwood.kr/home/mall/shoplist.php?depth=2&amp;code1_idx={c.split("/")[0]}&amp;code2_idx={c.split("/")[1]}" target="_blank" rel="noopener">{E(MCAT[c].replace("ㆍ","").strip())}</a>' for c in cats)
     return f'<p class="small" style="margin-top:10px">🛒 쇼핑몰에서 {E(m["name"])} 상품 보기: {lk}</p>'
+PSPEC = json.load(open(f"{ROOT}/data/pspec.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/pspec.json") else {}
+def _psp(p):  # 사진 크게 보기(라이트박스)에 넣을 규격 요약
+    rs = [[c.strip() for c in r] for r in PSPEC.get(str(p["id"]), []) if r and r[0].strip()]
+    if not rs: return ""
+    out = []
+    sz = list(dict.fromkeys(r[0] for r in rs))
+    out.append("규격\t" + " / ".join(sz[:6]) + (f" 외 {len(sz) - 6}가지" if len(sz) > 6 else ""))
+    for k, nm in ((1, "단위"), (2, "원산지"), (3, "수종")):
+        v = list(dict.fromkeys(r[k] for r in rs if len(r) > k and r[k] and r[k] not in ("품절", "재입고준비중")))
+        if v and k != 3 or (k == 3 and v and len(" / ".join(v[:4])) < 60): out.append(nm + "\t" + " / ".join(v[:4]))
+    return "\n".join(out)
+def _pdata(p):
+    return f' data-big="{E(p["img"])}" data-n="{E(p["name"])}" data-sp="{E(_psp(p))}"'
 def pcard(p):
     sub = MCAT.get(p["sub"] or "", "")
     _own = p.get("tops") and p.get("top") in {c for c, *_ in JCAT}  # 새 홈페이지에 상품 페이지(/p/)가 있으면 그쪽으로 연결(내부 링크 → 색인에 도움)
-    return ((f'<a class="pd" href="/p/{p["id"]}.html">' if _own else f'<a class="pd" href="https://wwood.kr/home/mall/shoplist.php?idx={p["id"]}&amp;pmode=view" target="_blank" rel="noopener">')
+    return ((f'<a class="pd" href="/p/{p["id"]}.html"{_pdata(p)}>' if _own else f'<a class="pd" href="https://wwood.kr/home/mall/shoplist.php?idx={p["id"]}&amp;pmode=view" target="_blank" rel="noopener"{_pdata(p)}>')
             + f'<span class="pi"><img loading="lazy" src="{E(p["img"])}" alt="{E(p["name"])}"></span><b>{E(p["name"])}</b>{f"<small>{E(sub)}</small>" if sub else ""}</a>')
 # 유튜브 채널 숫자: data/stats.json {"subs": "1.36만", "videos": 940, "date": "YYYY-MM-DD"} (하루 1번 자동 갱신)
 ST = json.load(open(f"{ROOT}/data/stats.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/stats.json") else {"subs": "1.3만", "videos": 900}
@@ -205,6 +218,8 @@ def mat_prices(m, k=10):
 NAV = [("/visit.html", "매장 안내"), ("/jaryo/", "전체 자재"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/mandeul/", "DIY 만들기"), ("/sigongbeop/", "자재 시공법"), ("/trend/", "인테리어 트렌드"), ("/cut.html", "목재 재단"), ("/sajin.html", "사진으로 찾기"), ("/video/", "영상"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공")]
 
 def page(path, title, desc, body, active="", jsonld=None, img=None):
+    if ' data-big="' in body and 'id="ylb"' not in body:
+        import yerim as _ylb; body += _ylb.LB
     if 'class="yri" href="#" data-big=' in body and "ItemList" not in json.dumps(jsonld or {}):  # 제품 사진 카드가 있는 페이지는 제품 목록(ItemList) 정보 자동 추가
         _it = re.findall(r'<a class="yri" href="#" data-big="([^"]+)" data-n="([^"]+)"', body)[:60]
         if _it:
@@ -1464,8 +1479,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     mname = {m["slug"]: m for m in MATS}
     def pcard2(p):
         sub = MCAT.get(subof(p, p["top"]) or "", "")
-        return (f'<a class="pd" href="/p/{p["id"]}.html"><span class="pi"><img loading="lazy" src="{E(p["img"])}" alt="{E(p["name"])}"></span><b>{E(p["name"])}</b>{f"<small>{E(sub)}</small>" if sub else ""}</a>')
-    PSPEC = json.load(open(f"{ROOT}/data/pspec.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/pspec.json") else {}
+        return (f'<a class="pd" href="/p/{p["id"]}.html"{_pdata(p)}><span class="pi"><img loading="lazy" src="{E(p["img"])}" alt="{E(p["name"])}"></span><b>{E(p["name"])}</b>{f"<small>{E(sub)}</small>" if sub else ""}</a>')
     for p in PROD:
         if not p["tops"] or p["top"] not in jn: continue
         sl, cn, cd = jn[p["top"]]
@@ -1492,7 +1506,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 <div class="g2 pdet"><div><img class="pimg" src="{E(p['img'])}" alt="{E(p['name'])}"></div><div><h1>{E(p['name'])}</h1><p class="muted">{E(cat)}</p>
 <p>대전 유성 영진목재(월드건축자재) 3000평 매장에서 실물을 보고 고를 수 있습니다. 원하는 사이즈로 재단해 드리고 대전·세종·공주·계룡·논산·금산·옥천은 배송하고, 그 외 전국은 용달차로 보내 드립니다(운임 견적 → 입금 확인 후 출고). 가격·재고는 쇼핑몰이나 매장(042-545-2900)에서 확인하세요.</p>
 <div class="row"><a class="b r" href="https://wwood.kr/home/mall/shoplist.php?idx={p['id']}&amp;pmode=view" target="_blank" rel="noopener">쇼핑몰에서 가격 보기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화 문의</a></div>
-<p class="small"><a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장 위치</a> · <a href="/jaryo/{sl}.html">{E(cn)} 전체 보기</a></p></div></div>{spec}{use}</section>
+<p class="small"><a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장 위치</a> · <a href="/jaryo/{sl}.html">{E(cn)} 전체 보기</a></p><div class="ylv pv" data-n="{E(p['name'])}" data-c="{E(cat)}"></div></div></div>{spec}{use}</section>
 <section class="wrap sec"><h2>같은 분류 제품</h2><div class="pg hrow">{"".join(pcard2(q) for q in sim)}</div></section>{CTA}""", "/jaryo/", None, p["img"])
 
     # 매장 카운터 QR 안내판이 여는 페이지(/r/) — 리뷰·채널 링크는 여기서만 바꾸면 됨(재인쇄 불필요)
