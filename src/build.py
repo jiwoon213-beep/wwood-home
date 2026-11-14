@@ -303,7 +303,7 @@ def build():
     if os.path.exists(OUT): shutil.rmtree(OUT)
     os.makedirs(OUT); shutil.copytree(f"{ROOT}/assets", f"{OUT}/assets")
     shutil.copy(f"{ROOT}/sw.js", f"{OUT}/sw.js")  # 앱(PWA) 서비스워커 — 사이트 전체 범위라 루트에
-    open(f"{OUT}/offline.html", "w", encoding="utf-8").write('<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>인터넷 연결 없음 | 영진목재</title><link rel="stylesheet" href="/assets/style.css"></head><body><main><section class="wrap sec"><h1>인터넷이 연결되지 않았어요</h1><p class="lead">연결되면 다시 열어 주세요. 앞서 본 페이지·기준가·재단 미리보기는 저장돼 있으면 그대로 열립니다.</p><p><a class="b r" href="tel:0425452900">전화 042-545-2900</a> <a class="b o" href="/">처음으로</a></p></section></main></body></html>')
+    open(f"{OUT}/offline.html", "w", encoding="utf-8").write('<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>인터넷 연결 없음 | 영진목재</title><meta name="description" content="인터넷이 연결되지 않았을 때 보이는 영진목재 앱 안내 화면입니다."><link rel="stylesheet" href="/assets/style.css"></head><body><main><section class="wrap sec"><h1>인터넷이 연결되지 않았어요</h1><p class="lead">연결되면 다시 열어 주세요. 앞서 본 페이지·기준가·재단 미리보기는 저장돼 있으면 그대로 열립니다.</p><p><a class="b r" href="tel:0425452900">전화 042-545-2900</a> <a class="b o" href="/">처음으로</a></p></section></main></body></html>')
     byid = {v["id"]: v for v in V}
     top = lambda f, k: sorted([v for v in V if f(v)], key=lambda v: -v["n"])[:k]
 
@@ -1705,10 +1705,10 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
     json.dump({"cats": [[c, n, d] for c, n, d in CATS], "v": [[v["id"], v["type"], v["cat"], v["n"], v["title"]] for v in V]}, open(f"{OUT}/assets/videos.json", "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))  # wwood.kr 시공영상 페이지용
     # 404 — 없는 주소로 들어온 손님을 주요 페이지로
-    open(f"{OUT}/404.html", "w", encoding="utf-8").write(open(f"{OUT}/index.html", encoding="utf-8").read().split("<main>")[0].replace('<link rel="canonical"', '<meta name="robots" content="noindex"><link rel="x-canonical"') + '<main><section class="wrap sec"><h1>찾으시는 페이지가 없어요</h1><p class="lead">주소가 바뀌었거나 없어진 페이지입니다. 아래에서 찾아보세요.</p><div class="row"><a class="b r" href="/">처음으로</a><a class="b o" href="/jaryo/">전체 자재</a><a class="b o" href="/cut.html">재단 미리보기</a><a class="b o" href="/price.html">기준가</a><a class="b o" href="/mandeul/">DIY 만들기</a><a class="b o" href="/sigongbeop/">자재 시공법</a><a class="b o" href="/faq.html">자주 묻는 질문</a><a class="b d" href="/visit.html">매장 안내</a></div></section></main></body></html>')
+    open(f"{OUT}/404.html", "w", encoding="utf-8").write(open(f"{OUT}/index.html", encoding="utf-8").read().split("<main>")[0].replace('<link rel="canonical"', '<meta name="robots" content="noindex"><link rel="x-canonical"').replace(re.search(r"<title>.*?</title>", open(f"{OUT}/index.html", encoding="utf-8").read()).group(0), "<title>페이지를 찾을 수 없어요 | 영진목재</title>").replace(re.search(r'<meta name="description" content="[^"]*">', open(f"{OUT}/index.html", encoding="utf-8").read()).group(0), '<meta name="description" content="찾으시는 페이지가 없습니다. 영진목재 홈페이지 처음 화면이나 전체 자재에서 찾아보세요.">') + '<main><section class="wrap sec"><h1>찾으시는 페이지가 없어요</h1><p class="lead">주소가 바뀌었거나 없어진 페이지입니다. 아래에서 찾아보세요.</p><div class="row"><a class="b r" href="/">처음으로</a><a class="b o" href="/jaryo/">전체 자재</a><a class="b o" href="/cut.html">재단 미리보기</a><a class="b o" href="/price.html">기준가</a><a class="b o" href="/mandeul/">DIY 만들기</a><a class="b o" href="/sigongbeop/">자재 시공법</a><a class="b o" href="/faq.html">자주 묻는 질문</a><a class="b d" href="/visit.html">매장 안내</a></div></section></main></body></html>')
     # 사장님용 방문 통계(검색 제외, 메뉴 링크 없음)
     os.makedirs(f"{OUT}/stats", exist_ok=True)
-    open(f"{OUT}/stats/index.html", "w", encoding="utf-8").write("""<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>방문 통계 · 영진종합목재</title>
+    open(f"{OUT}/stats/index.html", "w", encoding="utf-8").write("""<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>방문 통계 · 영진종합목재</title><meta name="description" content="영진종합목재 홈페이지 방문 통계(사장님용).">
 <style>body{font-family:Pretendard,'Noto Sans KR',sans-serif;background:#f6f3ee;color:#1d1b18;margin:0;padding:18px;max-width:640px;margin:auto}h1{font-size:22px}.k{display:flex;gap:10px}.k div{flex:1;background:#fff;border:1px solid #e4ded4;border-radius:14px;padding:14px}.k b{display:block;font-size:30px}small{color:#5e574e}
 table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;margin-top:14px;font-size:15px}th,td{padding:10px;border-bottom:1px solid #eee;text-align:right}th:first-child,td:first-child{text-align:left}th{background:#1d1b18;color:#fff;font-weight:700}.bar{height:8px;background:#c62a1f;border-radius:4px;display:inline-block;vertical-align:middle;margin-left:6px}</style></head><body>
 <h1>www.wwood.co.kr 방문 통계</h1><div class="k"><div><small>오늘 방문</small><b id="td">…</b></div><div><small>전체 방문(누적)</small><b id="tt">…</b></div></div><p><small>같은 사람(같은 휴대폰·컴퓨터)이 하루에 여러 번 들어와도 그날은 1명으로 셉니다. 전체 방문은 날마다 방문자를 더한 누적입니다. 검색 로봇은 세지 않습니다.</small></p>
@@ -1815,6 +1815,21 @@ Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i
             if x["i"].startswith(pf): x["i"] = f"~{k_}" + x["i"][len(pf):]; break
         if x.get("l"): x.pop("c", None)
     json.dump({"p": _PF, "d": _sx}, open(f"{OUT}/assets/search.json", "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
+    # 제목·설명 중복 정리: 같은 제목이 여러 페이지면 두 번째부터 품번/주소로 구분
+    _TT = {}
+    for _f in sorted(glob.glob(f"{OUT}/**/*.html", recursive=True)):
+        _t = open(_f, encoding="utf-8").read()
+        if 'http-equiv="refresh"' in _t: continue
+        _m = re.search(r"<title>(.*?)</title>", _t)
+        if not _m: continue
+        _k = _m.group(1)
+        if _k not in _TT: _TT[_k] = _f; continue
+        _id = os.path.basename(_f)[:-5] if "/p/" in _f else os.path.relpath(_f, OUT)[:-5].replace("/index", "")
+        _tag = f" (품번 {_id})" if "/p/" in _f else f" ({_id})"
+        _new = re.sub(r"( [|—] )", _tag + r"\1", _k, count=1) if re.search(r" [|—] ", _k) else _k + _tag
+        _t = _t.replace(f"<title>{_k}</title>", f"<title>{_new}</title>", 1).replace(f'content="{_k}"', f'content="{_new}"')
+        _t = re.sub(r'(<meta name="description" content=")([^"]*)"', lambda m: m.group(1) + m.group(2).rstrip(". ") + f". 품번 {_id}." + '"', _t, count=1) if "/p/" in _f else _t
+        open(_f, "w", encoding="utf-8").write(_t)
     print(len(SITEMAP), "pages →", OUT)
 
 import hashlib
