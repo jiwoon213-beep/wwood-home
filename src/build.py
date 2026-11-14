@@ -226,13 +226,13 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
             _il = {"@context": "https://schema.org", "@type": "ItemList", "name": title.split(" | ")[0].split(" — ")[0], "numberOfItems": len(_it),
                    "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": html.unescape(n_), "image": u_} for i, (u_, n_) in enumerate(_it)]}
             jsonld = _il if jsonld is None else ((jsonld if isinstance(jsonld, list) else [jsonld]) + [_il])
-    if len(desc) < 58:  # 너무 짧은 설명은 매장 정보로 보강(80자 이내)
-        for add in (" 대전 유성 3000평 매장, 즉석 재단·전국 용달 배송.", " 대전 유성 매장·전국 배송.", " 대전 영진목재."):
-            if len(desc) + len(add) <= 80: desc = desc.rstrip() + add; break
     if len(desc) > 80:  # 네이버 권장: 설명 80자 이내 — 문장·쉼표 경계에서 자름
         cut = desc[:80]; k = cut.rfind(".")
         if k < 40: k = cut.rfind(", ")
         desc = (cut[:k + 1] if k >= 40 else cut[:79] + "…").rstrip(" ,")
+    if len(desc) < 58:  # 너무 짧은 설명은 매장 정보로 보강(80자 이내)
+        for add in (" 대전 유성 3000평 매장, 즉석 재단·전국 용달 배송.", " 대전 유성 매장·전국 배송.", " 대전 영진목재."):
+            if len(desc) + len(add) <= 80: desc = desc.rstrip() + add; break
     canon = BASE + ("/" + path if path != "index.html" else "/").replace("index.html", "")
     nav = "".join(f'<a href="{h}"{" class=on" if active==h else ""}>{t}</a>' for h, t in NAV)
     lds = jsonld if isinstance(jsonld, list) else ([jsonld] if jsonld else [])
