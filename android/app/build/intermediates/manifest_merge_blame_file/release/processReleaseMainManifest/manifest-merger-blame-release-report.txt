@@ -1,0 +1,174 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="kr.co.wwood.app"
+4    android:versionCode="2"
+5    android:versionName="1.0.2" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="36" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:3:5-66
+11-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:3:22-64
+12
+13    <queries>
+13-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:34:5-36:15
+14        <intent>
+14-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:35:9-102
+15            <action android:name="android.support.customtabs.action.CustomTabsService" />
+15-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:35:17-93
+15-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:35:25-91
+16        </intent>
+17        <intent>
+17-->[com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/runner/.gradle/caches/8.13/transforms/1ad04bfce6c382724bc23b20cf8ba30f/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:27:9-33:18
+18            <action android:name="android.intent.action.VIEW" />
+18-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:20:17-68
+18-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:20:25-66
+19
+20            <category android:name="android.intent.category.BROWSABLE" />
+20-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:22:17-77
+20-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:22:27-75
+21
+22            <data android:scheme="https" />
+22-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:23:17-78
+22-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:23:23-45
+23        </intent>
+24    </queries>
+25
+26    <application
+26-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:4:5-33:19
+27        android:allowBackup="true"
+27-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:4:85-111
+28        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+28-->[androidx.core:core:1.1.0] /home/runner/.gradle/caches/8.13/transforms/186df0cc8f53aef86ac9e523a91884eb/transformed/core-1.1.0/AndroidManifest.xml:24:18-86
+29        android:extractNativeLibs="true"
+30        android:icon="@mipmap/ic_launcher"
+30-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:4:50-84
+31        android:label="@string/appName"
+31-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:4:18-49
+32        android:supportsRtl="true"
+32-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:4:112-138
+33        android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+33-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:5:9-68
+34        <meta-data
+34-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:6:9-96
+35            android:name="asset_statements"
+35-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:6:20-51
+36            android:resource="@string/assetStatements" />
+36-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:6:52-94
+37
+38        <activity
+38-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:7:9-25:20
+39            android:name="com.google.androidbrowserhelper.trusted.LauncherActivity"
+39-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:7:19-90
+40            android:exported="true"
+40-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:7:91-114
+41            android:label="@string/appName" >
+41-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:7:115-146
+42            <meta-data
+42-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:8:13-121
+43                android:name="android.support.customtabs.trusted.DEFAULT_URL"
+43-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:8:24-85
+44                android:value="@string/launchUrl" />
+44-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:8:86-119
+45            <meta-data
+45-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:9:13-131
+46                android:name="android.support.customtabs.trusted.STATUS_BAR_COLOR"
+46-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:9:24-90
+47                android:resource="@color/colorPrimary" />
+47-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:9:91-129
+48            <meta-data
+48-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:10:13-138
+49                android:name="android.support.customtabs.trusted.NAVIGATION_BAR_COLOR"
+49-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:10:24-94
+50                android:resource="@color/navigationColor" />
+50-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:10:95-136
+51            <meta-data
+51-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:11:13-133
+52                android:name="android.support.customtabs.trusted.SPLASH_IMAGE_DRAWABLE"
+52-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:11:24-95
+53                android:resource="@drawable/splash" />
+53-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:11:96-131
+54            <meta-data
+54-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:12:13-148
+55                android:name="android.support.customtabs.trusted.SPLASH_SCREEN_BACKGROUND_COLOR"
+55-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:12:24-104
+56                android:resource="@color/backgroundColor" />
+56-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:12:105-146
+57            <meta-data
+57-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:13:13-127
+58                android:name="android.support.customtabs.trusted.SPLASH_SCREEN_FADE_OUT_DURATION"
+58-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:13:24-105
+59                android:value="300" />
+59-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:13:106-125
+60            <meta-data
+60-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:14:13-117
+61                android:name="android.support.customtabs.trusted.FALLBACK_STRATEGY"
+61-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:14:24-91
+62                android:value="webview" />
+62-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:14:92-115
+63
+64            <intent-filter>
+64-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:15:13-18:29
+65                <action android:name="android.intent.action.MAIN" />
+65-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:16:17-68
+65-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:16:25-66
+66
+67                <category android:name="android.intent.category.LAUNCHER" />
+67-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:17:17-76
+67-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:17:27-74
+68            </intent-filter>
+69            <intent-filter android:autoVerify="true" >
+69-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:19:13-24:29
+69-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:19:28-53
+70                <action android:name="android.intent.action.VIEW" />
+70-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:20:17-68
+70-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:20:25-66
+71
+72                <category android:name="android.intent.category.DEFAULT" />
+72-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:21:17-75
+72-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:21:27-73
+73                <category android:name="android.intent.category.BROWSABLE" />
+73-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:22:17-77
+73-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:22:27-75
+74
+75                <data
+75-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:23:17-78
+76                    android:host="www.wwood.co.kr"
+76-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:23:46-76
+77                    android:scheme="https" />
+77-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:23:23-45
+78            </intent-filter>
+79        </activity>
+80        <activity
+80-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:26:9-171
+81            android:name="com.google.androidbrowserhelper.trusted.WebViewFallbackActivity"
+81-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:26:19-97
+82            android:configChanges="orientation|screenSize"
+82-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:26:98-144
+83            android:exported="false" />
+83-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:26:145-169
+84
+85        <service
+85-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:27:9-32:19
+86            android:name="com.google.androidbrowserhelper.trusted.DelegationService"
+86-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:27:18-90
+87            android:enabled="true"
+87-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:27:91-113
+88            android:exported="true" >
+88-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:27:114-137
+89            <intent-filter>
+89-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:28:13-31:29
+90                <action android:name="android.support.customtabs.trusted.TRUSTED_WEB_ACTIVITY_SERVICE" />
+90-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:29:17-105
+90-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:29:25-103
+91
+92                <category android:name="android.intent.category.DEFAULT" />
+92-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:21:17-75
+92-->/home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:21:27-73
+93            </intent-filter>
+94        </service>
+95    </application>
+96
+97</manifest>

@@ -1,0 +1,36 @@
+{
+    "logs": [
+        {
+            "outputFile": "kr.co.wwood.app-mergeReleaseResources-5:/values-sl/values-sl.xml",
+            "map": [
+                {
+                    "source": "/home/runner/.gradle/caches/8.13/transforms/186df0cc8f53aef86ac9e523a91884eb/transformed/core-1.1.0/res/values-sl/values-sl.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "6",
+                        "startColumns": "4",
+                        "startOffsets": "479",
+                        "endColumns": "100",
+                        "endOffsets": "575"
+                    }
+                },
+                {
+                    "source": "/home/runner/.gradle/caches/8.13/transforms/32e55a6e48f54311f38df5b4f6148462/transformed/browser-1.4.0/res/values-sl/values-sl.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,161,265,377",
+                        "endColumns": "105,103,111,101",
+                        "endOffsets": "156,260,372,474"
+                    }
+                }
+            ]
+        }
+    ]
+}

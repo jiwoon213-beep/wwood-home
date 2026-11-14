@@ -1,0 +1,187 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:2:1-37:12
+INJECTED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:2:1-37:12
+INJECTED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:2:1-37:12
+INJECTED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:2:1-37:12
+MERGED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/runner/.gradle/caches/8.13/transforms/1ad04bfce6c382724bc23b20cf8ba30f/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:17:1-36:12
+MERGED from [androidx.browser:browser:1.4.0] /home/runner/.gradle/caches/8.13/transforms/32e55a6e48f54311f38df5b4f6148462/transformed/browser-1.4.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core:1.1.0] /home/runner/.gradle/caches/8.13/transforms/186df0cc8f53aef86ac9e523a91884eb/transformed/core-1.1.0/AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/runner/.gradle/caches/8.13/transforms/02b5b4ff420ad2845dc9527837714711/transformed/versionedparcelable-1.1.0/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/runner/.gradle/caches/8.13/transforms/d2d860caa1baab3801640f3ff79a2a6b/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0] /home/runner/.gradle/caches/8.13/transforms/812f434dd6c7361acfbfc786b10ef86b/transformed/lifecycle-runtime-2.0.0/AndroidManifest.xml:17:1-22:12
+	package
+		INJECTED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:2:11-69
+uses-permission#android.permission.INTERNET
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:3:5-66
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:3:22-64
+application
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:4:5-33:19
+INJECTED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:4:5-33:19
+MERGED from [androidx.core:core:1.1.0] /home/runner/.gradle/caches/8.13/transforms/186df0cc8f53aef86ac9e523a91884eb/transformed/core-1.1.0/AndroidManifest.xml:24:5-89
+MERGED from [androidx.core:core:1.1.0] /home/runner/.gradle/caches/8.13/transforms/186df0cc8f53aef86ac9e523a91884eb/transformed/core-1.1.0/AndroidManifest.xml:24:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/runner/.gradle/caches/8.13/transforms/02b5b4ff420ad2845dc9527837714711/transformed/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/runner/.gradle/caches/8.13/transforms/02b5b4ff420ad2845dc9527837714711/transformed/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
+	android:extractNativeLibs
+		INJECTED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.1.0] /home/runner/.gradle/caches/8.13/transforms/186df0cc8f53aef86ac9e523a91884eb/transformed/core-1.1.0/AndroidManifest.xml:24:18-86
+	android:supportsRtl
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:4:112-138
+	android:label
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:4:18-49
+	android:icon
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:4:50-84
+	android:allowBackup
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:4:85-111
+	android:theme
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:5:9-68
+meta-data#asset_statements
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:6:9-96
+	android:resource
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:6:52-94
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:6:20-51
+activity#com.google.androidbrowserhelper.trusted.LauncherActivity
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:7:9-25:20
+	android:label
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:7:115-146
+	android:exported
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:7:91-114
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:7:19-90
+meta-data#android.support.customtabs.trusted.DEFAULT_URL
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:8:13-121
+	android:value
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:8:86-119
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:8:24-85
+meta-data#android.support.customtabs.trusted.STATUS_BAR_COLOR
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:9:13-131
+	android:resource
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:9:91-129
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:9:24-90
+meta-data#android.support.customtabs.trusted.NAVIGATION_BAR_COLOR
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:10:13-138
+	android:resource
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:10:95-136
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:10:24-94
+meta-data#android.support.customtabs.trusted.SPLASH_IMAGE_DRAWABLE
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:11:13-133
+	android:resource
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:11:96-131
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:11:24-95
+meta-data#android.support.customtabs.trusted.SPLASH_SCREEN_BACKGROUND_COLOR
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:12:13-148
+	android:resource
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:12:105-146
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:12:24-104
+meta-data#android.support.customtabs.trusted.SPLASH_SCREEN_FADE_OUT_DURATION
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:13:13-127
+	android:value
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:13:106-125
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:13:24-105
+meta-data#android.support.customtabs.trusted.FALLBACK_STRATEGY
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:14:13-117
+	android:value
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:14:92-115
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:14:24-91
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:15:13-18:29
+action#android.intent.action.MAIN
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:16:17-68
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:16:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:17:17-76
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:17:27-74
+intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:www.wwood.co.kr+data:scheme:https
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:19:13-24:29
+	android:autoVerify
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:19:28-53
+action#android.intent.action.VIEW
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:20:17-68
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:20:25-66
+category#android.intent.category.DEFAULT
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:21:17-75
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:21:27-73
+category#android.intent.category.BROWSABLE
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:22:17-77
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:22:27-75
+data
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:23:17-78
+	android:host
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:23:46-76
+	android:scheme
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:23:23-45
+activity#com.google.androidbrowserhelper.trusted.WebViewFallbackActivity
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:26:9-171
+	android:exported
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:26:145-169
+	android:configChanges
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:26:98-144
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:26:19-97
+service#com.google.androidbrowserhelper.trusted.DelegationService
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:27:9-32:19
+	android:enabled
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:27:91-113
+	android:exported
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:27:114-137
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:27:18-90
+intent-filter#action:name:android.support.customtabs.trusted.TRUSTED_WEB_ACTIVITY_SERVICE+category:name:android.intent.category.DEFAULT
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:28:13-31:29
+action#android.support.customtabs.trusted.TRUSTED_WEB_ACTIVITY_SERVICE
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:29:17-105
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:29:25-103
+queries
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:34:5-36:15
+MERGED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/runner/.gradle/caches/8.13/transforms/1ad04bfce6c382724bc23b20cf8ba30f/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:26:5-34:15
+MERGED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/runner/.gradle/caches/8.13/transforms/1ad04bfce6c382724bc23b20cf8ba30f/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:26:5-34:15
+intent#action:name:android.support.customtabs.action.CustomTabsService
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:35:9-102
+action#android.support.customtabs.action.CustomTabsService
+ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:35:17-93
+	android:name
+		ADDED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml:35:25-91
+uses-sdk
+INJECTED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml
+INJECTED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml
+MERGED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/runner/.gradle/caches/8.13/transforms/1ad04bfce6c382724bc23b20cf8ba30f/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:22:5-24:41
+MERGED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/runner/.gradle/caches/8.13/transforms/1ad04bfce6c382724bc23b20cf8ba30f/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:22:5-24:41
+MERGED from [androidx.browser:browser:1.4.0] /home/runner/.gradle/caches/8.13/transforms/32e55a6e48f54311f38df5b4f6148462/transformed/browser-1.4.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.browser:browser:1.4.0] /home/runner/.gradle/caches/8.13/transforms/32e55a6e48f54311f38df5b4f6148462/transformed/browser-1.4.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.1.0] /home/runner/.gradle/caches/8.13/transforms/186df0cc8f53aef86ac9e523a91884eb/transformed/core-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.1.0] /home/runner/.gradle/caches/8.13/transforms/186df0cc8f53aef86ac9e523a91884eb/transformed/core-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/runner/.gradle/caches/8.13/transforms/02b5b4ff420ad2845dc9527837714711/transformed/versionedparcelable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/runner/.gradle/caches/8.13/transforms/02b5b4ff420ad2845dc9527837714711/transformed/versionedparcelable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/runner/.gradle/caches/8.13/transforms/d2d860caa1baab3801640f3ff79a2a6b/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/runner/.gradle/caches/8.13/transforms/d2d860caa1baab3801640f3ff79a2a6b/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0] /home/runner/.gradle/caches/8.13/transforms/812f434dd6c7361acfbfc786b10ef86b/transformed/lifecycle-runtime-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0] /home/runner/.gradle/caches/8.13/transforms/812f434dd6c7361acfbfc786b10ef86b/transformed/lifecycle-runtime-2.0.0/AndroidManifest.xml:20:5-44
+	android:targetSdkVersion
+		INJECTED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /home/runner/work/wwood-home/wwood-home/android/app/src/main/AndroidManifest.xml
+intent#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+data:scheme:https
+ADDED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/runner/.gradle/caches/8.13/transforms/1ad04bfce6c382724bc23b20cf8ba30f/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:27:9-33:18

@@ -1,0 +1,10 @@
+kr.co.wwood.app-core-1.1.0-0 /home/runner/.gradle/caches/8.13/transforms/186df0cc8f53aef86ac9e523a91884eb/transformed/core-1.1.0/res
+kr.co.wwood.app-androidbrowserhelper-2.5.0-1 /home/runner/.gradle/caches/8.13/transforms/1ad04bfce6c382724bc23b20cf8ba30f/transformed/androidbrowserhelper-2.5.0/res
+kr.co.wwood.app-browser-1.4.0-2 /home/runner/.gradle/caches/8.13/transforms/32e55a6e48f54311f38df5b4f6148462/transformed/browser-1.4.0/res
+kr.co.wwood.app-pngs-3 /home/runner/work/wwood-home/wwood-home/android/app/build/generated/res/pngs/release
+kr.co.wwood.app-resValues-4 /home/runner/work/wwood-home/wwood-home/android/app/build/generated/res/resValues/release
+kr.co.wwood.app-packageReleaseResources-5 /home/runner/work/wwood-home/wwood-home/android/app/build/intermediates/incremental/release/packageReleaseResources/merged.dir
+kr.co.wwood.app-packageReleaseResources-6 /home/runner/work/wwood-home/wwood-home/android/app/build/intermediates/incremental/release/packageReleaseResources/stripped.dir
+kr.co.wwood.app-release-7 /home/runner/work/wwood-home/wwood-home/android/app/build/intermediates/merged_res/release/mergeReleaseResources
+kr.co.wwood.app-main-8 /home/runner/work/wwood-home/wwood-home/android/app/src/main/res
+kr.co.wwood.app-release-9 /home/runner/work/wwood-home/wwood-home/android/app/src/release/res

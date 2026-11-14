@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="backgroundColor">#F6F3EE</color>
+    <color name="colorPrimary">#1D1B18</color>
+    <color name="navigationColor">#1D1B18</color>
+    <string name="appName">영진목재</string>
+    <string name="assetStatements">[{\"relation\": [\"delegate_permission/common.handle_all_urls\"], \"target\": {\"namespace\": \"web\", \"site\": \"https://www.wwood.co.kr\"}}]</string>
+    <string name="launchUrl">https://www.wwood.co.kr/?utm_source=app</string>
+</resources>
