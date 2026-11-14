@@ -9,7 +9,7 @@ function cl(){lb.hidden=true;im.src="";vb.innerHTML="";document.body.style.overf
 lb.querySelector(".ylx").onclick=cl;lb.onclick=function(e){if(e.target===lb)cl();};
 lb.querySelector(".ylp").onclick=function(){i=(i-1+L.length)%L.length;show();};lb.querySelector(".yln").onclick=function(){i=(i+1)%L.length;show();};
 document.addEventListener("keydown",function(e){if(lb.hidden)return;if(e.key=="Escape")cl();if(e.key=="ArrowLeft")lb.querySelector(".ylp").click();if(e.key=="ArrowRight")lb.querySelector(".yln").click();});
-var sx=0;lb.addEventListener("touchstart",function(e){sx=e.touches[0].clientX},{passive:true});lb.addEventListener("touchend",function(e){var d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)(d>0?lb.querySelector(".ylp"):lb.querySelector(".yln")).click();});})();</script>'''
+var sx=0;lb.addEventListener("touchstart",function(e){sx=e.target.closest&&e.target.closest(".ylv")?null:e.touches[0].clientX},{passive:true});lb.addEventListener("touchend",function(e){if(sx===null)return;var d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)(d>0?lb.querySelector(".ylp"):lb.querySelector(".yln")).click();});})();</script>'''
 IMG = lambda p: "https://www.yerim.net/upload/product/2039376550_" + p[1:]
 D3 = {"97": "슈퍼 슬림", "99": "슬림", "98": "자동문", "551": "리안", "550": "뉴 밸런스", "549": "피봇", "553": "프레임리스 글래스", "555": "클래식", "554": "폴딩", "574": "시스템 프레임·연결", "546": "LED", "547": "간살", "548": "슈퍼슬림 간살",
       "557": "이지", "558": "이지 슬림", "534": "AL 모듈러", "535": "벨로체", "536": "벨리니", "537": "올글래스", "77": "ABS", "80": "리얼 텍스처", "82": "라인", "540": "우드데코 포인트", "541": "완자·격자·갤러리", "83": "키즈", "84": "칠판", "539": "합판·도장용",

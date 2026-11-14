@@ -470,3 +470,14 @@ ul.appgl b{color:var(--red)}
 .hd{flex-wrap:wrap!important}header .hd>nav{flex:0 0 100%;order:3}.hd .logo{flex:1 1 0!important}.hd .logo{min-width:0;flex:1 1 auto}.hd .lt{min-width:0}.hd .lt small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hbtn{display:flex;gap:6px;flex:none;align-items:center}.hbtn .hcam{margin-right:0}@media(max-width:420px){.mnb{min-width:0;padding:0 10px}.hcam{min-width:46px}}
 ul.mli{align-items:stretch!important}ul.mli li{flex:0 0 min(78%,300px)!important;padding:12px 14px!important}ul.mli li > b{font-size:15.5px;line-height:1.35}ul.mli .mnote{display:-webkit-box!important;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:13.5px;line-height:1.45}ul.mli li .mlks{margin-top:auto!important;padding-top:10px}
 ul.mli li{flex:0 0 min(72%,280px)!important}ul.mli .mnote{-webkit-line-clamp:2!important;font-size:13px!important}ul.mli .mnote+.mnote{margin-top:4px}ul.mli .mlks{display:flex;flex-wrap:wrap;gap:6px}ul.mli .mlk{padding:6px 11px!important;font-size:13px!important;margin:0!important;line-height:1.3}
+
+.ylb{background:rgba(12,11,10,.97)!important}
+.ylv .ylvh{display:flex;justify-content:space-between;align-items:baseline}.ylv .ylvh small{font-size:12px;font-weight:600;opacity:.7}
+.ylvs{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain}.ylvs::-webkit-scrollbar{display:none}
+.ylvc{flex:0 0 88%;scroll-snap-align:start;text-align:left}.ylvs .ylvc:only-child{flex-basis:100%}
+.ylvc a{position:relative;display:block;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000}.ylvc a img{width:100%!important;height:100%!important;max-height:none!important;object-fit:cover;border-radius:0!important;display:block}
+.ylvc a i{position:absolute;left:50%;top:50%;width:56px;height:40px;margin:-20px 0 0 -28px;border-radius:12px;background:rgba(255,0,0,.9);color:#fff;font-style:normal;font-size:18px;display:flex;align-items:center;justify-content:center}
+.ylvc a em{position:absolute;right:8px;top:8px;font-style:normal;font-size:11px;font-weight:800;color:#fff;background:rgba(0,0,0,.6);border-radius:999px;padding:2px 8px}
+.ylvc b{display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:13.5px!important;line-height:1.4;margin-top:6px;font-weight:700}
+.ylvc .ylvf{position:relative;aspect-ratio:16/9}.ylvc .ylvf iframe{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:12px}
+.ylb .ylvc b{color:#fff}
