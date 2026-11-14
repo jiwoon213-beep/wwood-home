@@ -88,6 +88,12 @@ JCAT = [("23", "gakjae", "각재·구조재", "다루끼·구조재·방부목·
         ("32", "hardware", "철물", "건축철물·타카·인테리어철물·공학목재철물"), ("35", "paint", "페인트·스테인", "오일스테인·페인트·작업도구"),
         ("37", "sopum", "소품·부자재", "정원가구·목재소품·철제가구·공구·접착제")]
 JTOP = {c for c, *_ in JCAT}
+# 전체 자재 분류별 관련 유튜브 영상(제목 정규식)
+JVRX = {"23": r"각재|구조재|방부목|다루끼|히노끼 각|투바이|2x4|2×4|목조|탄화목|침목", "24": r"합판|MDF|OSB|판재|자작|코아", "53": r"집성|우드슬랩|상판|원목 테이블",
+        "25": r"데크", "26": r"마루|후로링|데코타일|장판", "27": r"루바|템바|몰딩|걸레받이|월판|아트월|타공|천장|석고보드|인테리어 벽",
+        "28": r"(?<!데코)타일|스톤|파벽돌|조약돌", "31": r"사이딩|외장|외벽|지붕|슁글|타이벡|기와", "29": r"문틀|방문|도어|중문|문짝", "29w": r"창호|창문|샷시|시스템창",
+        "30": r"단열|아이소핑크|방음|흡음|스티로폼", "32": r"철물|타카|피스|장선걸이|앙카|브라켓|경첩", "35": r"스테인|페인트|오일|바니시|바니쉬|도장|칠하기",
+        "37": r"공구|본드|실리콘|소품|정원|평상|벤치"}
 JEXC = {"23": r"루바|사이딩|판재|우드블럭|데크|후로링|마루|래티스|클립|엠보",
         "24": r"본드|프라이머|실리콘|석고|아이소|스티로|에이스|도깨비|페인트|부식|산화제",
         "27": r"프라이머|도깨비|페인트|부식|산화제", "28": r"세라픽스|멘트|드라이픽스|시공사례", "31": r"코르크", "32": r"프라이머"}
@@ -450,9 +456,11 @@ def build():
             title = MCAT.get(sb or "", "") or "기타"
             secs += f'<h2 id="s{(sb or "x").split("/")[-1] or "x"}">{E(title)} <small class="muted">{len(g)}종</small></h2>{_chrow if "건축철물" in title else ""}<div class="pg hrow">{"".join(pcard(p) for p in g)}</div>' + ('<p class="hsh">옆으로 밀어서 더 보기 ›</p>' if len(g) > 2 else '')
         toc = " · ".join(f'<a href="#s{(sb or "x").split("/")[-1] or "x"}">{E(MCAT.get(sb or "", "") or "기타")}</a>' for sb in subs)
+        _jv = sorted([v for v in V if re.search(JVRX.get(c, "$^"), v["title"].split("|")[0] + " " + v["title"])], key=lambda v: -v["n"])
+        _jvs = (f'<section class="wrap sec"><h2>{n} 관련 영상 <small class="muted">{len(_jv)}편</small></h2><p class="small muted">월드건축자재DIY 채널에서 이 자재를 직접 쓰고 고르는 영상입니다.</p>' + vsplit(_jv, "h3", 6, 12) + '</section>') if _jv else ""
         if not ps: ps_n = cnt[c]
         page(f"jaryo/{sl}.html", f"{n} 종류 사진 {len(ps) or cnt[c]}종 — {d} | 대전 월드건축자재", f"{n} 종류를 사진으로 확인하세요: {d}. 대전 유성 월드건축자재(영진목재) 매장 취급, 즉석 재단.",
-             f'<section class="wrap sec"><p class="crumb"><a href="/jaryo/">전체 자재</a> › {n}</p><h1>{n} <small class="muted">{len(ps)}종</small></h1><p class="lead">{d}. 사진을 누르면 상세 사진이 열립니다. 실물 확인·재단은 대전 매장에서 합니다.</p>{SEARCH}<div class="jall"><p class="small">{toc}</p>{secs}</div></section>{CTA}', "/jaryo/",
+             f'<section class="wrap sec"><p class="crumb"><a href="/jaryo/">전체 자재</a> › {n}</p><h1>{n} <small class="muted">{len(ps)}종</small></h1><p class="lead">{d}. 사진을 누르면 상세 사진이 열립니다. 실물 확인·재단은 대전 매장에서 합니다.</p>{SEARCH}<div class="jall"><p class="small">{toc}</p>{secs}</div></section>{_jvs}{CTA}', "/jaryo/",
              {"@context": "https://schema.org", "@type": "ItemList", "name": f"{n} 종류", "numberOfItems": len(ps),
               "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": p["name"], "image": p["img"]} for i, p in enumerate(ps[:100])]}, ps[0]["img"] if ps else thumb.get(c))
 
