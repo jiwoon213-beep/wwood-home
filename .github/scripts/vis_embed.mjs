@@ -5,14 +5,24 @@ import * as tf from "@tensorflow/tfjs-node"; import sharp from "sharp";
 const [SJ, CD, MD] = process.argv.slice(2);
 fs.mkdirSync(CD, { recursive: true }); fs.mkdirSync(MD, { recursive: true });
 let model;
-if (fs.existsSync(path.join(MD, "model.json"))) model = await tf.loadGraphModel("file://" + path.join(MD, "model.json"));
-else {
-  for (const u of ["https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v2_100_224/feature_vector/3/default/1",
-                   "https://www.kaggle.com/models/google/mobilenet-v2/TfJs/100-224-feature-vector/3"]) {
-    try { model = await tf.loadGraphModel(u, { fromTFHub: true }); console.log("model from", u); break; } catch (e) { console.log("model fail", u, e.message); }
+const MJ = path.join(MD, "model.json");
+if (!fs.existsSync(MJ) || !fs.existsSync(path.join(MD, "ok"))) {
+  // tfhub 원본 파일(model.json + 가중치 조각)을 그대로 받아 저장 → 브라우저도 똑같은 모델을 우리 사이트에서 받음
+  for (const u of ["https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v2_100_224/feature_vector/3/default/1/model.json?tfjs-format=file",
+                   "https://www.kaggle.com/models/google/mobilenet-v2/TfJs/100-224-feature-vector/3/model.json?tfjs-format=file"]) {
+    try {
+      const r = await fetch(u); if (!r.ok) throw new Error("http " + r.status);
+      const j = await r.json(); const base = r.url;
+      for (const f of fs.readdirSync(MD)) fs.unlinkSync(path.join(MD, f));
+      for (const g of j.weightsManifest) for (const w of g.paths) {
+        const wr = await fetch(new URL(w, base)); if (!wr.ok) throw new Error("w " + wr.status);
+        fs.writeFileSync(path.join(MD, w), Buffer.from(await wr.arrayBuffer()));
+      }
+      fs.writeFileSync(MJ, JSON.stringify(j)); fs.writeFileSync(path.join(MD, "ok"), "1"); console.log("model saved from", base); break;
+    } catch (e) { console.log("model fail", u, e.message); }
   }
-  await model.save("file://" + MD);
 }
+model = await tf.loadGraphModel("file://" + MJ);
 const J = JSON.parse(fs.readFileSync(SJ, "utf8")); const P = J.p || [];
 const items = J.d.map(x => x.i && x.i[0] === "~" ? P[+x.i[1]] + x.i.slice(2) : x.i);
 const urlOf = s => !s ? "" : s.startsWith("//") ? "https:" + s : s.startsWith("/") ? "https://www.wwood.co.kr" + s : s;
