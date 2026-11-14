@@ -15,7 +15,7 @@ if (!fs.existsSync(MJ) || !fs.existsSync(path.join(MD, "ok"))) {
       const j = await r.json(); const base = r.url;
       for (const f of fs.readdirSync(MD)) fs.unlinkSync(path.join(MD, f));
       for (const g of j.weightsManifest) for (const w of g.paths) {
-        const wr = await fetch(new URL(w, base)); if (!wr.ok) throw new Error("w " + wr.status);
+        const wr = await fetch(u.split("model.json")[0] + w + "?tfjs-format=file"); if (!wr.ok) throw new Error("w " + wr.status);
         fs.writeFileSync(path.join(MD, w), Buffer.from(await wr.arrayBuffer()));
       }
       fs.writeFileSync(MJ, JSON.stringify(j)); fs.writeFileSync(path.join(MD, "ok"), "1"); console.log("model saved from", base); break;
