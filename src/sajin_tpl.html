@@ -1,0 +1,34 @@
+<section class="wrap sec sjw"><h1>사진으로 제품 찾기</h1>
+<p class="muted">찾는 제품(철물·도어·몰딩·스테인·공구 등)을 카메라로 찍으면, 영진목재 홈페이지에 있는 제품 중에서 <b>가장 비슷한 제품</b>을 바로 찾아 드려요. 사진은 휴대폰 안에서만 비교하고 어디에도 올라가지 않아요.</p>
+<div class="sjb"><label class="sjc"><input type="file" accept="image/*" capture="environment" id="sjcam"><span>📷 카메라로 찍기</span></label><label class="sjc sjg"><input type="file" accept="image/*" id="sjalb"><span>🖼 앨범에서 고르기</span></label></div>
+<p class="small muted">제품 하나만 화면 가운데에 크게, 밝은 곳에서 찍으면 더 잘 찾아요.</p>
+<div id="sjst" class="sjst"></div><div class="sjpv" id="sjpv"></div>
+<h2 id="sjh" style="display:none">비슷한 제품</h2><div class="sjr" id="sjr"></div>
+<p class="small muted" id="sjnote" style="display:none">못 찾으셨나요? 위 검색창에 이름을 넣어 보시거나, 매장(__TEL__)에 전화로 물어봐 주세요.</p></section>
+<style>.sjb{display:flex;gap:10px;margin:14px 0 6px}.sjc{flex:1;position:relative;display:flex;align-items:center;justify-content:center;min-height:64px;border-radius:16px;background:#1D1B18;color:#fff;font-weight:800;font-size:18px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.18)}.sjc.sjg{background:#fff;color:#1D1B18;border:1.5px solid #1D1B18;box-shadow:none}.sjc input{position:absolute;inset:0;opacity:0;cursor:pointer}.sjst{margin:12px 0;font-weight:700;min-height:1.4em}.sjpv img{max-width:180px;max-height:180px;border-radius:12px;border:1px solid #e6e1d8;display:block}.sjr{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.sjr .pd{max-width:none}.sjr .pi{display:block;aspect-ratio:1;background:#fff}.sjr .pi img{width:100%;height:100%;object-fit:contain}.sjr .pd.top{grid-column:1/-1;display:flex;align-items:center;border:2px solid #1D1B18}.sjr .pd.top .pi{width:130px;flex:0 0 130px}.sjr .pd.top b{font-size:16px}@media(max-width:600px){.sjr{grid-template-columns:repeat(2,1fr)}}</style>
+<script>
+(function(){var V="/assets/vis/",M=null,W=null,Q=null,I=null,st=document.getElementById("sjst");
+function say(t){st.textContent=t}
+function js(s){return new Promise(function(ok,no){var e=document.createElement("script");e.src=s;e.onload=ok;e.onerror=no;document.head.appendChild(e)})}
+function bin(u){return fetch(u).then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()})}
+function h2f(h){var s=(h&0x8000)?-1:1,e=(h>>10)&31,f=h&1023;return e==0?s*Math.pow(2,-14)*(f/1024):e==31?0:s*Math.pow(2,e-15)*(1+f/1024)}
+function load(){if(M)return Promise.resolve();say("처음 한 번만 준비해요… (약 10초)");
+ return Promise.all([js(V+"tf.min.js"),fetch(V+"items.json").then(function(r){return r.json()}),bin(V+"proj.bin"),bin(V+"items.bin")]).then(function(a){I=a[1];var h=new Uint16Array(a[2]),f=new Float32Array(h.length);for(var k=0;k<h.length;k++)f[k]=h2f(h[k]);W=f;Q=new Int8Array(a[3]);return tf.loadGraphModel(V+"model/model.json")}).then(function(m){M=m})}
+function emb(c){return tf.tidy(function(){return M.predict(tf.browser.fromPixels(c).toFloat().div(255).expandDims(0)).dataSync().slice(0)})}
+function crop(img,z){var c=document.createElement("canvas");c.width=c.height=224;var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,224,224);var s=Math.min(img.width,img.height)*z;x.drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,224,224);return c}
+function proj(e){var D=I.dim,n=0,k,j;for(k=0;k<1280;k++)n+=e[k]*e[k];n=Math.sqrt(n)||1;var y=new Float32Array(D),m=0;for(k=0;k<1280;k++){var v=e[k]/n-W[k];for(j=0;j<D;j++)y[j]+=v*W[1280+k*D+j]}for(j=0;j<D;j++)m+=y[j]*y[j];m=Math.sqrt(m)||1;for(j=0;j<D;j++)y[j]/=m;return y}
+function esc(s){return String(s||"").replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function href(p){return p.l?p.l:p.d?"https://wwood.kr/home/"+(/Mobi|Android|iPhone|iPod|iPad/i.test(navigator.userAgent)?"mobile":"mall")+"/shoplist.php?idx="+p.d+"&pmode=view":"/jaryo/"+p.u+".html"}
+function img(p){return p.i&&p.i.charAt(0)=="~"?I.p[+p.i.charAt(1)]+p.i.slice(2):p.i}
+function run(f){if(!f)return;var u=URL.createObjectURL(f);document.getElementById("sjpv").innerHTML='<img src="'+u+'" alt="찍은 사진">';
+ load().then(function(){say("비슷한 제품 찾는 중…");var im=new Image();im.onload=function(){setTimeout(function(){
+  var ys=[proj(emb(crop(im,1))),proj(emb(crop(im,.7))),proj(emb(crop(im,.45)))],D=I.dim,N=Q.length/D,S=new Float32Array(N),i,j,t;
+  for(i=0;i<N;i++){var b=0;for(t=0;t<3;t++){var s=0,o=i*D,y=ys[t];for(j=0;j<D;j++)s+=y[j]*Q[o+j];if(s>b)b=s}S[i]=b}
+  var ix=[];for(i=0;i<N;i++)ix.push(i);ix.sort(function(a,b){return S[b]-S[a]});var seen={},out=[];
+  for(i=0;i<ix.length&&out.length<24;i++){var p=I.d[ix[i]],k=p.n;if(seen[k])continue;seen[k]=1;out.push(p)}
+  document.getElementById("sjr").innerHTML=out.map(function(p,n){var l=href(p),ext=!p.l;return'<a class="pd'+(n?"":" top")+'" href="'+esc(l)+'"'+(ext?' target="_blank" rel="noopener"':"")+'><span class="pi"><img loading="lazy" referrerpolicy="no-referrer" src="'+esc(img(p))+'" alt="'+esc(p.n)+'"></span><span><b>'+(n?"":"가장 비슷한 제품 · ")+esc(p.n)+'</b><small>'+esc(p.s||p.c||"")+'</small></span></a>'}).join("");
+  document.getElementById("sjh").style.display="";document.getElementById("sjnote").style.display="";say("");document.getElementById("sjh").scrollIntoView({behavior:"smooth"});
+ },30)};im.src=u}).catch(function(){say("준비 중이에요. 잠시 뒤 다시 해 주세요.")})}
+document.getElementById("sjcam").onchange=function(){run(this.files[0])};document.getElementById("sjalb").onchange=function(){run(this.files[0])};
+})();
+</script>
