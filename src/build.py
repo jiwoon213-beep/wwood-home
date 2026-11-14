@@ -325,7 +325,7 @@ def build():
     newsec = (f'<section class="wrap sec"><h2>새로 올라온 영상</h2>{vsplit(newv, "h3")}</section>' if newv else "")
     def _pth(p):
         vs = p.get("videos") or []
-        if vs: return f'<img loading="lazy" decoding="async" width="480" height="270" src="https://i.ytimg.com/vi/{vs[0]}/hqdefault.jpg" alt="">'
+        if vs and p["title"].startswith("[영상]"): return f'<img loading="lazy" decoding="async" width="480" height="270" src="https://i.ytimg.com/vi/{vs[0]}/hqdefault.jpg" alt="">'  # 영상 썸네일은 영상 소식에만, 글은 글 카드로
         t = re.sub(r"\s*[—|].*$", "", p["title"])[:18]
         return f'<i class="pci"><em>{"자재·인테리어 소식" if "-news-" in p.get("slug", "") else "자재 정보"}</em>{E(t)}</i>'
     plist = lambda ps: "".join(f'<a class="pc" href="/news/{p["slug"]}.html">{_pth(p)}<small>{E(p.get("date",""))}</small><b>{E(p["title"])}</b><span>{E(p.get("desc",""))}</span></a>' for p in ps)
