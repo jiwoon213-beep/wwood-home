@@ -471,7 +471,7 @@ ul.appgl b{color:var(--red)}
 ul.mli{align-items:stretch!important}ul.mli li{flex:0 0 min(78%,300px)!important;padding:12px 14px!important}ul.mli li > b{font-size:15.5px;line-height:1.35}ul.mli .mnote{display:-webkit-box!important;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:13.5px;line-height:1.45}ul.mli li .mlks{margin-top:auto!important;padding-top:10px}
 ul.mli li{flex:0 0 min(72%,280px)!important}ul.mli .mnote{-webkit-line-clamp:2!important;font-size:13px!important}ul.mli .mnote+.mnote{margin-top:4px}ul.mli .mlks{display:flex;flex-wrap:wrap;gap:6px}ul.mli .mlk{padding:6px 11px!important;font-size:13px!important;margin:0!important;line-height:1.3}
 
-.ylb{background:rgba(12,11,10,.97)!important}
+.ylb{background:#0c0b0a!important}
 .ylv .ylvh{display:flex;justify-content:space-between;align-items:baseline}.ylv .ylvh small{font-size:12px;font-weight:600;opacity:.7}
 .ylvs{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain}.ylvs::-webkit-scrollbar{display:none}
 .ylvc{flex:0 0 88%;scroll-snap-align:start;text-align:left}.ylvs .ylvc:only-child{flex-basis:100%}
