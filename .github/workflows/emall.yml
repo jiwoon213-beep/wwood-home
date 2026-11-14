@@ -1,4 +1,4 @@
-name: 본덱스(이몰링) 제품만 동기화
+name: 본덱스·삼익 제품만 동기화
 on: { workflow_dispatch: {} }
 permissions: { contents: write }
 concurrency: { group: emall, cancel-in-progress: false }
@@ -10,7 +10,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
-      - run: python3 .github/scripts/fetch_emall.py
+      - run: python3 .github/scripts/fetch_emall.py || echo "emall failed"
+      - run: python3 .github/scripts/fetch_samik.py || echo "samik failed"
       - run: |
           git stash -q && git pull -q --rebase && git stash pop -q || true
           cd src && python3 build.py https://www.wwood.co.kr && cp -r out/. .. && rm -rf out && cd ..

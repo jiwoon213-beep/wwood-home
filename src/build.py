@@ -126,6 +126,10 @@ if os.path.exists(f"{ROOT}/data/emall.tsv"):
 if os.path.exists(f"{ROOT}/data/nichiha.tsv"):
     _NHC = [l.split("|")[1] for l in open(f"{ROOT}/data/nichiha.tsv", encoding="utf-8") if l.strip() and not l.startswith("#")]
     PROD = [p for p in PROD if "31" not in p["tops"] or not any(re.search(c + r"(?!\d)", p["name"]) for c in _NHC)]
+# 삼익산업(/samik/)에 같은 이름 제품이 있으면 기존 쇼핑몰 자재 쪽을 뺌(중복 제거)
+if os.path.exists(f"{ROOT}/data/samik.tsv"):
+    _SMK = {re.sub(r"[\s\-·()\[\]/,.]", "", l.split("|")[3]).lower() for l in open(f"{ROOT}/data/samik.tsv", encoding="utf-8") if l.count("|") >= 4}
+    PROD = [p for p in PROD if re.sub(r"[\s\-·()\[\]/,.]", "", p["name"]).lower() not in _SMK]
 def subof(p, top): return next((c for c in p["cats"] if c.split("/")[0] == top and c.split("/")[1]), None)
 # 자재 백과 사진: slug → (쇼핑몰 분류, 이름 정규식, 제외 정규식)
 MPHOTO = {"hapan": (["24/140"], "합판|판넬|보드", "OSB|O\\.S\\.B|M\\.?D\\.?F|석고|아이소|스티로|본드|실리콘|프라이머|에이스|문$"), "osb": ([], "OSB|O\\.S\\.B|스마트랩", None),
@@ -225,7 +229,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><img class="lm" src="/assets/logo-mark.svg" width="46" height="46" alt=""><span class="lt"><b>영진종합목재</b><small><em>월드건축자재</em> · 충청권 최대규모 목재상</small></span></a>
 <button class="mnb" type="button" aria-expanded="false" aria-controls="gnav" onclick="var h=this.closest('header'),o=h.classList.toggle('open');this.setAttribute('aria-expanded',o);this.innerHTML=o?'✕ 닫기':'☰ 메뉴'">☰ 메뉴</button><nav id="gnav">{nav}</nav></div></header>
 <main>{body}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">DIY 만들기</a> · <a href="/sigongbeop/">인테리어 자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/jeonguk/">배송 지역</a> · <a href="/jajae/">자재 백과</a> · <a href="/calc.html">자재 계산기</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/gagyeok/">자재 가격 가이드</a> · <a href="/cheolmul/">목재 철물</a> · <a href="/taka/">타카·타카핀</a> · <a href="/yerim/">예림 중문·도어</a> · <a href="/younglim/">영림 도어·중문·필름</a> · <a href="/shenu/">쉐누 도어·몰딩</a> · <a href="/bupum/">철물·공구·부속</a> · <a href="/bondex/">본덱스 스테인·페인트</a> · <a href="/nichiha/">니치하 세라믹 사이딩</a> · <a href="/local/">지역별 시공</a> · <a href="/faq.html">자주 묻는 질문</a> · <a href="/yongeo.html">현장 용어</a> · <a href="/privacy.html">개인정보처리방침</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mandeul/">DIY 만들기</a> · <a href="/sigongbeop/">인테리어 자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/jeonguk/">배송 지역</a> · <a href="/jajae/">자재 백과</a> · <a href="/calc.html">자재 계산기</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/gagyeok/">자재 가격 가이드</a> · <a href="/cheolmul/">목재 철물</a> · <a href="/taka/">타카·타카핀</a> · <a href="/yerim/">예림 중문·도어</a> · <a href="/younglim/">영림 도어·중문·필름</a> · <a href="/shenu/">쉐누 도어·몰딩</a> · <a href="/bupum/">철물·공구·부속</a> · <a href="/bondex/">본덱스 스테인·페인트</a> · <a href="/nichiha/">니치하 세라믹 사이딩</a> · <a href="/samik/">삼익산업 건축자재</a> · <a href="/local/">지역별 시공</a> · <a href="/faq.html">자주 묻는 질문</a> · <a href="/yongeo.html">현장 용어</a> · <a href="/privacy.html">개인정보처리방침</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로(제조사 제품 사진 제외) 무단 복제·사용을 금합니다.<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr";
 function rd(x){{var v=null;try{{v=localStorage.getItem(x)}}catch(e){{}}if(v===null){{var m=document.cookie.match(new RegExp("(?:^|; )"+x+"=([^;]*)"));v=m?m[1]:null}}return v}}
@@ -420,11 +424,18 @@ def build():
     if _emr:
         _bdrow = '<div class="chr" id="bondex"><p class="chl"><b>본덱스 스테인·페인트·오일</b> 오일스테인·바니쉬·페인트·도장도구 ' + str(len(_emr)) + '종 · <a class="cha" href="/bondex/">전체 보기 ›</a></p><div class="gcs">' + "".join(f'<a class="gc gpc" href="/bondex/{sl}.html"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{_em0.IMG(next(r for r in _emr if r[0] == t or _emc.get(r[0], (0,))[0] == t)[3])}" alt="본덱스 {E(_emc[t][1])}"><span>{E(_emc[t][1].replace("/", "·"))}</span></a>' for t, sl in _em0.SLUG.items() if t in _emc and any(r[0] == t or _emc.get(r[0], (0,))[0] == t for r in _emr)) + '</div></div>'
         if not cnt.get("35"): cnt["35"] = len(_emr); thumb["35"] = _em0.IMG(_emr[0][3])
+    import samik as _sm0
+    _smr = _sm0.load(ROOT)
+    def _smrow(c):
+        ts = [t for t, cc in _sm0.JC.items() if cc == c and any(r[0] == t for r in _smr)]
+        if not ts: return ""
+        return ('<div class="chr" id="samik' + c + '"><p class="chl"><b>삼익산업 ' + "·".join(ts) + '</b> ' + str(sum(1 for r in _smr if r[0] in ts)) + '종 · <a class="cha" href="/samik/' + _sm0.SLUG[ts[0]] + '.html">전체 보기 ›</a></p><div class="gcs">'
+                + "".join(f'<a class="gc gpc" href="/samik/{_sm0.SLUG[t]}.html#s{i}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{_sm0.IMG(next(r for r in _smr if r[0] == t and r[1] == sb)[4])}" alt="삼익 {E(sb)}"><span>{E(sb)}</span></a>' for t in ts for i, sb in enumerate(dict.fromkeys(r[1] for r in _smr if r[0] == t))) + '</div></div>')
     import nichiha as _nh0
     _nhr = _nh0.load(ROOT)
     _nhrow = ('<div class="chr" id="nichiha"><p class="chl"><b>니치하 세라믹 사이딩</b> 16×455×3,030mm · 우드·스톤·타일벽돌 ' + str(len(_nhr)) + '종 · <a class="cha" href="/nichiha/">전체 보기 ›</a></p><div class="gcs">'
               + "".join(f'<a class="gc gpc" href="/nichiha/#{k}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{_nh0.TH(next(r for r in _nhr if r[0] == k)[1])}" alt="니치하 {E(nm)}"><span>{E(nm)}</span></a>' for k, nm, d in _nh0.VIS if any(r[0] == k for r in _nhr)) + '</div></div>') if _nhr else ""
-    jrows = "".join(f'<section class="wrap sec jall" id="c{sl}"><h2>{n} <small class="muted">{cnt[c]}종</small> <a class="small" href="/jaryo/{sl}.html">전체 보기 ›</a></h2><p class="small muted">{d}</p>{_chrow if c == "32" else ""}{_yrrow if c == "29" else ""}{_bdrow if c == "35" else ""}{_nhrow if c == "31" else ""}<div class="pg hrow">' + "".join(pcard(p) for p in [p for p in PROD if c in p["tops"]][:16]) + f'<a class="pd more" href="/jaryo/{sl}.html"><span class="pi"><b>+{max(0,cnt[c]-16)}</b></span><b>{n} 전체 보기 ›</b><small>{cnt[c]}종</small></a></div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>' for c, sl, n, d in JCAT if cnt[c])
+    jrows = "".join(f'<section class="wrap sec jall" id="c{sl}"><h2>{n} <small class="muted">{cnt[c]}종</small> <a class="small" href="/jaryo/{sl}.html">전체 보기 ›</a></h2><p class="small muted">{d}</p>{_chrow if c == "32" else ""}{_yrrow if c == "29" else ""}{_bdrow if c == "35" else ""}{_nhrow if c == "31" else ""}{_smrow(c)}<div class="pg hrow">' + "".join(pcard(p) for p in [p for p in PROD if c in p["tops"]][:16]) + f'<a class="pd more" href="/jaryo/{sl}.html"><span class="pi"><b>+{max(0,cnt[c]-16)}</b></span><b>{n} 전체 보기 ›</b><small>{cnt[c]}종</small></a></div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>' for c, sl, n, d in JCAT if cnt[c])
     page("jaryo/index.html", f"전체 자재 사진 {len([p for p in PROD if p['tops']])}종 — 각재·합판·데크·사이딩·철물 | 대전 영진목재", "대전 월드건축자재(영진목재) 매장 취급 자재를 사진으로 확인하세요. 각재, 합판, 집성판, 데크, 마루, 내장재, 타일, 사이딩, 철물, 스테인.",
          f'<section class="wrap sec"><h1>전체 자재</h1>{SEARCH}<p class="lead">매장에서 취급하는 자재를 사진으로 모았습니다. 실물은 대전 매장에서 보고, 원하는 사이즈로 재단해 가세요. 가격은 <a href="/price.html">기준가</a> 또는 매장에서 안내합니다.</p><div class="chips jall jchips">{jchips}</div></section>{jrows}{CTA}', "/jaryo/", None, thumb.get("24"))
     for c, sl, n, d in JCAT:
@@ -433,7 +444,7 @@ def build():
         subs = []
         for p in ps:
             if subof(p, c) not in subs: subs.append(subof(p, c))
-        secs = _yrrow if c == "29" else (_bdrow if c == "35" else (_nhrow if c == "31" else ""))
+        secs = (_yrrow if c == "29" else (_bdrow if c == "35" else (_nhrow if c == "31" else ""))) + _smrow(c)
         for sb in subs:
             g = [p for p in ps if subof(p, c) == sb]
             title = MCAT.get(sb or "", "") or "기타"
@@ -1205,6 +1216,8 @@ def build():
     YLLIST = _yl.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
     import shenu as _shn
     SHLIST = _shn.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
+    import samik as _smk
+    SMLIST = _smk.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
     import nichiha as _nh
     NHLIST = _nh.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
     import emall as _em
@@ -1509,6 +1522,11 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     if _shr: _bc.append(("/shenu/", "쉐누 도어·몰딩", f"{len(_shr)}종", _sh0.IMG(_shr[0][1])))
     _bc.append(("/taka/", "제일타카 타카·핀", "타카·핀·콤프레셔", _tkH.IMG(_tkdH.TOOLS["interior"][2][0][5])))
     try:
+        import samik as _smH
+        _smh = _smH.load(ROOT)
+        if _smh: _bc.append(("/samik/", "삼익산업 건축자재", f"{len(_smh)}종", _smH.IMG(_smh[0][4])))
+    except Exception: pass
+    try:
         import nichiha as _nhH
         _nhh = _nhH.load(ROOT)
         if _nhh: _bc.append(("/nichiha/", "니치하 세라믹 사이딩", f"{len(_nhh)}종", _nhH.TH(_nhh[0][1])))
@@ -1745,7 +1763,7 @@ Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i
         "".join(f"<url><loc>{u}</loc><lastmod>{LMD[u]}</lastmod>" + (f"<image:image><image:loc>{html.escape(SIMG[u])}</image:loc></image:image>" if SIMG.get(u) else "") + "".join(f"<image:image><image:loc>{BASE}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg</image:loc></image:image>" for d_ in ("mandeul", "sigongbeop") if f"/{d_}/" in u and not u.endswith("/") and os.path.exists(f"{ROOT}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg")) + "</url>\n" for u in SITEMAP) + "</urlset>\n")
     # 전체 자재 검색: 쇼핑몰 자재 + 제조사·철물·본덱스 사진 카드(.yri) 전부 → /assets/search.json
     _sx, _seen = list(idx), set()
-    for d_ in ("bondex", "bupum", "yerim", "younglim", "shenu", "nichiha"):
+    for d_ in ("bondex", "bupum", "yerim", "younglim", "shenu", "nichiha", "samik"):
         for fn in sorted(os.listdir(f"{OUT}/{d_}")) if os.path.isdir(f"{OUT}/{d_}") else []:
             if not fn.endswith(".html"): continue
             tx = open(f"{OUT}/{d_}/{fn}", encoding="utf-8").read()
