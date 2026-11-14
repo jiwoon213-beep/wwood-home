@@ -29,6 +29,7 @@ function run(f){if(!f)return;var u=URL.createObjectURL(f);document.getElementByI
   document.getElementById("sjr").innerHTML=out.map(function(p,n){var l=href(p),ext=!p.l;return'<a class="pd'+(n?"":" top")+'" href="'+esc(l)+'"'+(ext?' target="_blank" rel="noopener"':"")+'><span class="pi"><img loading="lazy" referrerpolicy="no-referrer" src="'+esc(img(p))+'" alt="'+esc(p.n)+'"></span><span><b>'+(n?"":"가장 비슷한 제품 · ")+esc(p.n)+'</b><small>'+esc(p.s||p.c||"")+'</small></span></a>'}).join("");
   document.getElementById("sjh").style.display="";document.getElementById("sjnote").style.display="";say("");document.getElementById("sjh").scrollIntoView({behavior:"smooth"});
  },30)};im.src=u}).catch(function(){say("준비 중이에요. 잠시 뒤 다시 해 주세요.")})}
+try{var ss=sessionStorage.getItem("sjimg");if(ss){sessionStorage.removeItem("sjimg");fetch(ss).then(function(r){return r.blob()}).then(run)}}catch(e){}
 document.getElementById("sjcam").onchange=function(){run(this.files[0])};document.getElementById("sjalb").onchange=function(){run(this.files[0])};
 })();
 </script>
