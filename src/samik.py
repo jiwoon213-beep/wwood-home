@@ -5,7 +5,8 @@
 import os, re
 from yerim import LB
 
-IMG = lambda p: "https://www.siwood.com" + p
+from urllib.parse import quote
+IMG = lambda p: "https://www.siwood.com" + quote(p)
 SLUG = {"구조재": "gujo", "외장재": "oejang", "지붕재": "jibung", "내장재": "naejang", "창호": "changho", "도어": "door", "기능재": "gineung", "조경": "jogyeong", "기타": "etc"}
 JC = {"구조재": "23", "외장재": "31", "지붕재": "31", "내장재": "27", "창호": "29w", "도어": "29", "기능재": "30", "조경": "25", "기타": "37"}  # 전체 자재 분류 연결
 DESC = {"구조재": "경량목구조·중목구조·특수목구조 자재", "외장재": "세라믹·시멘트 사이딩, 외장목재, 석재·타일, 스타코", "지붕재": "세라믹·적삼목 지붕재, 아스팔트슁글, 물받이",
