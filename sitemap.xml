@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 <url><loc>https://www.wwood.co.kr/</loc><lastmod>2026-11-15</lastmod></url>
-<url><loc>https://www.wwood.co.kr/news/</loc><lastmod>2026-11-15</lastmod></url>
+<url><loc>https://www.wwood.co.kr/news/</loc><lastmod>2026-11-16</lastmod></url>
 <url><loc>https://www.wwood.co.kr/news/2026-11-15-yt-xZbQPzd2Wag.html</loc><lastmod>2026-11-15</lastmod><image:image><image:loc>https://i.ytimg.com/vi/xZbQPzd2Wag/hqdefault.jpg</image:loc></image:image></url>
 <url><loc>https://www.wwood.co.kr/news/2026-11-15-yt-Z7kYYt4LfWg.html</loc><lastmod>2026-11-15</lastmod><image:image><image:loc>https://i.ytimg.com/vi/Z7kYYt4LfWg/hqdefault.jpg</image:loc></image:image></url>
 <url><loc>https://www.wwood.co.kr/news/2026-11-15-yt-AWmCzb67zB4.html</loc><lastmod>2026-11-15</lastmod><image:image><image:loc>https://i.ytimg.com/vi/AWmCzb67zB4/hqdefault.jpg</image:loc></image:image></url>
@@ -191,11 +191,32 @@
 <url><loc>https://www.wwood.co.kr/gagyeok/siding-gagyeok.html</loc><lastmod>2026-11-15</lastmod><image:image><image:loc>https://www.wwood.kr/modules/shop/files/2015/04/25/878_1.jpg</image:loc></image:image></url>
 <url><loc>https://www.wwood.co.kr/gagyeok/door-gagyeok.html</loc><lastmod>2026-11-15</lastmod><image:image><image:loc>https://www.wwood.kr/modules/shop/files/2013/02/14/235_1.jpg</image:loc></image:image></url>
 <url><loc>https://www.wwood.co.kr/gagyeok/</loc><lastmod>2026-11-15</lastmod></url>
-<url><loc>https://www.wwood.co.kr/gyeonjeok.html</loc><lastmod>2026-11-15</lastmod></url>
-<url><loc>https://www.wwood.co.kr/dobae-jangpan.html</loc><lastmod>2026-11-15</lastmod></url>
-<url><loc>https://www.wwood.co.kr/deck-gyesan.html</loc><lastmod>2026-11-15</lastmod></url>
-<url><loc>https://www.wwood.co.kr/gabyeok-gyesan.html</loc><lastmod>2026-11-15</lastmod></url>
+<url><loc>https://www.wwood.co.kr/gyeonjeok.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/dobae-jangpan.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/deck-gyesan.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/gabyeok-gyesan.html</loc><lastmod>2026-11-16</lastmod></url>
 <url><loc>https://www.wwood.co.kr/mirigi.html</loc><lastmod>2026-11-15</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/deck-1py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/deck-3py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/deck-5py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/deck-10py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/ruba-ceiling-2py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/ruba-ceiling-4py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/ruba-ceiling-8py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/ruba-ceiling-5py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/gypsum-ceiling-3py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/gypsum-ceiling-5py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/gypsum-ceiling-8py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/tempa-wall-12m.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/tempa-wall-24m.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/tempa-wall-36m.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/siding-nongmak.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/siding-house-30py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/floor-plywood-3py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/floor-plywood-5py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/wall-insul-3py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/wall-insul-5py.html</loc><lastmod>2026-11-16</lastmod></url>
+<url><loc>https://www.wwood.co.kr/yesi/</loc><lastmod>2026-11-16</lastmod></url>
 <url><loc>https://www.wwood.co.kr/cheolmul/janseon.html</loc><lastmod>2026-11-15</lastmod><image:image><image:loc>https://megatie.cafe24.com/web/product/medium/JH24.jpg</image:loc></image:image></url>
 <url><loc>https://www.wwood.co.kr/cheolmul/gidungbatchim.html</loc><lastmod>2026-11-15</lastmod><image:image><image:loc>https://megatie.cafe24.com/web/product/medium/201512/12586_shop1_139093.png</image:loc></image:image></url>
 <url><loc>https://www.wwood.co.kr/cheolmul/jeongja.html</loc><lastmod>2026-11-15</lastmod><image:image><image:loc>https://megatie.cafe24.com/web/product/medium/G4.jpg</image:loc></image:image></url>
@@ -516,7 +537,7 @@
 <url><loc>https://www.wwood.co.kr/sigongbeop/</loc><lastmod>2026-11-15</lastmod></url>
 <url><loc>https://www.wwood.co.kr/mandeul/</loc><lastmod>2026-11-15</lastmod></url>
 <url><loc>https://www.wwood.co.kr/cut.html</loc><lastmod>2026-11-15</lastmod><image:image><image:loc>https://www.wwood.co.kr/assets/store/plywood-rack.jpg</image:loc></image:image></url>
-<url><loc>https://www.wwood.co.kr/calc.html</loc><lastmod>2026-11-15</lastmod></url>
+<url><loc>https://www.wwood.co.kr/calc.html</loc><lastmod>2026-11-16</lastmod></url>
 <url><loc>https://www.wwood.co.kr/bigyo/hapan-osb-mdf.html</loc><lastmod>2026-11-15</lastmod></url>
 <url><loc>https://www.wwood.co.kr/bigyo/hapan-types.html</loc><lastmod>2026-11-15</lastmod></url>
 <url><loc>https://www.wwood.co.kr/bigyo/bangbu-hapdeck.html</loc><lastmod>2026-11-15</lastmod></url>
