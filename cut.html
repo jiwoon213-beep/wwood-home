@@ -47,7 +47,7 @@
 <p class="small muted">톱날 두께 3mm를 빼고 계산합니다. 실제 재단은 자재 상태(휨·모서리)에 따라 조금 달라질 수 있어요. 원판·각재 규격은 매장 취급 제품 기준입니다.</p>
 </section>
 <style>
-.cutp h1{margin-bottom:6px}.cthl{display:block;margin-top:10px;font-size:13px;color:var(--mut);font-weight:700}.cthl .cin{margin-top:4px;color:var(--ink);font-weight:700}.cres .cfee{background:#fff;border-color:var(--line)}.cres .cfee b{color:var(--ink)}.cres .ctot{background:#1D1B18;border-color:#1D1B18;color:#fff}.cres .ctot b{color:#ffd27a}.cres .ctot small{color:rgba(255,255,255,.7)}.cfeet td:last-child{font-weight:800}.cutbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+.cutp h1{margin-bottom:6px}.cthl{display:block;margin-top:10px;font-size:13px;color:var(--mut);font-weight:700}.cthl .cin{margin-top:4px;color:var(--ink);font-weight:700}.cres .cest.cfee{background:#fff;border-color:var(--line)}.cres .cest.cfee b{color:var(--ink)}.cres .cest.ctot{background:#1D1B18;border-color:#1D1B18;color:#fff}.cres .cest.ctot b{color:#ffd27a}.cres .cest.ctot small{color:rgba(255,255,255,.75)}.cfeet td:last-child{font-weight:800}.cutbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
 .cstep{font-weight:800;font-size:18px;margin:14px 0 8px;display:flex;align-items:center;gap:8px}.cstep:first-child{margin-top:0}.cstep small{font-weight:500;color:var(--mut);font-size:14px}
 .cn{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--red);color:#fff;align-items:center;justify-content:center;font-size:14px}
 .ctabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.ctabs button{border:1px solid var(--line);background:#fff;border-radius:20px;padding:8px 14px;font-size:15px;font-weight:700;cursor:pointer}.ctabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
@@ -296,7 +296,7 @@ function save(){
 function load(){
  var q={};location.hash.slice(1).split('&').forEach(function(kv){var a=kv.split('=');if(a[0])q[a[0]]=decodeURIComponent(a[1]||'')});
  if(q.m&&D.m&&D.m[q.m]){q.c=''+D.m[q.m][0];q.p=''+D.m[q.m][1];if(!q.s){var cc=D.cats[D.m[q.m][0]];q.s=cc.lin?'900x0x4':'600x400x2'}}
- if(q.c&&D.cats[+q.c]){setCat(+q.c,true);if(q.w)$("cw").value=q.w;if(q.h)$("ch").value=q.h;if(q.p&&curCat().items&&curCat().items[+q.p]){prod=+q.p;$("cprod").value=prod}$("cgrain").checked=q.g=="1";
+ if(q.c&&D.cats[+q.c]){setCat(+q.c,true);if(q.w)$("cw").value=q.w;if(q.h)$("ch").value=q.h;if(q.p&&curCat().items&&curCat().items[+q.p]){prod=+q.p;$("cprod").value=prod}setThk();$("cgrain").checked=q.g=="1";
   if(q.s)parts=q.s.split('_').map(function(t){return t.split('x').map(Number)});drawParts();run();return true}
 }
 $("cprod").onchange=function(){prod=+this.value;setThk();drawParts();run()};$("cthk").onchange=run;$("cw").onchange=$("ch").onchange=function(){drawParts();run()};$("cw").oninput=$("ch").oninput=run;$("cgrain").onchange=run;
