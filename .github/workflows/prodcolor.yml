@@ -1,0 +1,25 @@
+name: 공사 미리보기 — 제품 사진 색 뽑기
+on:
+  workflow_dispatch:
+  schedule: [{ cron: '10 14 * * 0' }]   # 매주 일요일 23:10 KST
+permissions:
+  contents: write
+concurrency: { group: build, cancel-in-progress: false }
+jobs:
+  color:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install -q pillow
+      - run: python3 .github/scripts/prod_color.py
+      - name: build & commit
+        run: |
+          cd src && python3 build.py https://www.wwood.co.kr && cp -r out/. .. && rm -rf out && cd ..
+          git config user.name "wwood-build-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && { echo "no change"; exit 0; }
+          git commit -q -m "공사 미리보기: 제품 사진 색 갱신" && git pull --rebase -X theirs -q && git push

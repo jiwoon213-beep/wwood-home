@@ -1263,7 +1263,7 @@ def build():
     _gj.gen2(page, E, CTA, faqslide, TEL)
     _gj.gen3(page, P, E, CTA, faqslide, TEL)
     import mirigi as _mr
-    _mr.gen(page, P, E, CTA, faqslide, TEL)
+    _mr.gen(page, P, E, CTA, faqslide, TEL, PROD, ROOT)
     import cheolmul as _ch
     CHLIST = _ch.gen(page, P, E, CTA, faqslide, BASE, ADDR, HOURS, ALLFAQ)
     import taka as _tk
