@@ -1826,7 +1826,10 @@ Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i
         try: b = open(f"{OUT}/{rel}", "rb").read()
         except OSError: return today
         b = re.sub(rb"\?v=[0-9a-f]{8}", b"", b)
-        h = hashlib.md5(b).hexdigest()[:12]
+        i0, i1 = b.find(b"<main"), b.rfind(b"</main>")
+        if i0 >= 0 and i1 > i0: b = b[i0:i1]  # 메뉴·바닥글 변경은 빼고 본문만 비교
+        b = re.sub(rb"<head>.*?</head>", b"", b, flags=re.S)
+        h = "m1" + hashlib.md5(b).hexdigest()[:12]
         if _lm.get(u, [None])[0] != h: _lm[u] = [h, today]
         return _lm[u][1]
     LMD = {u: _lmod(u) for u in SITEMAP}
