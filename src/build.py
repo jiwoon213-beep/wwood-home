@@ -1260,6 +1260,7 @@ def build():
     GGLIST = _gg.gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ, mat_photos)
     import gyeonjeok as _gj
     _gj.gen(page, P, E, CTA, faqslide, TEL)
+    _gj.gen2(page, E, CTA, faqslide, TEL)
     import cheolmul as _ch
     CHLIST = _ch.gen(page, P, E, CTA, faqslide, BASE, ADDR, HOURS, ALLFAQ)
     import taka as _tk
@@ -1345,6 +1346,7 @@ def build():
     page("calc.html", "자재 계산기 — 데크·석고보드·합판 몇 장? 문짝·중문 크기까지 | 영진목재", "데크 방부목·합성데크 장수, 석고보드·합판·단열재 장수, 몰딩·걸레받이 길이, 데코타일·강마루 박스 수, 페인트 양, 평↔㎡를 바로 계산하세요. 대전 영진목재(월드건축자재) 재단·배송.",
 f"""<section class="wrap sec"><h1>자재 계산기</h1><p class="lead">필요한 양을 미리 계산해 오시면 매장에서 바로 재단해 드립니다. 결과는 참고용입니다(로스 포함). 어떻게 잘리는지는 <a href="/cut.html">재단 미리보기</a>에서 그림으로 확인하세요.</p>
 <a class="gjban" href="/gyeonjeok.html"><b>방 하나 통째로 계산하기 ›</b><span>방 크기만 넣으면 석고보드·단열·루바·템바보드·데크·문까지 공정별 자재비 합계</span></a>
+<a class="gjban" href="/dobae-jangpan.html" style="background:#fff;color:#1D1B18!important;border:1.5px solid #1D1B18"><b style="color:#c41a1f">도배·장판·타일·페인트 계산기 ›</b><span>벽지 몇 롤, 장판 몇 m, 타일 몇 장, 페인트 몇 L</span></a>
 <div class="chips" id="cchips">{chips}</div>
 <div class="cnav"><button class="cb" data-d="-1">◀ 이전</button><span id="cpos" class="small muted"></span><button class="cb" data-d="1">다음 ▶</button></div>
 <div class="cslider" id="cslider">{slides}</div>
