@@ -16,6 +16,7 @@ for l in open("src/data/products.tsv", encoding="utf-8"):
     img = x[2].replace("@", "/common/ezs_data/product/", 1) if x[2].startswith("@") else x[2].replace("!", "/modules/shop/files/", 1) if x[2].startswith("!") else x[2]
     rows.append((x[0], m, "https://www.wwood.kr" + img))
 os.makedirs("src/assets/mt", exist_ok=True)
+PLANK = {r[0]: 1 for r in rows if r[1] in ("deck", "maru", "ruba", "siding")}
 def tile(pid, im):
     # 무늬 조각: 가운데(워터마크 자리)는 피하고, 네 귀퉁이 중 흰 배경이 없고 가장 고른 곳을 잘라 저장
     w, h = im.size
@@ -36,6 +37,11 @@ def tile(pid, im):
         if best is None or sc < best[0]: best = (sc, box, white)
     if best[2] > .15: return
     t = im.crop(best[1]); t.thumbnail((256, 256))
+    if PLANK.get(pid):  # 판재류: 나뭇결이 가로로 가게 돌려서 저장
+        q = t.convert("L").resize((48, 48)); a = q.load()
+        dx = sum(abs(a[x + 1, y] - a[x, y]) for x in range(47) for y in range(48))
+        dy = sum(abs(a[x, y + 1] - a[x, y]) for x in range(48) for y in range(47))
+        if dx > dy * 1.15: t = t.rotate(90, expand=True)
     t.save(f"src/assets/mt/{pid}.jpg", "JPEG", quality=72, optimize=True)
 def col(r):
     try:
