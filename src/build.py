@@ -461,7 +461,7 @@ def build():
     def _knrow(c):
         gs = [g for g, v in _kn0.GRP.items() if v[1] == c and any(r[0] == g for r in _knr)]
         if not gs: return ""
-        return ('<div class="chr" id="knauf' + c + '"><p class="chl"><b>크나우프 ' + "·".join(gs) + '</b> ' + str(sum(1 for r in _knr if r[0] in gs)) + '종 · <a class="cha" href="/knauf/' + _kn0.GRP[gs[0]][0] + '.html">전체 보기 ›</a></p><div class="gcs">'
+        return ('<div class="chr" id="knauf' + c + '"><p class="chl"><b>크나우프 ' + ("석고보드·천장재" if len(gs) > 2 else "·".join(gs)) + '</b> ' + str(sum(1 for r in _knr if r[0] in gs)) + '종 · <a class="cha" href="/knauf/' + _kn0.GRP[gs[0]][0] + '.html">전체 보기 ›</a></p><div class="gcs">'
                 + "".join(f'<a class="gc gpc" href="/knauf/{_kn0.GRP[g][0]}.html"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{_kn0.IMG(next(r for r in _knr if r[0] == g)[4], 400)}" alt="크나우프 {E(g)}"><span>{E(g)}</span></a>' for g in gs) + '</div></div>')
     import nichiha as _nh0
     _nhr = _nh0.load(ROOT)
