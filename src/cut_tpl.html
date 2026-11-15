@@ -10,7 +10,7 @@
   <label>원판 가로<input class="cin" id="cw" type="number" inputmode="numeric" value="1220"></label>
   <label>원판 세로<input class="cin" id="ch" type="number" inputmode="numeric" value="2440"></label>
  </div>
- <label class="cthl">재단비 기준 두께 <select id="cthk" class="cin"><option value="12">12T 이하 — 1컷 1,000원</option><option value="18">15T·18T — 1컷 1,500원</option><option value="20">20T 이하 — 1컷 2,000원</option><option value="24">24T 이하 — 1컷 2,500원</option><option value="30">30T 이하 — 1컷 3,000원</option><option value="99">30T 넘음 — 매장 문의</option></select></label>
+ <label class="cthl">재단비 기준 두께 <select id="cthk" class="cin"><option value="12">12T 이하 — 1컷 1,000원</option><option value="18">15T·18T — 1컷 1,500원</option><option value="20">20T 이하 — 1컷 2,000원</option><option value="24">24T 이하 — 1컷 2,500원</option><option value="30">30T 이하 — 1컷 3,000원</option><option value="99">30T 넘음(2×4·4×4 등) — 전화 문의</option></select></label>
  <div class="cpic" id="cpic"></div>
  <div class="cinfo" id="cinfo"></div>
 
@@ -33,7 +33,7 @@
 <details class="cemb"><summary>블로그·카페에 이 재단 계산기 붙이기</summary><p class="small">아래 코드를 블로그(티스토리·워드프레스 등) HTML 편집에 붙여 넣으면 이 계산기가 그대로 보입니다. 누구나 무료로 쓰셔도 됩니다.</p><textarea readonly rows="3" class="cin" onclick="this.select()">&lt;iframe src="https://www.wwood.co.kr/cut.html?embed=1" width="100%" height="900" style="border:0" loading="lazy" title="합판·목재 재단 미리보기"&gt;&lt;/iframe&gt;&lt;p&gt;재단 계산기 제공: &lt;a href="https://www.wwood.co.kr/cut.html"&gt;영진종합목재 재단 미리보기&lt;/a&gt;&lt;/p&gt;</textarea></details>
 <h2 id="fee">목재 재단비 (1컷당)</h2>
 <div class="tw"><table class="cfeet"><thead><tr><th>두께</th><th>1컷 재단비</th></tr></thead><tbody>
-<tr><td>12T 이하</td><td>1,000원</td></tr><tr><td>15T · 18T</td><td>1,500원</td></tr><tr><td>20T 이하</td><td>2,000원</td></tr><tr><td>24T 이하</td><td>2,500원</td></tr><tr><td>30T 이하</td><td>3,000원</td></tr><tr><td>30T 넘는 두께</td><td>매장 문의</td></tr></tbody></table></div>
+<tr><td>12T 이하</td><td>1,000원</td></tr><tr><td>15T · 18T</td><td>1,500원</td></tr><tr><td>20T 이하</td><td>2,000원</td></tr><tr><td>24T 이하</td><td>2,500원</td></tr><tr><td>30T 이하</td><td>3,000원</td></tr><tr><td>30T 넘는 두께(2×4·2×6·4×4 등)</td><td><a href="tel:__TEL__">전화 문의</a></td></tr></tbody></table></div>
 <p class="small">합판·MDF·집성판·OSB 등 원하는 크기로 잘라 드립니다. 위 계산기에서 크기를 넣으면 자르는 횟수(컷 수)와 재단비가 바로 나와요. 부가세 별도.</p>
 <p class="small muted">톱날 두께 3mm를 빼고 계산합니다. 실제 재단은 자재 상태(휨·모서리)에 따라 조금 달라질 수 있어요. 원판·각재 규격은 매장 취급 제품 기준입니다.</p>
 </section>
@@ -277,7 +277,7 @@ function run(){try{pad()}catch(e){}
  if(n){html+='<div><small>필요한 '+(L?'자재':'원판')+'</small><b>'+r.bins.length+(L?'개':'장')+'</b></div><div><small>자르는 조각</small><b>'+(n-r.err.length)+'개</b></div><div><small>사용률</small><b>'+(tot?Math.round(used/tot*100):0)+'%</b></div>'}
  var cc=curCat(),pr=(!custom()&&cc.pr)?cc.pr[prod]:0,bu=(!custom()&&cc.bu)?cc.bu[prod]:1;
  if(n&&pr){var un=L&&bu>1?Math.ceil(r.bins.length/bu):r.bins.length;html+='<div class="cest"><small>기준가 예상 자재비</small><b>약 '+(un*pr).toLocaleString()+'원</b><small>'+(L&&bu>1?bu+'개 1단 '+pr.toLocaleString()+'원 × '+un+'단':pr.toLocaleString()+'원 × '+un)+' · 부가세 별도 · 운임 별도</small></div>'}
- if(n){var cuts=0;r.bins.forEach(function(b){cuts+=L?Math.max(0,b.pl.length-(L&&st.L-b.used<=KERF?1:0)):(b.cuts||0)});var tv=+$("cthk").value,fe=fee(tv);html+='<div class="cest cfee"><small>재단비 (두께 '+(tv==99?'30T 넘음':tv<=12?'12T 이하':tv==18?'15·18T':tv+'T 이하')+')</small><b>'+(fe?'약 '+(cuts*fe).toLocaleString()+'원':'매장 문의')+'</b><small>자르는 횟수 약 '+cuts+'컷'+(fe?' × 1컷 '+fe.toLocaleString()+'원':'')+' · 실제 컷 수는 매장 재단 방법에 따라 조금 달라질 수 있어요</small></div>';
+ if(n){var cuts=0;r.bins.forEach(function(b){cuts+=L?Math.max(0,b.pl.length-(L&&st.L-b.used<=KERF?1:0)):(b.cuts||0)});var tv=+$("cthk").value,fe=fee(tv);html+='<div class="cest cfee"><small>재단비 (두께 '+(tv==99?'30T 넘음':tv<=12?'12T 이하':tv==18?'15·18T':tv+'T 이하')+')</small><b>'+(fe?'약 '+(cuts*fe).toLocaleString()+'원':'<a href="tel:__TEL__">전화 문의</a>')+'</b><small>자르는 횟수 약 '+cuts+'컷'+(fe?' × 1컷 '+fe.toLocaleString()+'원':'')+' · 실제 컷 수는 매장 재단 방법에 따라 조금 달라질 수 있어요</small></div>';
   if(fe&&pr){var un2=L&&bu>1?Math.ceil(r.bins.length/bu):r.bins.length;html+='<div class="cest ctot"><small>자재비 + 재단비 예상 합계</small><b>약 '+(un2*pr+cuts*fe).toLocaleString()+'원</b><small>소매 기준가 · 부가세 별도 · 운임 별도</small></div>'}}
  if(r.err.length)html+='<div class="cerr">'+(L?'원래 길이':'원판')+'보다 큰 조각 '+r.err.length+'개는 한 장에서 안 나와요. 크기를 확인해 주세요.</div>';
  if(!n)html='<div><small>크기를 넣으면 바로 그림이 나와요</small></div>';
