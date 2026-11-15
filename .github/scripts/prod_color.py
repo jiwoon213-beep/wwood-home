@@ -2,7 +2,9 @@
 import io, json, os, sys, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from PIL import Image
-CATS = {"deck": ("25/144", "25/145", "25/146", "25/147"), "ruba": ("27/156",), "tempa": ("27/161",), "siding": ("31/186",), "tile": ("28/",)}
+CATS = {"deck": ("25/144", "25/145", "25/146", "25/147"), "ruba": ("27/156", "23/137", "27/163"),
+        "tempa": ("27/161", "27/321", "27/157", "27/159", "27/160", "27/237", "27/166", "27/322", "24/319", "24/320"),
+        "maru": ("26/148", "26/247", "26/315", "23/136"), "siding": ("31/186", "31/188"), "tile": ("28/",)}
 rows = []
 for l in open("src/data/products.tsv", encoding="utf-8"):
     if l.startswith("#"): continue
