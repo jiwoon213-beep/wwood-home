@@ -311,7 +311,7 @@ def embed(v):
 def ptable(rows):
     if not rows: return '<p class="muted">이 자재는 규격·수종이 다양해 매장에서 실물 보고 안내해 드립니다.</p>'
     tr = "".join(f"<tr><td>{E(clean_name(p['name']))}</td><td class=r><b>{won(p['price'])}</b></td></tr>" for p in rows)
-    return f'<div class="tw"><table><thead><tr><th>품목·규격</th><th class=r>소매 기준가</th></tr></thead><tbody>{tr}</tbody></table></div><p class="muted small">부가세 별도 · 규격·수량에 따라 달라집니다 · 재단비·운임은 매장에서 계산 · 도매가는 회원 로그인 후</p>'
+    return f'<div class="tw"><table><thead><tr><th>품목·규격</th><th class=r>소매 기준가</th></tr></thead><tbody>{tr}</tbody></table></div><p class="muted small">부가세 별도 · 규격·수량에 따라 달라집니다 · <a href="/cut.html#fee">재단비</a> 1컷 1,000원~(두께별) · 운임은 매장에서 계산 · 도매가는 회원 로그인 후</p>'
 
 CTA = f"""<section class="cta"><div class="wrap g2"><div><h2>실물 보고, 원하는 사이즈로 잘라 가세요</h2>
 <p>{ADDR} · {HOURS}. 3000평 매장에서 바로 고르고 즉석 재단해 드립니다.</p></div>
@@ -375,7 +375,7 @@ def build():
 <section class="wrap sec"><h2>🏆 많이 본 영상 TOP</h2><p class="small muted">조회수가 많은 순서입니다.</p>{hot}<p><a class="b o" href="/video/top.html">많이 본 영상 TOP 50 전체 보기 ›</a> <a href="{YT}" target="_blank" rel="noopener">유튜브 채널 →</a></p></section></div>
 <section class="wrap sec g2"><div class="card"><h2>기본 자재 기준가</h2><p class="muted small">부가세 별도 · 규격·수량에 따라 달라집니다</p>
 <div class="tw"><table><thead><tr><th>자재</th><th>규격</th><th class=r>기준가</th></tr></thead><tbody>{bt}</tbody></table></div>
-<p class="small">재단비·운임·수량 할인은 매장에서 계산 · 고재·수입목·특수목은 매장 문의 · 도매가는 회원 로그인 후</p><a href="/price.html">기준가 전체 보기 →</a><div class="qk"><b>💰 1평에 얼마?</b><a href="/gagyeok/hapan-gagyeok.html">합판</a><a href="/gagyeok/seokgo-gagyeok.html">석고보드</a><a href="/gagyeok/deck-gagyeok.html">데크</a><a href="/gagyeok/danyeol-gagyeok.html">아이소핑크</a><a href="/gagyeok/hinoki-ruba.html">루바</a><a href="/gagyeok/tempa-board.html">템바보드</a><a href="/gagyeok/">전체 가격 가이드</a></div></div>
+<p class="small"><a href="/cut.html#fee">재단비</a> 1컷 1,000원~(두께별) · 운임·수량 할인은 매장에서 계산 · 고재·수입목·특수목은 매장 문의 · 도매가는 회원 로그인 후</p><a href="/price.html">기준가 전체 보기 →</a><div class="qk"><b>💰 1평에 얼마?</b><a href="/gagyeok/hapan-gagyeok.html">합판</a><a href="/gagyeok/seokgo-gagyeok.html">석고보드</a><a href="/gagyeok/deck-gagyeok.html">데크</a><a href="/gagyeok/danyeol-gagyeok.html">아이소핑크</a><a href="/gagyeok/hinoki-ruba.html">루바</a><a href="/gagyeok/tempa-board.html">템바보드</a><a href="/gagyeok/">전체 가격 가이드</a></div></div>
 <div class="card dark"><h2>직접 하기 어렵다면, 시공까지</h2><p>자재를 가장 잘 아는 목재상이 직접 시공합니다. 월드아키텍쳐({LIC})가 대전·세종 전 공정을 시공하고, 모든 현장은 유튜브에 공개합니다.</p>
 <a class="b r" href="/sigong.html">시공 사례 보기</a></div></section>{CTA}"""
     page("index.html", "대전 목재·세종 목재 영진목재 | 3000평 목재소, 원하는 사이즈 즉석 재단", "대전 목재·세종 목재 영진목재(월드건축자재). 3000평 목재소, 합판·방부목·데크 즉석 재단, 기준가·시공 영상.", body, "", BIZ)
@@ -556,7 +556,7 @@ def build():
              + '<div class="tdots"><button type="button" class="tb" data-d="-1">◀</button><span id="tdot">1–5위 / 6–10위 ▶ 옆으로 밀기</span><button type="button" class="tb" data-d="1">▶</button></div></div>')
     secs = '<div class="pboard">' + board + '</div>' + secs
     page("price.html", "목재 가격 기준가 공개 — 합판·MDF·구조재·방부목·석고보드 | 대전 영진목재", "대전 월드건축자재(영진목재) 소매 기준가. 부가세 별도, 결제·재단은 매장에서.",
-         f'<section class="wrap sec ptsec"><h1>소매 기준가</h1>{psearch}<p class="lead">자주 찾는 자재의 소매 기준가입니다(부가세 별도). 규격·수량에 따라 달라지며 재단비·운임은 매장에서 계산합니다. 도매가는 <a href="/dome.html">도매회원</a> 로그인 후 확인하세요. 크기·두께는 <a href="/gyugyeok.html">규격표</a>, 어떻게 잘리는지는 <a href="/cut.html">재단 미리보기</a>에서 보세요.</p>{secs}<div class="qk"><b>💰 1평에 얼마?</b><a href="/gagyeok/hapan-gagyeok.html">합판</a><a href="/gagyeok/seokgo-gagyeok.html">석고보드</a><a href="/gagyeok/osb-gagyeok.html">OSB</a><a href="/gagyeok/mdf-gagyeok.html">MDF</a><a href="/gagyeok/danyeol-gagyeok.html">아이소핑크</a><a href="/gagyeok/jipseong-gagyeok.html">집성판</a><a href="/gagyeok/deck-gagyeok.html">데크재</a><a href="/gagyeok/gakjae-gagyeok.html">구조재·각재</a><a href="/gagyeok/siding-gagyeok.html">사이딩</a><a href="/gagyeok/molding-gagyeok.html">몰딩</a><a href="/gagyeok/door-gagyeok.html">방문·문틀</a><a href="/gagyeok/hinoki-ruba.html">히노끼 루바</a><a href="/gagyeok/spruce-ruba.html">스프러스 루바</a><a href="/gagyeok/tempa-board.html">템바보드</a><a href="/gagyeok/tempa-ruba.html">템바 루바</a><a href="/gagyeok/interior-film.html">인테리어 필름</a><a href="/gagyeok/oilstain.html">오일스테인</a><a href="/gagyeok/">자재 가격 가이드</a></div></section>{CTA}', "/price.html")
+         f'<section class="wrap sec ptsec"><h1>소매 기준가</h1>{psearch}<p class="lead">자주 찾는 자재의 소매 기준가입니다(부가세 별도). 규격·수량에 따라 달라지며 <a href="/cut.html#fee">재단비</a> 1컷 1,000원~(두께별) · 운임은 매장에서 계산합니다. 도매가는 <a href="/dome.html">도매회원</a> 로그인 후 확인하세요. 크기·두께는 <a href="/gyugyeok.html">규격표</a>, 어떻게 잘리는지는 <a href="/cut.html">재단 미리보기</a>에서 보세요.</p>{secs}<div class="qk"><b>💰 1평에 얼마?</b><a href="/gagyeok/hapan-gagyeok.html">합판</a><a href="/gagyeok/seokgo-gagyeok.html">석고보드</a><a href="/gagyeok/osb-gagyeok.html">OSB</a><a href="/gagyeok/mdf-gagyeok.html">MDF</a><a href="/gagyeok/danyeol-gagyeok.html">아이소핑크</a><a href="/gagyeok/jipseong-gagyeok.html">집성판</a><a href="/gagyeok/deck-gagyeok.html">데크재</a><a href="/gagyeok/gakjae-gagyeok.html">구조재·각재</a><a href="/gagyeok/siding-gagyeok.html">사이딩</a><a href="/gagyeok/molding-gagyeok.html">몰딩</a><a href="/gagyeok/door-gagyeok.html">방문·문틀</a><a href="/gagyeok/hinoki-ruba.html">히노끼 루바</a><a href="/gagyeok/spruce-ruba.html">스프러스 루바</a><a href="/gagyeok/tempa-board.html">템바보드</a><a href="/gagyeok/tempa-ruba.html">템바 루바</a><a href="/gagyeok/interior-film.html">인테리어 필름</a><a href="/gagyeok/oilstain.html">오일스테인</a><a href="/gagyeok/">자재 가격 가이드</a></div></section>{CTA}', "/price.html")
 
     # 도매
     page("dome.html", "건축자재 도매·현장 납품 — 인테리어 업체·목수 도매회원 | 대전 월드건축자재", "인테리어 업체·목수·시공사 도매회원. 사업자등록증·명함 확인 후 승인, 회원가 적용, 현장 납품, 세금계산서 월 1회.",
@@ -587,6 +587,7 @@ def build():
            ("전북·전남·광주", "호남권 데크·평상·조경 목재"), ("강원", "전원주택·펜션 데크·내장재")]
     _BF = [("대전에서 먼 지역도 보내 주나요?", "네. 대전·세종·공주·계룡·논산·금산·옥천은 직접 배송·현장 납품하고, 그 밖의 전국은 용달(화물차)로 보내 드립니다."),
            ("운임은 얼마인가요?", "거리·차량 크기·수량에 따라 달라 정해진 금액이 없습니다. 품목과 수량, 받는 주소를 알려 주시면 사무실에서 운임을 먼저 알려 드리고, 입금 확인 후 출고합니다."),
+           ("재단비는 얼마인가요?", "1컷(한 번 자르기)당 두께별로 12T 이하 1,000원, 15·18T 1,500원, 20T 이하 2,000원, 24T 이하 2,500원, 30T 이하 3,000원입니다(부가세 별도). 30T가 넘는 두께는 매장에 문의해 주세요. 재단 미리보기에서 크기를 넣으면 컷 수와 재단비가 바로 계산됩니다."),
            ("재단해서 보내 주나요?", "네. 원하는 크기로 재단한 뒤 보내 드립니다. 재단 크기는 재단 미리보기에서 그림으로 만들어 메일로 보내 주시면 정확합니다."),
            ("한두 장도 보내 주나요?", "소량도 보낼 수 있지만 용달 운임이 자재값보다 클 수 있습니다. 가까운 분은 방문 구매가 경제적이고, 먼 곳은 한 번에 모아서 주문하시는 것을 권합니다."),
            ("주문은 어떻게 하나요?", f"전화({TEL})나 메일({EMAIL})로 품목·규격·수량·받는 주소·받는 분 연락처를 알려 주세요. 사업자는 도매회원(wwood.kr)으로 가입하시면 회원가로 주문할 수 있습니다.")]
@@ -907,7 +908,7 @@ def build():
                 return f'/cut.html#c={ci}&p={ii}&g=0&s=' + "_".join(f"{a}x{b}x{q}" for a, b, q in parts)
         return "/cut.html"
     CUTSLUG = _cd["m"]
-    _CF = [("합판·MDF 원하는 사이즈로 잘라 주나요?", "네. 대전 유성대로 44 매장에서 합판, MDF, 집성판, OSB, 석고보드, 단열재와 구조재·각재·방부목을 원하는 크기로 즉석 재단해 드립니다. 한 장, 한 개 소량도 됩니다."),
+    _CF = [("재단비는 얼마인가요?", "1컷(한 번 자르기)당 두께별로 12T 이하 1,000원, 15·18T 1,500원, 20T 이하 2,000원, 24T 이하 2,500원, 30T 이하 3,000원입니다(부가세 별도). 30T가 넘는 두께는 매장에 문의해 주세요. 위 계산기에서 크기를 넣으면 컷 수와 재단비가 바로 계산됩니다."), ("합판·MDF 원하는 사이즈로 잘라 주나요?", "네. 대전 유성대로 44 매장에서 합판, MDF, 집성판, OSB, 석고보드, 단열재와 구조재·각재·방부목을 원하는 크기로 즉석 재단해 드립니다. 한 장, 한 개 소량도 됩니다."),
            ("4×8 합판 한 장에서 몇 조각 나오나요?", "4×8 합판 원판은 1220×2440mm입니다. 이 페이지에 자를 크기와 개수를 넣으면 톱날 두께 3mm를 빼고 몇 장이 필요한지, 어떻게 잘리는지 그림으로 바로 보여드립니다."),
            ("재단할 때 톱날 두께는 얼마나 빠지나요?", "한 번 자를 때마다 약 3mm가 빠집니다. 이 계산기는 3mm를 빼고 배치하므로 실제 재단과 거의 같게 나옵니다."),
            ("나뭇결 방향을 맞춰서 자를 수 있나요?", "네. 집성판이나 무늬목처럼 결이 중요한 자재는 '나뭇결 방향 유지'를 체크하면 조각을 돌리지 않고 배치합니다."),
@@ -1251,7 +1252,7 @@ def build():
             btns += f'<a class="b o" href="{cutlink(cat, rx, parts)}">{E(part)} 재단 그림</a> '
         body = f"""<section class="wrap sec"><p class="crumb"><a href="/mandeul/">DIY 만들기</a> › {E(nm)}</p><h1>{E(title.split(" — ")[0])}</h1><p class="lead">{E(lead)}</p>
 {_hero}<div class="tw"><table class="rt"><thead><tr><th>부분</th><th>자재·재단 크기</th><th>필요 수량</th><th>기준가 예상 금액</th></tr></thead><tbody>{trs}</tbody></table></div>
-{f'<div class="est"><b>예상 자재비 약 {_tot:,}원</b><span>소매 기준가 기준 · 부가세 별도 · 피스·철물·마감재 제외 · 재단비·운임은 매장에서 계산 · 가격은 바뀔 수 있어요</span></div>' if _tot else ''}
+{f'<div class="est"><b>예상 자재비 약 {_tot:,}원</b><span>소매 기준가 기준 · 부가세 별도 · 피스·철물·마감재 제외 · <a href="/cut.html#fee">재단비</a> 1컷 1,000원~(두께별) · 운임은 매장에서 계산 · 가격은 바뀔 수 있어요</span></div>' if _tot else ''}
 <p class="small muted">톱날 3mm를 빼고 계산했습니다. 크기를 바꾸고 싶으면 아래 재단 그림에서 숫자만 고치세요.</p><p>{btns}</p><p><a class="b r" href="mailto:{EMAIL}?subject={quote(nm + ' 재단·견적 요청')}&amp;body={quote('안녕하세요. 아래 목록대로 재단·견적 부탁드립니다.' + chr(10) + chr(10) + nm + ' (' + BASE + '/mandeul/' + slug + '.html)' + chr(10) + chr(10).join(_ml) + chr(10) + (f'예상 자재비(기준가): 약 {_tot:,}원' if _tot else '') + chr(10) + chr(10) + '수량·크기 변경:' + chr(10) + '이름:' + chr(10) + '연락처:' + chr(10) + '방문(또는 배송) 희망일:' + chr(10))}">✉ 이 목록으로 재단·견적 요청</a> <a class="b d" href="tel:{TEL.replace('-', '')}">전화 문의</a></p></section>
 {_gal}{_stp}<section class="wrap sec g2"><div class="card"><h2>만드는 순서</h2><ol>{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol></div>
 <div class="card"><h2>준비할 자재</h2><ul class="mli">{MI.mk_list(mats, rows, steps)}</ul><p class="hsh">옆으로 넘겨 보세요 ›</p><h3>필요한 공구</h3><ul class="mli">{MI.mk_tools(mats, rows, steps)}</ul><p class="hsh">옆으로 넘겨 보세요 ›</p><p class="small muted">피스 길이는 고정할 판 두께의 약 2~2.5배 기준 참고치입니다. 매장에서 실물 보고 맞춰 드려요.</p><p>매장({ADDR})에서 위 크기대로 즉석 재단해 드립니다. 이 페이지를 보여주시면 됩니다.</p></div></section>

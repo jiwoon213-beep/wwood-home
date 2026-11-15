@@ -10,6 +10,7 @@
   <label>원판 가로<input class="cin" id="cw" type="number" inputmode="numeric" value="1220"></label>
   <label>원판 세로<input class="cin" id="ch" type="number" inputmode="numeric" value="2440"></label>
  </div>
+ <label class="cthl">재단비 기준 두께 <select id="cthk" class="cin"><option value="12">12T 이하 — 1컷 1,000원</option><option value="18">15T·18T — 1컷 1,500원</option><option value="20">20T 이하 — 1컷 2,000원</option><option value="24">24T 이하 — 1컷 2,500원</option><option value="30">30T 이하 — 1컷 3,000원</option><option value="99">30T 넘음 — 매장 문의</option></select></label>
  <div class="cpic" id="cpic"></div>
  <div class="cinfo" id="cinfo"></div>
 
@@ -30,10 +31,14 @@
  <a class="b d" href="tel:__TEL__">전화 문의</a>
 </div></div></div>
 <details class="cemb"><summary>블로그·카페에 이 재단 계산기 붙이기</summary><p class="small">아래 코드를 블로그(티스토리·워드프레스 등) HTML 편집에 붙여 넣으면 이 계산기가 그대로 보입니다. 누구나 무료로 쓰셔도 됩니다.</p><textarea readonly rows="3" class="cin" onclick="this.select()">&lt;iframe src="https://www.wwood.co.kr/cut.html?embed=1" width="100%" height="900" style="border:0" loading="lazy" title="합판·목재 재단 미리보기"&gt;&lt;/iframe&gt;&lt;p&gt;재단 계산기 제공: &lt;a href="https://www.wwood.co.kr/cut.html"&gt;영진종합목재 재단 미리보기&lt;/a&gt;&lt;/p&gt;</textarea></details>
+<h2 id="fee">목재 재단비 (1컷당)</h2>
+<div class="tw"><table class="cfeet"><thead><tr><th>두께</th><th>1컷 재단비</th></tr></thead><tbody>
+<tr><td>12T 이하</td><td>1,000원</td></tr><tr><td>15T · 18T</td><td>1,500원</td></tr><tr><td>20T 이하</td><td>2,000원</td></tr><tr><td>24T 이하</td><td>2,500원</td></tr><tr><td>30T 이하</td><td>3,000원</td></tr><tr><td>30T 넘는 두께</td><td>매장 문의</td></tr></tbody></table></div>
+<p class="small">합판·MDF·집성판·OSB 등 원하는 크기로 잘라 드립니다. 위 계산기에서 크기를 넣으면 자르는 횟수(컷 수)와 재단비가 바로 나와요. 부가세 별도.</p>
 <p class="small muted">톱날 두께 3mm를 빼고 계산합니다. 실제 재단은 자재 상태(휨·모서리)에 따라 조금 달라질 수 있어요. 원판·각재 규격은 매장 취급 제품 기준입니다.</p>
 </section>
 <style>
-.cutp h1{margin-bottom:6px}.cutbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+.cutp h1{margin-bottom:6px}.cthl{display:block;margin-top:10px;font-size:13px;color:var(--mut);font-weight:700}.cthl .cin{margin-top:4px;color:var(--ink);font-weight:700}.cres .cfee{background:#fff;border-color:var(--line)}.cres .cfee b{color:var(--ink)}.cres .ctot{background:#1D1B18;border-color:#1D1B18;color:#fff}.cres .ctot b{color:#ffd27a}.cres .ctot small{color:rgba(255,255,255,.7)}.cfeet td:last-child{font-weight:800}.cutbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
 .cstep{font-weight:800;font-size:18px;margin:14px 0 8px;display:flex;align-items:center;gap:8px}.cstep:first-child{margin-top:0}.cstep small{font-weight:500;color:var(--mut);font-size:14px}
 .cn{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--red);color:#fff;align-items:center;justify-content:center;font-size:14px}
 .ctabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.ctabs button{border:1px solid var(--line);background:#fff;border-radius:20px;padding:8px 14px;font-size:15px;font-weight:700;cursor:pointer}.ctabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
@@ -115,7 +120,7 @@ function setCat(i,reset){
  $("cunit").textContent=c.lin?"(길이 mm)":"(가로 × 세로 mm)";
  if(c.custom){$("ccustom").querySelector("label").firstChild.textContent=c.lin?"원래 길이":"원판 가로";$("ch").parentNode.style.display=c.lin?"none":"";if(reset){$("cw").value=c.lin?3600:1220;$("ch").value=2440}}
  if(reset)parts=c.lin?[[900,0,4]]:[[600,400,2]];
- drawParts();run();
+ setThk();drawParts();run();
 }
 function presets(f){
  var st=stock(),L=isLin(),M=L?st.L:(f==0?st.w:st.h),n=L?[300,450,600,900,1200,1800]:(f==0?[300,400,450,500,600,900]:[300,400,600,900,1200,1800]),o=[];
@@ -168,13 +173,16 @@ function packOnce(W,H,list,rot,sorter,sp){
   if(!best){var o=fitsN?[p.w,p.h]:[p.h,p.w];bins.push({free:[{x:0,y:0,w:W,h:H}],pl:[]});best={bi:bins.length-1,fi:0,w:o[0],h:o[1]}}
   var b=bins[best.bi],f=b.free[best.fi];b.free.splice(best.fi,1);
   b.pl.push({x:f.x,y:f.y,w:best.w,h:best.h,c:p.c});
-  var rw=f.w-best.w-KERF,rh=f.h-best.h-KERF;
+  var rw=f.w-best.w-KERF,rh=f.h-best.h-KERF;b.cuts=(b.cuts||0)+(f.w-best.w>0?1:0)+(f.h-best.h>0?1:0);
   // 남는 쪽을 크게 남기도록 자르는 방향 결정
   if(sp==1||(sp==0&&rw*f.h>=rh*f.w)){ if(rw>0)b.free.push({x:f.x+best.w+KERF,y:f.y,w:rw,h:f.h}); if(rh>0)b.free.push({x:f.x,y:f.y+best.h+KERF,w:best.w,h:rh}); }
   else { if(rh>0)b.free.push({x:f.x,y:f.y+best.h+KERF,w:f.w,h:rh}); if(rw>0)b.free.push({x:f.x+best.w+KERF,y:f.y,w:rw,h:best.h}); }
  });
  return {bins:bins,err:err};
 }
+function fee(t){return t<=12?1000:t<=18?1500:t<=20?2000:t<=24?2500:t<=30?3000:0}
+function thk(n){var m=(n||"").match(/(\d+(?:\.\d+)?)\s*(?:T|t|mm|㎜)(?![a-z])/);return m?+m[1]:0}
+function setThk(){var c=curCat(),n=custom()?"":(c.items[prod]||[""])[0],t=thk(n);if(!t)t=c.lin?99:12;var v=t<=12?12:t<=18?18:t<=20?20:t<=24?24:t<=30?30:99;$("cthk").value=v}
 function packLin(L,list){
  var bins=[],err=[];list.sort(function(a,b){return b.l-a.l});
  list.forEach(function(p){
@@ -264,7 +272,9 @@ function run(){try{pad()}catch(e){}
  });
  if(n){html+='<div><small>필요한 '+(L?'자재':'원판')+'</small><b>'+r.bins.length+(L?'개':'장')+'</b></div><div><small>자르는 조각</small><b>'+(n-r.err.length)+'개</b></div><div><small>사용률</small><b>'+(tot?Math.round(used/tot*100):0)+'%</b></div>'}
  var cc=curCat(),pr=(!custom()&&cc.pr)?cc.pr[prod]:0,bu=(!custom()&&cc.bu)?cc.bu[prod]:1;
- if(n&&pr){var un=L&&bu>1?Math.ceil(r.bins.length/bu):r.bins.length;html+='<div class="cest"><small>기준가 예상 자재비</small><b>약 '+(un*pr).toLocaleString()+'원</b><small>'+(L&&bu>1?bu+'개 1단 '+pr.toLocaleString()+'원 × '+un+'단':pr.toLocaleString()+'원 × '+un)+' · 부가세 별도 · 재단비·운임 별도</small></div>'}
+ if(n&&pr){var un=L&&bu>1?Math.ceil(r.bins.length/bu):r.bins.length;html+='<div class="cest"><small>기준가 예상 자재비</small><b>약 '+(un*pr).toLocaleString()+'원</b><small>'+(L&&bu>1?bu+'개 1단 '+pr.toLocaleString()+'원 × '+un+'단':pr.toLocaleString()+'원 × '+un)+' · 부가세 별도 · 운임 별도</small></div>'}
+ if(n){var cuts=0;r.bins.forEach(function(b){cuts+=L?Math.max(0,b.pl.length-(L&&st.L-b.used<=KERF?1:0)):(b.cuts||0)});var tv=+$("cthk").value,fe=fee(tv);html+='<div class="cest cfee"><small>재단비 (두께 '+(tv==99?'30T 넘음':tv<=12?'12T 이하':tv==18?'15·18T':tv+'T 이하')+')</small><b>'+(fe?'약 '+(cuts*fe).toLocaleString()+'원':'매장 문의')+'</b><small>자르는 횟수 약 '+cuts+'컷'+(fe?' × 1컷 '+fe.toLocaleString()+'원':'')+' · 실제 컷 수는 매장 재단 방법에 따라 조금 달라질 수 있어요</small></div>';
+  if(fe&&pr){var un2=L&&bu>1?Math.ceil(r.bins.length/bu):r.bins.length;html+='<div class="cest ctot"><small>자재비 + 재단비 예상 합계</small><b>약 '+(un2*pr+cuts*fe).toLocaleString()+'원</b><small>소매 기준가 · 부가세 별도 · 운임 별도</small></div>'}}
  if(r.err.length)html+='<div class="cerr">'+(L?'원래 길이':'원판')+'보다 큰 조각 '+r.err.length+'개는 한 장에서 안 나와요. 크기를 확인해 주세요.</div>';
  if(!n)html='<div><small>크기를 넣으면 바로 그림이 나와요</small></div>';
  $("cres").innerHTML=html;$("csvg").innerHTML=sv;save();
@@ -280,7 +290,7 @@ function load(){
  if(q.c&&D.cats[+q.c]){setCat(+q.c,true);if(q.w)$("cw").value=q.w;if(q.h)$("ch").value=q.h;if(q.p&&curCat().items&&curCat().items[+q.p]){prod=+q.p;$("cprod").value=prod}$("cgrain").checked=q.g=="1";
   if(q.s)parts=q.s.split('_').map(function(t){return t.split('x').map(Number)});drawParts();run();return true}
 }
-$("cprod").onchange=function(){prod=+this.value;drawParts();run()};$("cw").onchange=$("ch").onchange=function(){drawParts();run()};$("cw").oninput=$("ch").oninput=run;$("cgrain").onchange=run;
+$("cprod").onchange=function(){prod=+this.value;setThk();drawParts();run()};$("cthk").onchange=run;$("cw").onchange=$("ch").onchange=function(){drawParts();run()};$("cw").oninput=$("ch").oninput=run;$("cgrain").onchange=run;
 $("cadd").onclick=function(){parts.push(isLin()?[0,0,1]:[0,0,1]);act={k:parts.length-1,f:0};drawParts();var cp=$("cparts");setTimeout(function(){cp.scrollTo({left:cp.scrollWidth,behavior:"smooth"})},30)};
 $("cprint").onclick=function(){window.print()};
 if(/[?&]embed=1/.test(location.search)){document.documentElement.className+=" emb";[].forEach.call(document.querySelectorAll('.cutp a[href^="/"]'),function(a){a.target="_blank";a.href="https://www.wwood.co.kr"+a.getAttribute("href")})}
