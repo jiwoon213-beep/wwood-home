@@ -1262,6 +1262,8 @@ def build():
     _gj.gen(page, P, E, CTA, faqslide, TEL)
     _gj.gen2(page, E, CTA, faqslide, TEL)
     _gj.gen3(page, P, E, CTA, faqslide, TEL)
+    import mirigi as _mr
+    _mr.gen(page, P, E, CTA, faqslide, TEL)
     import cheolmul as _ch
     CHLIST = _ch.gen(page, P, E, CTA, faqslide, BASE, ADDR, HOURS, ALLFAQ)
     import taka as _tk
@@ -1346,6 +1348,7 @@ def build():
          open(ROOT + "/cut_tpl.html", encoding="utf-8").read().replace("__DATA__", json.dumps(_cd, ensure_ascii=False, separators=(",", ":"))).replace("__TEL__", TEL.replace("-", "")).replace("__EMAIL__", EMAIL) + _seo + CTA, "/cut.html", _ld, BASE + "/assets/store/plywood-rack.jpg")
     page("calc.html", "자재 계산기 — 데크·석고보드·합판 몇 장? 문짝·중문 크기까지 | 영진목재", "데크 방부목·합성데크 장수, 석고보드·합판·단열재 장수, 몰딩·걸레받이 길이, 데코타일·강마루 박스 수, 페인트 양, 평↔㎡를 바로 계산하세요. 대전 영진목재(월드건축자재) 재단·배송.",
 f"""<section class="wrap sec"><h1>자재 계산기</h1><p class="lead">필요한 양을 미리 계산해 오시면 매장에서 바로 재단해 드립니다. 결과는 참고용입니다(로스 포함). 어떻게 잘리는지는 <a href="/cut.html">재단 미리보기</a>에서 그림으로 확인하세요.</p>
+<a class="gjban" href="/mirigi.html" style="background:linear-gradient(120deg,#c41a1f,#7a1013)"><b style="color:#fff">📷 공사 미리보기 — 사진에 입혀 보기 ›</b><span>공사할 곳을 찍으면 데크·템바보드·루바·벽 색을 실제처럼 입혀 보고 예상 자재비까지</span></a>
 <a class="gjban" href="/gyeonjeok.html"><b>방 하나 통째로 계산하기 ›</b><span>방 크기만 넣으면 석고보드·단열·루바·템바보드·데크·문까지 공정별 자재비 합계</span></a>
 <a class="gjban" href="/dobae-jangpan.html" style="background:#fff;color:#1D1B18!important;border:1.5px solid #1D1B18"><b style="color:#c41a1f">도배·장판·타일·페인트 계산기 ›</b><span>벽지 몇 롤, 장판 몇 m, 타일 몇 장, 페인트 몇 L</span></a>
 <div class="gjb2"><a href="/deck-gyesan.html"><b>데크 자재 계산기 ›</b><span>데크재·장선·멍에·기둥·피스</span></a><a href="/gabyeok-gyesan.html"><b>가벽 자재 계산기 ›</b><span>각재·석고보드·단열재</span></a></div>
