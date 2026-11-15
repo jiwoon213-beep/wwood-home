@@ -36,7 +36,7 @@ def data(P):
                 n = re.sub(r"^[^-]+-\s*", "", hit["name"]).replace("*", "×").replace("@", " · ").strip(" ·")
                 n = re.sub(r"\s+", " ", n)
                 if face == "doors": n = ("문틀 " if hit["cat"] == "문틀" else "문짝 ") + n
-                items.append({"n": n, "u": unit, "a": area if isinstance(area, float) else 0, "p": hit["price"], "l": loss, "g": sl})
+                items.append({"n": n, "u": unit, "a": area if isinstance(area, float) else 0, "p": hit["price"], "l": loss, "g": sl, "r": hit["name"]})
         if face == "doors":  # 문짝·문틀 각각 한 개씩 고르게
             items = [i for i in items if i["n"].startswith("문짝")][:14] + [i for i in items if i["n"].startswith("문틀")][:10]
         if items: out.append({"k": k, "nm": nm, "f": face, "note": note, "it": items if face == "doors" else items[:16]})
