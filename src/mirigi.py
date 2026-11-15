@@ -13,6 +13,9 @@ def gen(page, P, E, CTA, faqslide, TEL, PROD=None, ROOT="."):
     for p_ in (PROD or []):
         c_ = pc.get(str(p_["id"]))
         if c_: PR.setdefault(c_["m"], []).append([p_["name"], c_["c"], p_["img"], f"https://wwood.kr/home/mall/shoplist.php?idx={p_['id']}&pmode=view"])
+    import re as _re
+    KW = {"tempa": "템바|아트월|월판", "deck": "데크", "ruba": "루바", "siding": "사이딩", "tile": "타일"}
+    for k in PR: PR[k].sort(key=lambda r: 0 if _re.search(KW.get(k, "^$"), r[0]) else 1)
     prj = json.dumps({k: v[:14] for k, v in PR.items()}, ensure_ascii=False, separators=(",", ":"))
     pick = lambda k: [{"n": i["n"], "u": i["u"], "a": i["a"], "p": i["p"], "l": i["l"]} for i in D.get(k, {}).get("it", []) if i["a"]][:8]
     M = {"deck": pick("deck"), "tempa": pick("art"), "ruba": pick("ceil_ruba"), "gyp": pick("wall_gyp"), "siding": pick("siding")}
