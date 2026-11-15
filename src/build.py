@@ -133,6 +133,9 @@ if os.path.exists(f"{ROOT}/data/nichiha.tsv"):
     _NHC = [l.split("|")[1] for l in open(f"{ROOT}/data/nichiha.tsv", encoding="utf-8") if l.strip() and not l.startswith("#")]
     PROD = [p for p in PROD if "31" not in p["tops"] or not any(re.search(c + r"(?!\d)", p["name"]) for c in _NHC)]
 # 건축자재 카탈로그(/geonjae/, samik.py)에 같은 이름 제품이 있으면 기존 쇼핑몰 자재 쪽을 뺌(중복 제거)
+# 크나우프 카탈로그(/knauf/)가 있으면 기존 쇼핑몰의 크나우프 상품은 뺌(중복 제거)
+if os.path.exists(f"{ROOT}/data/knauf.tsv"):
+    PROD = [p for p in PROD if not re.search(r"크나우프|knauf", p["name"], re.I)]
 if os.path.exists(f"{ROOT}/data/samik.tsv"):
     _SMK = {re.sub(r"[\s\-·()\[\]/,.]", "", l.split("|")[3]).lower() for l in open(f"{ROOT}/data/samik.tsv", encoding="utf-8") if l.count("|") >= 4}
     PROD = [p for p in PROD if re.sub(r"[\s\-·()\[\]/,.]", "", p["name"]).lower() not in _SMK]
@@ -453,11 +456,18 @@ def build():
         if not ts: return ""
         return ('<div class="chr" id="gjr' + c + '"><p class="chl"><b>건축자재 ' + "·".join(ts) + '</b> ' + str(sum(1 for r in _smr if r[0] in ts)) + '종 · <a class="cha" href="/geonjae/' + _sm0.SLUG[ts[0]] + '.html">전체 보기 ›</a></p><div class="gcs">'
                 + "".join(f'<a class="gc gpc" href="/geonjae/{_sm0.SLUG[t]}.html#s{i}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{(lambda r_: _sm0.IMG(r_[4], r_[2]))(next(r for r in _smr if r[0] == t and r[1] == sb))}" alt="{E(sb)}"><span>{E(sb)}</span></a>' for t in ts for i, sb in enumerate(dict.fromkeys(r[1] for r in _smr if r[0] == t))) + '</div></div>')
+    import knauf as _kn0
+    _knr = _kn0.load(ROOT)
+    def _knrow(c):
+        gs = [g for g, v in _kn0.GRP.items() if v[1] == c and any(r[0] == g for r in _knr)]
+        if not gs: return ""
+        return ('<div class="chr" id="knauf' + c + '"><p class="chl"><b>크나우프 ' + "·".join(gs) + '</b> ' + str(sum(1 for r in _knr if r[0] in gs)) + '종 · <a class="cha" href="/knauf/' + _kn0.GRP[gs[0]][0] + '.html">전체 보기 ›</a></p><div class="gcs">'
+                + "".join(f'<a class="gc gpc" href="/knauf/{_kn0.GRP[g][0]}.html"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{_kn0.IMG(next(r for r in _knr if r[0] == g)[4], 400)}" alt="크나우프 {E(g)}"><span>{E(g)}</span></a>' for g in gs) + '</div></div>')
     import nichiha as _nh0
     _nhr = _nh0.load(ROOT)
     _nhrow = ('<div class="chr" id="nichiha"><p class="chl"><b>니치하 세라믹 사이딩</b> 16×455×3,030mm · 우드·스톤·타일벽돌 ' + str(len(_nhr)) + '종 · <a class="cha" href="/nichiha/">전체 보기 ›</a></p><div class="gcs">'
               + "".join(f'<a class="gc gpc" href="/nichiha/#{k}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{_nh0.TH(next(r for r in _nhr if r[0] == k)[1])}" alt="니치하 {E(nm)}"><span>{E(nm)}</span></a>' for k, nm, d in _nh0.VIS if any(r[0] == k for r in _nhr)) + '</div></div>') if _nhr else ""
-    jrows = "".join(f'<section class="wrap sec jall" id="c{sl}"><h2>{n} <small class="muted">{cnt[c]}종</small> <a class="small" href="/jaryo/{sl}.html">전체 보기 ›</a></h2><p class="small muted">{d}</p>{_chrow if c == "32" else ""}{_yrrow if c == "29" else ""}{_bdrow if c == "35" else ""}{_nhrow if c == "31" else ""}{_smrow(c)}<div class="pg hrow">' + "".join(pcard(p) for p in [p for p in PROD if c in p["tops"]][:16]) + f'<a class="pd more" href="/jaryo/{sl}.html"><span class="pi"><b>+{max(0,cnt[c]-16)}</b></span><b>{n} 전체 보기 ›</b><small>{cnt[c]}종</small></a></div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>' for c, sl, n, d in JCAT if cnt[c])
+    jrows = "".join(f'<section class="wrap sec jall" id="c{sl}"><h2>{n} <small class="muted">{cnt[c]}종</small> <a class="small" href="/jaryo/{sl}.html">전체 보기 ›</a></h2><p class="small muted">{d}</p>{_chrow if c == "32" else ""}{_yrrow if c == "29" else ""}{_bdrow if c == "35" else ""}{_nhrow if c == "31" else ""}{_knrow(c)}{_smrow(c)}<div class="pg hrow">' + "".join(pcard(p) for p in [p for p in PROD if c in p["tops"]][:16]) + f'<a class="pd more" href="/jaryo/{sl}.html"><span class="pi"><b>+{max(0,cnt[c]-16)}</b></span><b>{n} 전체 보기 ›</b><small>{cnt[c]}종</small></a></div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>' for c, sl, n, d in JCAT if cnt[c])
     page("jaryo/index.html", f"전체 자재 사진 {len([p for p in PROD if p['tops']])}종 — 각재·합판·데크·사이딩·철물 | 대전 영진목재", "대전 월드건축자재(영진목재) 매장 취급 자재를 사진으로 확인하세요. 각재, 합판, 집성판, 데크, 마루, 내장재, 타일, 사이딩, 철물, 스테인.",
          f'<section class="wrap sec"><h1>전체 자재</h1>{SEARCH}<p class="lead">매장에서 취급하는 자재를 사진으로 모았습니다. 실물은 대전 매장에서 보고, 원하는 사이즈로 재단해 가세요. 가격은 <a href="/price.html">기준가</a> 또는 매장에서 안내합니다.</p><div class="chips jall jchips">{jchips}</div></section>{jrows}{CTA}', "/jaryo/", None, thumb.get("24"))
     for c, sl, n, d in JCAT:
@@ -466,7 +476,7 @@ def build():
         subs = []
         for p in ps:
             if subof(p, c) not in subs: subs.append(subof(p, c))
-        secs = (_yrrow if c == "29" else (_bdrow if c == "35" else (_nhrow if c == "31" else ""))) + _smrow(c)
+        secs = (_yrrow if c == "29" else (_bdrow if c == "35" else (_nhrow if c == "31" else ""))) + _knrow(c) + _smrow(c)
         for sb in subs:
             g = [p for p in ps if subof(p, c) == sb]
             title = MCAT.get(sb or "", "") or "기타"
@@ -1260,6 +1270,8 @@ def build():
     SHLIST = _shn.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
     import samik as _smk
     SMLIST = _smk.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
+    import knauf as _knf
+    KNLIST = _knf.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
     import nichiha as _nh
     NHLIST = _nh.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
     import emall as _em
@@ -1573,6 +1585,11 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         if _nhh: _bc.append(("/nichiha/", "니치하 세라믹 사이딩", f"{len(_nhh)}종", _nhH.TH(_nhh[0][1])))
     except Exception: pass
     try:
+        import knauf as _knH
+        _knh = _knH.load(ROOT)
+        if _knh: _bc.append(("/knauf/", "크나우프 석고보드·천장재·단열재", f"{len(_knh)}종", _knH.IMG(_knh[0][4], 400)))
+    except Exception: pass
+    try:
         import emall as _emH
         _ehc, _ehr = _emH.load(ROOT)
         if _ehr: _bc.append(("/bondex/", "본덱스 스테인·페인트", f"{len(_ehr)}종", _emH.IMG(_ehr[0][3])))
@@ -1807,7 +1824,7 @@ Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i
         "".join(f"<url><loc>{u}</loc><lastmod>{LMD[u]}</lastmod>" + (f"<image:image><image:loc>{html.escape(SIMG[u])}</image:loc></image:image>" if SIMG.get(u) else "") + "".join(f"<image:image><image:loc>{BASE}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg</image:loc></image:image>" for d_ in ("mandeul", "sigongbeop") if f"/{d_}/" in u and not u.endswith("/") and os.path.exists(f"{ROOT}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg")) + "</url>\n" for u in SITEMAP) + "</urlset>\n")
     # 전체 자재 검색: 쇼핑몰 자재 + 제조사·철물·본덱스 사진 카드(.yri) 전부 → /assets/search.json
     _sx, _seen = list(idx), set()
-    for d_ in ("bondex", "bupum", "yerim", "younglim", "shenu", "nichiha", "geonjae"):
+    for d_ in ("bondex", "bupum", "yerim", "younglim", "shenu", "nichiha", "geonjae", "knauf"):
         for fn in sorted(os.listdir(f"{OUT}/{d_}")) if os.path.isdir(f"{OUT}/{d_}") else []:
             if not fn.endswith(".html"): continue
             tx = open(f"{OUT}/{d_}/{fn}", encoding="utf-8").read()
@@ -1819,7 +1836,7 @@ Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i
                 _seen.add(k_)
                 pz = re.search(r'class="cbp">([\d,]+원~)', m.group(0))
                 _sx.append({"n": html.unescape(m.group(2)), "i": im_.group(1) if im_ else m.group(1), "c": sec, "s": (pz.group(1) + " · " if pz else "") + sec, "l": f"/{d_}/{fn}".replace("/index.html", "/")})
-    _PF = ["https://m.xn--392bopf4iwtp.com/web/product/medium/", "https://www.emalling.co.kr/web/product/medium/", "https://s3.ap-northeast-2.amazonaws.com/younglim-bucket/", "https://www.yerim.net/upload/product/", "https://namuip.com/cnd_home/assets/img/", "https://www.wwood.kr/"]
+    _PF = ["https://m.xn--392bopf4iwtp.com/web/product/medium/", "https://www.emalling.co.kr/web/product/medium/", "https://s3.ap-northeast-2.amazonaws.com/younglim-bucket/", "https://www.yerim.net/upload/product/", "https://namuip.com/cnd_home/assets/img/", "https://www.wwood.kr/", "https://media.knauf.com/a/"]
     for x in _sx:
         for k_, pf in enumerate(_PF):
             if x["i"].startswith(pf): x["i"] = f"~{k_}" + x["i"][len(pf):]; break
