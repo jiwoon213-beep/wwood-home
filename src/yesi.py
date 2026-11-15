@@ -4,6 +4,7 @@ import math, json
 import gyeonjeok as GJ
 
 PY = 3.3058
+LINKS = []
 
 
 def _won(x):
@@ -30,7 +31,7 @@ def gen(page, P, E, CTA, faqslide, TEL):
     pages = []
 
     # 1) 데크
-    DECK = [(1, 1.8, 1.8, "현관 앞·작은 테라스"), (3, 3.6, 2.7, "베란다·마당 한쪽"), (5, 4.5, 3.6, "마당 데크"), (10, 6.0, 5.4, "넓은 마당·펜션 테라스")]
+    DECK = [(1, 1.8, 1.8, "현관 앞·작은 테라스"), (2, 2.7, 2.4, "현관·뒷마당 테라스"), (3, 3.6, 2.7, "베란다·마당 한쪽"), (4, 3.6, 3.6, "마당 데크"), (5, 4.5, 3.6, "마당 데크"), (6, 4.5, 4.4, "전원주택 마당"), (8, 5.4, 4.9, "전원주택 마당"), (10, 6.0, 5.4, "넓은 마당·펜션 테라스"), (15, 7.2, 6.9, "펜션·카페 테라스"), (20, 8.1, 8.1, "펜션·카페 테라스")]
     dk = [("방부목 20×120 데크재", "20×120×12자(데크)", 120, 3.6), ("방부목 25×140 데크재", "25×140×12자(데크)", 140, 3.6), ("합성데크 20×140 솔리드", "데크(솔리드) · 20×140×3000", 140, 3.0)]
     for py, L, W, where in DECK:
         A = L * W
@@ -51,7 +52,7 @@ def gen(page, P, E, CTA, faqslide, TEL):
                           calc="/deck-gyesan.html", calcn="데크 자재 계산기", mat="/jajae/bangbu.html", matn="방부목", gg="/gagyeok/deck-gagyeok.html", vn="데크 만들기 방부목 합성데크"))
 
     # 2) 천장 루바
-    for py, where in [(2, "욕실 앞·베란다 천장"), (4, "작은 방 천장"), (8, "거실 천장"), (5, "다락·사우나 천장")]:
+    for py, where in [(2, "욕실 앞·베란다 천장"), (3, "베란다·작은 방 천장"), (4, "작은 방 천장"), (5, "다락·사우나 천장"), (6, "안방 천장"), (8, "거실 천장"), (10, "거실·카페 천장")]:
         A = py * PY
         its = items("ceil_ruba", ["히노끼/유절", "히노끼/무절", "스프러스"])
         rows = [(i["n"].replace("/", " "), f'{_ceil(A * 1.1 / i["a"])}단', _ceil(A * 1.1 / i["a"]) * int(i["p"]), "", 0) for i in its]
@@ -62,7 +63,7 @@ def gen(page, P, E, CTA, faqslide, TEL):
                               calc="/gyeonjeok.html", calcn="방 통째로 계산", mat="/jajae/hinoki.html", matn="히노끼·루바", gg="/gagyeok/hinoki-ruba.html", vn="루바 천장 히노끼 시공"))
 
     # 3) 석고보드 천장·가벽
-    for py in (3, 5, 8):
+    for py in (3, 5, 8, 10, 15, 20):
         A = py * PY
         its = items("ceil_gyp", ["일반 3×6 · 9.5T", "방화 3×6 · 12.5T", "방수 3×6 · 9.5T"])
         rows = [(i["n"], f'{_ceil(A * 1.1 / i["a"])}장', _ceil(A * 1.1 / i["a"]) * int(i["p"]), "", 0) for i in its]
@@ -95,7 +96,7 @@ def gen(page, P, E, CTA, faqslide, TEL):
                               calc="/gyeonjeok.html", calcn="방 통째로 계산", mat="/jajae/siding.html", matn="사이딩", gg="/gagyeok/siding-gagyeok.html", vn="세라믹사이딩 외벽 시공"))
 
     # 6) 바닥 합판
-    for py in (3, 5):
+    for py in (3, 4, 5, 8, 10):
         A = py * PY
         its = items("floor_ply", ["일반 4×8 · 11.5mm(인)A급", "일반 4×8 · 8.5mm(베)"])
         rows = [(i["n"], f'{_ceil(A * 1.1 / i["a"])}장', _ceil(A * 1.1 / i["a"]) * int(i["p"]), "", 0) for i in its]
@@ -106,7 +107,7 @@ def gen(page, P, E, CTA, faqslide, TEL):
                               calc="/calc.html", calcn="자재 계산기", mat="/jajae/hapan.html", matn="합판", gg="/gagyeok/hapan-gagyeok.html", vn="합판 바닥 시공"))
 
     # 7) 벽 단열
-    for py in (3, 5):
+    for py in (3, 4, 5, 8):
         A = (math.sqrt(py * PY) * 4) * 2.4 * 0.85
         its = items("wall_ins", ["아이소핑크 · 900×1800×30T", "아이소핑크 · 900×1800×50T"])
         rows = [(i["n"], f'{_ceil(A * 1.1 / i["a"])}장', _ceil(A * 1.1 / i["a"]) * int(i["p"]), "", 0) for i in its]
@@ -141,6 +142,8 @@ def gen(page, P, E, CTA, faqslide, TEL):
         page(f"yesi/{d['slug']}.html", d["title"] + " | 영진목재", desc, body, "/calc.html", fld)
         links.append((d, lo, hi))
 
+    global LINKS
+    LINKS = [(d["kind"], d["slug"], d["h1"].split(" — ")[0], lo[1], hi[1]) for d, lo, hi in links]
     # 허브
     grp = {}
     for d, lo, hi in links: grp.setdefault(d["kind"], []).append((d, lo, hi))

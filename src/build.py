@@ -1285,6 +1285,22 @@ def build():
     import mirigi as _mr
     _mr.gen(page, P, E, CTA, faqslide, TEL, PROD, ROOT)
     import yesi as _ys; _ys.gen(page, P, E, CTA, faqslide, TEL)
+    # 가격 가이드·자재 백과 → 평수별 예시 링크(같은 자재끼리)
+    _YK = {"gagyeok/deck-gagyeok": "데크", "gagyeok/hinoki-ruba": "루바", "gagyeok/spruce-ruba": "루바", "gagyeok/seokgo-gagyeok": "석고보드",
+           "gagyeok/tempa-board": "템바보드", "gagyeok/siding-gagyeok": "사이딩", "gagyeok/hapan-gagyeok": "합판", "gagyeok/danyeol-gagyeok": "단열재",
+           "jajae/bangbu": "데크", "jajae/hapdeck": "데크", "jajae/hinoki": "루바", "jajae/gypsum": "석고보드", "jajae/siding": "사이딩",
+           "jajae/hapan": "합판", "jajae/insul": "단열재", "nichiha/index": "사이딩", "deck-gyesan": "데크", "gabyeok-gyesan": "석고보드"}
+    for _k, _kind in _YK.items():
+        _f = os.path.join(OUT, _k + ".html")
+        _ls = [l for l in _ys.LINKS if l[0] == _kind]
+        if not os.path.exists(_f) or not _ls: continue
+        _h = open(_f, encoding="utf-8").read()
+        if "ylinks" in _h: continue
+        _box = ('<section class="wrap sec ylinks"><h2>' + E(_kind) + ' 몇 평이면 얼마? 평수별 자재비 예시</h2><div class="ylk">'
+                + "".join(f'<a href="/yesi/{sl}.html"><b>{E(t)}</b><small>{lo:,}원~</small></a>' for _, sl, t, lo, hi in _ls)
+                + '</div></section><style>.ylk{display:flex;gap:8px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}.ylk a{flex:0 0 auto;display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid #ece6dc;border-radius:14px;padding:10px 14px;color:#1D1B18;text-decoration:none}.ylk b{font-size:14px}.ylk small{color:#c41a1f;font-weight:800;font-size:12.5px}</style>')
+        _i = _h.rfind("</main>")
+        if _i > 0: open(_f, "w", encoding="utf-8").write(_h[:_i] + _box + _h[_i:])
     import cheolmul as _ch
     CHLIST = _ch.gen(page, P, E, CTA, faqslide, BASE, ADDR, HOURS, ALLFAQ)
     import taka as _tk
