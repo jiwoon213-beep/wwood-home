@@ -143,3 +143,70 @@ document.querySelector(".dbw").addEventListener("input",calc);document.querySele
 $("dbcopy").onclick=function(){{try{{navigator.clipboard.writeText(last);this.textContent="복사됐어요"}}catch(e){{prompt("복사하세요",last)}}}};calc()}})();</script>'''
     page("dobae-jangpan.html", "도배·장판·타일·페인트 계산기 — 벽지 몇 롤, 장판 몇 m, 타일 몇 장 | 영진목재",
          "방 가로·세로·높이만 넣으면 실크·합지 벽지 롤 수, 장판 길이, 타일 장 수·박스 수, 페인트 L를 바로 계산합니다. 로스 포함, 결과 복사 가능.", body, "/calc.html")
+
+
+def _price(P, rx):
+    h = next((p for p in P if re.search(rx, p["name"])), None)
+    return h["price"] if h else 0
+
+
+def _page(page, slug, title, desc, h1, lead, inputs, js, fq, CTA, TEL, extra=""):
+    body = f'''<section class="wrap sec gg cxw"><p class="crumb"><a href="/calc.html">자재 계산기</a> › {h1}</p><h1>{h1}</h1><p class="glead">{lead}</p>
+<div class="gjc">{inputs}<p class="gjarea" id="cxa"></p></div>
+<div class="gjres"><h2 class="gt">필요한 자재</h2><div id="cxo"></div><div class="gjtot"><span>합계(자재비)</span><b id="cxs">0원</b></div>
+<p class="small muted">홈페이지 소매 기준가(부가세 별도) · 로스 포함 참고값 · 시공비 별도. 실물·재고는 매장에서 확인하고 원하는 길이로 잘라 드립니다.</p>{extra}
+<div class="gjact"><button type="button" class="b r" id="cxc">결과 복사</button><a class="b" href="tel:{TEL}">전화 문의</a><a class="b" href="/gyeonjeok.html">방 전체 자재비</a></div></div></section>
+<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{fq}</section>{CTA}
+<style>.gjc{{background:#fff;border:1px solid #e9e3d9;border-radius:20px;padding:16px;box-shadow:0 6px 20px rgba(0,0,0,.05)}}.gjr{{display:flex;gap:8px;margin-bottom:8px}}.gjr label{{flex:1;display:flex;flex-direction:column;font-size:13px;font-weight:700;color:#6b645a;position:relative}}.gjr input,.gjr select{{height:46px;border:1.5px solid #ddd5c8;border-radius:12px;padding:0 34px 0 12px;font:inherit;font-size:17px;font-weight:800;color:#1D1B18;margin-top:4px;width:100%;box-sizing:border-box;background:#fff}}.gjr select{{font-size:14px;padding:0 6px}}.gjr i{{position:absolute;right:11px;bottom:13px;font-style:normal;color:#8a8378;font-size:13px}}.gjarea{{background:#f6f2ec;border-radius:12px;padding:10px 12px;font-size:14px;margin:6px 0 0}}
+.gjres{{margin-top:16px}}#cxo .gjl{{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px dashed #e6dfd5;font-size:14px}}#cxo .gjl b{{display:block}}#cxo .gjl small{{color:#8a8378}}#cxo .gjl em{{font-style:normal;font-weight:800;white-space:nowrap}}.gjtot{{display:flex;justify-content:space-between;align-items:center;background:#1D1B18;color:#fff;border-radius:14px;padding:14px 16px;margin:12px 0 8px}}.gjtot b{{font-size:24px;color:#f5d27a}}.gjact{{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}}.gjact .b{{flex:1;min-width:110px;text-align:center}}</style>
+<script>(function(){{var $=function(i){{return document.getElementById(i)}},last="";function won(x){{return Math.round(x).toLocaleString("ko-KR")+"원"}}
+function out(rows,area,head){{$("cxa").innerHTML=area;var s=0,h="",t=[head];rows.forEach(function(r){{s+=r[3]*r[2];h+='<div class="gjl"><span><b>'+r[0]+'</b><small>'+r[1]+' · '+r[2]+r[4]+'</small></span><em>'+(r[3]?won(r[3]*r[2]):"매장 문의")+'</em></div>';t.push("- "+r[0]+" "+r[1]+" "+r[2]+r[4]+(r[3]?" ("+won(r[3]*r[2])+")":""))}});$("cxo").innerHTML=h;$("cxs").textContent=won(s);t.push("합계(자재비, 기준가·부가세 별도): "+won(s));t.push(location.href.split("?")[0]);last=t.join("\\n")}}
+{js}
+document.querySelector(".cxw").addEventListener("input",calc);document.querySelector(".cxw").addEventListener("change",calc);$("cxc").onclick=function(){{try{{navigator.clipboard.writeText(last);this.textContent="복사됐어요"}}catch(e){{prompt("복사하세요",last)}}}};calc()}})();</script>'''
+    page(slug, title, desc, body, "/calc.html")
+
+
+def gen3(page, P, E, CTA, faqslide, TEL):
+    """데크 자재 계산기(/deck-gyesan.html), 가벽 자재 계산기(/gabyeok-gyesan.html)"""
+    pr = lambda rx: _price(P, rx)
+    DB = [("25×140 방부 데크재(12자)", 140, 3.6, pr(r"방부-25\*140\*12자\(데크\)")), ("20×120 방부 데크재(12자)", 120, 3.6, pr(r"방부-20\*120\*12자\(데크\)")),
+          ("15×95 방부 데크재(12자)", 95, 3.6, pr(r"방부-15\* 95\*12자\(데크\)")), ("40×140 방부 데크(1800)", 140, 1.8, pr(r"방부-방부데크 @40\*140\*1800"))]
+    LUM = {"b24": pr(r"방부- 2\* 4\*12자\(파인\)"), "b26": pr(r"방부- 2\* 6\*12자\(파인\)"), "b44": pr(r"방부- 4\*4\*12자"), "g24": pr(r"구조-Ⅱ 2\* 4\*12ft"),
+           "gyp": pr(r"석고-일반 3\*6 @ 9\.5T$"), "gyp12": pr(r"석고-일반 3\*6 @12\.5T"), "pink50": pr(r"단열-아이소핑크 @900\*1800\*50T")}
+    dj = json.dumps({"db": DB, "l": LUM}, ensure_ascii=False)
+    opts = "".join(f'<option value="{i}">{n}{" — " + format(p, ",") + "원/개" if p else ""}</option>' for i, (n, w, L, p) in enumerate(DB))
+    inp = f'''<div class="gjr"><label>데크 길이(판 방향)<input id="dl" type="number" inputmode="decimal" step="0.1" value="3.6"><i>m</i></label><label>데크 폭<input id="dw" type="number" inputmode="decimal" step="0.1" value="2.4"><i>m</i></label></div>
+<div class="gjr"><label>데크재<select id="dt">{opts}</select></label><label>바닥에서 높이<input id="dh" type="number" inputmode="decimal" step="0.05" value="0.4"><i>m</i></label></div>
+<div class="gjr"><label>장선 간격<select id="ds"><option value="0.4">400mm(권장)</option><option value="0.45">450mm</option><option value="0.3">300mm(얇은 판)</option></select></label><label>기둥 간격<select id="dp"><option value="1.2">1.2m</option><option value="1.5">1.5m</option></select></label></div>'''
+    js = f'''var D={dj};function calc(){{var L=+$("dl").value||0,W=+$("dw").value||0,h=+$("dh").value||0,t=D.db[+$("dt").value],sp=+$("ds").value,pp=+$("dp").value;
+var rows=Math.ceil(W*1000/(t[1]+5)),per=Math.ceil(L/t[2]),boards=Math.ceil(rows*per*1.05);
+var nj=Math.ceil(L/sp)+1,jp=Math.ceil(W/3.6),joist=nj*jp;
+var nb=Math.ceil(W/pp)+1,beam=nb*Math.ceil(L/3.6);
+var np=nb*(Math.ceil(L/pp)+1),cut=Math.max(1,Math.floor(3.6/Math.max(h+0.1,0.3))),post=Math.ceil(np/cut);
+var screws=rows*nj*2;
+out([["데크재",t[0],boards,t[3],"개"],["장선(방부 2×4, 3.6m)",sp*1000+"mm 간격 "+nj+"줄",joist,D.l.b24,"개"],["멍에(방부 2×6, 3.6m)",nb+"줄 · 기둥 위",beam,D.l.b26,"개"],["기둥(방부 4×4, 3.6m)",np+"개 자리 · 높이 "+h+"m씩 잘라 씀",post,D.l.b44,"개"],["데크용 스텐 피스","판 1장이 장선을 지날 때마다 2개",screws,0,"개(약)"]],
+"데크 면적 <b>"+(L*W).toFixed(1)+"㎡</b>("+(L*W/3.3058).toFixed(1)+"평) · 판 "+rows+"줄 · 장선 "+nj+"줄 · 기둥 "+np+"개","[영진목재 데크 자재 계산] "+L+"×"+W+"m, 높이 "+h+"m")}}'''
+    fq = faqslide([("데크 장선 간격은 얼마로 하나요?", "25T 데크재는 보통 400mm, 얇은 판(15~20T)은 300~400mm로 촘촘하게 합니다. 간격이 넓으면 밟을 때 출렁입니다."),
+                   ("데크 기초는 어떻게 하나요?", "땅이면 주춧돌·기초석이나 콘크리트 기초 위에 기둥받침 철물로 기둥을 세웁니다. 기초 자재는 현장 상태에 따라 달라 이 계산에는 넣지 않았습니다(목재 철물 > 주춧돌·기둥받침 참고)."),
+                   ("데크재 사이 간격은요?", "물빠짐과 수축을 위해 판 사이 3~5mm를 띄웁니다. 계산기는 5mm로 계산합니다."),
+                   ("오일스테인은 얼마나 필요하나요?", "제품 표기 도포량에 따라 다릅니다. 데크 면적×2회÷도포량(㎡/L)으로 계산하세요(도배·장판 계산기 페인트 탭 활용).")])
+    _page(page, "deck-gyesan.html", "데크 자재 계산기 — 데크재·장선·멍에·기둥·피스 몇 개? 비용까지 | 영진목재",
+          "데크 크기와 높이만 넣으면 방부 데크재·장선(2×4)·멍에(2×6)·기둥(4×4)·피스 수량과 자재비를 기준가로 바로 계산합니다. 결과 복사 가능.",
+          "데크 자재 계산기", "데크 크기와 높이를 넣으면 <b>데크재·장선·멍에·기둥·피스</b>가 몇 개 필요하고 자재비가 얼마인지 바로 나옵니다. 방부목은 원하는 길이로 잘라 드립니다.",
+          inp, js, fq, CTA, TEL, '<p class="small">기둥받침·주춧돌 같은 기초 철물은 <a href="/cheolmul/gidungbatchim.html">기둥받침·캡</a>, <a href="/cheolmul/juchudol.html">주춧돌</a>, 장선 고정은 <a href="/cheolmul/janseon.html">장선걸이</a>를 보세요.</p>')
+    inp2 = '''<div class="gjr"><label>가벽 길이<input id="gl" type="number" inputmode="decimal" step="0.1" value="3.0"><i>m</i></label><label>천장 높이<input id="gh" type="number" inputmode="decimal" step="0.1" value="2.4"><i>m</i></label></div>
+<div class="gjr"><label>문 구멍<select id="gd"><option value="0">없음</option><option value="1">문 1개</option></select></label><label>스터드 간격<select id="gs"><option value="0.45">450mm</option><option value="0.4">400mm</option><option value="0.6">600mm</option></select></label></div>
+<div class="gjr"><label>석고보드<select id="gb"><option value="2,1">양면 1겹 9.5T</option><option value="2,2">양면 2겹 9.5T</option><option value="1,1">한면 1겹 9.5T</option><option value="2,1,12">양면 1겹 12.5T</option></select></label><label>속채움 단열<select id="gi"><option value="0">없음</option><option value="1">아이소핑크 50T</option></select></label></div>'''
+    js2 = f'''var D={dj};function calc(){{var L=+$("gl").value||0,H=+$("gh").value||0,dr=+$("gd").value,s=+$("gs").value,b=$("gb").value.split(","),sides=+b[0],lay=+b[1],thick=b[2]?"12.5T":"9.5T",ins=+$("gi").value;
+var studs=Math.ceil(L/s)+1+(dr?2:0),sp=Math.ceil(H/3.6),plates=Math.ceil(L*2/3.6)+(dr?1:0);
+var area=Math.max(0,L*H-(dr?1.9:0)),gyp=Math.ceil(area*sides*lay*1.1/1.62),ins_n=ins?Math.ceil(area*1.1/1.62):0,sc=gyp*25;
+var r=[["스터드(구조재 2×4, 3.6m)",s*1000+"mm 간격 "+studs+"개"+(dr?" (문 양옆 보강 포함)":""),studs*sp,D.l.g24,"개"],["상·하부 깔도리(구조재 2×4)","바닥·천장 "+L+"m씩",plates,D.l.g24,"개"],["석고보드 "+thick+" 900×1800",(sides==2?"양면":"한면")+" "+lay+"겹",gyp,thick=="12.5T"?D.l.gyp12:D.l.gyp,"장"]];
+if(ins)r.push(["아이소핑크 50T 900×1800","벽 속 채움",ins_n,D.l.pink50,"장"]);r.push(["석고보드 피스","1장에 약 25개",sc,0,"개(약)"]);
+out(r,"가벽 면적 <b>"+area.toFixed(1)+"㎡</b> · 스터드 "+studs+"개 · 석고 "+gyp+"장","[영진목재 가벽 자재 계산] 길이 "+L+"m × 높이 "+H+"m")}}'''
+    fq2 = faqslide([("가벽 각재는 뭘 쓰나요?", "방 칸막이는 구조재 2×4(38×89mm)를 많이 씁니다. 얇게 하려면 다루끼(30×30·30×60)나 경량철골도 씁니다. 매장에서 원하는 길이로 잘라 드립니다."),
+                    ("석고보드는 몇 겹이 좋나요?", "일반 칸막이는 양면 1겹, 소리를 더 막고 싶으면 양면 2겹에 속을 단열재·흡음재로 채웁니다."),
+                    ("문을 달 수 있나요?", "네. 문 자리 양옆에 스터드를 겹쳐 세우고 위에 상인방을 대면 됩니다. 문틀·문짝은 방문·문틀 가격 가이드를 보세요.")])
+    _page(page, "gabyeok-gyesan.html", "가벽 자재 계산기 — 각재(2×4)·석고보드·단열재 몇 개? 비용까지 | 영진목재",
+          "가벽 길이와 높이만 넣으면 구조재 2×4 스터드·깔도리, 석고보드(1·2겹), 아이소핑크, 피스 수량과 자재비를 기준가로 바로 계산합니다.",
+          "가벽 자재 계산기", "칸막이(가벽) 길이와 높이를 넣으면 <b>각재·석고보드·단열재·피스</b>가 몇 개 필요하고 자재비가 얼마인지 바로 나옵니다.",
+          inp2, js2, fq2, CTA, TEL, '<p class="small">시공 순서는 <a href="/sigongbeop/">자재 시공법</a>, 석고보드 종류는 <a href="/knauf/seokgo.html">석고보드</a>를 보세요.</p>')
