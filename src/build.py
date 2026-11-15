@@ -3,7 +3,7 @@ import glob
 import collections, re
 #!/usr/bin/env python3
 """월드건축자재 홍보 사이트 생성기. python3 build.py [BASE_URL]"""
-import csv, html, json, os, re, shutil, sys, datetime
+import csv, html, json, math, os, re, shutil, sys, datetime
 from mats import MATS, CATS
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -221,7 +221,27 @@ def mat_prices(m, k=10):
 NAV = [("/visit.html", "매장 안내"), ("/jaryo/", "전체 자재"), ("/news/", "소식·정보"), ("/price.html", "기준가"), ("/mandeul/", "DIY 만들기"), ("/sigongbeop/", "자재 시공법"), ("/trend/", "인테리어 트렌드"), ("/calc.html", "자재비 계산기"), ("/cut.html", "목재 재단"), ("/sajin.html", "사진으로 찾기"), ("/video/", "영상"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공")]
 
 NAVI = {"/calc.html": '<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h2M12 18h2"/><path d="M16 14v4"/>', '/visit.html': '<path d="M12 21s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>', '/jaryo/': '<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>', '/news/': '<path d="M5 4.5h11.5v15H6.5A1.5 1.5 0 0 1 5 18z"/><path d="M16.5 8.5H19v9.5a1.5 1.5 0 0 1-3 0"/><path d="M8 8.5h5.5M8 12h5.5M8 15.5h3.5"/>', '/price.html': '<path d="M3.5 12.5 11.5 4.5H19.5v8l-8 8z"/><circle cx="15.5" cy="8.5" r="1.4"/>', '/mandeul/': '<path d="M14.5 5.5l4 4L9 19H5v-4z"/><path d="M12.5 7.5l4 4"/>', '/sigongbeop/': '<path d="M4 20h16"/><path d="M6 20V9l6-4.5L18 9v11"/><path d="M10 20v-5h4v5"/>', '/trend/': '<path d="M12 3.5l2.4 5 5.4.6-4 3.7 1.1 5.4L12 15.5l-4.9 2.7 1.1-5.4-4-3.7 5.4-.6z"/>', '/cut.html': '<circle cx="6.5" cy="6.5" r="2.5"/><circle cx="6.5" cy="17.5" r="2.5"/><path d="M8.6 8 20 19M8.6 16 20 5"/>', '/sajin.html': '<path d="M3.5 8.5A2.5 2.5 0 0 1 6 6h1.7l1.4-1.9h5.8L16.3 6H18a2.5 2.5 0 0 1 2.5 2.5v8.5A2.5 2.5 0 0 1 18 19.5H6A2.5 2.5 0 0 1 3.5 17z"/><circle cx="12" cy="12.6" r="3.5"/>', '/video/': '<rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M10.5 9.5v5l4.5-2.5z"/>', '/dome.html': '<path d="M3.5 17V8h10v9"/><path d="M13.5 11h4l3 3v3h-7"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>', '/sigong.html': '<path d="M14 6.5a4 4 0 0 0-5 5L4 16.5 7.5 20l5-5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z"/>'}
+_PSEEN = set()
+POPEN = set()  # 내용이 충분해 검색에 여는 제품 상세(/p/)
+VTHIN = set(l.strip() for l in open(f"{ROOT}/data/vthin.txt", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/vthin.txt") else set()
+def _noidx(path):
+    # 얇거나 다른 페이지와 거의 같은 페이지는 검색 제외(사람은 볼 수 있음) — 구글 '크롤링됨-색인 안 됨' 줄이기
+    if path.startswith("p/"): return path not in POPEN
+    if re.match(r"(daejeon|sejong)/(?!index\.html)[^/]+\.html$", path): return True  # 대전·세종 × 자재 = /jajae/ 와 거의 같음
+    if path.startswith("v/") and path[2:-5] in VTHIN: return True
+    return False
+def _tshort(t):
+    # 60자 넘는 제목: 끝의 업체명은 두고, 나열·부제부터 줄임(검색 결과에서 잘리지 않게)
+    if len(t) <= 60: return t
+    main, suf = (t.rsplit(" | ", 1)[0], " | " + t.rsplit(" | ", 1)[1]) if " | " in t else (t, "")
+    lim = 60 - len(suf)
+    for sep in (", ", " | ", " — ", " "):
+        while len(main) > lim and sep in main: main = main.rsplit(sep, 1)[0].rstrip(" ,·—")
+        if len(main) <= lim: break
+    if len(main) > lim: main = main[:lim - 1] + "…"
+    return main + suf
 def page(path, title, desc, body, active="", jsonld=None, img=None):
+    title = _tshort(title)
     if ' data-big="' in body and 'id="ylb"' not in body:
         import yerim as _ylb; body += _ylb.LB
     if 'class="yri" href="#" data-big=' in body and "ItemList" not in json.dumps(jsonld or {}):  # 제품 사진 카드가 있는 페이지는 제품 목록(ItemList) 정보 자동 추가
@@ -247,7 +267,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
     doc = f"""<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{E(title)}</title><meta name="description" content="{E(desc)}"><link rel="alternate" type="application/rss+xml" title="영진종합목재 소식" href="/rss.xml">
-<link rel="canonical" href="{canon}">{'<meta name="robots" content="noindex,follow">' if path.startswith("p/") else ('' if PREVIEW else '<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">')}<meta name="naver-site-verification" content="a59ff6921fc90666c920da00bf9a23ecb0ba3514"><meta property="og:type" content="website"><meta property="og:title" content="{E(title)}">
+<link rel="canonical" href="{canon}">{'<meta name="robots" content="noindex,follow">' if _noidx(path) else ('' if PREVIEW else '<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">')}<meta name="naver-site-verification" content="a59ff6921fc90666c920da00bf9a23ecb0ba3514"><meta property="og:type" content="website"><meta property="og:title" content="{E(title)}">
 <meta property="og:description" content="{E(desc)}"><meta property="og:url" content="{canon}"><meta property="og:image" content="{E(img or (BASE + "/assets/store/storefront.jpg"))}">{"" if img else '<meta property="og:image:width" content="1280"><meta property="og:image:height" content="853">'}<meta property="og:image:alt" content="{E(title.split(" | ")[0]) if img else "영진종합목재(월드건축자재) 매장"}"><meta name="twitter:title" content="{E(title)}"><meta name="twitter:description" content="{E(desc)}"><meta name="twitter:image" content="{E(img or (BASE + "/assets/store/storefront.jpg"))}"><meta property="og:site_name" content="영진종합목재 (월드건축자재)"><meta property="og:locale" content="ko_KR"><meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&amp;display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&amp;display=swap"></noscript><link rel="preconnect" href="https://i.ytimg.com"><link rel="preconnect" href="https://www.wwood.kr"><link rel="icon" href="/assets/logo-mark.svg" type="image/svg+xml"><link rel="icon" href="/assets/favicon-48.png" sizes="48x48"><link rel="apple-touch-icon" href="/assets/apple-touch-icon.png"><link rel="manifest" href="/assets/manifest.webmanifest"><meta name="theme-color" content="#1D1B18"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="영진목재"><link rel="stylesheet" href="/assets/style.css?v={ASSET_V}">{'<meta name="robots" content="noindex,nofollow">' if PREVIEW else ''}{ld}</head><body>
 <div class="top"><div class="wrap row sb"><span>{HOURS} · {ADDR}</span><span><span id="vcnt" class="vcnt"></span> <a href="#" id="appi" class="appi">홈 화면에 추가</a> <a href="/dome.html">업체·도매회원</a> <a class="tvis" href="/visit.html">매장 길찾기</a></span></div></div><div id="appg" class="appg" hidden><div class="appgb"><span class="appgh"></span><div class="appgtop"><img src="/assets/icon-192.png" width="64" height="64" alt=""><div><b>영진목재 앱</b><small>대전 3000평 목재·건축자재 · 무료</small></div></div><div id="appgt"></div><button type="button" id="appgx" class="appgx">다음에 할게요</button></div></div>
@@ -267,7 +287,7 @@ Promise.all([fetch(b+(nd?"hit":"get")+"/"+n+"/d"+k).then(function(r){{return r.j
     if PREFIX: doc = doc.replace('href="/', f'href="{PREFIX}/').replace('src="/', f'src="{PREFIX}/')
     fp = os.path.join(OUT, path); os.makedirs(os.path.dirname(fp), exist_ok=True)
     open(fp, "w", encoding="utf-8").write(doc)
-    if not path.startswith("p/"): SITEMAP.append(canon); SIMG[canon] = img  # 상품 상세(/p/)는 얇은 페이지라 색인 제외(구글: 크롤링됨-색인 안 됨 734건)
+    if not _noidx(path): SITEMAP.append(canon); SIMG[canon] = img  # 상품 상세(/p/)는 얇은 페이지라 색인 제외(구글: 크롤링됨-색인 안 됨 734건)
 
 def vcard(v, big=False):
     return f"""<a class="vc{' big' if big else ''}{' sh' if v['type']=='S' else ''}" href="{vpage(v)}"{'' if v['id'] in VD else ' target="_blank" rel="noopener"'} data-yt="{v['id']}">
@@ -1539,6 +1559,20 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
                 + "".join('<tr>' + "".join((f'<th>{E(r[k])}</th>' if k == 0 else f'<td data-l="{["규격", "단위", "원산지", "수종", "비고"][k]}">{E(_sv(r[k]))}</td>') for k in _cols) + '</tr>' for r in _sp)
                 + f'</tbody></table></div><p class="small muted">규격 {len(_sp)}가지 · 표에 없는 크기도 원하는 사이즈로 재단해 드립니다. 가격·재고는 쇼핑몰이나 매장(042-545-2900)에서 확인하세요.</p>') if _sp else ""
         _sz = ", ".join(dict.fromkeys(r[0] for r in _sp))[:70]
+        _cov = []
+        if not re.search(r"각재|구조재|다루끼|2[xX×*]\d|투바이|원주목|기둥|철물|피스|본드|스테인|오일|페인트", p["name"]):
+            for r in _sp:
+                d_ = sorted(float(x) for x in re.findall(r"(\d+(?:\.\d+)?)\s*mm", r[0], flags=re.I))
+                if len(d_) not in (2, 3) or d_[-1] < 600 or d_[-2] < 80 or (len(d_) == 3 and d_[0] > 45): continue
+                a_ = d_[-1] * d_[-2] / 1e6
+                if a_ <= 0: continue
+                _cov.append((r[0], a_))
+        _cov = list(dict((k, a) for k, a in _cov).items())[:20]
+        cov = (f'<h2>{E(p["name"])} — 1평에 몇 장?</h2><div class="tw"><table class="rt"><thead><tr><th>규격</th><th>1장 면적</th><th>1평(3.3㎡)</th><th>10㎡</th></tr></thead><tbody>'
+               + "".join(f'<tr><th>{E(k)}</th><td data-l="1장 면적">{a:.2f}㎡</td><td data-l="1평">약 {math.ceil(3.3058 / a)}장</td><td data-l="10㎡">약 {math.ceil(10 / a)}장</td></tr>' for k, a in _cov)
+               + '</tbody></table></div><p class="small muted">면적만으로 나눈 수량입니다(자투리·로스 제외). 실제 주문은 5~10% 여유를 두고, 정확한 양은 <a href="/calc.html">자재 계산기</a>로 확인하세요.</p>') if _cov else ""
+        _ok_ = (p["top"], sb, tuple(r[0] for r in _sp))  # 색상만 다른 같은 규격 제품은 하나만 검색에 엶
+        if _cov and len(_sp) >= 2 and _ok_ not in _PSEEN: POPEN.add(f"p/{p['id']}.html"); _PSEEN.add(_ok_)
         sb = subof(p, p["top"]); sname = MCAT.get(sb or "", "")
         sim = [q for q in PROD if q is not p and q["tops"] and q["top"] == p["top"] and subof(q, q["top"]) == sb][:12]
         if len(sim) < 6: sim += [q for q in PROD if q is not p and q not in sim and q["tops"] and q["top"] == p["top"]][:12 - len(sim)]
@@ -1554,7 +1588,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 <div class="g2 pdet"><div><img class="pimg" src="{E(p['img'])}" alt="{E(p['name'])}"></div><div><h1>{E(p['name'])}</h1><p class="muted">{E(cat)}</p>
 <p>대전 유성 영진목재(월드건축자재) 3000평 매장에서 실물을 보고 고를 수 있습니다. 원하는 사이즈로 재단해 드리고 대전·세종·공주·계룡·논산·금산·옥천은 배송하고, 그 외 전국은 용달차로 보내 드립니다(운임 견적 → 입금 확인 후 출고). 가격·재고는 쇼핑몰이나 매장(042-545-2900)에서 확인하세요.</p>
 <div class="row"><a class="b r" href="https://wwood.kr/home/mall/shoplist.php?idx={p['id']}&amp;pmode=view" target="_blank" rel="noopener">쇼핑몰에서 가격 보기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화 문의</a></div>
-<p class="small"><a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장 위치</a> · <a href="/jaryo/{sl}.html">{E(cn)} 전체 보기</a></p><div class="ylv pv" data-n="{E(p['name'])}" data-c="{E(cat)}"></div></div></div>{spec}{use}</section>
+<p class="small"><a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장 위치</a> · <a href="/jaryo/{sl}.html">{E(cn)} 전체 보기</a></p><div class="ylv pv" data-n="{E(p['name'])}" data-c="{E(cat)}"></div></div></div>{spec}{cov}{use}</section>
 <section class="wrap sec"><h2>같은 분류 제품</h2><div class="pg hrow">{"".join(pcard2(q) for q in sim)}</div></section>{CTA}""", "/jaryo/", None, p["img"])
 
     # 매장 카운터 QR 안내판이 여는 페이지(/r/) — 리뷰·채널 링크는 여기서만 바꾸면 됨(재인쇄 불필요)
