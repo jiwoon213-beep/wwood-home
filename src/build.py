@@ -1482,6 +1482,11 @@ def build():
         return vsplit(vs, "h3") if vs else ""
     PPN = _ppg.gen(page, E, CTA, faqslide, HOURS, ROOT, _pvid)
     print("product pages:", PPN)
+    _fx = lambda t: html.escape(re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", "", str(t)))
+    open(f"{OUT}/merchant-feed.xml", "w", encoding="utf-8").write('<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0"><channel><title>영진종합목재(월드건축자재)</title><link>' + BASE + '</link><description>건축자재·철물·도료</description>\n' + "".join(
+        f'<item><g:id>{_fx(i)}</g:id><title>{_fx(t[:150])}</title><description>{_fx(dsc[:4900])}</description><link>{BASE}{u}</link><g:image_link>{_fx(im)}</g:image_link>'
+        f'<g:availability>in_stock</g:availability><g:price>{p} KRW</g:price><g:condition>new</g:condition>' + (f'<g:brand>{_fx(br)}</g:brand>' if br else '<g:identifier_exists>no</g:identifier_exists>') + f'<g:product_type>{_fx(c)}</g:product_type></item>\n'
+        for i, t, dsc, u, im, p, br, c in dict((x[0], x) for x in _ppg.FEED).values()) + '</channel></rss>\n')
     import local as _lc
     LCLIST = _lc.gen(page, E, CTA, faqslide, ADDR, HOURS, TEL, ROOT, CASES, top, vsplit)
     import nation as _nt

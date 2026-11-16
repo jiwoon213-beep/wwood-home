@@ -6,6 +6,7 @@ import os, re
 import prodguide as PG
 
 TEL = "042-545-2900"
+FEED = []  # 구글 머천트 센터 상품 목록(가격 있는 것만)
 
 
 def _ld(name, img, desc, brand, cat, price=None):
@@ -54,6 +55,7 @@ def _vendor(page, E, CTA, faqslide, HOURS, d, label, home, items, VID=None):
             if gd["warn"]: tips += "<h2 class='gt'>주의할 점</h2><ul class='gtip'>" + "".join(f"<li>{E(w)}</li>" for w in gd["warn"]) + "</ul>"
             if gd["links"]: tips += '<div class="qk">' + "".join(f'<a href="{h}">{E(t)}</a>' for h, t in gd["links"]) + "</div>"
         itro = PG.intro(it["title"], it["cat"], it["spec"], it.get("price"))
+        if it.get("price") and it["img"].startswith("http"): FEED.append((f"{d}-{it['id']}", it["title"], itro, f"/{d}/p/{it['id']}.html", it["img"], it["price"], it.get("brand"), it["cat"]))
         if allt: fq.append((f"{it['title']} 고를 때 무엇을 확인하나요?", " ".join(allt[:3])))
         body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="{home}">{E(label)}</a> › <a href="{it["cathref"]}">{E(it["cat"])}</a> › {E(it["title"][:40])}</p>'
                 f'<h1>{E(it["title"])}</h1><p class="glead">{E(use)}</p><p>{E(itro)}</p>'
