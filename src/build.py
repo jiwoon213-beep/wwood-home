@@ -260,7 +260,7 @@ PGMETA = {}
 
 
 _REL = {  # 새 검색용 페이지로 가는 내부 링크(관련 있는 기존 페이지에만)
-    **{f"{d}/index.html": [(f"/{d}/p/", "제품별 자세히 보기(사진·규격)")] for d in ("younglim", "yerim", "shenu", "bondex", "geonjae", "suip")},
+    **{f"{d}/index.html": [(f"/{d}/p/", "제품별 자세히 보기(사진·규격)")] for d in ("younglim", "yerim", "shenu", "bondex", "geonjae", "suip", "bupum")},
     "deck-pis.html": [("/pis-gilee.html", "피스 길이 고르는 법(전체)"), ("/seokgo-pis.html", "석고보드 피스")],
     "seokgo-pis.html": [("/pis-gilee.html", "피스 길이 고르는 법(전체)"), ("/deck-pis.html", "데크 피스")],
     "jajae/hardware.html": [("/bigyo/taka-vs-pis.html", "타카 vs 피스"), ("/pis-gilee.html", "피스 길이 고르는 법"), ("/deck-pis.html", "데크 피스")],

@@ -133,4 +133,23 @@ def gen(page, E, CTA, faqslide, HOURS, ROOT, VID=None):
         its.append(dict(id=sid, name=r["n"], img=hw.img(r["i"], True), spec=[("세부 분류", r["sub"])], cat=r["g"], cathref=f"/suip/{g[1]}.html",
                         lead=f"{r['sub']} — 수입 목조주택 자재. {g[2]}.", tips=["규격·수량과 현장 위치를 알려 주시면 견적과 배송 일정을 안내해 드립니다."], brand=None))
     n["suip"] = _vendor(page, E, CTA, faqslide, HOURS, "suip", "수입 목조주택 자재·창호", "/suip/", its, VID)
+    # 철물·공구·부속(철물박사) — 가격 = 판매가 × 1.4(부가세 포함, '~')
+    import cmbs as cb
+    cats, rows = cb.load(ROOT)
+    DET = cb.load_det(ROOT)
+    def ctop(c):
+        k = 0
+        while c in cats and cats[c][0] != 1 and k < 8: c = cats[c][0]; k += 1
+        return c
+    curl = lambda c: f"/bupum/{cb.TOP[c][0]}.html" if c in cb.TOP else f"/bupum/{cb.TOP[ctop(c)][0]}-{c}.html"
+    its, seen = [], set()
+    for r in rows:
+        t = ctop(r[0])
+        if t not in cb.TOP or t == 55 or r[0] not in cats or not r[1].isdigit() or r[1] in seen: continue
+        seen.add(r[1])
+        par = cats[r[0]][0]
+        cn = cats[r[0]][1] if (par in cb.TOP or par not in cats) else f"{cats[par][1]} {cats[r[0]][1]}"
+        its.append(dict(id=r[1], name=r[2], img=cb.IMG(r[3]), spec=cb.spec(r[5], DET.get(r[1])) or [], cat=cn, cathref=curl(r[0]),
+                        lead=f"{cn} — {cb.TOP[t][1]}({cb.TOP[t][2]}).", tips=["쓰던 부품이나 사진을 가져오시면 맞는 규격을 찾기 쉽습니다.", "목재·합판과 같이 주문하시면 한 번에 실어 보내 드립니다."], brand=None, price=r[4]))
+    n["bupum"] = _vendor(page, E, CTA, faqslide, HOURS, "bupum", "철물·공구·부속", "/bupum/", its, VID)
     return n
