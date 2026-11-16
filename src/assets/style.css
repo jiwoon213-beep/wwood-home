@@ -526,3 +526,11 @@ ul.mli{align-items:stretch!important}ul.mli li{align-self:stretch!important}
 .shx{border:1px solid #ddd5c8;background:#fff;color:#1D1B18;border-radius:999px;padding:10px 16px;font-size:14.5px;font-weight:800;cursor:pointer;font-family:inherit}
 .shx[data-s=os]{background:#1D1B18;color:#fff;border-color:#1D1B18}.shx.nv{color:#03a94f;border-color:#bfe8cf}.shx.bd{color:#1fae4c}.shx.fb{color:#1877f2;border-color:#c9dbfa}
 .shx.ig{color:#fff;border:0;background:linear-gradient(45deg,#f9a03f,#e1306c 50%,#833ab4)}
+/* 공유 버튼: 2칸 + 4칸 같은 크기로 */
+.shr{max-width:520px;margin:0 auto}
+.shrb{display:grid!important;grid-template-columns:repeat(4,1fr);gap:8px}
+.shx{width:100%;height:48px;padding:0 4px!important;font-size:14.5px;display:flex;align-items:center;justify-content:center;white-space:nowrap;border-radius:14px!important;line-height:1}
+.shx[data-s=os],.shx[data-s=copy]{grid-column:span 2;height:52px;font-size:16px}
+.shx.bd{border-color:#c5eccf}
+/* 매장 길찾기·시공 맡기기 반반 */
+@media(max-width:700px){.cta .row{display:grid!important;grid-template-columns:1fr 1fr;gap:10px}.cta .row .b{width:100%;text-align:center;margin:0!important;padding-left:6px;padding-right:6px}}
