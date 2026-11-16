@@ -256,6 +256,9 @@ _SHR = ('<section class="wrap sec shr"><p class="shrt">도움이 됐다면 <b>�
         '<button type="button" class="shx fb" data-s="fb">페이스북</button></div></section>')
 
 
+PGMETA = {}
+
+
 def page(path, title, desc, body, active="", jsonld=None, img=None):
     title = _tshort(title)
     if img and (" " in img.strip() or not img.strip().lower().split("?")[0].endswith((".jpg", ".jpeg", ".png", ".webp"))): img = None  # 깨진 대표 사진 주소는 버림
@@ -291,6 +294,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
         for add in (" 대전 유성 3000평 매장, 즉석 재단·전국 용달 배송.", " 대전 유성 매장·전국 배송.", " 대전 영진목재."):
             if len(desc) + len(add) <= 80: desc = desc.rstrip() + add; break
     canon = BASE + ("/" + path if path != "index.html" else "/").replace("index.html", "")
+    PGMETA[path] = (title.split(" | ")[0], desc, img)
     nav = "".join(f'<a href="{h}"{" class=on" if active==h else ""}><svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{NAVI.get(h, "")}</svg><span>{t}</span></a>' for h, t in NAV)
     lds = jsonld if isinstance(jsonld, list) else ([jsonld] if jsonld else [])
     lds = lds + [{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "홈", "item": BASE + "/"}] +
@@ -400,7 +404,7 @@ def build():
 <div>{embed(tour) if tour else ''}<p class="small muted">대전 목재소·건축자재 백화점 3000평 투어 · 조회 18만회</p></div></div></section>
 <section class="stat"><div class="wrap g4"><div><b>구독 {ST["subs"]}명</b><small>유튜브 월드건축자재DIY</small></div><div><b>영상 {int(ST["videos"]):,}개</b><small>시공·DIY·자재 정보</small></div>
 <div><b>소매 + 도매</b><small>셀프 고객부터 현장 납품까지</small></div><div><b>직접 시공</b><small>월드아키텍쳐 · {LIC}</small></div></div></section>
-<section class="wrap sec"><div class="tl4"><a href="/cut.html"><b>✂ 재단 미리보기</b><span>치수만 넣으면 원판에서 어떻게 잘리는지 그림으로</span></a><a href="/mandeul/"><b>🪚 DIY 만들기</b><span>평상·책장·데크·울타리 재단 목록</span></a><a href="/gyugyeok.html"><b>📏 규격표</b><span>합판 두께·2×4 실제 치수 한눈에</span></a><a href="/baesong.html"><b>🚚 전국 배송</b><span>재단해서 용달로 전국 현장까지</span></a><a href="/jaedan-bi.html"><b>💲 재단비</b><span>두께별 1컷 1,000원부터</span></a><a href="/yesi/"><b>📐 몇 평이면 얼마?</b><span>데크·루바·석고 평수별 자재비</span></a><a href="/tteori/"><b>🏷 떨이몰</b><span>자투리·B급·재고 정리 싸게</span></a><a href="/gongjeong.html"><b>🗂 공정 순서 플래너</b><span>철거부터 입주까지 순서표·체크</span></a><a href="/hyeonjang.html"><b>📋 내 현장함</b><span>저장한 재단표·미리 재단 주문</span></a><a href="/yeongyeol/"><b>🤝 시공팀 연결</b><span>사이딩·목공·도배·타일 등 14개 공정</span></a></div></section><!--MKHOME-->
+<section class="wrap sec"><div class="tl4"><a class="ttl" href="/tteori/"><b>🏷 떨이몰</b><span>자투리·B급·재고 정리 싸게 · 수량 한정</span></a><a href="/cut.html"><b>✂ 재단 미리보기</b><span>치수만 넣으면 원판에서 어떻게 잘리는지 그림으로</span></a><a href="/mandeul/"><b>🪚 DIY 만들기</b><span>평상·책장·데크·울타리 재단 목록</span></a><a href="/gyugyeok.html"><b>📏 규격표</b><span>합판 두께·2×4 실제 치수 한눈에</span></a><a href="/baesong.html"><b>🚚 전국 배송</b><span>재단해서 용달로 전국 현장까지</span></a><a href="/jaedan-bi.html"><b>💲 재단비</b><span>두께별 1컷 1,000원부터</span></a><a href="/yesi/"><b>📐 몇 평이면 얼마?</b><span>데크·루바·석고 평수별 자재비</span></a><a href="/gongjeong.html"><b>🗂 공정 순서 플래너</b><span>철거부터 입주까지 순서표·체크</span></a><a href="/hyeonjang.html"><b>📋 내 현장함</b><span>저장한 재단표·미리 재단 주문</span></a><a href="/yeongyeol/"><b>🤝 시공팀 연결</b><span>사이딩·목공·도배·타일 등 14개 공정</span></a></div></section><!--MKHOME-->
 <style>.tl4{{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}}.tl4 a{{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;color:inherit;text-decoration:none}}.tl4 a:hover{{border-color:var(--red)}}.tl4 b{{display:block;font-size:17px;margin-bottom:4px}}.tl4 span{{font-size:13px;color:var(--mut)}}@media(max-width:760px){{.tl4{{grid-template-columns:1fr 1fr}}}}</style>
 <div class="hx"><section class="wrap sec"><h2>무엇을 만들고 싶으세요?</h2><p class="muted">고르면 그 용도의 자재와 시공 영상이 한 번에 나옵니다.</p><div class="ug">{use}</div></section>
 <section class="wrap sec"><h2>자재 백과 — 이 나무, 어디에 쓰나요?</h2><p class="muted">용도·인테리어 효과·기준가·관련 영상을 자재별로 정리했습니다.</p><div class="mg">{mats}</div></section>
@@ -1939,10 +1943,14 @@ Promise.all([0,1,2,3,4,5,6].map(function(i){return g("d"+day(i))})).then(functio
         u = f"{BASE}/mandeul/{x[0]}.html"; _fs.setdefault(u, _today); _ex.append((_fs[u], x[2].split(" — ")[0] + " — DIY 만들기 자재·재단 크기", u, x[3], f"/assets/mandeul/{x[0]}.jpg"))
     for x in SG:
         u = f"{BASE}/sigongbeop/{x[0]}.html"; _fs.setdefault(u, _today); _ex.append((_fs[u], x[2].split(" — ")[0], u, x[3], f"/assets/sigongbeop/{x[0]}.jpg"))
+    for _pth, (_t, _d, _im) in PGMETA.items():  # 평수별 자재비·시공팀 연결·지역 시공·공정 플래너·떨이몰도 RSS에
+        if _noidx(_pth) or not re.match(r"(yesi|yeongyeol|local|tteori)/|gongjeong\.html|jaedan-bi\.html|hyeonjang\.html", _pth) or _pth.endswith("hyeonjang.html"): continue
+        u = BASE + "/" + _pth.replace("index.html", ""); _fs.setdefault(u, _today)
+        _ex.append((_fs[u], _t, u, _d, (_im or "").replace(BASE, "") or "/assets/icon-512.png"))
     json.dump(_fs, open(_fsf, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"), sort_keys=True)
     _ex.sort(key=lambda t: t[0], reverse=True)
     items += "".join(f"<item><title>{html.escape(t)}</title><link>{u}</link><guid>{u}</guid><pubDate>{_rfc(d)}</pubDate><description>{html.escape(ld)}</description>"
-                     + (f'<content:encoded><![CDATA[<p><img src="{BASE}{im}" alt="{html.escape(t)}"></p><p>{html.escape(ld)}</p>]]></content:encoded>' if os.path.exists(ROOT + im.replace("/assets", "/assets", 1)) or True else "") + "</item>\n" for d, t, u, ld, im in _ex[:60])
+                     + (f'<content:encoded><![CDATA[<p><img src="{BASE}{im}" alt="{html.escape(t)}"></p><p>{html.escape(ld)}</p>]]></content:encoded>' if os.path.exists(ROOT + im.replace("/assets", "/assets", 1)) or True else "") + "</item>\n" for d, t, u, ld, im in _ex[:220])
     open(f"{OUT}/rss.xml", "w", encoding="utf-8").write(f'<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>영진종합목재 소식·자재 정보</title><link>{BASE}/news/</link><description>대전 영진종합목재(월드건축자재) 자재 정보와 시공 소식</description><language>ko</language>\n{items}</channel></rss>\n')
     # wwood.kr(쇼핑몰) 상품 사이트맵 — 서치콘솔에서 두 사이트 모두 소유 확인되어 교차 제출 가능
     _ids = []
