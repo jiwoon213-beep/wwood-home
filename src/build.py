@@ -785,7 +785,10 @@ def build():
     # 지역×자재 페이지 (대전 합판, 세종 방부목 …) — 구매·재단·배송 중심
     CASES_ = CASES
     RA = {"daejeon": ("대전", {"yuseong", "seogu", "junggu-donggu", "daedeok"}, "대전 전 지역(유성·서구·중구·동구·대덕)으로 배송·현장 납품합니다. 매장에서 직접 고르고 바로 재단해 가져가셔도 됩니다."),
-          "sejong": ("세종", {"sejong-sinsi", "sejong-eupmyeon"}, "세종시 신도심·조치원·읍면 현장까지 배송·납품합니다(수량·위치에 따라 전화 상담). 대전 유성 매장에서 고르고 재단해 바로 가져가셔도 됩니다.")}
+          "sejong": ("세종", {"sejong-sinsi", "sejong-eupmyeon"}, "세종시 신도심·조치원·읍면 현장까지 배송·납품합니다(수량·위치에 따라 전화 상담). 대전 유성 매장에서 고르고 재단해 바로 가져가셔도 됩니다."),
+          "gongju": ("공주", {"gongju"}, "공주 현장까지 배송·납품합니다(수량·위치에 따라 전화 상담). 대전 유성 매장에서 고르고 재단해 바로 가져가셔도 됩니다."),
+          "cheongju": ("청주", {"cheongju"}, "청주는 원하는 크기로 재단한 뒤 용달로 보내 드립니다(사무실에서 운임 견적 → 입금 확인 후 출고). 대전 유성 매장에서 고르고 재단해 바로 가져가셔도 됩니다."),
+          "cheonan-asan": ("천안·아산", {"cheonan-asan"}, "천안·아산은 원하는 크기로 재단한 뒤 용달로 보내 드립니다(사무실에서 운임 견적 → 입금 확인 후 출고). 대전 유성 매장에서 고르고 재단해 바로 가져가셔도 됩니다.")}
     for rs, (ra, rset, rdel) in RA.items():
         for m in MATS:
             nm = m["name"]
@@ -1847,7 +1850,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
             for x in _mkmat[ms]:
                 if x not in got: got.append(x)
         return got[:6]
-    for _f in glob.glob(f"{OUT}/news/*.html") + glob.glob(f"{OUT}/p/*.html") + glob.glob(f"{OUT}/jaryo/*.html") + glob.glob(f"{OUT}/daejeon/*.html") + glob.glob(f"{OUT}/sejong/*.html"):
+    for _f in glob.glob(f"{OUT}/news/*.html") + glob.glob(f"{OUT}/p/*.html") + glob.glob(f"{OUT}/jaryo/*.html") + glob.glob(f"{OUT}/daejeon/*.html") + glob.glob(f"{OUT}/sejong/*.html") + glob.glob(f"{OUT}/gongju/*.html") + glob.glob(f"{OUT}/cheongju/*.html") + glob.glob(f"{OUT}/cheonan-asan/*.html"):
         if _f.endswith("index.html"): continue
         _t = open(_f, encoding="utf-8").read()
         if "직접 만들어 보기</h2>" in _t or '<section class="cta">' not in _t: continue
@@ -1950,12 +1953,21 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
                 _t2 = _h + "<main>" + _m + ("</main>" + _e if _e or "</main>" in _t2 else "")
             if _t2 != _t: open(_f, "w", encoding="utf-8").write(_t2)
     print("NEW:", len(_newpg), "pages,", len(_newv), "videos")
+    for rs, (ra, _r1, _r2) in RA.items():
+        if rs in ("daejeon", "sejong"): continue
+        _af = f"{OUT}/{rs}.html"
+        if os.path.exists(_af):
+            _at = open(_af, encoding="utf-8").read()
+            if f'href="/{rs}/' not in _at:
+                _sec = f'<section class="wrap sec"><h2>{ra}에서 많이 찾는 목재·자재</h2><div class="mg m2">' + "".join(f'<a class="mc" href="/{rs}/{m["slug"]}.html"><b>{ra} {m["name"]}</b><small>{m["where"][0]}</small></a>' for m in MATS) + '</div></section>'
+                _at = _at.replace('<section class="cta">', _sec + '<section class="cta">', 1)
+                open(_af, "w", encoding="utf-8").write(_at)
     # 전체 페이지 모아보기(HTML 사이트맵) — 깊숙한 페이지까지 검색로봇이 2번 클릭 안에 닿게
     _SECN = {"": "기본 안내", "jaryo": "전체 자재", "gagyeok": "자재 가격 가이드", "yesi": "몇 평이면 얼마? 예시 견적", "local": "지역별 시공", "yeongyeol": "공정별 시공팀 연결",
              "tteori": "떨이몰", "mandeul": "DIY 만들기", "sigongbeop": "자재 시공법", "jajae": "자재 백과", "cheolmul": "목재 철물", "taka": "타카·타카핀",
              "yerim": "예림 중문·도어", "younglim": "영림 도어·중문·필름", "shenu": "쉐누 도어·몰딩", "bupum": "철물·공구·부속", "bondex": "본덱스 스테인·페인트",
              "nichiha": "니치하 세라믹 사이딩", "geonjae": "목조·외장·내장 건축자재", "knauf": "크나우프 석고보드·단열재", "trend": "인테리어 트렌드", "jeonguk": "전국 배송 지역",
-             "sigong": "시공 사례", "video": "시공 영상", "v": "영상별 페이지", "news": "소식", "bigyo": "자재 비교", "daejeon": "대전", "sejong": "세종", "p": "상품 안내"}
+             "sigong": "시공 사례", "video": "시공 영상", "v": "영상별 페이지", "news": "소식", "bigyo": "자재 비교", "daejeon": "대전", "sejong": "세종", "p": "상품 안내", "gongju": "공주", "cheongju": "청주", "cheonan-asan": "천안·아산"}
     _grp = {}
     for _u in SITEMAP:
         _p = _u[len(BASE) + 1:]
