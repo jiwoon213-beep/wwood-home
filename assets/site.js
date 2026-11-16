@@ -142,3 +142,10 @@ document.addEventListener("click",function(e){var x=e.target.closest&&e.target.c
 
 /* 어느 페이지에서든 📷 누르면 찍은 사진을 들고 사진으로 찾기 페이지로 */
 document.addEventListener("change",function(e){var t=e.target;if(!t.classList||!t.classList.contains("sjq")||!t.files[0])return;var f=t.files[0],u=URL.createObjectURL(f),im=new Image();im.onload=function(){var s=Math.min(1,640/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);try{sessionStorage.setItem("sjimg",c.toDataURL("image/jpeg",.85))}catch(x){}location.href="/sajin.html"};im.src=u});
+
+/* 공유 버튼: 휴대폰 공유창(카톡·문자 등)·링크 복사·네이버·밴드·페이스북 */
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".shx");if(!b)return;var c=document.querySelector('link[rel="canonical"]'),u=c?c.href:location.href.split("#")[0].split("?")[0],t=document.title,s=b.getAttribute("data-s"),U=encodeURIComponent(u),T=encodeURIComponent(t);
+function cp(){var d=function(){b.textContent="복사됐어요 ✓";setTimeout(function(){b.textContent="링크 복사"},1800)};if(navigator.clipboard)navigator.clipboard.writeText(u).then(d,function(){prompt("주소를 복사하세요",u)});else prompt("주소를 복사하세요",u)}
+if(s=="os"){if(navigator.share)navigator.share({title:t,url:u}).catch(function(){});else cp();return}
+if(s=="copy")return cp();
+var w={naver:"https://share.naver.com/web/shareView?url="+U+"&title="+T,band:"https://band.us/plugin/share?body="+T+"%0A"+U+"&route="+encodeURIComponent(location.host),fb:"https://www.facebook.com/sharer/sharer.php?u="+U}[s];if(w)window.open(w,"_blank","noopener,width=560,height=640")});

@@ -519,3 +519,9 @@ ul.mli li .mnote{font-size:14px;line-height:1.6;margin:0!important}
 ul.mli li .mlks{margin-top:4px!important;padding-top:0!important;display:flex;flex-wrap:wrap;gap:6px}
 ul.mli li .mnote{display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important;font-size:14px!important}
 ul.mli{align-items:stretch!important}ul.mli li{align-self:stretch!important}
+
+/* 공유 */
+.shr{text-align:center;padding-top:6px}.shrt{margin:0 0 10px;font-size:15px;color:#4a453e}.shrt b{color:#1D1B18}
+.shrb{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.shx{border:1px solid #ddd5c8;background:#fff;color:#1D1B18;border-radius:999px;padding:10px 16px;font-size:14.5px;font-weight:800;cursor:pointer;font-family:inherit}
+.shx[data-s=os]{background:#1D1B18;color:#fff;border-color:#1D1B18}.shx.nv{color:#03a94f;border-color:#bfe8cf}.shx.bd{color:#1fae4c}.shx.fb{color:#1877f2;border-color:#c9dbfa}
