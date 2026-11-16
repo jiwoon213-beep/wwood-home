@@ -168,6 +168,31 @@ def gen(page, E, CTA, faqslide, HOURS, ROOT, VID=None):
         its.append(dict(id=r[1], name=r[2], img=cb.IMG(r[3]), spec=cb.spec(r[5], DET.get(r[1])) or [], cat=cn, cathref=curl(r[0]),
                         lead=f"{cn} — {cb.TOP[t][1]}({cb.TOP[t][2]}).", tips=["쓰던 부품이나 사진을 가져오시면 맞는 규격을 찾기 쉽습니다.", "목재·합판과 같이 주문하시면 한 번에 실어 보내 드립니다."], brand=None, price=r[4]))
     n["bupum"] = _vendor(page, E, CTA, faqslide, HOURS, "bupum", "철물·공구·부속", "/bupum/", its, VID)
+    # 제일타카(JITOOL) 타카·콤프레셔 — 제조사 규격(가격은 매장 문의, 기준가와 섞지 않음)
+    import taka_data as TD, taka as TK
+    its = []
+    for key, (gname, glead, models) in TD.TOOLS.items():
+        for m, kind, pin, wt, use, im, im2, dsc in models:
+            sid = re.sub(r"[^a-z0-9]+", "-", m.lower()).strip("-")
+            its.append(dict(id=sid, name=f"제일타카 {m} {kind}", img=TK.IMG(im), spec=[("모델", m), ("종류", kind), ("사용 핀", pin), ("무게", wt), ("쓰는 곳", use), ("제조사", "제일타카(JITOOL)")],
+                            cat=gname, cathref=f"/taka/{key}.html", lead=dsc, tips=["쓸 핀 규격(4단위·F핀·T핀·실핀 등)과 고정할 재료 두께를 먼저 정하세요.", "에어타카는 콤프레셔·에어호스가 함께 필요합니다."], brand="제일타카"))
+    for m, t, mo, tk, q, w, im in TD.COMP:
+        sid = "comp-" + re.sub(r"[^a-z0-9]+", "-", m.lower()).strip("-")
+        its.append(dict(id=sid, name=f"제일타카 콤프레셔 {m}", img=TK.IMG(im), spec=[("모델", m), ("방식", t), ("모터", mo), ("탱크", tk), ("토출량", f"{q}L/min"), ("무게", f"{w}kg"), ("제조사", "제일타카(JITOOL)")],
+                        cat="콤프레셔", cathref="/taka/compressor.html", lead=f"{t} {mo} {tk} 콤프레셔. 에어타카·에어공구에 공기를 공급합니다.", tips=["타카 한두 대는 소형 오일리스, 여러 대·프레이밍 타카는 큰 탱크가 편합니다.", "실내 작업은 저소음 오일리스형이 좋습니다."], brand="제일타카"))
+    n["taka"] = _vendor(page, E, CTA, faqslide, HOURS, "taka", "제일타카 타카·콤프레셔", "/taka/", its, VID)
+    # 니치하 세라믹 사이딩 — 품번별(가격은 매장 문의, 기준가는 /nichiha/ 참고)
+    import nichiha as NH
+    VN = {v[0]: (v[1], v[2]) for v in NH.VIS}
+    its = []
+    for r in NH.load(ROOT):
+        if len(r) < 4: continue
+        v, code, fl, img = r[:4]
+        vn, vd = VN.get(v, ("", ""))
+        sp = [("품번", code), ("무늬", vn)] + list(NH.SPEC) + ([("표면", "니치가드(NG) — 오염이 덜 붙는 표면 처리")] if fl == "NG" else []) + [("제조사", "니치하(NICHIHA, 일본)")]
+        its.append(dict(id=re.sub(r"[^a-z0-9]+", "-", code.lower()).strip("-"), name=f"니치하 세라믹 사이딩 {code}", img=NH.BIG(img), spec=sp, cat=f"니치하 {vn}" if vn else "니치하 세라믹 사이딩",
+                        cathref="/nichiha/", lead=f"{vd}. 길이 3,030mm EX 시리즈 세라믹 사이딩입니다." if vd else "길이 3,030mm EX 시리즈 세라믹 사이딩입니다.", tips=[], brand="니치하"))
+    n["nichiha"] = _vendor(page, E, CTA, faqslide, HOURS, "nichiha", "니치하 세라믹 사이딩", "/nichiha/", its, VID)
     return n
 
 
@@ -175,7 +200,7 @@ def inject(OUT, E):
     """분류(사진 목록) 페이지 아래에 제품별 상세 페이지 링크 목록을 넣음(내부 링크)."""
     n = 0
     for href, lst in CATL.items():
-        fp = os.path.join(OUT, href.lstrip("/"))
+        fp = os.path.join(OUT, href.lstrip("/") + ("index.html" if href.endswith("/") else ""))
         if not os.path.exists(fp) or not lst: continue
         h = open(fp, encoding="utf-8").read()
         if "제품별 자세히 보기</h2>" in h: continue
