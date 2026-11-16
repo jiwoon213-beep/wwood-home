@@ -1481,7 +1481,7 @@ def build():
         vs = top(lambda v: rx.search(v["title"]) is not None, 6)
         return vsplit(vs, "h3") if vs else ""
     PPN = _ppg.gen(page, E, CTA, faqslide, HOURS, ROOT, _pvid)
-    print("product pages:", PPN)
+    print("product pages:", PPN, "cat pages linked:", _ppg.inject(OUT, E))
     _fx = lambda t: html.escape(re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", "", str(t)))
     open(f"{OUT}/merchant-feed.xml", "w", encoding="utf-8").write('<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0"><channel><title>영진종합목재(월드건축자재)</title><link>' + BASE + '</link><description>건축자재·철물·도료</description>\n' + "".join(
         f'<item><g:id>{_fx(i)}</g:id><title>{_fx(t[:150])}</title><description>{_fx(dsc[:4900])}</description><link>{BASE}{u}</link><g:image_link>{_fx(im)}</g:image_link>'

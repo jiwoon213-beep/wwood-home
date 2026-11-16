@@ -7,6 +7,7 @@ import prodguide as PG
 
 TEL = "042-545-2900"
 FEED = []  # 구글 머천트 센터 상품 목록(가격 있는 것만)
+CATL = {}  # 분류 페이지 → [(제품 주소, 이름)] (분류 페이지에 제품별 링크 넣기)
 
 
 def _ld(name, img, desc, brand, cat, price=None):
@@ -23,6 +24,7 @@ def _vendor(page, E, CTA, faqslide, HOURS, d, label, home, items, VID=None):
     if not items: return 0
     used, bycat, ids = set(), {}, set()
     for it in items:
+        CATL.setdefault(it["cathref"], [])
         b, k = it["id"], 2
         while it["id"] in ids: it["id"] = f"{b}-{k}"; k += 1
         ids.add(it["id"])
@@ -30,6 +32,7 @@ def _vendor(page, E, CTA, faqslide, HOURS, d, label, home, items, VID=None):
         t = it["name"]
         if t in used: t = f'{t} ({it["id"]})'
         used.add(t); it["title"] = t
+        CATL[it["cathref"]].append((f"/{d}/p/{it['id']}.html", t))
     _vc = {}
     def vids(c):
         if VID is None: return ""
@@ -165,4 +168,20 @@ def gen(page, E, CTA, faqslide, HOURS, ROOT, VID=None):
         its.append(dict(id=r[1], name=r[2], img=cb.IMG(r[3]), spec=cb.spec(r[5], DET.get(r[1])) or [], cat=cn, cathref=curl(r[0]),
                         lead=f"{cn} — {cb.TOP[t][1]}({cb.TOP[t][2]}).", tips=["쓰던 부품이나 사진을 가져오시면 맞는 규격을 찾기 쉽습니다.", "목재·합판과 같이 주문하시면 한 번에 실어 보내 드립니다."], brand=None, price=r[4]))
     n["bupum"] = _vendor(page, E, CTA, faqslide, HOURS, "bupum", "철물·공구·부속", "/bupum/", its, VID)
+    return n
+
+
+def inject(OUT, E):
+    """분류(사진 목록) 페이지 아래에 제품별 상세 페이지 링크 목록을 넣음(내부 링크)."""
+    n = 0
+    for href, lst in CATL.items():
+        fp = os.path.join(OUT, href.lstrip("/"))
+        if not os.path.exists(fp) or not lst: continue
+        h = open(fp, encoding="utf-8").read()
+        if "제품별 자세히 보기</h2>" in h: continue
+        sec = ('<section class="wrap sec gg"><h2 class="gt">제품별 자세히 보기</h2><ul class="mgl">' +
+               "".join(f'<li><a href="{u}">{E(t)}</a></li>' for u, t in lst[:400]) + '</ul></section>')
+        i = h.find('<section class="cta">')
+        h = h[:i] + sec + h[i:] if i > 0 else h.replace("</main>", sec + "</main>", 1)
+        open(fp, "w", encoding="utf-8").write(h); n += 1
     return n
