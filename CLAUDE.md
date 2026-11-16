@@ -32,3 +32,4 @@
 - 제품별 상세 페이지(/{younglim,yerim,shenu,bondex,geonjae,suip,bupum,taka,nichiha}/p/ + /knauf/p/): src/prodpg.py(크나우프는 knauf.py). 각 제조사 데이터에서 자동 생성, 관련 유튜브 영상·FAQ·Product 구조화 데이터. 가격은 본덱스(×1.3)·철물박사(×1.4)만(부가세 포함, ~), 나머지 매장 문의. 철물박사 사무용품(55)은 제외. 공급 업체 이름 표기 금지 규칙 동일.
 - 구글 머천트 센터(계정 5415480126, 웹사이트 wwood.kr): 무료 오프라인(매장) 목록용 /merchant-local-products.xml(가격 있는 본덱스·철물 상품, 링크 없음)·/merchant-local-inventory.txt(store_code 11962997655006403809) — build.py가 매일 생성. /merchant-feed.xml은 온라인용(결제 없는 사이트라 머천트에 연결 안 함). www.wwood.co.kr은 결제가 없으니 온라인 쇼핑 목록에 올리지 말 것.
 - 하는 법 Q&A(/qna/): src/qna_data.py — 실제 유튜브 자동완성 검색어(2026-11-16 수집) 질문에 우리 말로 쓴 답(순서·주의·관련 영상·링크, HowTo+FAQ 구조화 데이터). 확인 안 된 수치 금지. 제품 안내(prodguide.py)에서도 링크.
+- 이슈·시즌 자재(/issue/): src/issue_data.py — 뉴스·계절 이슈 중 우리 자재와 진짜 관련 있는 것만(관련 없는 연예·정치 뉴스 엮기 금지). 뉴스 사실은 출처 링크, 제도·수치는 공식 출처로 확인.
