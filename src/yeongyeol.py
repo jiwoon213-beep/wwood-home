@@ -2,6 +2,7 @@
 import os, re
 
 GJ = [  # slug, 공정, 하는 일, 영상 검색어(정규식), 같이 볼 페이지
+    ("mokgong", "목공(목수)", "가벽·천장·몰딩·문틀·아트월 등 인테리어 목공", r"목공|목수|가벽|천장 공사|몰딩|문틀", [("/sigongbeop/seokgo-byeok.html", "석고보드 벽 시공법"), ("/gabyeok-gyesan.html", "가벽 자재 계산기")]),
     ("dobae", "도배·장판", "벽지 도배, 장판 교체", r"도배|장판|벽지", [("/sigongbeop/", "자재 시공법")]),
     ("tile", "타일·수전·설비", "욕실·주방 타일, 수전 교체, 배관 설비", r"(?<!데코)타일|욕실|수전|설비", [("/sigongbeop/yoksil-tile.html", "욕실 타일 시공법")]),
     ("film", "인테리어 필름", "문·문틀·싱크대·가구 필름 리폼", r"필름", [("/sigongbeop/film-sigong.html", "필름 시공법"), ("/gagyeok/interior-film.html", "필름 가격")]),
@@ -21,7 +22,7 @@ def gen(page, E, CTA, faqslide, TEL, ROOT):
     vids = []
     for ln in open(f"{ROOT}/data/videos.tsv", encoding="utf-8"):
         c = ln.rstrip("\n").split("\t")
-        if len(c) >= 6 and os.path.exists(f"{ROOT}/../v/{c[0]}.html"): vids.append((c[0], c[1], c[5]))
+        if len(c) >= 6 and os.path.exists(f"{ROOT}/../v/{c[0]}.html"): vids.append((c[0], c[1], c[5].strip('"').replace('""', '"')))
     T = TEL.replace("-", "")
     how = ('<ol class="sstp"><li><i>1</i><p>아래에서 <b>공정</b>을 고르고 매장으로 전화하세요.</p></li>'
            '<li><i>2</i><p><b>지역·현장 크기·원하는 작업</b>을 알려 주세요. 현장 사진이 있으면 더 빠릅니다.</p></li>'
@@ -48,8 +49,8 @@ def gen(page, E, CTA, faqslide, TEL, ROOT):
         page(f"yeongyeol/{slug}.html", f"대전·세종 {nm} 시공팀 연결 — {job} | 영진목재", f"대전·세종 {nm}({job}) 시공팀을 영진종합목재 매장에서 연결해 드립니다. 전화 {TEL}. 자재 구매·재단도 함께.", body, "/sigong.html", fld)
         cards += f'<a class="ygc" href="/yeongyeol/{slug}.html"><b>{E(nm)}</b><span>{E(job)}</span><u>연결 요청 ›</u></a>'
         links.append((slug, nm))
-    page("yeongyeol/index.html", "대전·세종 인테리어 시공팀 연결 — 도배·타일·샷시·필름·마루·전기 12개 공정 | 영진목재",
-         f"도배·장판, 타일·설비, 필름, 샷시·현관문, 폴딩도어, 철거, 데코타일, 마루, 페인트, 전기·조명, 가구, 블라인드 — 영진종합목재가 거래 시공팀을 연결해 드립니다. 전화 {TEL}.",
+    page("yeongyeol/index.html", "대전·세종 인테리어 시공팀 연결 — 목공·도배·타일·샷시·필름·마루·전기 13개 공정 | 영진목재",
+         f"목공, 도배·장판, 타일·설비, 필름, 샷시·현관문, 폴딩도어, 철거, 데코타일, 마루, 페인트, 전기·조명, 가구, 블라인드 — 영진종합목재가 거래 시공팀을 연결해 드립니다. 전화 {TEL}.",
          f'''<section class="wrap sec"><h1>공정별 시공팀 연결</h1><p class="lead">자재를 사 가시는 분들이 "시공할 사람 없나요?" 많이 물으십니다. 영진종합목재와 오래 거래한 공정별 시공팀을 매장에서 연결해 드립니다.</p>
 <div class="ygg">{cards}</div>
 <h2>이렇게 연결해 드려요</h2>{how}<div class="row"><a class="b r" href="tel:{T}">매장에 연결 요청 · {TEL}</a><a class="b" href="/sigong.html">월드아키텍쳐 직접 시공</a></div>
