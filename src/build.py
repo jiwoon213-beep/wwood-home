@@ -1912,8 +1912,10 @@ table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;ove
 <p><small>같은 사람이 하루에 여러 번 들어와도 1번으로 셉니다. 경로 집계는 2026-11-11 오후부터 시작했어요.</small></p>
 <script>
 var b="https://abacus.jasoncameron.dev/get/wwood-co-kr/",S=[["yt","유튜브"],["naver","네이버"],["google","구글"],["daum","다음·카카오"],["bing","빙"],["daangn","당근"],["wwoodkr","쇼핑몰(wwood.kr)"],["etc","다른 사이트"],["direct","주소 입력·즐겨찾기"]];
-var fail=0;function g(k){var c=window.AbortController?new AbortController():null;if(c)setTimeout(function(){c.abort()},9000);return fetch(b+k,c?{signal:c.signal}:{}).then(function(r){return r.ok?r.json():{value:0}}).then(function(j){return j.value||0}).catch(function(){fail++;return "-"})}
-setTimeout(function(){if(fail){var p=document.getElementById("note");p.style.display="block"}},9500);
+var fail=0,Q=[],act=0;function pump(){while(act<3&&Q.length){act++;Q.shift()()}}
+function g1(k,n){return fetch(b+k).then(function(r){if(r.status==404)return {value:0};if(!r.ok)throw r.status;return r.json()}).then(function(j){return j.value||0}).catch(function(e){if(n<3)return new Promise(function(ok){setTimeout(ok,800*(n+1))}).then(function(){return g1(k,n+1)});fail++;return "-"})}
+function g(k){return new Promise(function(ok){Q.push(function(){g1(k,0).then(function(v){act--;pump();ok(v)})});pump()})}
+setInterval(function(){if(fail){var p=document.getElementById("note");p.style.display="block"}},3000);
 function day(i){return new Date(Date.now()+9*3600e3-i*864e5).toISOString().slice(0,10).replace(/-/g,"")}
 var k=day(0);g("d"+k).then(function(v){td.textContent=v.toLocaleString()});g("total").then(function(v){tt.textContent=v.toLocaleString()});
 Promise.all(S.map(function(s){return Promise.all([g("src-"+s[0]+"-d"+k),g("src-"+s[0])])})).then(function(R){var mx=Math.max.apply(null,R.map(function(r){return +r[1]||0}).concat([1]));
