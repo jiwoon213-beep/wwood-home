@@ -1986,7 +1986,7 @@ Promise.all([0,1,2,3,4,5,6].map(function(i){return g("d"+day(i))})).then(functio
         import tteori as _ttm
         _tti = [d for d in _ttm.load(ROOT) if d["status"] != "판매완료"]
         _ttmap = [(r"문짝|방문|도어", ["gagyeok/door-gagyeok", "yeongyeol/shassi", "local/door-daejeon", "local/door-sejong", "yerim/index", "younglim/index", "shenu/index"]),
-                  (r"판재|고재|패널|루바", ["gagyeok/tempa-board", "gagyeok/hinoki-ruba", "trend/index", "mandeul/index"]),
+                  (r"판재|고재|패널|루바", ["gagyeok/tempa-board", "gagyeok/hinoki-ruba", "trend/index"]),
                   (r"테이블|좌탁|가구|벤치", ["mandeul/index", "yeongyeol/gagu", "mandeul/benchi"]), (r"천장재|흡음", ["knauf/index", "sigongbeop/seokgo-cheonjang", "yesi/gypsum-ceiling-5py"]), (r"데코타일", ["sigongbeop/decotile", "yeongyeol/decotile"])]
         for _rx, _pgs in _ttmap:
             _its = [d for d in _tti if re.search(_rx, d["title"])]
