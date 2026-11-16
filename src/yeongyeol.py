@@ -40,7 +40,7 @@ def gen(page, E, CTA, faqslide, TEL, ROOT):
         body = f'''<section class="wrap sec"><p class="crumb"><a href="/yeongyeol/">시공팀 연결</a> › {E(nm)}</p><h1>대전·세종 {E(nm)} 시공팀 연결</h1>
 <p class="lead">{E(job)}. 영진종합목재와 거래하는 {E(nm)} 시공팀을 매장에서 연결해 드립니다.</p>
 <div class="ygbox"><b>{E(nm)}</b><span>{E(job)}</span><small>시공 지역: 대전·세종 (그 밖 지역은 전화로 확인)</small><a class="b r" href="tel:{T}">매장에 연결 요청 · {TEL}</a></div>
-<h2>이렇게 연결해 드려요</h2>{how}
+<h2>이렇게 연결해 드려요</h2>{how.replace('아래에서 <b>공정</b>을 고르고 매장으로 전화하세요.', '위 버튼으로 <b>매장에 전화</b>하세요.')}
 {('<h2>' + E(nm) + ' 시공 영상</h2><div class="ygvs">' + vh + '</div><p class="hsh">옆으로 넘겨 보세요 ›</p>') if vh else ''}
 {('<div class="yact">' + relh + '</div>') if relh else ''}
 <h2>자주 묻는 질문</h2>{faqslide(fq)}
