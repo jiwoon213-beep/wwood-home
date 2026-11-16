@@ -1460,6 +1460,7 @@ def build():
     KNLIST = _knf.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
     import homewood as _hwd
     HWLIST = _hwd.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
+    HWBR = _hwd.gen_brands(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
     import nichiha as _nh
     NHLIST = _nh.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
     import emall as _em

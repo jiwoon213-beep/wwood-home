@@ -88,6 +88,39 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
     rws = "".join(f'<h2 class="gt"><span><a href="/suip/{s}.html" style="color:inherit;text-decoration:none">{E(g)}</a> <small style="font-size:14px">{len(xs)}가지</small></span><small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">{"".join(card(r) for r in xs[:12])}<a class="yri ymore" href="/suip/{s}.html"><span>{E(g)} 전체 보기 ›</span></a></div>' for g, s, xs in out)
     page("suip/index.html", f"수입 목조주택 자재·창호 {len(rows)}종 — 벨룩스·살라만더·타이벡·티쿠릴라 | 대전 영진목재",
          f"벨룩스 지붕창, 살라만더 시스템 창호, 타이벡, 오웬스코닝 단열재, 코노시마 세라믹사이딩, 티쿠릴라 등 수입 목조주택 자재 {len(rows)}가지. 대전 영진목재 상담·주문.",
-         f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › 수입 목조주택 자재·창호</p><h1>수입 목조주택 자재·창호</h1><p class="glead">목조주택에 쓰는 수입 구조목·창호·지붕창·단열재·투습방수지·외장재·DIY 도료까지 {len(rows)}가지를 사진으로 모았습니다. 가격·재고는 매장(042-545-2900)에 물어보세요.</p>{nav("")}{rws}</section>{CTA}' + LB,
+         f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › 수입 목조주택 자재·창호</p><h1>수입 목조주택 자재·창호</h1><p class="glead">목조주택에 쓰는 수입 구조목·창호·지붕창·단열재·투습방수지·외장재·DIY 도료까지 {len(rows)}가지를 사진으로 모았습니다. 가격·재고는 매장(042-545-2900)에 물어보세요.</p>{nav("")}<div class="glk tkn" style="margin-top:6px">' + "".join(f'<a href="/suip/b-{b[0]}.html">{E(b[1])}</a>' for b in BRANDS) + f'</div>{rws}</section>{CTA}' + LB,
          "/jaryo/", None, img(rows[0]["i"], True))
+    return out
+
+
+BRANDS = [("velux", "벨룩스(VELUX) 지붕창·천창", r"VELUX|벨룩스", "경사지붕 지붕창(GGL·GPL·GGU·GPU), 평지붕창, 테라스·발코니창, 천창과 후레싱·블라인드"),
+          ("salamander", "살라만더 시스템 창호·현관도어", r"살라만더", "독일식 시스템 창호(L/S·T/T·T/S 등)와 멀리언·기본 라인 현관도어"),
+          ("plygem", "플라이젬 3중창", r"플라이젬", "비스타 3중창 싱글슬라이더·싱글헝·어닝·픽스·파티오"),
+          ("tyvek", "듀폰 타이벡 투습방수지·테이프", r"타이벡|듀폰", "하우스랩·드레인랩·UV 파사드·수프로 플러스·에어가드, 타이트씰·전용 테이프"),
+          ("konoshima", "코노시마 세라믹사이딩 드레스·부자재", r"코노시마|세라믹 사이딩|세라믹 소핏", "드레스 프레미르·카이잔센·유나기·그랜드 로슈·신잔과 클립·후레싱·조이너·실란트"),
+          ("tikkurila", "티쿠릴라 오일스테인·바니쉬·페인트", r"티쿠릴라", "발티 플러스 수용성 오일스테인, 파넬리·파게티 아싸, 키바 바니쉬, 헤르미 퍼니처 페인트"),
+          ("sanmarco", "산마르코 이탈리아 도장재", r"산마르코", "마모리노·마르모 엔티크·콘크리트아트·카도로 등 특수 미장·도장재"),
+          ("woodin", "우딘 실내 도어·몰딩·마루", r"우딘", "ABS·멤브레인·글래스·피노 슬림 도어, 페이퍼·클래식 몰딩, 우딘 마루"),
+          ("insulation", "오웬스코닝·존스맨빌 글라스울 단열재", r"오웬스코닝|존스맨빌|락울", "가·나·다 등급 글라스울 단열재, 스틸하우스용, YS 프리미엄 락울"),
+          ("ilim", "일림 구조목(스프러스·레드파인)", r"일림", "J-Grade·#2&BTR 스프러스, 레드파인 2×2~2×12·4×4"),
+          ("metalsiding", "메탈사이딩 무늬", r"메탈사이딩", "라임스톤·롱스톤·브릭·스타코마블·스팬드럴 등 메탈사이딩"),
+          ("shingle", "아스팔트 슁글·시다쉐이크 지붕재", r"슁글|쉐이크", "CT·써튼티드 이중그림자·육각·일반사각 슁글, 웨스턴 레드시다 쉐이크")]
+
+def gen_brands(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
+    rows = load(ROOT)
+    out = []
+    for slug, title, rx, desc in BRANDS:
+        xs = [r for r in rows if re.search(rx, r["n"])]
+        if len(xs) < 3: continue
+        cards = "".join(f'<a class="yri" href="#" data-big="{img(r["i"], True)}" data-n="{E(r["n"])}" data-sp="{E("분류" + chr(9) + r["sub"] + chr(10) + "가격" + chr(9) + "매장 문의(042-545-2900)")}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="247" height="300" src="{img(r["i"])}" alt="{E(r["n"])}"><span>{E(r["n"])}</span><em class="cbp q">매장 문의</em></a>' for r in xs)
+        short = re.sub(r"\(.*?\)", "", title).split()[0]
+        fq = faqslide([(f"{short} 제품 대전에서 살 수 있나요?", f"네. {ADDR} 영진종합목재(월드건축자재)에서 상담·주문합니다. {HOURS}. 전국 용달 배송도 됩니다."),
+                       (f"{short} 가격은 얼마인가요?", "제품·규격·수량에 따라 달라 매장이나 전화(042-545-2900)로 견적을 드립니다."),
+                       ("바로 가져갈 수 있나요?", "일부 제품은 주문 후 입고됩니다. 필요한 날짜를 알려 주시면 입고 일정을 확인해 드립니다.")])
+        body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/suip/">수입 목조주택 자재·창호</a> › {E(title)}</p><h1>{E(title)} <small>{len(xs)}가지</small></h1>'
+                f'<p class="glead">{E(desc)}. 사진을 누르면 크게 볼 수 있습니다. 가격·재고는 매장 문의.</p>'
+                f'<div class="yrg">{cards}</div><p class="small muted" style="margin-top:12px">다른 수입 자재: ' + " · ".join(f'<a href="/suip/b-{b[0]}.html">{E(b[1])}</a>' for b in BRANDS if b[0] != slug) + '</p></section>'
+                f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{fq}</section>{CTA}' + LB)
+        page(f"suip/b-{slug}.html", f"{title} {len(xs)}종 — 사진·종류 | 대전 영진목재", f"{title} {len(xs)}가지: {desc}. 대전 유성 영진종합목재 상담·주문·전국 배송.", body, "/jaryo/", None, img(xs[0]["i"], True))
+        out.append((slug, title, len(xs)))
     return out
