@@ -3,6 +3,7 @@
 /{dir}/p/{id}.html + 제품 목록 /{dir}/p/index.html. 가격은 본덱스만(판매가×1.3, 부가세 포함, '~'), 나머지 매장 문의.
 화면에 공급 업체 이름(삼익·홈우드) 표기 금지 — 제조사 브랜드명만."""
 import os, re
+import prodguide as PG
 
 TEL = "042-545-2900"
 
@@ -41,11 +42,18 @@ def _vendor(page, E, CTA, faqslide, HOURS, d, label, home, items, VID=None):
         use = it["lead"] or it["cat"]
         fq = [(f"{it['title']} 어디서 사나요?", f"대전 서구 영진종합목재(월드건축자재) 매장에서 상담·주문하실 수 있고, 전국 용달 배송도 됩니다. {HOURS}."),
               (f"{it['title']} 가격은 얼마인가요?", (f"매장 기준 {pz}입니다. 색상·용량·수량에 따라 달라질 수 있습니다." if it.get("price") else f"규격·수량에 따라 달라 매장이나 전화({TEL})로 견적을 드립니다.")),
-              (f"{it['title']}는(은) 어떤 제품인가요?", use)]
-        if it["tips"]: fq.append(("고를 때 무엇을 확인하나요?", " ".join(it["tips"][:3])))
-        tips = ("<h2 class='gt'>고를 때 확인할 점</h2><ul class='gtip'>" + "".join(f"<li>{E(t)}</li>" for t in it["tips"]) + "</ul>") if it["tips"] else ""
+              (f"{PG._jo(it['title'], '은', '는')} 어떤 제품인가요?", use)]
+        gd = PG.find(it["cat"]) or PG.find(it["name"])
+        allt = (gd["how"] if gd else []) + [t for t in it["tips"] if not gd or t not in gd["how"]]
+        tips = ("<h2 class='gt'>" + (E(gd["t"]) + " 고르는 법" if gd else "고를 때 확인할 점") + "</h2><ul class='gtip'>" + "".join(f"<li>{E(t)}</li>" for t in allt) + "</ul>") if allt else ""
+        if gd:
+            tips = f"<h2 class='gt'>{E(gd['t'])}{'은' if (ord(gd['t'][-1]) - 0xAC00) % 28 else '는'} 어디에 쓰나요</h2><p>{E(gd['use'])}</p>" + tips
+            if gd["warn"]: tips += "<h2 class='gt'>주의할 점</h2><ul class='gtip'>" + "".join(f"<li>{E(w)}</li>" for w in gd["warn"]) + "</ul>"
+            if gd["links"]: tips += '<div class="qk">' + "".join(f'<a href="{h}">{E(t)}</a>' for h, t in gd["links"]) + "</div>"
+        itro = PG.intro(it["title"], it["cat"], it["spec"], it.get("price"))
+        if allt: fq.append((f"{it['title']} 고를 때 무엇을 확인하나요?", " ".join(allt[:3])))
         body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="{home}">{E(label)}</a> › <a href="{it["cathref"]}">{E(it["cat"])}</a> › {E(it["title"][:40])}</p>'
-                f'<h1>{E(it["title"])}</h1><p class="glead">{E(use)}</p>'
+                f'<h1>{E(it["title"])}</h1><p class="glead">{E(use)}</p><p>{E(itro)}</p>'
                 f'<p><img src="{it["img"]}" alt="{E(it["title"])}" width="600" height="600" referrerpolicy="no-referrer" style="max-width:100%;height:auto;border-radius:12px;background:#fff;object-fit:contain"></p>'
                 f'<div class="tw"><table class="cmp"><tbody>{tb}</tbody></table></div>'
                 f'<div class="row"><a class="b d" href="tel:{TEL.replace("-", "")}">전화 문의 {TEL}</a><a class="b o" href="/jeonguk/">전국 배송 지역</a><a class="b o" href="{it["cathref"]}">{E(it["cat"])} 전체 사진</a></div>{tips}</section>'
@@ -56,7 +64,7 @@ def _vendor(page, E, CTA, faqslide, HOURS, d, label, home, items, VID=None):
               {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}]
         sd = " · ".join(f"{a} {b}" for a, b in it["spec"][:2])
         page(f"{d}/p/{it['id']}.html", f"{it['title']} — 사진·규격·구매 | 대전 영진목재",
-             f"{it['title']}: {use[:60]}. {sd[:50]} 대전 영진종합목재 상담·전국 배송.".replace("  ", " "), body, "/jaryo/", ld, it["img"] if it["img"].startswith("http") or it["img"].startswith("/") else None)
+             (itro[:150] if len(itro) > 60 else f"{it['title']}: {use[:60]}. {sd[:50]} 대전 영진종합목재 상담·전국 배송.").replace("  ", " "), body, "/jaryo/", ld, it["img"] if it["img"].startswith("http") or it["img"].startswith("/") else None)
     lst = "".join(f'<h2 class="gt">{E(c)} <small>{len(xs)}가지</small></h2><ul class="mgl">' + "".join(f'<li><a href="/{d}/p/{x["id"]}.html">{E(x["title"])}</a></li>' for x in xs) + '</ul>' for c, xs in bycat.items())
     page(f"{d}/p/index.html", f"{label} 제품별 목록 {len(items)}가지 | 대전 영진목재", f"{label} {len(items)}가지 제품별 사진·규격 페이지 목록. 대전 영진종합목재 상담·전국 배송.",
          f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="{home}">{E(label)}</a> › 제품별 목록</p><h1>{E(label)} 제품별 목록 <small>{len(items)}가지</small></h1><p class="glead">제품 이름을 누르면 사진·규격과 구매 안내를 볼 수 있습니다.</p>{lst}</section>{CTA}', "/jaryo/")
