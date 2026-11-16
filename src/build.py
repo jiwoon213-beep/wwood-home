@@ -252,6 +252,7 @@ _SHR = ('<section class="wrap sec shr"><p class="shrt">도움이 됐다면 <b>�
         '<button type="button" class="shx" data-s="copy">링크 복사</button>'
         '<button type="button" class="shx nv" data-s="naver">네이버</button>'
         '<button type="button" class="shx bd" data-s="band">밴드</button>'
+        '<button type="button" class="shx ig" data-s="insta">인스타</button>'
         '<button type="button" class="shx fb" data-s="fb">페이스북</button></div></section>')
 
 

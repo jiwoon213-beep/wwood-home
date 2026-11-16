@@ -525,3 +525,4 @@ ul.mli{align-items:stretch!important}ul.mli li{align-self:stretch!important}
 .shrb{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .shx{border:1px solid #ddd5c8;background:#fff;color:#1D1B18;border-radius:999px;padding:10px 16px;font-size:14.5px;font-weight:800;cursor:pointer;font-family:inherit}
 .shx[data-s=os]{background:#1D1B18;color:#fff;border-color:#1D1B18}.shx.nv{color:#03a94f;border-color:#bfe8cf}.shx.bd{color:#1fae4c}.shx.fb{color:#1877f2;border-color:#c9dbfa}
+.shx.ig{color:#fff;border:0;background:linear-gradient(45deg,#f9a03f,#e1306c 50%,#833ab4)}
