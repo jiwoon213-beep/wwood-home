@@ -2,6 +2,7 @@
 import os, re
 
 GJ = [  # slug, 공정, 하는 일, 영상 검색어(정규식), 같이 볼 페이지
+    ("siding", "사이딩·외벽", "세라믹사이딩·시멘트사이딩·금속사이딩 외벽 공사", r"사이딩|외벽", [("/sigongbeop/ceramic-siding.html", "세라믹사이딩 시공법"), ("/nichiha/", "니치하 세라믹사이딩"), ("/gagyeok/siding-gagyeok.html", "사이딩 가격")]),
     ("mokgong", "목공(목수)", "가벽·천장·몰딩·문틀·아트월 등 인테리어 목공", r"목공|목수|가벽|천장 공사|몰딩|문틀", [("/sigongbeop/seokgo-byeok.html", "석고보드 벽 시공법"), ("/gabyeok-gyesan.html", "가벽 자재 계산기")]),
     ("dobae", "도배·장판", "벽지 도배, 장판 교체", r"도배|장판|벽지", [("/sigongbeop/", "자재 시공법")]),
     ("tile", "타일·수전·설비", "욕실·주방 타일, 수전 교체, 배관 설비", r"(?<!데코)타일|욕실|수전|설비", [("/sigongbeop/yoksil-tile.html", "욕실 타일 시공법")]),
@@ -29,28 +30,31 @@ def gen(page, E, CTA, faqslide, TEL, ROOT):
            '<li><i>3</i><p>매장이 그 공정을 하는 <b>거래 시공팀</b>에 연결해 드립니다. 견적·일정은 시공팀과 바로 상의하세요.</p></li></ol>')
     cards, links = "", []
     for slug, nm, job, rx, rel in GJ:
+        own = slug == "siding"  # 월드아키텍쳐 직접 시공
         vs = [v for v in vids if re.search(rx, v[2])]
         vs = [v for v in vs if v[1] == "L"][:4] + [v for v in vs if v[1] != "L"][:4]
         vs = vs[:6]
         vh = "".join(f'<a class="ygv" href="/v/{i}.html"><img loading="lazy" src="https://i.ytimg.com/vi/{i}/mqdefault.jpg" alt=""><span>{E(t[:40])}</span></a>' for i, k, t in vs)
-        fq = [(f"대전·세종 {nm} 시공팀을 소개받을 수 있나요?", f"네. 매장({TEL})으로 전화해 지역과 작업 내용을 알려 주시면 영진종합목재와 거래하는 {nm} 시공팀에 연결해 드립니다."),
+        fq = [("누가 시공하나요?", f"영진종합목재 시공 법인 월드아키텍쳐(실내건축공사업)가 직접 시공합니다. 전화 {TEL}.")] if own else []
+        fq += [] if own else [(f"대전·세종 {nm} 시공팀을 소개받을 수 있나요?", f"네. 매장({TEL})으로 전화해 지역과 작업 내용을 알려 주시면 영진종합목재와 거래하는 {nm} 시공팀에 연결해 드립니다.")]
+        fq += [
               ("견적과 일정은 어떻게 정하나요?", "현장 크기·상태에 따라 달라 시공팀이 직접 보고 정합니다. 현장 사진을 준비해 두시면 빠릅니다."),
               ("자재도 같이 살 수 있나요?", "네. 필요한 자재는 매장에서 고르고 원하는 크기로 재단해 드립니다.")]
         fld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}
         relh = "".join(f'<a class="b" href="{u}">{E(n)}</a>' for u, n in rel)
-        body = f'''<section class="wrap sec"><p class="crumb"><a href="/yeongyeol/">시공팀 연결</a> › {E(nm)}</p><h1>대전·세종 {E(nm)} 시공팀 연결</h1>
-<p class="lead">{E(job)}. 영진종합목재와 거래하는 {E(nm)} 시공팀을 매장에서 연결해 드립니다.</p>
-<div class="ygbox"><b>{E(nm)}</b><span>{E(job)}</span><small>시공 지역: 대전·세종 (그 밖 지역은 전화로 확인)</small><a class="b r" href="tel:{T}">매장에 연결 요청 · {TEL}</a></div>
-<h2>이렇게 연결해 드려요</h2>{how.replace('아래에서 <b>공정</b>을 고르고 매장으로 전화하세요.', '위 버튼으로 <b>매장에 전화</b>하세요.')}
+        body = f'''<section class="wrap sec"><p class="crumb"><a href="/yeongyeol/">시공팀 연결</a> › {E(nm)}</p><h1>대전·세종 {E(nm)} {"시공" if own else "시공팀 연결"}</h1>
+<p class="lead">{E(job)}. {("영진종합목재 시공 법인 월드아키텍쳐(실내건축공사업)가 직접 시공합니다. 시공 현장은 유튜브에 그대로 공개합니다." if own else f"영진종합목재와 거래하는 {nm} 시공팀을 매장에서 연결해 드립니다.")}</p>
+<div class="ygbox"><b>{E(nm)}</b><span>{E(job)}</span><small>{"월드아키텍쳐 직접 시공 · " if own else ""}시공 지역: 대전·세종 (그 밖 지역은 전화로 확인)</small><a class="b r" href="tel:{T}">{"시공 상담 전화" if own else "매장에 연결 요청"} · {TEL}</a></div>
+{'' if own else '<h2>이렇게 연결해 드려요</h2>' + how.replace('아래에서 <b>공정</b>을 고르고 매장으로 전화하세요.', '위 버튼으로 <b>매장에 전화</b>하세요.')}
 {('<h2>' + E(nm) + ' 시공 영상</h2><div class="ygvs">' + vh + '</div><p class="hsh">옆으로 넘겨 보세요 ›</p>') if vh else ''}
 {('<div class="yact">' + relh + '</div>') if relh else ''}
 <h2>자주 묻는 질문</h2>{faqslide(fq)}
 <h2>다른 공정</h2><div class="olk">{"".join(f'<a href="/yeongyeol/{s}.html">{E(n)}</a>' for s, n, *_ in GJ if s != slug)}</div></section>{CTA}'''
-        page(f"yeongyeol/{slug}.html", f"대전·세종 {nm} 시공팀 연결 — {job} | 영진목재", f"대전·세종 {nm}({job}) 시공팀을 영진종합목재 매장에서 연결해 드립니다. 전화 {TEL}. 자재 구매·재단도 함께.", body, "/sigong.html", fld)
-        cards += f'<a class="ygc" href="/yeongyeol/{slug}.html"><b>{E(nm)}</b><span>{E(job)}</span><u>연결 요청 ›</u></a>'
+        page(f"yeongyeol/{slug}.html", (f"대전·세종 {nm} 시공 — 월드아키텍쳐 직접 시공 | 영진목재" if own else f"대전·세종 {nm} 시공팀 연결 — {job} | 영진목재"), (f"대전·세종 {nm}({job}) — 월드아키텍쳐(실내건축공사업) 직접 시공. 전화 {TEL}. 자재는 영진종합목재." if own else f"대전·세종 {nm}({job}) 시공팀을 영진종합목재 매장에서 연결해 드립니다. 전화 {TEL}. 자재 구매·재단도 함께."), body, "/sigong.html", fld)
+        cards += f'<a class="ygc{" own" if own else ""}" href="/yeongyeol/{slug}.html"><b>{E(nm)}</b><span>{E(job)}</span><u>{"직접 시공 ›" if own else "연결 요청 ›"}</u></a>'
         links.append((slug, nm))
-    page("yeongyeol/index.html", "대전·세종 인테리어 시공팀 연결 — 목공·도배·타일·샷시·필름·마루·전기 13개 공정 | 영진목재",
-         f"목공, 도배·장판, 타일·설비, 필름, 샷시·현관문, 폴딩도어, 철거, 데코타일, 마루, 페인트, 전기·조명, 가구, 블라인드 — 영진종합목재가 거래 시공팀을 연결해 드립니다. 전화 {TEL}.",
+    page("yeongyeol/index.html", "대전·세종 인테리어 시공팀 연결 — 목공·도배·타일·샷시·필름·마루·전기 14개 공정 | 영진목재",
+         f"사이딩·외벽(직접 시공), 목공, 도배·장판, 타일·설비, 필름, 샷시·현관문, 폴딩도어, 철거, 데코타일, 마루, 페인트, 전기·조명, 가구, 블라인드 — 영진종합목재가 거래 시공팀을 연결해 드립니다. 전화 {TEL}.",
          f'''<section class="wrap sec"><h1>공정별 시공팀 연결</h1><p class="lead">자재를 사 가시는 분들이 "시공할 사람 없나요?" 많이 물으십니다. 영진종합목재와 오래 거래한 공정별 시공팀을 매장에서 연결해 드립니다.</p>
 <div class="ygg">{cards}</div>
 <h2>이렇게 연결해 드려요</h2>{how}<div class="row"><a class="b r" href="tel:{T}">매장에 연결 요청 · {TEL}</a><a class="b" href="/sigong.html">월드아키텍쳐 직접 시공</a></div>
@@ -62,7 +66,8 @@ CSS = '''
 /* 시공팀 연결 */
 .ygg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
 .ygc{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid #ece6dc;border-radius:16px;padding:14px;color:#1D1B18!important;text-decoration:none!important}
-.ygc b{font-size:16.5px;font-weight:900}.ygc span{font-size:13px;color:#6b655c;line-height:1.45;flex:1}.ygc u{text-decoration:none;color:#c41a1f;font-weight:800;font-size:13.5px;margin-top:4px}
+.ygc b{font-size:16.5px;font-weight:900}.ygc span{font-size:13px;color:#6b655c;line-height:1.45;flex:1}.ygc.own{background:#1D1B18;color:#fff!important;border-color:#1D1B18}.ygc.own span{color:#d8d2c8}.ygc.own u{color:#ffd27a}
+.ygc u{text-decoration:none;color:#c41a1f;font-weight:800;font-size:13.5px;margin-top:4px}
 .ygbox{display:flex;flex-direction:column;gap:4px;background:#1D1B18;color:#fff;border-radius:18px;padding:16px;margin:14px 0}
 .ygbox b{font-size:20px}.ygbox span{opacity:.85}.ygbox small{opacity:.65}.ygbox .b{margin-top:10px;text-align:center}
 .ygvs{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:6px}
