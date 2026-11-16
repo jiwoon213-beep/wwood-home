@@ -41,6 +41,7 @@ def gen(page, E, CTA, TEL, ADDR, HOURS, BASE, ROOT):
     css = '''<style>.ttg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.ttc{display:flex;flex-direction:column;gap:3px;background:#fff;border:1px solid #ece6dc;border-radius:16px;padding:8px 8px 12px;color:#1D1B18!important;text-decoration:none!important}
 .tti{position:relative;display:block}.tti img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:11px;display:block;margin-bottom:4px}.tti em{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.55);color:#fff;font-style:normal;font-weight:900;font-size:18px;border-radius:11px}
 .ttc b{font-size:15px;line-height:1.35;padding:0 4px}.ttc small{font-size:12.5px;color:#6b655c;padding:0 4px}.ttp{font-size:18px;font-weight:900;color:#c41a1f;padding:2px 4px 0}.ttc i{font-style:normal;font-size:11.5px;color:#9a9388;padding:0 4px}.ttc.so{opacity:.75}.ttc.so .ttp{color:#8a8378;text-decoration:line-through}
+.ttr{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;gap:10px;padding-bottom:6px}.ttr::-webkit-scrollbar{display:none}.ttr .ttc{flex:0 0 44%;scroll-snap-align:start}.tths{font-size:13px;color:#8a8378;font-weight:700}
 .ttem{grid-column:1/-1;display:flex;flex-direction:column;gap:6px;background:#fff;border:1px dashed #d8d0c2;border-radius:16px;padding:20px;text-align:center}
 .tthero{background:#1D1B18;color:#fff;border-radius:18px;padding:16px;margin:12px 0}.tthero b{font-size:18px;display:block;margin-bottom:4px}.tthero span{opacity:.85;font-size:14px;line-height:1.6}
 .ttph{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}.ttph img{flex:0 0 100%;width:100%;aspect-ratio:1;object-fit:cover;border-radius:16px;scroll-snap-align:start}
@@ -59,7 +60,7 @@ def gen(page, E, CTA, TEL, ADDR, HOURS, BASE, ROOT):
                 + (f'<div class="ttph">{ph}</div>' + (f'<p class="hsh">옆으로 넘겨 보세요 ›</p>' if len(d["photos"]) > 1 else '') if ph else '')
                 + f'<div class="ttbox"><div class="ttbig">{(pr + ("/" + E(d["unit"]) if d["unit"] else "")) if pr else "가격은 매장 문의"}</div><table>{rows}</table>' + (f'<p style="margin:8px 0 0;line-height:1.7">{E(d["note"])}</p>' if d["note"] else '') + '</div>'
                 + ('<p class="tthero"><b>판매가 끝났어요</b><span>비슷한 자재는 매장에 문의해 주세요.</span></p>' if so else f'<div class="row"><a class="b r" href="tel:{T}">남았는지 전화 확인 {TEL}</a><a class="b" href="/visit.html">매장 길찾기</a></div><p class="small muted">수량이 적어 먼저 오시는 분께 드립니다. {E(ADDR)} · {E(HOURS)} · 부가세 별도.</p>')
-                + f'<h2>다른 떨이 상품</h2><div class="ttg">{"".join(card(x) for x in items if x["id"] != d["id"])[:20000] or "<p>다른 상품이 없어요.</p>"}</div></section>{CTA}{css}')
+                + f'<h2>다른 떨이 상품 <small class="tths">옆으로 넘겨 보세요 ›</small></h2><div class="ttg ttr">{"".join(card(x) for x in items if x["id"] != d["id"])[:20000] or "<p>다른 상품이 없어요.</p>"}</div></section>{CTA}{css}')
         ld = None
         if pr and d["photos"]:
             ld = {"@context": "https://schema.org", "@type": "Product", "name": d["title"], "image": [BASE + "/assets/tteori/" + p for p in d["photos"]], "description": (d["note"] or d["title"])[:200],
