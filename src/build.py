@@ -350,7 +350,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <header><div class="wrap row sb hd"><a class="logo" href="/"><img class="lm" src="/assets/logo-mark.svg" width="46" height="46" alt=""><span class="lt"><b>영진종합목재</b><small><em>월드건축자재</em> · 충청권 최대규모 목재상</small></span></a>
 <div class="hbtn"><a class="hcam" href="/sajin.html#cam" title="사진으로 제품 찾기" aria-label="카메라로 제품 찾기"><i><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8.5A2.5 2.5 0 0 1 6 6h1.7l1.4-1.9A1.5 1.5 0 0 1 10.3 3.5h3.4a1.5 1.5 0 0 1 1.2.6L16.3 6H18a2.5 2.5 0 0 1 2.5 2.5v8.5A2.5 2.5 0 0 1 18 19.5H6A2.5 2.5 0 0 1 3.5 17z"/><circle cx="12" cy="12.6" r="3.7"/></svg></i><small>사진찾기</small></a><button class="mnb" type="button" aria-expanded="false" aria-controls="gnav" onclick="var h=this.closest('header'),o=h.classList.toggle('open');this.setAttribute('aria-expanded',o);this.innerHTML=o?'✕ 닫기':'☰ 메뉴'">☰ 메뉴</button></div><nav id="gnav">{nav}</nav></div></header>
 <main>{body}{_SHR if path not in ("offline.html", "404.html") else ""}</main>
-<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mokgongso.html">목재 재단(목공소)</a> · <a href="/jaedan-baesong.html">재단 후 전국 배송</a> · <a href="/sajin.html">사진으로 제품 찾기</a> · <a href="/mandeul/">DIY 만들기</a> · <a href="/sigongbeop/">인테리어 자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/jeonguk/">배송 지역</a> · <a href="/jajae/">자재 백과</a> · <a href="/calc.html">자재 계산기</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/bangbu-gyugyeok.html">방부목 규격</a> · <a href="/deck-pis.html">데크 피스</a> · <a href="/island-size.html">아일랜드 식탁 사이즈</a> · <a href="/muge.html">자재 무게 계산</a> · <a href="/seokgo-pis.html">석고보드 피스</a> · <a href="/pis-gilee.html">피스 길이</a> · <a href="/gagyeok/">자재 가격 가이드</a> · <a href="/cheolmul/">목재 철물</a> · <a href="/taka/">타카·타카핀</a> · <a href="/yerim/">예림 중문·도어</a> · <a href="/younglim/">영림 도어·중문·필름</a> · <a href="/shenu/">쉐누 도어·몰딩</a> · <a href="/bupum/">철물·공구·부속</a> · <a href="/bondex/">본덱스 스테인·페인트</a> · <a href="/nichiha/">니치하 세라믹 사이딩</a> · <a href="/geonjae/">목조·외장·내장 건축자재</a> · <a href="/suip/">수입 목조주택 자재·창호</a> · <a href="/local/">지역별 시공</a> · <a href="/faq.html">자주 묻는 질문</a> · <a href="/yongeo.html">현장 용어</a> · <a href="/jeonche.html">전체 페이지</a> · <a href="/privacy.html">개인정보처리방침</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
+<footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mokgongso.html">목재 재단(목공소)</a> · <a href="/jaedan-baesong.html">재단 후 전국 배송</a> · <a href="/sajin.html">사진으로 제품 찾기</a> · <a href="/mandeul/">DIY 만들기</a> · <a href="/sigongbeop/">인테리어 자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/jeonguk/">배송 지역</a> · <a href="/jajae/">자재 백과</a> · <a href="/bigyo/">자재·인테리어 비교</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/bangbu-gyugyeok.html">방부목 규격</a> · <a href="/deck-pis.html">데크 피스</a> · <a href="/island-size.html">아일랜드 식탁 사이즈</a> · <a href="/muge.html">자재 무게 계산</a> · <a href="/seokgo-pis.html">석고보드 피스</a> · <a href="/pis-gilee.html">피스 길이</a> · <a href="/gagyeok/">자재 가격 가이드</a> · <a href="/cheolmul/">목재 철물</a> · <a href="/taka/">타카·타카핀</a> · <a href="/yerim/">예림 중문·도어</a> · <a href="/younglim/">영림 도어·중문·필름</a> · <a href="/shenu/">쉐누 도어·몰딩</a> · <a href="/bupum/">철물·공구·부속</a> · <a href="/bondex/">본덱스 스테인·페인트</a> · <a href="/nichiha/">니치하 세라믹 사이딩</a> · <a href="/geonjae/">목조·외장·내장 건축자재</a> · <a href="/suip/">수입 목조주택 자재·창호</a> · <a href="/local/">지역별 시공</a> · <a href="/faq.html">자주 묻는 질문</a> · <a href="/yongeo.html">현장 용어</a> · <a href="/jeonche.html">전체 페이지</a> · <a href="/privacy.html">개인정보처리방침</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로(제조사 제품 사진 제외) 무단 복제·사용을 금합니다.<br>
 유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/",n="wwood-co-kr";
 function rd(x){{var v=null;try{{v=localStorage.getItem(x)}}catch(e){{}}if(v===null){{var m=document.cookie.match(new RegExp("(?:^|; )"+x+"=([^;]*)"));v=m?m[1]:null}}return v}}
@@ -1615,6 +1615,21 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     CMP = json.load(open(f"{ROOT}/data/compare.json", encoding="utf-8"))
     matname2 = {m["slug"]: m["name"] for m in MATS}
     cmpnav = lambda cur: '<div class="pl hs">' + "".join(f'<a class="pc" href="/bigyo/{c["slug"]}.html"><small>자재 비교</small><b>{E(c["short"])}</b><span>{E(c["desc"][:60])}…</span></a>' for c in CMP if c["slug"] != cur) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p>'
+    def _jo(w, x, y):  # 받침 있으면 x, 없으면 y
+        ch = re.sub(r"[^가-힣A-Za-z0-9]", "", re.sub(r"\(.*?\)", "", w))[-1:] or "가"
+        if "가" <= ch <= "힣": return w + (x if (ord(ch) - 0xAC00) % 28 else y)
+        return w + (x if ch.lower() in "lmnr0136789" else y)
+    def _cfq(c):
+        a, b = c["cols"][0], c["cols"][1]
+        out = [(f"{_jo(a, '과', '와')} {b}의 차이는 무엇인가요?", c["concl"])]
+        for r in c["rows"]:
+            if r[0] in ("어울리는 곳", "어울리는 작업"):
+                out.append((f"{_jo(a, '과', '와')} {_jo(b, '은', '는')} 각각 어디에 쓰나요?", f"{a}: {r[1]}. {b}: {r[2]}."))
+        for r in c["rows"]:
+            if r[0] in ("물", "물 흡수", "관리", "시공", "작업"):
+                out.append((f"{_jo(a, '과', '와')} {b}, {_jo(r[0], '은', '는')} 어떻게 다른가요?", f"{_jo(a, '은', '는')} {r[1]}, {_jo(b, '은', '는')} {r[2]}.")); break
+        out.append(("매장에서 실물을 볼 수 있나요?", "대전 서구 영진종합목재(월드건축자재) 매장에서 실물을 비교해 보실 수 있고, 원하는 크기로 재단해 전국 배송도 합니다. 전화 문의 후 방문하시면 편합니다."))
+        return out
     for c in CMP:
         th = "<tr><th></th>" + "".join(f"<th>{E(x)}</th>" for x in c["cols"]) + "</tr>"
         tb = "".join("<tr><th>" + E(r[0]) + "</th>" + "".join(f"<td>{E(x)}</td>" for x in r[1:]) + "</tr>" for r in c["rows"])
@@ -1626,7 +1641,9 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 <h2>정리하면</h2><p>{E(c["concl"])}</p><p><a class="b o" href="/jaryo/?q={c['q']}">매장 취급 제품 사진 보기</a> <a class="b o" href="/calc.html">자재 계산기</a></p><p>{ml}</p>
 <p class="small muted">일반적인 특징을 정리한 것으로 제품·등급에 따라 다를 수 있습니다. 매장에서 실물을 비교해 보세요.</p></section>
 <section class="wrap sec"><h2>관련 영상</h2>{vsplit(vs, "h3")}</section>
-<section class="wrap sec"><h2>다른 자재 비교</h2>{cmpnav(c["slug"])}</section>{CTA}""", "/jajae/")
+<section class="wrap sec"><h2>자주 묻는 질문</h2>{"".join(f'<details class="cfq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q, a in _cfq(c))}</section>
+<section class="wrap sec"><h2>다른 자재 비교</h2>{cmpnav(c["slug"])}</section>{CTA}""", "/jajae/",
+             {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in _cfq(c)]})
     page("bigyo/index.html", "자재 비교 — 합판·사이딩·단열재·바닥재·도어·루바 종류별 차이 | 영진목재", "헷갈리는 건축 자재를 종류별로 비교했습니다. 합판 vs OSB vs MDF, 세라믹·메탈·비닐 사이딩, 단열재, 바닥재, 실내 도어, 루바, 집성판, 각재, 방음·흡음재.",
          '<section class="wrap sec"><p class="crumb"><a href="/jajae/">자재 백과</a> › 자재 비교</p><h1>자재 비교</h1><p class="lead">비슷해 보여도 쓰는 곳이 다른 자재들을 한눈에 비교했습니다.</p><div class="pl">' + "".join(f'<a class="pc" href="/bigyo/{c["slug"]}.html"><small>자재 비교</small><b>{E(c["short"])}</b><span>{E(c["desc"][:70])}…</span></a>' for c in CMP) + f'</div></section>{CTA}', "/jajae/")
 
