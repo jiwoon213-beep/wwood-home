@@ -1746,6 +1746,11 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         _mkln = ('<p>🪚 직접 만들어 보기: ' + " · ".join(f'<a href="/mandeul/{k}.html">{E(MKNM[k])} 자재·재단 크기</a>' for k in _mks) + '</p>') if _mks else ""
         _sgs = [x for x in SG if x[10] and re.search(x[10], v["title"])][:2]
         if _sgs: _mkln += '<p>🔨 시공법 보기: ' + " · ".join(f'<a href="/sigongbeop/{x[0]}.html">{E(x[1])} 순서·필요 자재</a>' for x in _sgs) + '</p>'
+        _PV = [(r"중문|3연동|슬라이딩도어", "/yerim/p/", "예림 중문 제품"), (r"방문|도어|문틀|ABS", "/younglim/p/", "영림 도어·문틀 제품"), (r"몰딩|걸레받이|필름|시트지", "/younglim/p/", "영림 몰딩·필름 제품"),
+               (r"스테인|오일|페인트|바니쉬|칠하", "/bondex/p/", "본덱스 스테인·페인트 제품"), (r"경첩|손잡이|피스|앙카|철물|실리콘|레일|선반|공구|드릴|타카", "/bupum/p/", "철물·공구 제품"),
+               (r"석고|텍스|천장|흡음|단열", "/knauf/p/", "크나우프 석고·천장·단열 제품"), (r"사이딩|외벽|루바|계단|목조주택", "/geonjae/p/", "외장·내장 건축자재 제품"), (r"창호|창문|천창|지붕", "/suip/p/", "수입 창호·지붕재 제품")]
+        _pvs = list(dict.fromkeys((h, t) for rx, h, t in _PV if re.search(rx, v["title"])))[:3]
+        if _pvs: _mkln += '<p>🛒 영상에 나온 제품 찾기: ' + " · ".join(f'<a href="{h}">{t}</a>' for h, t in _pvs) + '</p>'
         page(f"v/{v['id']}.html", f"{st} — {'쇼츠' if v['type'] == 'S' else '영상'}" + (f" 조회 {views(v['n'])}" if v['n'] >= 1000 else "") + " | 영진목재", vds,
              f"""<section class="wrap sec"><p class="crumb"><a href="/video/">영상</a> › <a href="/video/{v['cat']}.html">{E(cn)}</a></p><h1 class="vt1">{E(v['title'])}</h1>
 <div class="{'emb sh1' if v['type']=='S' else 'emb'}"><iframe loading="lazy" src="https://www.youtube.com/embed/{v['id']}" title="{E(st)}" allowfullscreen></iframe></div>
