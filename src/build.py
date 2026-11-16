@@ -1358,7 +1358,8 @@ def build():
         _h = open(_f, encoding="utf-8").read()
         if "jfeebox" in _h: continue
         _box = '<section class="wrap sec jfeebox"><a class="jfb" href="/jaedan-bi.html"><b>✂ 원하는 크기로 재단</b><span>재단비 1컷 1,000원부터(12T 이하) · 15·18T 1,500원 · 30T까지 3,000원</span><u>재단비 보기 ›</u></a></section><style>.jfb{display:flex;flex-direction:column;gap:3px;background:#1D1B18;color:#fff!important;border-radius:16px;padding:14px 16px;text-decoration:none!important}.jfb b{font-size:16px}.jfb span{font-size:13px;opacity:.8}.jfb u{text-decoration:none;color:#ffd27a;font-weight:800;font-size:14px;margin-top:4px}</style>'
-        _i = _h.rfind("</main>")
+        _i = _h.rfind('<section class="wrap sec shr">')
+        if _i < 0: _i = _h.rfind("</main>")
         if _i > 0: open(_f, "w", encoding="utf-8").write(_h[:_i] + _box + _h[_i:])
     for _k, _kind in _YK.items():
         _f = os.path.join(OUT, _k + ".html")
@@ -1369,7 +1370,8 @@ def build():
         _box = ('<section class="wrap sec ylinks"><h2>' + E(_kind) + ' 몇 평이면 얼마? 평수별 자재비 예시</h2><div class="ylk">'
                 + "".join(f'<a href="/yesi/{sl}.html"><b>{E(t)}</b><small>{lo:,}원~</small></a>' for _, sl, t, lo, hi in _ls)
                 + '</div></section><style>.ylk{display:flex;gap:8px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}.ylk a{flex:0 0 auto;display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid #ece6dc;border-radius:14px;padding:10px 14px;color:#1D1B18;text-decoration:none}.ylk b{font-size:14px}.ylk small{color:#c41a1f;font-weight:800;font-size:12.5px}</style>')
-        _i = _h.rfind("</main>")
+        _i = _h.rfind('<section class="wrap sec shr">')
+        if _i < 0: _i = _h.rfind("</main>")
         if _i > 0: open(_f, "w", encoding="utf-8").write(_h[:_i] + _box + _h[_i:])
     import cheolmul as _ch
     CHLIST = _ch.gen(page, P, E, CTA, faqslide, BASE, ADDR, HOURS, ALLFAQ)

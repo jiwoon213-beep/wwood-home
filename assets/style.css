@@ -534,3 +534,5 @@ ul.mli{align-items:stretch!important}ul.mli li{align-self:stretch!important}
 .shx.bd{border-color:#c5eccf}
 /* 매장 길찾기·시공 맡기기 반반 */
 @media(max-width:700px){.cta .row{display:grid!important;grid-template-columns:1fr 1fr;gap:10px}.cta .row .b{width:100%;text-align:center;margin:0!important;padding-left:6px;padding-right:6px}}
+.shrb{align-items:stretch}.shx{margin:0!important;vertical-align:top;box-sizing:border-box;align-self:stretch}
+.shx.bd{display:flex!important;margin:0!important}.shx.ig{border:1px solid transparent}
