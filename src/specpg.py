@@ -81,10 +81,36 @@ def gen(page, P, E, CTA, faqslide, TEL):
     body3 = f'''<section class="wrap sec"><p class="crumb"><a href="/">홈</a> › <a href="/mandeul/">DIY 만들기</a> › 아일랜드 식탁 사이즈</p>
 <h1>아일랜드 식탁 사이즈 — 높이·깊이·길이·통로 한눈에</h1>
 <p class="lead">아일랜드 식탁을 짜거나 주문하기 전에 많이 쓰는 치수를 정리했습니다. 상판 자재는 집성판을 원하는 크기로 잘라 가실 수 있어요.</p>
-<div class="row"><a class="b r" href="/cut.html">상판 재단 미리보기</a><a class="b o" href="/gagyeok/jipseong-gagyeok.html">집성판 가격</a><a class="b o" href="/yeongyeol/gagu.html">가구 시공팀 연결</a><a class="b d" href="tel:{tel}">전화 문의</a></div>
+<div class="row"><a class="b r" href="/cut.html">상판 재단 미리보기</a><a class="b o" href="/gagyeok/jipseong-gagyeok.html">집성판 가격</a><a class="b o" href="/mandeul/aillaendeu.html">아일랜드 식탁 만들기</a><a class="b o" href="/yeongyeol/gagu.html">가구 시공팀 연결</a><a class="b d" href="tel:{tel}">전화 문의</a></div>
 <h2>많이 쓰는 치수</h2>{st}
 <p class="small muted">일반적으로 많이 쓰는 범위입니다. 주방 크기와 의자에 맞춰 조정하세요.</p>
 {('<h2>상판용 집성판 기준가</h2>' + jtb + '<p class="small muted">매장 소매 기준가(부가세 별도) · 원하는 크기로 재단</p>') if jtb else ''}
 <h2>자주 묻는 질문</h2>{faqslide(fq3)}</section>''' + CTA
     page("island-size.html", "아일랜드 식탁 사이즈 — 높이·깊이·길이·통로 한눈에 | 영진목재",
          "아일랜드 식탁 높이 850~900mm(바 테이블형 1,000~1,100mm), 깊이·1인당 폭·무릎 공간·통로 치수와 상판 집성판.", body3, jsonld=_fq(fq3))
+
+
+def gen2(page, P, E, CTA, faqslide, TEL):
+    """석고보드 피스 길이·간격·개수(/seokgo-pis.html)"""
+    tel = TEL.replace("-", "")
+    gp = [p for p in P if p["cat"] == "석고" or ("석고" in p["name"] and p["cat"] in ("피스", "본드"))]
+    ptb = _tbl(["매장 품명", "기준가"], [(E(p["name"]), f"{p['price']:,}원~") for p in gp])
+    ln = _tbl(["붙이는 방법", "피스 길이(대략)", "메모"], [("9.5T 한 겹", "25mm", "석고 피스 25mm가 가장 흔함"), ("12.5T 한 겹", "25~32mm", ""), ("9.5T 두 겹", "38mm 안팎", "두 번째 겹은 더 긴 피스"), ("합판 위에 석고보드", "32~38mm", "합판 두께만큼 더 길게")])
+    gp2 = _tbl(["조건", "값"], [("보드 크기", "3×6(900×1800)"), ("뒤쪽 각재(스터드) 간격", "450mm → 각재 3줄"), ("피스 간격", "가장자리 약 200mm, 가운데 약 250~300mm"),
+                                ("1장 피스", "약 24~30개"), ("10장", "약 250~300개"), ("500EA 한 통", "약 17~20장 분량")])
+    fq = [("석고보드 피스는 몇 mm를 쓰나요?", "9.5T 한 겹은 25mm 석고 피스를 가장 많이 씁니다. 두 겹이나 합판 위에 붙일 때는 32~38mm로 길게 씁니다."),
+          ("석고보드 피스 간격은요?", "가장자리는 약 200mm, 가운데는 약 250~300mm 간격으로 박는 경우가 많습니다. 보드 끝에서 10~15mm 안쪽에 박아 모서리가 깨지지 않게 하세요."),
+          ("석고보드 1장에 피스 몇 개 드나요?", "3×6 보드, 각재 간격 450mm 기준으로 1장에 약 24~30개입니다. 500EA 한 통이면 약 17~20장 붙일 수 있어요."),
+          ("피스를 너무 세게 박으면요?", "종이 면이 찢어지면 잡는 힘이 약해집니다. 머리가 표면보다 살짝 들어갈 정도로만 박으세요.")]
+    body = f'''<section class="wrap sec"><p class="crumb"><a href="/">홈</a> › <a href="/sigongbeop/seokgo-byeok.html">석고보드 시공</a> › 석고보드 피스</p>
+<h1>석고보드 피스 길이·간격·개수 — 1장에 몇 개?</h1>
+<p class="lead">석고보드 붙일 때 피스 길이, 간격, 1장·10장에 드는 개수를 계산 예로 정리했습니다. 매장 석고보드·석고 피스·석고 본드 기준가도 함께 보세요.</p>
+<div class="row"><a class="b r" href="/yesi/gypsum-wall-5py.html">벽 석고보드 5평 예시 견적</a><a class="b o" href="/sigongbeop/seokgo-byeok.html">석고보드 벽 시공법</a><a class="b o" href="/muge.html">석고보드 무게</a><a class="b d" href="tel:{tel}">전화 문의</a></div>
+<h2>붙이는 방법별 피스 길이</h2>{ln}
+<h2>1장에 피스 몇 개? (계산 예)</h2>{gp2}
+<p class="small muted">계산 예시입니다. 천장은 벽보다 촘촘히 박고, 넉넉히 10% 더 준비하세요.</p>
+<h2>매장 석고보드·피스·본드 기준가</h2>{ptb}
+<p class="small muted">매장 소매 기준가(부가세 별도)</p>
+<h2>자주 묻는 질문</h2>{faqslide(fq)}</section>''' + CTA
+    page("seokgo-pis.html", "석고보드 피스 길이·간격·개수 — 1장에 몇 개? | 영진목재",
+         "석고보드 피스 9.5T는 25mm, 가장자리 약 200mm·가운데 250~300mm 간격, 3×6 1장에 약 24~30개. 매장 기준가.", body, jsonld=_fq(fq))
