@@ -85,11 +85,12 @@ def gen(page, P, E, CTA, faqslide, TEL):
                               calc="/gyeonjeok.html", calcn="방 통째로 계산", mat="/jajae/molding.html", matn="몰딩·아트월", gg="/gagyeok/tempa-board.html", vn="템바보드 아트월 시공"))
 
     # 5) 외벽 사이딩
-    for nm_, A, where in [("농막 6×3m", (6 + 3) * 2 * 2.4 * 0.85, "농막·창고 외벽(창·문 15% 뺌)"), ("단층 주택 30평", 120 * 0.85, "주택 외벽 약 120㎡(창·문 15% 뺌)")]:
+    for nm_, A, where in [("농막 6×3m", (6 + 3) * 2 * 2.4 * 0.85, "농막·창고 외벽(창·문 15% 뺌)"), ("단층 주택 30평", 120 * 0.85, "주택 외벽 약 120㎡(창·문 15% 뺌)"),
+                          ("단층 주택 20평", 98 * 0.85, "주택 외벽 약 98㎡(창·문 15% 뺌)"), ("단층 주택 40평", 139 * 0.85, "주택 외벽 약 139㎡(창·문 15% 뺌)"), ("2층 주택 40평", 192 * 0.85, "주택 외벽 약 192㎡(2층, 창·문 15% 뺌)")]:
         its = [i for i in D["siding"]["it"] if i["a"] and i["p"]][:2]
         rows = [(("시멘트사이딩 " if i["n"].startswith("시멘트") else "세라믹사이딩 ") + i["n"].replace("시멘트 · ", ""), f'{_ceil(A * 1.1 / i["a"])}장', _ceil(A * 1.1 / i["a"]) * int(i["p"]), "", 0) for i in its]
         if rows:
-            sl = "siding-nongmak" if "농막" in nm_ else "siding-house-30py"
+            sl = "siding-nongmak" if "농막" in nm_ else {"단층 주택 30평": "siding-house-30py", "단층 주택 20평": "siding-house-20py", "단층 주택 40평": "siding-house-40py", "2층 주택 40평": "siding-house2-40py"}[nm_]
             pages.append(dict(slug=sl, kind="사이딩", h1=f"{nm_} 외벽 사이딩 자재비 — 시멘트·세라믹 비교",
                               title=f"{nm_} 외벽 사이딩 몇 장·얼마? 시멘트사이딩·세라믹사이딩(V16) 비교", area=A, size=f"외벽 {A:.0f}㎡", where=where, rows=rows,
                               note="로스 10% 포함. 하지(각재·각관)·투습방수지·후레싱·코너 마감재·실리콘은 따로입니다.",
@@ -107,7 +108,7 @@ def gen(page, P, E, CTA, faqslide, TEL):
                               calc="/calc.html", calcn="자재 계산기", mat="/jajae/hapan.html", matn="합판", gg="/gagyeok/hapan-gagyeok.html", vn="합판 바닥 시공"))
 
     # 7) 벽 단열
-    for py in (3, 4, 5, 8):
+    for py in (3, 4, 5, 8, 10):
         A = (math.sqrt(py * PY) * 4) * 2.4 * 0.85
         its = items("wall_ins", ["아이소핑크 · 900×1800×30T", "아이소핑크 · 900×1800×50T"])
         rows = [(i["n"], f'{_ceil(A * 1.1 / i["a"])}장', _ceil(A * 1.1 / i["a"]) * int(i["p"]), "", 0) for i in its]
@@ -129,7 +130,7 @@ def gen(page, P, E, CTA, faqslide, TEL):
                               calc="/gabyeok-gyesan.html", calcn="가벽 자재 계산기", mat="/jajae/gypsum.html", matn="석고보드", gg="/gagyeok/seokgo-gagyeok.html", vn="석고보드 벽 시공"))
 
     # 9) 방 벽 이보드(단열 도배)
-    for py in (3, 4, 5, 8):
+    for py in (3, 4, 5, 8, 10):
         A = (math.sqrt(py * PY) * 4) * 2.4 * 0.85
         its = items("wall_ins", ["이보드(도배용)", "아이소핑크 · 900×1800×30T"])
         rows = [(i["n"], f'{_ceil(A * 1.1 / i["a"])}장', _ceil(A * 1.1 / i["a"]) * int(i["p"]), "", 0) for i in its]
@@ -140,7 +141,7 @@ def gen(page, P, E, CTA, faqslide, TEL):
                               calc="/gabyeok-gyesan.html", calcn="가벽 자재 계산기", mat="/jajae/insul.html", matn="단열재", gg="/gagyeok/danyeol-gagyeok.html", vn="이보드 단열 시공"))
 
     # 10) 벽 루바
-    for py in (3, 4, 5):
+    for py in (3, 4, 5, 8, 10):
         A = (math.sqrt(py * PY) * 4) * 2.4 * 0.85
         its = items("ceil_ruba", ["히노끼/유절", "히노끼/무절", "스프러스"])
         rows = [(i["n"].replace("/", " "), f'{_ceil(A * 1.1 / i["a"])}단', _ceil(A * 1.1 / i["a"]) * int(i["p"]), "", 0) for i in its]
