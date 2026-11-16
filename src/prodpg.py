@@ -71,7 +71,7 @@ def _vendor(page, E, CTA, faqslide, HOURS, d, label, home, items, VID=None):
         ld = [_ld(it["title"], it["img"], use, it.get("brand"), it["cat"], it.get("price")),
               {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}]
         sd = " · ".join(f"{a} {b}" for a, b in it["spec"][:2])
-        page(f"{d}/p/{it['id']}.html", f"{it['title']} — 사진·규격·구매 | 대전 영진목재",
+        page(f"{d}/p/{it['id']}.html", (f"{it['title']} 가격 {it['price']:,}원~ · 규격 | 대전 영진목재" if it.get("price") else f"{it['title']} — 사진·규격·구매 | 대전 영진목재"),
              (itro[:150] if len(itro) > 60 else f"{it['title']}: {use[:60]}. {sd[:50]} 대전 영진종합목재 상담·전국 배송.").replace("  ", " "), body, "/jaryo/", ld, it["img"] if it["img"].startswith("http") or it["img"].startswith("/") else None)
     lst = "".join(f'<h2 class="gt">{E(c)} <small>{len(xs)}가지</small></h2><ul class="mgl">' + "".join(f'<li><a href="/{d}/p/{x["id"]}.html">{E(x["title"])}</a></li>' for x in xs) + '</ul>' for c, xs in bycat.items())
     page(f"{d}/p/index.html", f"{label} 제품별 목록 {len(items)}가지 | 대전 영진목재", f"{label} {len(items)}가지 제품별 사진·규격 페이지 목록. 대전 영진종합목재 상담·전국 배송.",
