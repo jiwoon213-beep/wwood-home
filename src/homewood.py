@@ -29,18 +29,36 @@ def img(p, big=False):
     if big: p = re.sub(r"-\d+x\d+(\.\w+)$", r"\1", p)
     return BASE + p
 
+
+PFX = [(r"^doorco-", "도어코 "), (r"^woodin-(?!moldings|.*maru)", "우딘 "), (r"^(capstone-|designer-collection)", "캡스톤 "),
+       (r"^(konoshima-ceramic-siding-(?!premire|kaijansen|yunagi|grandroche|shinjan|tools)|ceramic-siding-topper)", "세라믹 사이딩 ")]
+def fixname(slug, n):
+    for rx, p in PFX:
+        if re.search(rx, slug) and not n.startswith(p.strip()): return p + n
+    if slug == "torem" and "데크" not in n: return n + " 데크"
+    return n
+
+SUBKW = [("집성판", "집성판"), ("래티스", "래티스"), ("키트|브라켓", "DIY 키트"), ("마감재", "인테리어 마감재"), ("루바", "루바"), ("계단재", "계단재"),
+         ("몰딩", "몰딩"), ("사이딩", "목재 사이딩"), ("포미스톤", "포미스톤"), ("도어", "도어"), ("OSB", "OSB"), ("합판", "합판"), ("벤트", "환기 벤트"),
+         ("타이벡|에어가드", "듀폰 타이벡"), ("단열|락울|아이씬", "단열재"), ("데크|토렘|방킬라이", "하드우드 데크"), ("마루|후로링", "마루·후로링"), ("온돌", "바닥 난방"), ("장선|2X(8|10|12)", "바닥장선")]
+def guess(top, sub, n):
+    if sub and sub != top: return sub
+    for kw, lab in SUBKW:
+        if re.search(kw, n): return lab
+    return top
+
 def load(ROOT):
     f = os.path.join(ROOT, "data", "homewood_raw.txt")
     if not os.path.exists(f): return []
     rows, seen = [], set()
     for l in open(f, encoding="utf-8"):
         x = l.rstrip("\n").split("|")
-        if len(x) < 4 or x[0] in seen or DROP.search(x[0]) or "placeholder" in x[2]: continue
+        if len(x) < 4 or x[0] in seen or DROP.search(x[0]) or "placeholder" in x[2] or "비공개" in x[1]: continue
         seen.add(x[0])
-        top, _, sub = [s.strip() for s in x[3].partition(" / ")]
-        sub = re.sub(r"\s*/\s*Page \d+$", "", sub).strip() or top
+        top, _, sub = [s.strip() for s in re.sub(r"\s*/\s*Page \d+", "", x[3]).partition(" / ")]
         if top not in GN: continue
-        rows.append(dict(s=x[0], n=x[1].strip(), i=x[2], g=top, sub=sub))
+        n = fixname(x[0], x[1].strip())
+        rows.append(dict(s=x[0], n=n, i=x[2], g=top, sub=guess(top, sub, n)))
     return rows
 
 def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
