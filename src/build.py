@@ -301,6 +301,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
     if path in _REL:
         _rb = '<section class="wrap sec"><div class="qk qk2"><b>👉 함께 보기</b>' + "".join(f'<a href="{h}">{t}</a>' for h, t in _REL[path]) + '</div></section>'
         body = body.replace('<section class="cta">', _rb + '<section class="cta">', 1) if '<section class="cta">' in body else body + _rb
+    if img and img.startswith("/"): img = BASE + img  # 상대 주소 사진은 전체 주소로(사이트맵·공유 미리보기 오류 방지)
     if img and (" " in img.strip() or not img.strip().lower().split("?")[0].endswith((".jpg", ".jpeg", ".png", ".webp"))): img = None  # 깨진 대표 사진 주소는 버림
     if not img and not _noidx(path) and path != "404.html":
         try:
@@ -2186,7 +2187,7 @@ Promise.all([0,1,2,3,4,5,6].map(function(i){return g("d"+day(i))})).then(functio
     _isp = lambda u: re.search(r"/[a-z]+/p/[^/]+\.html$", u) is not None
     for _fn, _us in (("sitemap.xml", [u for u in SITEMAP if not _isp(u)]), ("sitemap-products.xml", [u for u in SITEMAP if _isp(u)])):
       open(f"{OUT}/{_fn}", "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' +
-        "".join(f"<url><loc>{u}</loc><lastmod>{LMD[u]}</lastmod>" + (f"<image:image><image:loc>{html.escape(SIMG[u])}</image:loc></image:image>" if SIMG.get(u) else "") + "".join(f"<image:image><image:loc>{BASE}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg</image:loc></image:image>" for d_ in ("mandeul", "sigongbeop") if f"/{d_}/" in u and not u.endswith("/") and os.path.exists(f"{ROOT}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg")) + "</url>\n" for u in _us) + "</urlset>\n")
+        "".join(f"<url><loc>{u}</loc><lastmod>{LMD[u]}</lastmod>" + (f"<image:image><image:loc>{html.escape((BASE + SIMG[u]) if SIMG[u].startswith('/') else SIMG[u])}</image:loc></image:image>" if SIMG.get(u) else "") + "".join(f"<image:image><image:loc>{BASE}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg</image:loc></image:image>" for d_ in ("mandeul", "sigongbeop") if f"/{d_}/" in u and not u.endswith("/") and os.path.exists(f"{ROOT}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg")) + "</url>\n" for u in _us) + "</urlset>\n")
     # 전체 자재 검색: 쇼핑몰 자재 + 제조사·철물·본덱스 사진 카드(.yri) 전부 → /assets/search.json
     _sx, _seen = list(idx), set()
     for d_ in ("bondex", "bupum", "yerim", "younglim", "shenu", "nichiha", "geonjae", "knauf", "suip"):
