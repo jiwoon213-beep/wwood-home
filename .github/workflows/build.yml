@@ -17,6 +17,11 @@ jobs:
         with: { fetch-depth: 50 }
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
+      - name: 공유 사진용 한글 폰트
+        continue-on-error: true
+        run: |
+          sudo apt-get install -y -q fonts-noto-cjk >/dev/null 2>&1 || true
+          pip install -q pillow || true
       - name: build
         run: |
           if ls src/data/new_videos/*.tsv >/dev/null 2>&1; then cat src/data/new_videos/*.tsv src/data/yt_all.tsv | awk -F'\t' '!seen[$1]++' > /tmp/y && mv /tmp/y src/data/yt_all.tsv && rm -f src/data/new_videos/*.tsv && (cd src && python3 merge_videos.py data/yt_all.tsv); fi

@@ -2,8 +2,9 @@
 폰트·Pillow가 없는 곳(예: Actions)에서는 건너뛰고, 이미 만든 파일을 그대로 씁니다."""
 import os
 
-FB = "/usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc"
 FM = "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc"
+FB = "/usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc"
+if not os.path.exists(FB): FB = FM
 KR = 1  # ttc 안의 KR 폰트 번호
 
 
