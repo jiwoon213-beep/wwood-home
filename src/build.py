@@ -242,6 +242,23 @@ def _tshort(t):
     return main + suf
 def page(path, title, desc, body, active="", jsonld=None, img=None):
     title = _tshort(title)
+    if img and (" " in img.strip() or not img.strip().lower().split("?")[0].endswith((".jpg", ".jpeg", ".png", ".webp"))): img = None  # 깨진 대표 사진 주소는 버림
+    if not img and not _noidx(path) and path != "404.html":
+        try:
+            import og as _og
+            _t0 = title.split(" | ")[0]
+            _m, _sb = (_t0.split(" — ", 1) + [""])[:2]
+            _pr = re.search(r"(\d{1,3}(?:,\d{3})+)원?\s*[~–]\s*\d{1,3}(?:,\d{3})+원", desc)
+            _pm = re.search(r"\d{1,3}(?:,\d{3})+원(?:~|부터)?", desc)
+            if _pr: _pm = re.match(r"(.*)", _pr.group(1) + "원~")
+            _nm = re.sub(r"[^0-9A-Za-z]+", "-", path[:-5]).strip("-") or "home"
+            _rel = _og.make(ROOT, _nm, _m.strip(), _sb.strip(), (_pm.group(0).replace("부터", "~") if _pm else ""))
+            if _rel:
+                os.makedirs(f"{OUT}/assets/og", exist_ok=True)
+                if os.path.exists(ROOT + _rel): shutil.copy(ROOT + _rel, OUT + _rel)
+                img = BASE + _rel
+        except Exception as _e:
+            pass
     if ' data-big="' in body and 'id="ylb"' not in body:
         import yerim as _ylb; body += _ylb.LB
     if 'class="yri" href="#" data-big=' in body and "ItemList" not in json.dumps(jsonld or {}):  # 제품 사진 카드가 있는 페이지는 제품 목록(ItemList) 정보 자동 추가
@@ -1947,7 +1964,7 @@ Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i
         "".join(f"<url><loc>{u}</loc><video:video><video:thumbnail_loc>https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg</video:thumbnail_loc><video:title>{X(v['title'][:100])}</video:title><video:description>{X(dd[:2000])}</video:description><video:player_loc>https://www.youtube.com/embed/{v['id']}</video:player_loc>"
                 + (f"<video:duration>{ln}</video:duration>" if ln else "")
                 + (f"<video:publication_date>{_dt.datetime.fromtimestamp(ts, _dt.timezone(_dt.timedelta(hours=9))).isoformat()}</video:publication_date>" if ts else "")
-                + "<video:family_friendly>yes</video:family_friendly></video:video></url>\n" for u, v, dd, ts, ln in VSM) + "</urlset>\n")
+                + "<video:family_friendly>yes</video:family_friendly></video:video></url>\n" for u, v, dd, ts, ln in VSM if v["id"] not in VTHIN) + "</urlset>\n")
     open(f"{OUT}/sitemap.xml", "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' +
         "".join(f"<url><loc>{u}</loc><lastmod>{LMD[u]}</lastmod>" + (f"<image:image><image:loc>{html.escape(SIMG[u])}</image:loc></image:image>" if SIMG.get(u) else "") + "".join(f"<image:image><image:loc>{BASE}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg</image:loc></image:image>" for d_ in ("mandeul", "sigongbeop") if f"/{d_}/" in u and not u.endswith("/") and os.path.exists(f"{ROOT}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg")) + "</url>\n" for u in SITEMAP) + "</urlset>\n")
     # 전체 자재 검색: 쇼핑몰 자재 + 제조사·철물·본덱스 사진 카드(.yri) 전부 → /assets/search.json
