@@ -1943,6 +1943,16 @@ Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i
     _cats = "22,22-133,22-132,22-139,22-316,22-317,22-128,22-129,39-296,23,23-134,23-135,23-136,23-137,23-314,24,24-140,24-141,24-318,24-319,24-320,26,26-149,26-148,26-247,26-315,26-152,25,25-144,25-145,25-146,25-147,25-249,25-266,28,28-167,28-168,28-172,28-248,27,27-156,27-321,27-157,27-159,27-160,27-161,27-237,27-166,27-322,27-163,27-381,31,31-186,31-331,31-188,29,29-274,29-367,30,30-182,30-183,30-184,30-351,32,32-332,32-333,32-334,53,53-348,53-349,54,54-373,54-375,54-378,54-374,54-380,54-391,35,35-356,35-206,35-357,37,37-400,37-396,37-397,37-361,37-362,37-363,37-366,37-360,58,58-405,58-407,58-404,58-406,58-408,58-403,58-409,58-411,58-412,59,59-422,59-423,59-424,59-425".split(",")
     _cu = [("https://wwood.kr/home/mall/shoplist.php?depth=1&amp;code1_idx=" + c) if "-" not in c else ("https://wwood.kr/home/mall/shoplist.php?depth=2&amp;code1_idx=%s&amp;code2_idx=%s" % tuple(c.split("-"))) for c in _cats]
     _pu = ["https://wwood.kr/home/mall/shoplist.php?idx=%d&amp;pmode=view" % i for i in _ids]
+    # 전국 배송 지역 → 외벽 사이딩 전국 시공 안내
+    for _f in glob.glob(os.path.join(OUT, "jeonguk", "*.html")):
+        _h = open(_f, encoding="utf-8").read()
+        if "sdbox" in _h: continue
+        _m = re.search(r"<h1>([^<]*)", _h); _rn = re.sub(r"\s*(목재|건축자재|자재).*$", "", _m.group(1)) if _m else ""
+        _box = ('<section class="wrap sec sdbox"><a class="jfb" href="/yeongyeol/siding.html"><b>🏠 ' + E(_rn) + ' 외벽 사이딩 공사도 직접 합니다</b>'
+                '<span>세라믹사이딩·시멘트사이딩·금속사이딩 — 월드아키텍쳐(실내건축공사업) 전국 직접 시공, 자재는 용달로 함께</span><u>외벽 시공 보기 ›</u></a></section>')
+        _i = _h.rfind('<section class="wrap sec shr">')
+        if _i < 0: _i = _h.rfind("</main>")
+        if _i > 0: open(_f, "w", encoding="utf-8").write(_h[:_i] + _box + _h[_i:])
     # 시공법·만들기 → 평수별 자재비 예시 연결
     for _k, _kind in {"sigongbeop/seokgo-byeok": "석고보드", "sigongbeop/seokgo-cheonjang": "석고보드", "sigongbeop/rubaa-cheonjang": "루바",
                       "sigongbeop/siding-oebyeok": "사이딩", "sigongbeop/ceramic-siding": "사이딩", "sigongbeop/metal-siding": "사이딩", "sigongbeop/tempa-byeok": "템바보드",
