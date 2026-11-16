@@ -557,11 +557,20 @@ def build():
         if not gs: return ""
         return ('<div class="chr" id="knauf' + c + '"><p class="chl"><b>크나우프 ' + ("석고보드·천장재" if len(gs) > 2 else "·".join(gs)) + '</b> ' + str(sum(1 for r in _knr if r[0] in gs)) + '종 · <a class="cha" href="/knauf/' + _kn0.GRP[gs[0]][0] + '.html">전체 보기 ›</a></p><div class="gcs">'
                 + "".join(f'<a class="gc gpc" href="/knauf/{_kn0.GRP[g][0]}.html"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{_kn0.IMG(next(r for r in _knr if r[0] == g)[4], 400)}" alt="크나우프 {E(g)}"><span>{E(g)}</span></a>' for g in gs) + '</div></div>')
+    import homewood as _hw0
+    _hwr = _hw0.load(ROOT)
+    def _hwrow(c):
+        gs = [g for g in _hw0.GRP if g[3] == c and any(r["g"] == g[0] for r in _hwr)]
+        if not gs: return ""
+        xs = [r for r in _hwr if r["g"] in [g[0] for g in gs]]
+        subs = list(dict.fromkeys((r["g"], r["sub"]) for r in xs))[:14]
+        return ('<div class="chr" id="suip' + c + '"><p class="chl"><b>수입 목조주택 ' + "·".join(g[0] for g in gs) + '</b> ' + str(len(xs)) + '종 · <a class="cha" href="/suip/' + gs[0][1] + '.html">전체 보기 ›</a></p><div class="gcs">'
+                + "".join(f'<a class="gc gpc" href="/suip/{_hw0.GN[g][1]}.html"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="247" height="300" src="{_hw0.img(next(r for r in xs if r["g"] == g and r["sub"] == sb)["i"])}" alt="{E(sb)}"><span>{E(sb)}</span></a>' for g, sb in subs) + '</div></div>')
     import nichiha as _nh0
     _nhr = _nh0.load(ROOT)
     _nhrow = ('<div class="chr" id="nichiha"><p class="chl"><b>니치하 세라믹 사이딩</b> 16×455×3,030mm · 우드·스톤·타일벽돌 ' + str(len(_nhr)) + '종 · <a class="cha" href="/nichiha/">전체 보기 ›</a></p><div class="gcs">'
               + "".join(f'<a class="gc gpc" href="/nichiha/#{k}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{_nh0.TH(next(r for r in _nhr if r[0] == k)[1])}" alt="니치하 {E(nm)}"><span>{E(nm)}</span></a>' for k, nm, d in _nh0.VIS if any(r[0] == k for r in _nhr)) + '</div></div>') if _nhr else ""
-    jrows = "".join(f'<section class="wrap sec jall" id="c{sl}"><h2>{n} <small class="muted">{cnt[c]}종</small> <a class="small" href="/jaryo/{sl}.html">전체 보기 ›</a></h2><p class="small muted">{d}</p>{_chrow if c == "32" else ""}{_yrrow if c == "29" else ""}{_bdrow if c == "35" else ""}{_nhrow if c == "31" else ""}{_knrow(c)}{_smrow(c)}<div class="pg hrow">' + "".join(pcard(p) for p in [p for p in PROD if c in p["tops"]][:16]) + f'<a class="pd more" href="/jaryo/{sl}.html"><span class="pi"><b>+{max(0,cnt[c]-16)}</b></span><b>{n} 전체 보기 ›</b><small>{cnt[c]}종</small></a></div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>' for c, sl, n, d in JCAT if cnt[c])
+    jrows = "".join(f'<section class="wrap sec jall" id="c{sl}"><h2>{n} <small class="muted">{cnt[c]}종</small> <a class="small" href="/jaryo/{sl}.html">전체 보기 ›</a></h2><p class="small muted">{d}</p>{_chrow if c == "32" else ""}{_yrrow if c == "29" else ""}{_bdrow if c == "35" else ""}{_nhrow if c == "31" else ""}{_knrow(c)}{_hwrow(c)}{_smrow(c)}<div class="pg hrow">' + "".join(pcard(p) for p in [p for p in PROD if c in p["tops"]][:16]) + f'<a class="pd more" href="/jaryo/{sl}.html"><span class="pi"><b>+{max(0,cnt[c]-16)}</b></span><b>{n} 전체 보기 ›</b><small>{cnt[c]}종</small></a></div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>' for c, sl, n, d in JCAT if cnt[c])
     page("jaryo/index.html", f"전체 자재 사진 {len([p for p in PROD if p['tops']])}종 — 각재·합판·데크·사이딩·철물 | 대전 영진목재", "대전 월드건축자재(영진목재) 매장 취급 자재를 사진으로 확인하세요. 각재, 합판, 집성판, 데크, 마루, 내장재, 타일, 사이딩, 철물, 스테인.",
          f'<section class="wrap sec"><h1>전체 자재</h1>{SEARCH}<p class="lead">매장에서 취급하는 자재를 사진으로 모았습니다. 실물은 대전 매장에서 보고, 원하는 사이즈로 재단해 가세요. 가격은 <a href="/price.html">기준가</a> 또는 매장에서 안내합니다.</p><div class="chips jall jchips">{jchips}</div></section>{jrows}{CTA}', "/jaryo/", None, thumb.get("24"))
     for c, sl, n, d in JCAT:
@@ -570,7 +579,7 @@ def build():
         subs = []
         for p in ps:
             if subof(p, c) not in subs: subs.append(subof(p, c))
-        secs = (_yrrow if c == "29" else (_bdrow if c == "35" else (_nhrow if c == "31" else ""))) + _knrow(c) + _smrow(c)
+        secs = (_yrrow if c == "29" else (_bdrow if c == "35" else (_nhrow if c == "31" else ""))) + _knrow(c) + _hwrow(c) + _smrow(c)
         for sb in subs:
             g = [p for p in ps if subof(p, c) == sb]
             title = MCAT.get(sb or "", "") or "기타"

@@ -12,11 +12,11 @@ DROP = re.compile(r"^(knauf-|megatie-|kcc-gypsum|plywood-(mdf|sungchang|malaysia
                   r"stairs-ash|stairs-redpine|woodpanel-redpine|woodpanel-cedar|woodpanel-clear-wrc|woodpanel-spruce|woodpanel-hinoki-(panel|clear)|"
                   r"birch_plywood|pine_plywood|skytech|lp-|wing-screws|coil_nail|roofing-coil-nail|easy-seal|vinyl-siding|woodsiding-log|"
                   r"deck-bangkirai|mebau-flooring|h3-treated-redpine-|tacker-|타카핀-st|brad-nails-dt|headless-pins)")
-GRP = [("목재", "wood", "구조목(일림·스프러스·레드파인), 소할재, 하슬라커 글루램", "29"),
-       ("토대/바닥/데크", "floor", "바닥 장선, 방부 토대재, 하드우드 데크, 히노끼 온돌마루·후로링, 온돌 시스템", "33"),
-       ("벽체용", "wall", "벽체·지붕용 OSB, 인테리어 OSB, 시멘트보드, 석고보드 부자재", "26"),
+GRP = [("목재", "wood", "구조목(일림·스프러스·레드파인), 소할재, 하슬라커 글루램", "23"),
+       ("토대/바닥/데크", "floor", "바닥 장선, 방부 토대재, 하드우드 데크, 히노끼 온돌마루·후로링, 온돌 시스템", "25"),
+       ("벽체용", "wall", "벽체·지붕용 OSB, 인테리어 OSB, 시멘트보드, 석고보드 부자재", "24"),
        ("지붕재", "roof", "아스팔트 슁글(CT·써튼티드), 웨스턴 레드시다 쉐이크", "31"),
-       ("윈도우/도어", "window", "살라만더 시스템 창호·현관도어, 플라이젬 3중창, 벨룩스 지붕창·천창, 테니·캡스톤·도어코 현관도어, 우딘 실내 도어", "34"),
+       ("윈도우/도어", "window", "살라만더 시스템 창호·현관도어, 플라이젬 3중창, 벨룩스 지붕창·천창, 테니·캡스톤·도어코 현관도어, 우딘 실내 도어", "29w"),
        ("단열재/습기/관리", "insul", "오웬스코닝·존스맨빌 단열재, YS 락울, 아이씬폼, 타이벡 투습방수지·테이프, 방수시트, 환기 벤트", "30"),
        ("내장재", "inner", "루바(레드파인·히노끼·사스나·적삼목·햄록), 인테리어 합판, 우딘 몰딩, 계단재", "27"),
        ("외장재", "outer", "코노시마 세라믹사이딩·부자재, 메탈사이딩, 시멘트·목재 사이딩, 포미스톤, 하이클래딩, 릭실 아키타일", "31"),
