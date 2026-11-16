@@ -1987,12 +1987,12 @@ Promise.all([0,1,2,3,4,5,6].map(function(i){return g("d"+day(i))})).then(functio
         _tti = [d for d in _ttm.load(ROOT) if d["status"] != "판매완료"]
         _ttmap = [(r"문짝|방문|도어", ["gagyeok/door-gagyeok", "yeongyeol/shassi", "local/door-daejeon", "local/door-sejong", "yerim/index", "younglim/index", "shenu/index"]),
                   (r"판재|고재|패널|루바", ["gagyeok/tempa-board", "gagyeok/hinoki-ruba", "trend/index", "mandeul/index"]),
-                  (r"테이블|좌탁|가구", ["mandeul/index", "yeongyeol/gagu"])]
+                  (r"테이블|좌탁|가구|벤치", ["mandeul/index", "yeongyeol/gagu", "mandeul/benchi"]), (r"천장재|흡음", ["knauf/index", "sigongbeop/seokgo-cheonjang", "yesi/gypsum-ceiling-5py"]), (r"데코타일", ["sigongbeop/decotile", "yeongyeol/decotile"])]
         for _rx, _pgs in _ttmap:
             _its = [d for d in _tti if re.search(_rx, d["title"])]
             if not _its: continue
-            _box = ('<section class="wrap sec ttbx"><a class="jfb" href="/tteori/' + _its[0]["id"] + '.html" style="background:#c41a1f"><b>🏷 떨이몰: ' + E(_its[0]["title"]) + '</b><span>'
-                    + (_ttm.won(_its[0]["price"]) + ("/" + E(_its[0]["unit"]) if _its[0]["unit"] else "") if _its[0]["price"] else "매장 문의") + ' · 수량 한정 재고 정리</span><u>떨이 상품 보기 ›</u></a></section>')
+            _cards = "".join('<a class="ttm" href="/tteori/' + d["id"] + '.html">' + (('<img loading="lazy" src="/assets/tteori/' + d["photos"][0] + '" alt="">') if d["photos"] else '') + '<b>' + E(d["title"]) + '</b><span>' + ((_ttm.won(d["price"]) + ("/" + E(d["unit"]) if d["unit"] else "")) if d["price"] else "매장 문의") + '</span></a>' for d in _its[:6])
+            _box = ('<section class="wrap sec ttbx"><h2 class="tth">🏷 떨이몰 <small>수량 한정 재고 정리 · 옆으로 넘겨 보세요 ›</small></h2><div class="ttmr">' + _cards + '<a class="ttm ttall" href="/tteori/"><b>떨이몰 전체 보기 ›</b></a></div></section>')
             for _k in _pgs:
                 _f = os.path.join(OUT, _k + ".html")
                 if not os.path.exists(_f): continue
