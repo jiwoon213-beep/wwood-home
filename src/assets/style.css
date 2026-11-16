@@ -561,3 +561,6 @@ nav a[href="/tteori/"] .ni{color:#c41a1f}
 .jcl{columns:2 260px;column-gap:24px;padding-left:18px;margin:8px 0 22px}.jcl li{break-inside:avoid;margin:5px 0;font-size:15px;line-height:1.45}.jcl a{color:#1d1b18}
 ul.mgl{list-style:none;padding:0;margin:10px 0}ul.mgl li{padding:12px 14px;border:1px solid #e6dfd5;border-radius:12px;margin:8px 0;background:#fff;line-height:1.55}ul.mgl b{display:block;font-size:17px;margin-bottom:2px}ul.mgl span{font-size:15px;color:#444}
 .cfq{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;background:#fff}.cfq summary{font-weight:700;cursor:pointer;line-height:1.5}.cfq p{margin:8px 0 2px;line-height:1.6}
+
+.tsw-c{display:none}.tcd ul{list-style:none;margin:8px 0 0;padding:0}.tcd li{padding:4px 0;border-top:1px dashed var(--line);line-height:1.5}.tcd li span{display:block;font-size:12px;color:#888}@media(max-width:700px){.tsw-t{display:none}.tsw-c{display:block}}
+.gsw{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:6px}.gsw::-webkit-scrollbar{display:none}.gsw>a{flex:0 0 44%;scroll-snap-align:start;box-sizing:border-box}@media(min-width:900px){.gsw>a{flex-basis:24%}}

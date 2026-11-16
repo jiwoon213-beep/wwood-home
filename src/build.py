@@ -296,7 +296,29 @@ _REL = {  # 새 검색용 페이지로 가는 내부 링크(관련 있는 기존
 }
 
 
+_SW_SKIP = {"cut.html", "price.html", "jae.html", "index.html", "stats/index.html", "muge.html"}
+def _tbl_cards(body):
+    """표를 휴대폰에서 옆으로 넘기는 카드로(데스크톱은 표 그대로)."""
+    def conv(m):
+        t = m.group(0)
+        rows = re.findall(r"<tr[^>]*>(.*?)</tr>", t, re.S)
+        cells = [re.findall(r"<(th|td)[^>]*>(.*?)</t[hd]>", r, re.S) for r in rows]
+        cells = [c for c in cells if c]
+        if len(cells) < 3: return t
+        hdr = [v for _, v in cells[0]] if all(k == "th" for k, _ in cells[0]) else None
+        data = cells[1:] if hdr else cells
+        if not data or max(len(c) for c in data) < 2: return t
+        cards = ""
+        for c in data:
+            vals = [v for _, v in c]
+            ttl = re.sub(r"<[^>]+>", "", vals[0]).strip() or "-"
+            lis = "".join(f'<li><span>{(re.sub(r"<[^>]+>", "", hdr[i]).strip() if hdr and i < len(hdr) else "")}</span> {v}</li>' for i, v in enumerate(vals) if i > 0 and re.sub(r"<[^>]+>|\s", "", v))
+            cards += f'<div class="fq tcd"><b>{ttl}</b><ul>{lis}</ul></div>'
+        return f'<div class="tsw-t">{t}</div><div class="tsw-c"><div class="fqs">{cards}</div><p class="small muted fqh">옆으로 밀어서 더 보기 ›</p></div>'
+    return re.sub(r"<table\b.*?</table>", conv, body, flags=re.S)
+
 def page(path, title, desc, body, active="", jsonld=None, img=None):
+    if path not in _SW_SKIP and "<table" in body and "/p/" not in path: body = _tbl_cards(body)
     title = _tshort(title)
     if path in _REL:
         _rb = '<section class="wrap sec"><div class="qk qk2"><b>👉 함께 보기</b>' + "".join(f'<a href="{h}">{t}</a>' for h, t in _REL[path]) + '</div></section>'
@@ -1722,7 +1744,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 <p class="small muted">제도·기준은 바뀔 수 있으니 공식 기관 안내를 꼭 확인하세요. 자재 상담은 매장(042-545-2900).</p></section>
 {f'<section class="wrap sec"><h2>관련 영상 — 월드건축자재DIY</h2>{vsplit(vs, "h3")}</section>' if vs else ''}{CTA}""", "/jajae/", ld)
     page("issue/index.html", "이슈·시즌 자재 — 농촌체류형 쉼터·겨울 결로 등 지금 필요한 자재 | 영진목재", "요즘 뉴스·계절에 맞춰 필요한 목재·건축자재와 방법을 정리했습니다.",
-         '<section class="wrap sec"><h1>이슈·시즌 자재</h1><p class="lead">뉴스와 계절에 맞춰 지금 많이 찾는 자재를 정리합니다.</p><ul class="mgl">' + "".join(f'<li><a href="/issue/{x[0]}.html">{E(x[1])}</a> <small class="muted">{x[2]}</small></li>' for x in _ISS) + f'</ul></section>{CTA}', "/jajae/")
+         '<section class="wrap sec"><h1>이슈·시즌 자재</h1><p class="lead">뉴스와 계절에 맞춰 지금 많이 찾는 자재를 정리합니다.</p><h2 class="gt"><span>최신 글</span><small>옆으로 넘겨 보세요 ›</small></h2><div class="pl hs">' + "".join(f'<a class="pc" href="/issue/{x[0]}.html"><small>{x[2]}</small><b>{E(x[1].split(" — ")[0])}</b><span>{E(x[3][:70])}…</span></a>' for x in sorted(_ISS, key=lambda x: x[2], reverse=True)) + f'</div></section>{CTA}', "/jajae/")
 
     # 영상 개별 페이지 (data/vdesc.json.gz — 유튜브 설명·길이·게시일)
     import datetime as _dt
