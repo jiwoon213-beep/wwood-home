@@ -1637,6 +1637,20 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 }})();
 </script>{CTA}""", "/calc.html", faqld)
 
+    _GRPN = [("판재(합판·MDF·OSB·집성)", {"hapan", "mdf", "osb", "jipseong"}), ("구조목·방부목·데크", {"gujo", "gakjae", "bangbu", "hapdeck"}),
+             ("석고·단열·방음", {"gypsum", "insul", "sound"}), ("도어·중문", {"door"}), ("몰딩·필름·벽 마감", {"molding", "film"}), ("바닥·타일", {"maru", "tile"}),
+             ("스테인·페인트·오일", {"stain"}), ("외장·루바", {"siding", "hinoki"}), ("철물·공구·부자재", {"hardware"})]
+    def _grp_of(mats):
+        for n_, st_ in _GRPN:
+            if mats and mats[0] in st_: return n_
+        for n_, st_ in _GRPN:
+            if set(mats) & st_: return n_
+        return "기타"
+    def _swipe_rows(items, card):  # items: [(mats, ...)] → 분류별 옆으로 넘기는 줄
+        g = {}
+        for it in items: g.setdefault(_grp_of(it[0]), []).append(it)
+        order = [n_ for n_, _ in _GRPN if n_ in g] + [k for k in g if k not in dict(_GRPN)]
+        return "".join(f'<h2 class="gt"><span>{E(k)} <small style="font-size:14px">{len(g[k])}개</small></span><small>옆으로 넘겨 보세요 ›</small></h2><div class="pl hs">' + "".join(card(it) for it in g[k]) + '</div>' for k in order)
     # 자재 비교 (data/compare.json)
     CMP = json.load(open(f"{ROOT}/data/compare.json", encoding="utf-8"))
     matname2 = {m["slug"]: m["name"] for m in MATS}
@@ -1671,7 +1685,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 <section class="wrap sec"><h2>다른 자재 비교</h2>{cmpnav(c["slug"])}</section>{CTA}""", "/jajae/",
              {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in _cfq(c)]})
     page("bigyo/index.html", "자재 비교 — 합판·사이딩·단열재·바닥재·도어·루바 종류별 차이 | 영진목재", "헷갈리는 건축 자재를 종류별로 비교했습니다. 합판 vs OSB vs MDF, 세라믹·메탈·비닐 사이딩, 단열재, 바닥재, 실내 도어, 루바, 집성판, 각재, 방음·흡음재.",
-         '<section class="wrap sec"><p class="crumb"><a href="/jajae/">자재 백과</a> › 자재 비교</p><h1>자재 비교</h1><p class="lead">비슷해 보여도 쓰는 곳이 다른 자재들을 한눈에 비교했습니다.</p><div class="pl">' + "".join(f'<a class="pc" href="/bigyo/{c["slug"]}.html"><small>자재 비교</small><b>{E(c["short"])}</b><span>{E(c["desc"][:70])}…</span></a>' for c in CMP) + f'</div></section>{CTA}', "/jajae/")
+         f'<section class="wrap sec"><p class="crumb"><a href="/jajae/">자재 백과</a> › 자재 비교</p><h1>자재·인테리어 비교 <small>{len(CMP)}가지</small></h1><p class="lead">비슷해 보여도 쓰는 곳이 다른 자재들을 분류별로 비교했습니다.</p>' + _swipe_rows([(c["mats"], c) for c in CMP], lambda it: f'<a class="pc" href="/bigyo/{it[1]["slug"]}.html"><small>자재 비교</small><b>{E(it[1]["short"])}</b><span>{E(it[1]["desc"][:70])}…</span></a>') + f'</section>{CTA}', "/jajae/")
 
     # 하는 법 Q&A (실제 유튜브 검색어 기준, src/qna_data.py) — /qna/
     from qna_data import QNA as _QNA
@@ -1691,8 +1705,8 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 {('<section class="wrap sec"><h2>같이 많이 찾는 질문</h2><ul class="mgl">' + "".join(f'<li><a href="/qna/{x[0]}.html">{E(x[1].split(" — ")[0])}</a></li>' for x in oth) + '</ul></section>') if oth else ''}{CTA}""", "/jajae/", ld)
     page("qna/index.html", "하는 법 Q&A — 석고보드 앙카·실리콘 쏘는법·경첩 조절·오일스테인 건조 | 영진목재",
          "사람들이 실제로 많이 검색하는 목공·인테리어 '하는 법' 질문에 매장에서 답했습니다. 석고보드 보수, 합판 자르기, 실리콘 제거, 경첩 조절, 데크 보수 등.",
-         '<section class="wrap sec"><p class="crumb"><a href="/jajae/">자재 백과</a> › 하는 법 Q&amp;A</p><h1>하는 법 Q&amp;A</h1><p class="lead">유튜브·검색에서 많이 찾는 질문을 골라 순서대로 답했습니다.</p><ul class="mgl">'
-         + "".join(f'<li><a href="/qna/{x[0]}.html">{E(x[1].split(" — ")[0])}</a></li>' for x in _QNA) + f'</ul></section>{CTA}', "/jajae/")
+         f'<section class="wrap sec"><p class="crumb"><a href="/jajae/">자재 백과</a> › 하는 법 Q&amp;A</p><h1>하는 법 Q&amp;A <small>{len(_QNA)}가지</small></h1><p class="lead">유튜브·검색에서 많이 찾는 질문을 골라 순서대로 답했습니다. 분류별로 옆으로 넘겨 보세요.</p>'
+         + _swipe_rows([(x[6], x) for x in _QNA], lambda it: f'<a class="pc" href="/qna/{it[1][0]}.html"><small>하는 법</small><b>{E(it[1][1].split(" — ")[0])}</b><span>{E(it[1][2][:64])}…</span></a>') + f'</section>{CTA}', "/jajae/")
 
     # 시즌·뉴스 이슈 × 자재 (src/issue_data.py) — /issue/
     from issue_data import ISSUE as _ISS
