@@ -1993,7 +1993,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     for gi, (gn, qs) in enumerate(_groups):
         if not qs: continue
         _toc.append(f'<a href="#g{gi}">{E(gn)} ({len(qs)})</a>')
-        _fb += f'<h2 id="g{gi}">{E(gn)}</h2><div class="faqx">' + "".join(f'<details><summary>{E(q)}</summary><p>{E(a_)} <a href="{u_}">{E(n_)} 보기 ›</a></p></details>' for q, a_, u_, n_ in qs) + '</div>'
+        _fb += f'<h2 id="g{gi}">{E(gn)} <small class="muted" style="font-size:14px">{len(qs)}개 · 옆으로 밀어 보세요 ›</small></h2><div class="fqs faqx">' + "".join(f'<div class="fq"><b>Q. {E(q)}</b><p>{E(a_)} <a href="{u_}">{E(n_)} 보기 ›</a></p></div>' for q, a_, u_, n_ in qs) + '</div>'
         _fld += [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a_}} for q, a_, u_, n_ in qs]
     page("sajin.html", "사진으로 제품 찾기 — 카메라로 찍으면 비슷한 자재·철물 바로 찾기 | 영진목재", "철물·도어·몰딩·스테인·공구를 휴대폰 카메라로 찍으면 영진목재(월드건축자재) 홈페이지 제품 중 가장 비슷한 제품을 바로 찾아 드립니다. 사진은 휴대폰 안에서만 비교합니다.",
          open(ROOT + "/sajin_tpl.html", encoding="utf-8").read().replace("__TEL__", TEL) + CTA, "/sajin.html")
@@ -2008,7 +2008,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     page("faq.html", f"목재·합판 자주 묻는 질문 {len(_fld)}가지 — 재단·가격·만들기·시공 | 영진목재", "합판 재단, 자재 고르기, 필요한 양 계산, DIY 만들기 자재비, 석고보드·사이딩·마루 시공까지 손님들이 자주 묻는 질문과 답을 모았습니다. 대전 영진종합목재.",
          f'<section class="wrap sec"><h1>자주 묻는 질문</h1><p class="lead">매장과 전화로 가장 많이 받는 질문을 모았습니다. 찾는 답이 없으면 042-545-2900으로 물어보세요.</p><div class="gsrch"><span>🔍</span><input id="fq" type="search" placeholder="질문 검색 (예: 재단, 몇 장, 평상, 석고보드)" autocomplete="off" aria-label="질문 검색"></div><p class="small">{" · ".join(_toc)}</p>{_fb}</section>'
          + '<style>.faqx details{background:#fff;border:1px solid var(--line);border-radius:12px;margin:0 0 8px;padding:0 14px}.faqx summary{cursor:pointer;font-weight:700;padding:12px 0;list-style:none}.faqx summary::-webkit-details-marker{display:none}.faqx summary:before{content:"Q. ";color:var(--red)}.faqx p{margin:0 0 12px;color:var(--mut)}</style>'
-         + '<script>(function(){var q=document.getElementById("fq"),D=[].slice.call(document.querySelectorAll(".faqx details"));q.addEventListener("input",function(){var v=q.value.replace(/\\s/g,"");D.forEach(function(d){var ok=!v||d.textContent.replace(/\\s/g,"").indexOf(v)>=0;d.style.display=ok?"":"none";d.open=!!v&&ok});[].forEach.call(document.querySelectorAll(".faqx"),function(x){var h=x.previousElementSibling,n=[].some.call(x.querySelectorAll("details"),function(d){return d.style.display!="none"});x.style.display=n?"":"none";if(h)h.style.display=n?"":"none"})})})();</script>' + CTA, "",
+         + '<script>(function(){var q=document.getElementById("fq"),D=[].slice.call(document.querySelectorAll(".faqx .fq"));q.addEventListener("input",function(){var v=q.value.replace(/\\s/g,"");D.forEach(function(d){var ok=!v||d.textContent.replace(/\\s/g,"").indexOf(v)>=0;d.style.display=ok?"":"none";d.open=!!v&&ok});[].forEach.call(document.querySelectorAll(".faqx"),function(x){var h=x.previousElementSibling,n=[].some.call(x.querySelectorAll(".fq"),function(d){return d.style.display!="none"});x.style.display=n?"":"none";if(h)h.style.display=n?"":"none"})})})();</script>' + CTA, "",
          {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": _fld[:120]})
     # 속도: 유튜브 iframe → 썸네일+재생 버튼(누르면 그때 영상 로드). 페이지가 훨씬 빨리 뜸(구글 순위 요소)
     _yrx = re.compile(r'<iframe[^>]*src="https://www\.youtube\.com/embed/([A-Za-z0-9_-]{11})[^"]*"([^>]*)></iframe>')
