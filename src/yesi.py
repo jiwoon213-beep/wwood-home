@@ -1,6 +1,6 @@
 """평수별 자재비 예시(/yesi/) — '데크 3평 자재비', '방 천장 루바 4평' 같은 검색어용.
 홈페이지 소매 기준가(prices.csv)로 계산한 값만 씀. 시공비·소요일 같은 확인 안 된 숫자는 넣지 않음."""
-import math, json
+import math, json, re
 import gyeonjeok as GJ
 
 PY = 3.3058
@@ -147,10 +147,16 @@ def gen(page, P, E, CTA, faqslide, TEL):
     # 허브
     grp = {}
     for d, lo, hi in links: grp.setdefault(d["kind"], []).append((d, lo, hi))
-    hub = "".join(f'<h2>{E(k)}</h2><ul class="mli">' + "".join(f'<li><a href="/yesi/{d["slug"]}.html"><b>{E(d["h1"].split(" — ")[0])}</b><small>{_won(lo[1])} ~ {_won(hi[1])}</small></a></li>' for d, lo, hi in v) + "</ul>" for k, v in grp.items())
+    def _big(d):
+        m = re.search(r"(\d+(?:\.\d+)?)\s*평", d["h1"]) or (re.search(r"아트월 (\d+(?:\.\d+)?)m", d["h1"]) if d["kind"] == "템바보드" else None)
+        if m: return (m.group(1), "평" if "평" in m.group(0) else "m 벽")
+        return (f'{d["area"]:.0f}', "㎡")
+    hub = "".join(f'<h2>{E(k)} <small class="yhs">{len(v)}가지 · 옆으로 넘겨 보세요</small></h2><div class="yrow">' + "".join(
+        f'<a class="ycd" href="/yesi/{d["slug"]}.html"><span class="ybg"><b>{_big(d)[0]}</b>{_big(d)[1]}</span><span class="ynm">{E(d["h1"].split(" — ")[0])}</span><span class="ypr">{_won(lo[1])}~</span><span class="ypr2">최대 {_won(hi[1])}</span></a>'
+        for d, lo, hi in v) + "</div>" for k, v in grp.items())
     page("yesi/index.html", "평수별 자재비 예시 — 데크·루바·석고보드·사이딩·단열 몇 평이면 얼마? | 영진목재",
          "데크 3평, 천장 루바 4평, 농막 외벽 사이딩처럼 자주 묻는 크기별 자재 수량과 기준가 자재비를 한눈에. 내 크기는 계산기로.",
          f'''<section class="wrap sec"><h1>평수별 자재비 예시</h1><p class="lead">자주 묻는 크기로 자재 수량과 홈페이지 기준가 자재비를 미리 계산해 두었습니다. 내 크기는 <a href="/calc.html">자재 계산기</a>로 바로 계산하세요.</p>{hub}
 <p class="small muted">홈페이지 소매 기준가(부가세 별도) · 시공비 별도 · 재고·규격에 따라 달라집니다.</p></section>{CTA}
-<style>ul.mli{{list-style:none;padding:0;display:grid;gap:8px}}ul.mli a{{display:flex;justify-content:space-between;gap:10px;align-items:center;background:#fff;border:1px solid #ece6dc;border-radius:14px;padding:13px 14px;color:#1D1B18;text-decoration:none}}ul.mli small{{color:#c41a1f;font-weight:800;white-space:nowrap}}</style>''', "/calc.html")
+<style>.yhs{{font-size:12.5px;color:#8a8378;font-weight:700;margin-left:4px}}.yrow{{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}}.yrow::-webkit-scrollbar{{display:none}}.ycd{{flex:0 0 150px;scroll-snap-align:start;display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid #ece6dc;border-radius:18px;padding:14px;color:#1D1B18!important;text-decoration:none!important;box-shadow:0 2px 10px rgba(0,0,0,.04)}}.ycd:first-child{{background:#1D1B18;color:#fff!important;border-color:#1D1B18}}.ybg{{font-size:15px;font-weight:800;color:#8a8378}}.ybg b{{font-size:34px;font-weight:900;letter-spacing:-1px;color:#1D1B18;margin-right:2px}}.ycd:first-child .ybg b{{color:#fff}}.ynm{{font-size:13px;font-weight:700;opacity:.75}}.ypr{{margin-top:6px;font-size:17px;font-weight:900;color:#c41a1f}}.ycd:first-child .ypr{{color:#ffd27a}}.ypr2{{font-size:12px;opacity:.6}}</style>''', "/calc.html")
     return len(links)
