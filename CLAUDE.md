@@ -17,7 +17,7 @@
 - 인테리어 트렌드(/trend/, 상단 메뉴): src/trend.py STYLES 8개(모던·내추럴·간살 재팬디·호텔·클래식·한옥·키즈·카페). 예림 yerim.tsv 이름을 정규식으로 분류 + 같이 쓰는 자재 링크.
 - 영림 도어·중문·몰딩/월/마루·인테리어 필름(/younglim/): 영림(yl.co.kr — 회사 허락, 키친·붙박이장·바스·타일 제외). 데이터 src/data/younglim.tsv 는 GitHub Actions '제조사 제품 동기화(영림)'(.github/workflows/vendors.yml, 매일 20:23 KST)가 .github/scripts/fetch_younglim.py 로 자동 갱신·빌드. 생성 src/younglim.py(PAGES 17개). 스타일코드 1301 모던·1302 내추럴·1303 클래식·1304 유니크 → 인테리어 트렌드에도 자동 반영.
 - 쉐누 도어·중문·몰딩(/shenu/): 쉐누(namuip.com/cnd_home — 회사 허락). 데이터 src/data/shenu.tsv(페이지|이미지|이름|부가설명)는 vendors.yml이 .github/scripts/fetch_shenu.py로 매일 자동 갱신(같은 사진·같은 이름+색상 중복 제거). 생성 src/shenu.py(PAGES 6개). 인테리어 트렌드에도 반영(trend.py SHPG·SHRX).
-- 지역별 시공(/local/): src/local.py — 서비스 5개(중문·방문 교체·필름·몰딩·템바보드 벽) × 지역 6개(대전·유성·서구·대덕·중구동구·세종). 시공비·소요일 등 확인 안 된 숫자 금지. 제품 사진은 예림·영림·쉐누 데이터에서.
+- 지역별 시공(/local/): src/local.py — 서비스 5개(중문·방문 교체·필름·몰딩·템바보드 벽) × 지역 12개(대전·유성·서구·대덕·중구동구·세종·공주·계룡·금산·옥천·천안·청주). 시공비·소요일 등 확인 안 된 숫자 금지. 제품 사진은 예림·영림·쉐누 데이터에서.
 - 전국 배송 지역(/jeonguk/): src/nation.py REG 12개(서울·경기남부·경기북부·인천·강원·충북·충남·전북·광주전남·대구경북·부산울산경남·제주). 운임·거리·소요시간 숫자 금지(견적). 제주는 배편 별도 상담.
 - 철물·공구·부속(/bupum/): 철물박사(철물박사.com, 주식회사 철물박사 — 회사 허락) 전체 상품 사진·이름. 데이터 src/data/cmbs.tsv·cmbs_cats.tsv 는 vendors.yml 이 .github/scripts/fetch_cmbs.py 로 매일 자동 갱신(같은 상품번호 중복 제거). 가격 = 철물박사 판매가 × 1.4, 100원 올림, 끝에 '~' 표시, 부가세 포함(이 품목들만)(사장님 지시 2026-11-13). 다른 회사 워터마크가 찍힌 사진의 상품은 뺌(.github/workflows/wm_scan.yml OCR 검사 → src/data/cmbs_block.txt). 생성 src/cmbs.py. 인테리어 트렌드에는 넣지 않음.
 - DIY 만들기·자재 시공법의 준비할 자재·공구: src/matinfo.py — 피스 길이(판 두께×약 2.2 → 표준 길이) 안내, 판재·각재는 /cut.html 해당 자재 선택 링크, 부자재·공구는 /bupum/ 해당 분류 링크(cmbs.catlink).
@@ -26,3 +26,4 @@
 - 앱(PWA): src/assets/manifest.webmanifest·icon-192/512.png, src/sw.js(루트로 복사, 새 내용 우선·오프라인 저장), offline.html(build.py가 생성). 구글 플레이는 이 PWA를 TWA로 포장(사장님 Play Console 계정 필요), 애플은 웹 포장 앱 거절(4.2) 위험.
 - 목조·외장·내장 건축자재(/geonjae/, 화면에 업체 이름 표기 금지 — 데이터·코드 이름만 samik): siwood.com(회사 허락) 9개 분류·2차 분류 전체. 데이터 src/data/samik.tsv 는 vendors.yml(매일)·emall.yml(수동)이 .github/scripts/fetch_samik.py 로 갱신. 생성 src/samik.py(분류별 페이지, 사진 크게 보기에 브랜드·규격). 가격은 매장 문의. 같은 이름의 기존 쇼핑몰 자재는 뺌(중복 제거). 전체 자재 각 분류(JC 매핑)에 줄 연결.
 - 크나우프 석고보드·천장재·단열재(/knauf/): knauf.com/ko-KR(회사 허락, 사장님 2026-11-15) 전 제품 137종(사진 없는 자리표시 그림 상품은 뺌). 데이터 src/data/knauf.tsv(분류|이름|한줄설명|상품주소|사진id|특징|규격|색상·용량 — 내장 브라우저로 수집, 특징 문장은 짧게 다시 씀), 생성 src/knauf.py(분류 10개 페이지). 사진은 media.knauf.com 링크. 가격은 매장 문의. 전체 자재 내장재(27)·방음단열(30)·외장재(31)·철물(32)·소품부자재(37)에 줄 연결, 기존 쇼핑몰 '[크나우프] 인슐레이션'은 뺌(중복 제거).
+- 시공팀 연결(/yeongyeol/): src/yeongyeol.py — 공정 14개. 업체 이름·번호 화면 금지, 매장 접수 후 연결. 사이딩·외벽만 월드아키텍쳐 직접 시공·전국, 나머지 대전·세종·공주·계룡·금산·옥천·천안·청주.

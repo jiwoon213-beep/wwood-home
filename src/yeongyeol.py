@@ -57,7 +57,7 @@ def gen(page, E, CTA, faqslide, TEL, ROOT):
          f"사이딩·외벽(직접 시공), 목공, 도배·장판, 타일·설비, 필름, 샷시·현관문, 폴딩도어, 철거, 데코타일, 마루, 페인트, 전기·조명, 가구, 블라인드 — 영진종합목재가 거래 시공팀을 연결해 드립니다. 전화 {TEL}.",
          f'''<section class="wrap sec"><h1>공정별 시공팀 연결</h1><p class="lead">자재를 사 가시는 분들이 "시공할 사람 없나요?" 많이 물으십니다. 영진종합목재와 오래 거래한 공정별 시공팀을 매장에서 연결해 드립니다.</p>
 <div class="ygg">{cards}</div>
-<h2>이렇게 연결해 드려요</h2>{how}<div class="row"><a class="b r" href="tel:{T}">매장에 연결 요청 · {TEL}</a><a class="b" href="/sigong.html">월드아키텍쳐 직접 시공</a></div>
+<h2>이렇게 연결해 드려요</h2>{how}<div class="row"><a class="b r" href="tel:{T}">매장에 연결 요청 · {TEL}</a><a class="b" href="/sigong.html">월드아키텍쳐 직접 시공</a><a class="b" href="/local/">지역별 시공(천안·청주 등)</a></div>
 <p class="small muted">시공 지역: 사이딩·외벽은 전국, 나머지 공정은 대전·세종·공주·계룡·금산·옥천·천안·청주. 견적·일정은 연결된 시공팀과 상의합니다.</p></section>{CTA}''', "/sigong.html")
     return links
 

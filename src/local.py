@@ -11,6 +11,12 @@ REG = [  # slug, 이름, 동네들
  ("daedeok", "대전 대덕구", "신탄진·송촌·법동·오정·대화동"),
  ("junggu-donggu", "대전 중구·동구", "은행·대흥·문화·유천·태평·가양·용전·판암·가오동"),
  ("sejong", "세종", "보람·도담·새롬·다정·나성·종촌·고운·아름·반곡·해밀·조치원"),
+ ("gongju", "공주", "신관동·금흥동·옥룡동·웅진동·월송동·유구읍"),
+ ("gyeryong", "계룡", "엄사면·두마면·금암동·신도안면"),
+ ("geumsan", "금산", "금산읍·추부면·복수면·진산면"),
+ ("okcheon", "옥천", "옥천읍·군북면·이원면·청성면"),
+ ("cheonan", "천안", "불당·쌍용·두정·성정·신부·백석·청당·신방·성성동"),
+ ("cheongju", "청주", "오송·오창·복대·가경·율량·용암·분평·산남동"),
 ]
 SVC = [  # slug, 이름, 검색 꼬리, 설명, 순서, 자재 링크, 갤러리 소스, 영상 정규식, 사례 정규식
  ("jungmun", "중문 설치·교체", "3연동·슬라이딩·간살 중문 시공",
@@ -74,14 +80,14 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, TEL, ROOT, CASES, top, vsplit):
             area_set = {"daejeon": {"yuseong", "seogu", "daedeok", "junggu-donggu"}, "sejong": {"sejong-sinsi", "sejong-eupmyeon"}}.get(rs, {rs})
             cs = [c for c in CASES if c.get("area") in area_set and re.search(crx, c["title"])][:3] or [c for c in CASES if re.search(crx, c["title"])][:2]
             csec = ('<h2 class="gt">시공 사례</h2><ul class="gtip">' + "".join(f'<li><a href="/sigong/{c["slug"]}.html">{E(c["title"])}</a></li>' for c in cs) + '</ul>') if cs else ""
-            fq = [(f"{rn} {sn.split('·')[0]} 시공도 하나요?", f"네. 대전·세종은 영진목재 시공 파트너 월드아키텍쳐(실내건축공사업 등록)가 실측부터 설치까지 합니다. {rn}({hood}) 현장 상담은 전화 {TEL}."),
+            fq = [(f"{rn} {sn.split('·')[0]} 시공도 하나요?", f"네. 대전·세종·공주·계룡·금산·옥천·천안·청주는 영진목재가 시공을 맡아 실측부터 설치까지 합니다. {rn}({hood}) 현장 상담은 전화 {TEL}."),
                   (f"{sn.split('·')[0]} 비용은 얼마인가요?", "제품·크기·현장 상태에 따라 달라 실측 후 견적을 드립니다. 자재 기준가는 홈페이지 기준가 페이지에서 미리 보실 수 있습니다."),
                   (f"자재만 사서 직접 해도 되나요?", f"네. {ADDR} 매장에서 자재만 사실 수 있고 원하는 크기로 재단해 드립니다. {HOURS}.")]
             body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/local/">지역별 시공</a> › {E(rn)} › {E(sn)}</p><h1>{E(rn)} {E(sn)}</h1>'
-                    f'<p class="glead">{E(rn)}({E(hood)}) {E(desc)} 자재는 대전 유성 영진목재 매장에서 바로 준비하고, 시공은 월드아키텍쳐가 맡습니다.</p>'
+                    f'<p class="glead">{E(rn)}({E(hood)}) {E(desc)} 자재는 대전 유성 영진목재 매장에서 바로 준비하고, 시공은 영진목재가 맡습니다.</p>'
                     f'<div class="row"><a class="b r" href="/sigong.html">시공 상담 신청</a><a class="b d" href="tel:{TEL.replace("-", "")}">전화 {TEL}</a></div>'
                     f'<h2 class="gt">진행 순서</h2><ol class="gtip">{"".join(f"<li>{E(x)}</li>" for x in steps)}</ol>{gsec}{csec}'
-                    f'<div class="glk">{"".join(f"<a href={chr(34)}{h}{chr(34)}>{E(t)}</a>" for h, t in links)}<a href="/{rs if rs in ("daejeon", "sejong") else rs}.html">{E(rn)} 목재·자재</a></div></section>'
+                    f'<div class="glk">{"".join(f"<a href={chr(34)}{h}{chr(34)}>{E(t)}</a>" for h, t in links)}{(f'<a href="/baesong.html">{E(rn)} 자재 배송</a>') if rs in ("gongju", "gyeryong", "geumsan", "okcheon", "cheonan", "cheongju") else (f'<a href="/{rs}.html">{E(rn)} 목재·자재</a>')}</div></section>'
                     + (f'<section class="wrap sec"><h2>{E(sn)} 영상</h2>{vsplit(vs, "h3")}</section>' if vs else "")
                     + f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>'
                     + f'<section class="wrap sec"><p class="small">{E(rn)} 다른 시공: {" · ".join(f"<a href=/local/{x[0]}-{rs}.html>{E(x[1])}</a>" for x in SVC if x[0] != ss)} · 다른 지역 {E(sn)}: {" · ".join(f"<a href=/local/{ss}-{r[0]}.html>{E(r[1])}</a>" for r in REG if r[0] != rs)}</p></section>{CTA}' + LB)
@@ -89,7 +95,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, TEL, ROOT, CASES, top, vsplit):
             page(f"local/{ss}-{rs}.html", f"{rn} {sn} — {tail} | 월드아키텍쳐·영진목재", f"{rn}({hood}) {sn}. {desc[:70]} 실측·견적·시공 상담 {TEL}.", body, "/sigong.html", ld, gal[0][1] if gal else None)
         hub.append((ss, sn, tail))
     rows = "".join(f'<h2 class="gt">{E(sn)}</h2><div class="qk">' + "".join(f'<a href="/local/{ss}-{r[0]}.html">{E(r[1])} {E(sn.split("·")[0])}</a>' for r in REG) + '</div>' for ss, sn, tail in hub)
-    page("local/index.html", "대전·세종 지역별 인테리어 시공 — 중문·방문 교체·필름·몰딩·템바보드 | 월드아키텍쳐·영진목재",
-         "대전(유성·서구·대덕·중구·동구)·세종 지역별 중문 설치, 방문·문틀 교체, 인테리어 필름, 몰딩·걸레받이, 템바보드 포인트 벽 시공 안내.",
-         f'<section class="wrap sec gg"><h1>지역별 인테리어 시공</h1><p class="glead">대전·세종은 영진목재 시공 파트너 월드아키텍쳐가 실측부터 설치까지 합니다. 사시는 동네와 공사를 고르세요.</p>{rows}</section>{CTA}', "/sigong.html")
+    page("local/index.html", "대전·세종·천안·청주 지역별 인테리어 시공 — 중문·방문 교체·필름·몰딩·템바보드 | 영진목재",
+         "대전(유성·서구·대덕·중구·동구)·세종·공주·계룡·금산·옥천·천안·청주 지역별 중문 설치, 방문·문틀 교체, 인테리어 필름, 몰딩·걸레받이, 템바보드 포인트 벽 시공 안내.",
+         f'<section class="wrap sec gg"><h1>지역별 인테리어 시공</h1><p class="glead">대전·세종·공주·계룡·금산·옥천·천안·청주는 영진목재가 실측부터 설치까지 맡습니다. 외벽 사이딩은 전국 시공합니다. 사시는 동네와 공사를 고르세요.</p>{rows}</section>{CTA}', "/sigong.html")
     return hub
