@@ -35,30 +35,30 @@ def gen(page, E, CTA, faqslide, TEL, ROOT):
         vs = [v for v in vs if v[1] == "L"][:4] + [v for v in vs if v[1] != "L"][:4]
         vs = vs[:6]
         vh = "".join(f'<a class="ygv" href="/v/{i}.html"><img loading="lazy" src="https://i.ytimg.com/vi/{i}/mqdefault.jpg" alt=""><span>{E(t[:40])}</span></a>' for i, k, t in vs)
-        fq = [("누가 시공하나요?", f"영진종합목재 시공 법인 월드아키텍쳐(실내건축공사업)가 직접 시공합니다. 전화 {TEL}.")] if own else []
-        fq += [] if own else [(f"대전·세종 {nm} 시공팀을 소개받을 수 있나요?", f"네. 매장({TEL})으로 전화해 지역과 작업 내용을 알려 주시면 영진종합목재와 거래하는 {nm} 시공팀에 연결해 드립니다.")]
+        fq = [("누가 시공하나요?", f"영진종합목재 시공 법인 월드아키텍쳐(실내건축공사업)가 직접 시공합니다. 전화 {TEL}."), ("지방도 시공하나요?", "네. 외벽 사이딩 공사는 전국 어디든 시공합니다. 자재는 전국 용달로 함께 보냅니다(운임은 견적).")] if own else []
+        fq += [] if own else [(f"{nm} 시공팀은 어느 지역까지 가나요?", "대전·세종·공주·계룡·금산·옥천·천안·청주에서 연결해 드립니다."), (f"{nm} 시공팀을 소개받을 수 있나요?", f"네. 매장({TEL})으로 전화해 지역과 작업 내용을 알려 주시면 영진종합목재와 거래하는 {nm} 시공팀에 연결해 드립니다.")]
         fq += [
               ("견적과 일정은 어떻게 정하나요?", "현장 크기·상태에 따라 달라 시공팀이 직접 보고 정합니다. 현장 사진을 준비해 두시면 빠릅니다."),
               ("자재도 같이 살 수 있나요?", "네. 필요한 자재는 매장에서 고르고 원하는 크기로 재단해 드립니다.")]
         fld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}
         relh = "".join(f'<a class="b" href="{u}">{E(n)}</a>' for u, n in rel)
-        body = f'''<section class="wrap sec"><p class="crumb"><a href="/yeongyeol/">시공팀 연결</a> › {E(nm)}</p><h1>대전·세종 {E(nm)} {"시공" if own else "시공팀 연결"}</h1>
+        body = f'''<section class="wrap sec"><p class="crumb"><a href="/yeongyeol/">시공팀 연결</a> › {E(nm)}</p><h1>{"전국" if own else "대전·세종"} {E(nm)} {"시공" if own else "시공팀 연결"}</h1>
 <p class="lead">{E(job)}. {("영진종합목재 시공 법인 월드아키텍쳐(실내건축공사업)가 직접 시공합니다. 시공 현장은 유튜브에 그대로 공개합니다." if own else f"영진종합목재와 거래하는 {nm} 시공팀을 매장에서 연결해 드립니다.")}</p>
-<div class="ygbox"><b>{E(nm)}</b><span>{E(job)}</span><small>{"월드아키텍쳐 직접 시공 · " if own else ""}시공 지역: 대전·세종 (그 밖 지역은 전화로 확인)</small><a class="b r" href="tel:{T}">{"시공 상담 전화" if own else "매장에 연결 요청"} · {TEL}</a></div>
+<div class="ygbox"><b>{E(nm)}</b><span>{E(job)}</span><small>{"월드아키텍쳐 직접 시공 · 시공 지역: 전국" if own else "시공 지역: 대전·세종·공주·계룡·금산·옥천·천안·청주"}</small><a class="b r" href="tel:{T}">{"시공 상담 전화" if own else "매장에 연결 요청"} · {TEL}</a></div>
 {'' if own else '<h2>이렇게 연결해 드려요</h2>' + how.replace('아래에서 <b>공정</b>을 고르고 매장으로 전화하세요.', '위 버튼으로 <b>매장에 전화</b>하세요.')}
 {('<h2>' + E(nm) + ' 시공 영상</h2><div class="ygvs">' + vh + '</div><p class="hsh">옆으로 넘겨 보세요 ›</p>') if vh else ''}
 {('<div class="yact">' + relh + '</div>') if relh else ''}
 <h2>자주 묻는 질문</h2>{faqslide(fq)}
 <h2>다른 공정</h2><div class="olk">{"".join(f'<a href="/yeongyeol/{s}.html">{E(n)}</a>' for s, n, *_ in GJ if s != slug)}</div></section>{CTA}'''
-        page(f"yeongyeol/{slug}.html", (f"대전·세종 {nm} 시공 — 월드아키텍쳐 직접 시공 | 영진목재" if own else f"대전·세종 {nm} 시공팀 연결 — {job} | 영진목재"), (f"대전·세종 {nm}({job}) — 월드아키텍쳐(실내건축공사업) 직접 시공. 전화 {TEL}. 자재는 영진종합목재." if own else f"대전·세종 {nm}({job}) 시공팀을 영진종합목재 매장에서 연결해 드립니다. 전화 {TEL}. 자재 구매·재단도 함께."), body, "/sigong.html", fld)
+        page(f"yeongyeol/{slug}.html", (f"전국 {nm} 시공 — 월드아키텍쳐 직접 시공 | 영진목재" if own else f"대전·세종·천안·청주 {nm} 시공팀 연결 — {job} | 영진목재"), (f"전국 {nm}({job}) — 월드아키텍쳐(실내건축공사업) 직접 시공. 전화 {TEL}. 자재는 영진종합목재." if own else f"대전·세종·공주·계룡·금산·옥천·천안·청주 {nm}({job}) 시공팀을 영진종합목재 매장에서 연결해 드립니다. 전화 {TEL}. 자재 구매·재단도 함께."), body, "/sigong.html", fld)
         cards += f'<a class="ygc{" own" if own else ""}" href="/yeongyeol/{slug}.html"><b>{E(nm)}</b><span>{E(job)}</span><u>{"직접 시공 ›" if own else "연결 요청 ›"}</u></a>'
         links.append((slug, nm))
-    page("yeongyeol/index.html", "대전·세종 인테리어 시공팀 연결 — 목공·도배·타일·샷시·필름·마루·전기 14개 공정 | 영진목재",
+    page("yeongyeol/index.html", "대전·세종·천안·청주 인테리어 시공팀 연결 — 목공·도배·타일·샷시·필름·마루·전기 14개 공정 | 영진목재",
          f"사이딩·외벽(직접 시공), 목공, 도배·장판, 타일·설비, 필름, 샷시·현관문, 폴딩도어, 철거, 데코타일, 마루, 페인트, 전기·조명, 가구, 블라인드 — 영진종합목재가 거래 시공팀을 연결해 드립니다. 전화 {TEL}.",
          f'''<section class="wrap sec"><h1>공정별 시공팀 연결</h1><p class="lead">자재를 사 가시는 분들이 "시공할 사람 없나요?" 많이 물으십니다. 영진종합목재와 오래 거래한 공정별 시공팀을 매장에서 연결해 드립니다.</p>
 <div class="ygg">{cards}</div>
 <h2>이렇게 연결해 드려요</h2>{how}<div class="row"><a class="b r" href="tel:{T}">매장에 연결 요청 · {TEL}</a><a class="b" href="/sigong.html">월드아키텍쳐 직접 시공</a></div>
-<p class="small muted">시공 지역: 대전·세종 중심(그 밖 지역은 전화로 확인). 견적·일정은 연결된 시공팀과 상의합니다.</p></section>{CTA}''', "/sigong.html")
+<p class="small muted">시공 지역: 사이딩·외벽은 전국, 나머지 공정은 대전·세종·공주·계룡·금산·옥천·천안·청주. 견적·일정은 연결된 시공팀과 상의합니다.</p></section>{CTA}''', "/sigong.html")
     return links
 
 
