@@ -367,7 +367,7 @@ def build():
 <div>{embed(tour) if tour else ''}<p class="small muted">대전 목재소·건축자재 백화점 3000평 투어 · 조회 18만회</p></div></div></section>
 <section class="stat"><div class="wrap g4"><div><b>구독 {ST["subs"]}명</b><small>유튜브 월드건축자재DIY</small></div><div><b>영상 {int(ST["videos"]):,}개</b><small>시공·DIY·자재 정보</small></div>
 <div><b>소매 + 도매</b><small>셀프 고객부터 현장 납품까지</small></div><div><b>직접 시공</b><small>월드아키텍쳐 · {LIC}</small></div></div></section>
-<section class="wrap sec"><div class="tl4"><a href="/cut.html"><b>✂ 재단 미리보기</b><span>치수만 넣으면 원판에서 어떻게 잘리는지 그림으로</span></a><a href="/mandeul/"><b>🪚 DIY 만들기</b><span>평상·책장·데크·울타리 재단 목록</span></a><a href="/gyugyeok.html"><b>📏 규격표</b><span>합판 두께·2×4 실제 치수 한눈에</span></a><a href="/baesong.html"><b>🚚 전국 배송</b><span>재단해서 용달로 전국 현장까지</span></a></div></section><!--MKHOME-->
+<section class="wrap sec"><div class="tl4"><a href="/cut.html"><b>✂ 재단 미리보기</b><span>치수만 넣으면 원판에서 어떻게 잘리는지 그림으로</span></a><a href="/mandeul/"><b>🪚 DIY 만들기</b><span>평상·책장·데크·울타리 재단 목록</span></a><a href="/gyugyeok.html"><b>📏 규격표</b><span>합판 두께·2×4 실제 치수 한눈에</span></a><a href="/baesong.html"><b>🚚 전국 배송</b><span>재단해서 용달로 전국 현장까지</span></a><a href="/jaedan-bi.html"><b>💲 재단비</b><span>두께별 1컷 1,000원부터</span></a><a href="/yesi/"><b>📐 몇 평이면 얼마?</b><span>데크·루바·석고 평수별 자재비</span></a></div></section><!--MKHOME-->
 <style>.tl4{{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}}.tl4 a{{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;color:inherit;text-decoration:none}}.tl4 a:hover{{border-color:var(--red)}}.tl4 b{{display:block;font-size:17px;margin-bottom:4px}}.tl4 span{{font-size:13px;color:var(--mut)}}@media(max-width:760px){{.tl4{{grid-template-columns:1fr 1fr}}}}</style>
 <div class="hx"><section class="wrap sec"><h2>무엇을 만들고 싶으세요?</h2><p class="muted">고르면 그 용도의 자재와 시공 영상이 한 번에 나옵니다.</p><div class="ug">{use}</div></section>
 <section class="wrap sec"><h2>자재 백과 — 이 나무, 어디에 쓰나요?</h2><p class="muted">용도·인테리어 효과·기준가·관련 영상을 자재별로 정리했습니다.</p><div class="mg">{mats}</div></section>
@@ -1302,6 +1302,14 @@ def build():
            "gagyeok/tempa-board": "템바보드", "gagyeok/siding-gagyeok": "사이딩", "gagyeok/hapan-gagyeok": "합판", "gagyeok/danyeol-gagyeok": "단열재",
            "jajae/bangbu": "데크", "jajae/hapdeck": "데크", "jajae/hinoki": "루바", "jajae/gypsum": "석고보드", "jajae/siding": "사이딩",
            "jajae/hapan": "합판", "jajae/insul": "단열재", "nichiha/index": "사이딩", "deck-gyesan": "데크", "gabyeok-gyesan": "석고보드"}
+    for _k in ("gagyeok/hapan-gagyeok", "gagyeok/osb-gagyeok", "gagyeok/mdf-gagyeok", "gagyeok/jipseong-gagyeok", "gagyeok/seokgo-gagyeok", "gagyeok/gakjae-gagyeok", "gagyeok/deck-gagyeok", "jajae/hapan", "jajae/mdf", "jajae/osb", "jajae/jipseong", "baesong", "price"):
+        _f = os.path.join(OUT, _k + ".html")
+        if not os.path.exists(_f): continue
+        _h = open(_f, encoding="utf-8").read()
+        if "jfeebox" in _h: continue
+        _box = '<section class="wrap sec jfeebox"><a class="jfb" href="/jaedan-bi.html"><b>✂ 원하는 크기로 재단</b><span>재단비 1컷 1,000원부터(12T 이하) · 15·18T 1,500원 · 30T까지 3,000원</span><u>재단비 보기 ›</u></a></section><style>.jfb{display:flex;flex-direction:column;gap:3px;background:#1D1B18;color:#fff!important;border-radius:16px;padding:14px 16px;text-decoration:none!important}.jfb b{font-size:16px}.jfb span{font-size:13px;opacity:.8}.jfb u{text-decoration:none;color:#ffd27a;font-weight:800;font-size:14px;margin-top:4px}</style>'
+        _i = _h.rfind("</main>")
+        if _i > 0: open(_f, "w", encoding="utf-8").write(_h[:_i] + _box + _h[_i:])
     for _k, _kind in _YK.items():
         _f = os.path.join(OUT, _k + ".html")
         _ls = [l for l in _ys.LINKS if l[0] == _kind]
@@ -1393,6 +1401,26 @@ def build():
     SGMAT_HTML = {k: '<section class="wrap sec"><h2>시공법</h2><div class="mg m2">' + "".join(f'<a class="mc" href="/sigongbeop/{x[0]}.html">' + (f'<img loading="lazy" src="/assets/sigongbeop/{x[0]}.jpg" alt="{E(x[1])}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if os.path.exists(f"{ROOT}/assets/sigongbeop/{x[0]}.jpg") else "") + f'<b>{E(x[1])}</b><small>자재 수량·그림 설명서·영상</small></a>' for x in v) + '</div></section>' for k, v in SGMAT_HTML.items()}
     page("mandeul/index.html", "만들기 자재 목록 — 평상·책장·침대·신발장·작업대·데크·개집 재단 크기 | 영진목재", "평상, 책장, 신발장, 침대 프레임, 작업대, 벤치, 베란다 선반, 벽 단열, 데크, 가벽, 울타리, 테이블, 강아지집을 만들 때 필요한 자재와 재단 크기를 정리했습니다. 재단 그림까지 바로 확인하세요.",
          f'<section class="wrap sec"><h1>DIY 만들기</h1><p class="lead">자주 만드는 것들의 자재와 재단 크기를 정리했습니다. 크기만 바꿔서 재단 그림으로 확인하고, 매장에 보여주시면 그대로 잘라 드려요.</p><div class="gsrch"><span>🔍</span><input id="mkq" type="search" placeholder="만들 것 검색 (예: 책장, 데크, 방부목, 집성판)" autocomplete="off" aria-label="검색"></div><p id="mkqn" class="small muted" style="margin:-4px 0 8px"></p><div class="mg m2" id="mkqg">{mk_cards}</div><script>(function(){{var q=document.getElementById("mkq"),n=document.getElementById("mkqn"),C=[].slice.call(document.querySelectorAll("#mkqg .mc"));function f(){{var v=q.value.replace(/\\s/g,"").toLowerCase(),k=0;C.forEach(function(c){{var ok=!v||c.textContent.replace(/\\s/g,"").toLowerCase().indexOf(v)>=0;c.style.display=ok?"":"none";if(ok)k++}});n.textContent=v?(k?k+"개 찾음":"찾는 게 없어요. 매장에 물어보세요."):""}}q.addEventListener("input",f)}})();</script></section><section class="wrap sec"><div class="card"><h2>직접 만드신 작품을 보내 주세요</h2><p>영진종합목재 자재로 만든 평상·선반·데크·가구 사진을 메일로 보내 주시면 이 페이지 「손님이 만든 작품」에 소개해 드립니다(이름은 원하시는 대로, 얼굴·주소가 나온 사진은 빼고 올립니다).</p><p><a class="b r" href="mailto:{EMAIL}?subject=%EC%9E%91%ED%92%88%20%EC%82%AC%EC%A7%84%20%EB%B3%B4%EB%83%85%EB%8B%88%EB%8B%A4&body=%EB%A7%8C%EB%93%A0%20%EA%B2%83%3A%0A%EC%93%B4%20%EC%9E%90%EC%9E%AC%3A%0A%EC%86%8C%EA%B0%9C%ED%95%A0%20%EC%9D%B4%EB%A6%84(%EB%8B%89%EB%84%A4%EC%9E%84)%3A%0A">작품 사진 메일로 보내기</a></p></div></section>{CTA}', "/mandeul/")
+    # 목재·합판 재단비 안내(/jaedan-bi.html) — "합판 재단 비용", "목재 재단 가격" 검색용
+    _FEE = [("12T 이하", 1000, "합판 4.8·8.5·11.5T, MDF 9T, 석고보드 9.5T 등"), ("15T·18T", 1500, "합판 15·17.5T, MDF 15·18T, 집성판 18T, OSB 18T 등"),
+            ("20T 이하", 2000, "1×4 구조재(19T), 데크재 19·20T 등"), ("24T 이하", 2500, "집성판·원목 판재 24T 등"), ("30T 이하", 3000, "집성판 30T, 데크재 25T, 다루끼 30각 등")]
+    _EX = [("4×8 합판 반으로(1220×1220 두 장)", 1), ("4×8 합판 4등분(610×1220 네 장)", 3), ("4×8 합판 선반 폭 300 여덟 장(300×1220)", 8), ("3×6 석고보드 반으로", 1), ("집성판 1장 책장 옆판 2장 + 선반 4장", 6)]
+    _fe_rows = "".join(f'<tr><th>{t}</th><td data-l="1컷"><b>{f:,}원</b></td><td data-l="예">{E(e)}</td></tr>' for t, f, e in _FEE)
+    _ex_rows = "".join(f'<tr><th>{E(n)}</th><td data-l="컷 수">약 {c}컷</td><td data-l="12T 이하">{c*1000:,}원</td><td data-l="15·18T">{c*1500:,}원</td><td data-l="30T 이하">{c*3000:,}원</td></tr>' for n, c in _EX)
+    _jfq = [("합판 재단비는 얼마인가요?", "1컷(한 번 자르기)당 12T 이하 1,000원, 15T·18T 1,500원, 20T 이하 2,000원, 24T 이하 2,500원, 30T 이하 3,000원입니다(부가세 별도)."),
+            ("2×4 구조재나 4×4 각재도 잘라 주나요?", "네, 잘라 드립니다. 30T가 넘는 두께(2×4·2×6·4×4 등)의 재단비는 전화로 문의해 주세요."),
+            ("몇 컷인지 어떻게 알 수 있나요?", "재단 미리보기에 자재와 크기를 넣으면 원판에서 자르는 그림과 함께 컷 수, 재단비, 자재비 합계가 바로 나옵니다. 그 화면을 매장에 보여 주시면 그대로 잘라 드립니다."),
+            ("재단해서 택배·용달로 보내 주나요?", "네. 원하는 크기로 재단한 뒤 대전·세종·공주·계룡·논산·금산·옥천은 배송, 그 밖의 지역은 전국 용달로 보내 드립니다(운임은 견적).")]
+    _jld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in _jfq]}
+    page("jaedan-bi.html", "합판·목재 재단비 — 두께별 1컷 1,000원부터, 컷 수 바로 계산 | 영진목재", "합판·MDF·집성판·OSB 재단비 1컷 1,000~3,000원(두께별, 부가세 별도). 4×8 합판 반·4등분 예시, 재단 미리보기로 컷 수·재단비 자동 계산. 대전 영진목재, 전국 배송.",
+         f"""<section class="wrap sec"><p class="crumb"><a href="/cut.html">목재 재단</a> › 재단비</p><h1>합판·목재 재단비</h1>
+<p class="lead">원하는 크기로 잘라 드립니다. 재단비는 <b>두께에 따라 1컷(한 번 자르기)당</b> 정해져 있어요. 정확한 컷 수와 금액은 <a href="/cut.html">재단 미리보기</a>에 크기를 넣으면 바로 나옵니다.</p>
+<h2>두께별 1컷 재단비</h2><div class="tw"><table class="rt"><thead><tr><th>두께</th><th>1컷</th><th>이런 자재</th></tr></thead><tbody>{_fe_rows}<tr><th>30T 넘음</th><td data-l="1컷"><a href="tel:{TEL.replace('-', '')}">전화 문의</a></td><td data-l="예">2×4·2×6·4×4 구조재·각재 등</td></tr></tbody></table></div>
+<p class="small muted">부가세 별도 · 18.3mm OSB처럼 소수점 두께는 가까운 두께로 봅니다.</p>
+<h2>자주 하는 재단 예시</h2><div class="tw"><table class="rt"><thead><tr><th>재단</th><th>컷 수</th><th>12T 이하</th><th>15·18T</th><th>30T 이하</th></tr></thead><tbody>{_ex_rows}</tbody></table></div>
+<p class="small muted">자르는 순서에 따라 컷 수가 조금 달라질 수 있어요. 내 크기는 아래 버튼으로 바로 계산하세요.</p>
+<div class="yact"><a class="b r" href="/cut.html">재단 미리보기에서 컷 수·재단비 계산 ›</a><a class="b" href="/gagyeok/hapan-gagyeok.html">합판 가격</a><a class="b" href="/gagyeok/jipseong-gagyeok.html">집성판 가격</a><a class="b" href="/mandeul/">DIY 만들기 재단 목록</a><a class="b" href="/baesong.html">전국 배송</a></div>
+<h2>자주 묻는 질문</h2>{faqslide(_jfq)}</section>{CTA}<style>.yact{{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}}.yact .b{{font-size:14px}}</style>""", "/cut.html", _jld)
     page("cut.html", "합판·MDF 재단 미리보기 — 원하는 사이즈 재단 그림 | 대전 영진목재", "합판·MDF·집성판·석고보드·구조재를 원하는 사이즈로 넣으면 원판에서 어떻게 잘리는지, 몇 장 필요한지 그림으로 보여드립니다. 대전 영진목재 즉석 재단.",
          open(ROOT + "/cut_tpl.html", encoding="utf-8").read().replace("__DATA__", json.dumps(_cd, ensure_ascii=False, separators=(",", ":"))).replace("__TEL__", TEL.replace("-", "")).replace("__EMAIL__", EMAIL) + _seo + CTA, "/cut.html", _ld, BASE + "/assets/store/plywood-rack.jpg")
     page("calc.html", "자재 계산기 — 데크·석고보드·합판 몇 장? 문짝·중문 크기까지 | 영진목재", "데크 방부목·합성데크 장수, 석고보드·합판·단열재 장수, 몰딩·걸레받이 길이, 데코타일·강마루 박스 수, 페인트 양, 평↔㎡를 바로 계산하세요. 대전 영진목재(월드건축자재) 재단·배송.",
