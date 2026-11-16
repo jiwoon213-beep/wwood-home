@@ -329,8 +329,6 @@ $("cpng").onclick=function(){var btn=this,svgs=[].slice.call(document.querySelec
 $("cshare").onclick=function(){var u=location.href,b=this;function ok(){b.textContent="복사됨 ✓";setTimeout(function(){b.textContent="링크 복사"},1500)}
  if(navigator.clipboard)navigator.clipboard.writeText(u).then(ok,function(){prompt("이 주소를 복사하세요",u)});else prompt("이 주소를 복사하세요",u)};
 if(!load())setCat(0,true);
-})();
-
 /* 내 현장함·미리 재단 주문 */
 function HJ(){try{return JSON.parse(localStorage.getItem("wwHJ")||"[]")}catch(e){return[]}}
 function HJset(a){try{localStorage.setItem("wwHJ",JSON.stringify(a.slice(0,60)));return true}catch(e){return false}}
@@ -346,6 +344,8 @@ $("cosend").onclick=function(){var n=$("coname").value.trim(),t=$("cotel").value
  $("cono").textContent=no;$("cordf").hidden=true;$("cordd").hidden=false;$("cordd").scrollIntoView({block:"start",behavior:"smooth"});
  location.href="mailto:__EMAIL__?subject="+encodeURIComponent("미리 재단 주문 "+no+" ("+n+")")+"&body="+encodeURIComponent(ORDTXT)};
 $("cocopy").onclick=function(){var b=this;function ok(){b.textContent="복사됨 ✓";setTimeout(function(){b.textContent="주문서 복사"},1500)}if(navigator.clipboard)navigator.clipboard.writeText(ORDTXT).then(ok,function(){prompt("복사하세요",ORDTXT)});else prompt("복사하세요",ORDTXT)};
+
+})();
 </script><style>.cord{margin:14px 0}.cordgo{width:100%;display:flex!important;flex-direction:column;align-items:center;gap:2px;padding:14px!important;font-size:17px!important}.cordgo small{font-size:12.5px;font-weight:600;opacity:.85}
 .cordf,.cordd{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}.cordf h3{margin:0}
 .cordf label{display:flex;flex-direction:column;gap:4px;font-size:14px;font-weight:700}.cordf input:not([type=radio]){font-size:16px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font-family:inherit}
@@ -353,4 +353,4 @@ $("cocopy").onclick=function(){var b=this;function ok(){b.textContent="복사됨
 .costeps{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.costeps li{background:#faf8f4;border-radius:10px;padding:8px 6px;text-align:center;font-size:12.5px;font-weight:700}.costeps b{display:block;width:22px;height:22px;margin:0 auto 3px;border-radius:50%;background:#c41a1f;color:#fff;line-height:22px;font-size:12px}
 .cono{background:#1D1B18;color:#fff;border-radius:14px;padding:14px;text-align:center}.cono small{display:block;opacity:.7;font-size:12px}.cono b{font-size:28px;letter-spacing:1px;color:#ffd27a}
 .codone{margin:0;font-size:15px;line-height:1.6}.cocall{text-align:center;font-size:17px!important;padding:14px!important}.copay{margin:0;background:#fff4e5;border-radius:10px;padding:10px 12px;font-size:14px;line-height:1.6}
-@media print{.cord{display:none}}</style>
+.cord [hidden]{display:none!important}@media print{.cord{display:none}}</style>
