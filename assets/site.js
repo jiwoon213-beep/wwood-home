@@ -1,3 +1,6 @@
+/* 사장님 통계용 횟수 세기(앱 설치·현장함 저장·미리 주문·공유) — 누적 + 오늘 */
+window.WWC=function(x){try{if(navigator.webdriver||/bot|crawl|spider|headless/i.test(navigator.userAgent))return;var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/hit/wwood-co-kr/";fetch(b+"ev-"+x).catch(function(){});fetch(b+"ev-"+x+"-d"+k).catch(function(){})}catch(e){}};
+(function(){try{var st=window.matchMedia&&matchMedia("(display-mode: standalone)").matches||navigator.standalone;if(!st)return;var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);if(localStorage.getItem("wwAO")!==k){localStorage.setItem("wwAO",k);WWC("appopen")}}catch(e){}})();
 // 영상 카드: 일반 클릭은 페이지 안에서 재생, Ctrl/새 탭은 유튜브로
 document.addEventListener("click", function (e) {
   var a = e.target.closest && e.target.closest("a.vc[data-yt]");
@@ -105,8 +108,8 @@ if ("serviceWorker" in navigator) window.addEventListener("load", function () { 
   if (st) { b.hidden = true; return; }
   var dp = null, ua = navigator.userAgent, waiters = [];
   window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); dp = e; waiters.splice(0).forEach(function (f) { f(); }); if (/[?&]app=1/.test(location.search)) offer(); });
-  window.addEventListener("appinstalled", function () { b.hidden = true; g.hidden = true; });
-  function guide(t) { gt.innerHTML = /appgl/.test(t) ? t : '<div class="appgs2">' + t + '</div>'; g.hidden = false; }
+  window.addEventListener("appinstalled", function () { b.hidden = true; g.hidden = true; WWC("appinstall"); });
+  function guide(t) { if (!/appgl/.test(t)) WWC("appguide"); gt.innerHTML = /appgl/.test(t) ? t : '<div class="appgs2">' + t + '</div>'; g.hidden = false; }
   function install() { if (!dp) return; var d = dp; dp = null; g.hidden = true; d.prompt(); d.userChoice.then(function (c) { if (c && c.outcome === "accepted") b.hidden = true; }); }
   function offer() { guide('<ul class="appgl"><li><i>💰</i>기준가·1평 가격 <b>한 번에</b></li><li><i>✂️</i>재단 미리보기·자재 계산기 <b>바로 실행</b></li><li><i>🔍</i>자재 1만 가지 <b>사진으로 검색</b></li><li><i>📶</i>인터넷 약해도 <b>본 페이지 그대로</b></li></ul><button type="button" class="appgo"><span>앱 설치하기</span><small>무료 · 1초 · 용량 거의 안 차지해요</small></button><p class="appgs">누르고 <b>설치</b>만 한 번 더 누르면 ' + (/Mobi|Android/i.test(ua) ? "홈 화면" : "바탕화면") + '에 생겨요</p>'); gt.querySelector(".appgo").onclick = install; }
   document.getElementById("appgx").onclick = function () { g.hidden = true; };
@@ -144,7 +147,7 @@ document.addEventListener("click",function(e){var x=e.target.closest&&e.target.c
 document.addEventListener("change",function(e){var t=e.target;if(!t.classList||!t.classList.contains("sjq")||!t.files[0])return;var f=t.files[0],u=URL.createObjectURL(f),im=new Image();im.onload=function(){var s=Math.min(1,640/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);try{sessionStorage.setItem("sjimg",c.toDataURL("image/jpeg",.85))}catch(x){}location.href="/sajin.html"};im.src=u});
 
 /* 공유 버튼: 휴대폰 공유창(카톡·문자 등)·링크 복사·네이버·밴드·페이스북 */
-document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".shx");if(!b)return;var c=document.querySelector('link[rel="canonical"]'),u=c?c.href:location.href.split("#")[0].split("?")[0],t=document.title,s=b.getAttribute("data-s"),U=encodeURIComponent(u),T=encodeURIComponent(t);
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".shx");if(!b)return;WWC("share");var c=document.querySelector('link[rel="canonical"]'),u=c?c.href:location.href.split("#")[0].split("?")[0],t=document.title,s=b.getAttribute("data-s"),U=encodeURIComponent(u),T=encodeURIComponent(t);
 function cp(){var d=function(){b.textContent="복사됐어요 ✓";setTimeout(function(){b.textContent="링크 복사"},1800)};if(navigator.clipboard)navigator.clipboard.writeText(u).then(d,function(){prompt("주소를 복사하세요",u)});else prompt("주소를 복사하세요",u)}
 if(s=="os"){if(navigator.share)navigator.share({title:t,url:u}).catch(function(){});else cp();return}
 if(s=="copy")return cp();if(s=="insta"){/* 인스타는 웹 공유 주소가 없어 휴대폰 공유창(인스타 DM·스토리) 또는 링크 복사 후 앱 열기 */if(navigator.share&&/Android|iPhone|iPad/i.test(navigator.userAgent)){navigator.share({title:t,url:u}).catch(function(){});return}var go=function(){b.textContent="링크 복사됨 · 인스타에 붙여넣기";setTimeout(function(){b.textContent="인스타"},2500);window.open("https://www.instagram.com/","_blank","noopener")};if(navigator.clipboard)navigator.clipboard.writeText(u).then(go,go);else go();return}
@@ -154,4 +157,4 @@ var w={naver:"https://share.naver.com/web/shareView?url="+U+"&title="+T,band:"ht
 window.WWHJ=function(t,sum,b){var a;try{a=JSON.parse(localStorage.getItem("wwHJ")||"[]")}catch(e){a=[]}
 var tt=document.title.split(" | ")[0].split(" — ")[0];a.unshift({t:t,ts:Date.now(),title:tt,sum:String(sum||"").trim().slice(0,1500),url:location.pathname+location.hash});
 try{localStorage.setItem("wwHJ",JSON.stringify(a.slice(0,60)))}catch(e){alert("이 브라우저에서는 저장이 안 돼요.");return}
-if(b){b.textContent="저장됨 ✓ 현장함 보기 ›";b.onclick=function(){location.href="/hyeonjang.html"}}};
+WWC("hjsave");if(b){b.textContent="저장됨 ✓ 현장함 보기 ›";b.onclick=function(){location.href="/hyeonjang.html"}}};

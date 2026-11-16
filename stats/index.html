@@ -3,6 +3,7 @@
 table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;margin-top:14px;font-size:15px}th,td{padding:10px;border-bottom:1px solid #eee;text-align:right}th:first-child,td:first-child{text-align:left}th{background:#1d1b18;color:#fff;font-weight:700}.bar{height:8px;background:#c62a1f;border-radius:4px;display:inline-block;vertical-align:middle;margin-left:6px}</style></head><body>
 <h1>www.wwood.co.kr 방문 통계</h1><div class="k"><div><small>오늘 방문</small><b id="td">…</b></div><div><small>전체 방문(누적)</small><b id="tt">…</b></div></div><p><small>같은 사람(같은 휴대폰·컴퓨터)이 하루에 여러 번 들어와도 그날은 1명으로 셉니다. 전체 방문은 날마다 방문자를 더한 누적입니다. 검색 로봇은 세지 않습니다.</small></p>
 <table id="src"><tr><th>어디서 왔나</th><th>오늘</th><th>누적</th></tr></table>
+<table id="ev"><tr><th>앱·저장·주문</th><th>오늘</th><th>누적</th></tr></table><p><small>앱 설치는 크롬·삼성인터넷에서 설치를 끝까지 누른 횟수예요. 아이폰은 홈 화면 추가 여부를 알 수 없어 안내 화면을 본 횟수로 셉니다. 브라우저 즐겨찾기(별표)는 어떤 사이트도 셀 수 없어요. 2026-11-16부터 집계.</small></p>
 <table id="days"><tr><th>날짜</th><th>방문</th></tr></table>
 <p id="note" style="display:none;background:#fff3f2;border:1px solid #f3c2bd;color:#c62a1f;padding:12px;border-radius:12px">방문자 숫자를 세는 외부 카운터 서버가 지금 응답하지 않아요(일시 장애). 사이트는 정상이고, 서버가 돌아오면 다시 숫자가 나옵니다. 잠시 후 새로고침해 주세요.</p>
 <p><small>같은 사람이 하루에 여러 번 들어와도 1번으로 셉니다. 경로 집계는 2026-11-11 오후부터 시작했어요.</small></p>
@@ -14,5 +15,7 @@ function day(i){return new Date(Date.now()+9*3600e3-i*864e5).toISOString().slice
 var k=day(0);g("d"+k).then(function(v){td.textContent=v.toLocaleString()});g("total").then(function(v){tt.textContent=v.toLocaleString()});
 Promise.all(S.map(function(s){return Promise.all([g("src-"+s[0]+"-d"+k),g("src-"+s[0])])})).then(function(R){var mx=Math.max.apply(null,R.map(function(r){return +r[1]||0}).concat([1]));
  S.forEach(function(s,i){var t=document.createElement("tr");t.innerHTML="<td>"+s[1]+"</td><td>"+R[i][0]+"</td><td>"+R[i][1]+"<span class=bar style='width:"+Math.round((+R[i][1]||0)/mx*60)+"px'></span></td>";document.getElementById("src").appendChild(t)})});
+var EV=[["appinstall","앱 설치(홈 화면 추가)"],["appguide","아이폰 홈 화면 안내 본 횟수"],["appopen","앱으로 들어온 사람(하루 1번)"],["hjsave","내 현장함 저장"],["order","미리 재단 주문서 보냄"],["share","공유 버튼 누름"]];
+Promise.all(EV.map(function(s){return Promise.all([g("ev-"+s[0]+"-d"+k),g("ev-"+s[0])])})).then(function(R){EV.forEach(function(s,i){var t=document.createElement("tr");t.innerHTML="<td>"+s[1]+"</td><td>"+R[i][0]+"</td><td>"+R[i][1]+"</td>";document.getElementById("ev").appendChild(t)})});
 Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i))})).then(function(R){R.forEach(function(v,i){var d=day(i),t=document.createElement("tr");t.innerHTML="<td>"+d.slice(4,6)+"/"+d.slice(6)+(i?"":" (오늘)")+"</td><td>"+v+"</td>";document.getElementById("days").appendChild(t)})});
 </script></body></html>
