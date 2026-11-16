@@ -549,3 +549,4 @@ ul.mli{align-items:stretch!important}ul.mli li{align-self:stretch!important}
 .jfb{display:flex;flex-direction:column;gap:3px;background:#1D1B18;color:#fff!important;border-radius:16px;padding:14px 16px;text-decoration:none!important}.jfb b{font-size:16px}.jfb span{font-size:13px;opacity:.8}.jfb u{text-decoration:none;color:#ffd27a;font-weight:800;font-size:14px;margin-top:4px}
 .tl4 a.ttl{background:#c41a1f!important;border-color:#c41a1f!important;color:#fff!important}.tl4 a.ttl b,.tl4 a.ttl span{color:#fff!important}
 nav a[href="/tteori/"] svg{color:#c41a1f}nav a[href="/tteori/"]{color:#c41a1f}
+nav a[href="/tteori/"] .ni{color:#c41a1f}
