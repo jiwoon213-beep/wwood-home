@@ -1,0 +1,6 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>사진 전달</title></head><body><p>사진을 준비하고 있어요…</p><script>
+// 인스타그램 게시용: 우리 사이트 사진(/assets/ 아래)만 읽어서 인스타그램 창으로 넘겨 줌
+(async function(){var q=new URLSearchParams(location.search).get("i")||"",L=q.split(",").filter(function(p){return /^[a-z0-9_\-\/]+\.(jpg|jpeg|png)$/i.test(p)}),O="https://www.instagram.com";
+if(!window.opener||!L.length)return;var out=[];for(var i=0;i<L.length;i++){var r=await fetch("/assets/"+L[i]);if(!r.ok)continue;out.push({n:L[i].split("/").pop(),t:r.headers.get("content-type")||"image/jpeg",b:await r.arrayBuffer()})}
+window.opener.postMessage({wwimg:out},O,out.map(function(x){return x.b}));document.body.textContent="보냈어요. 이 창은 닫아도 됩니다.";setTimeout(function(){window.close()},1500)})();
+</script></body></html>
