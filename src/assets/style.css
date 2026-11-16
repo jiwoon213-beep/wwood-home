@@ -509,3 +509,12 @@ ol.sstp li p{margin:0;font-size:15.5px;line-height:1.7;color:#2b2824;word-break:
 ol.sstp li p b{color:#1D1B18;font-weight:800;background:linear-gradient(transparent 62%,#ffe2c4 62%)}
 /* 준비할 자재 카드: 내용만큼만 */
 ul.mli{align-items:flex-start!important}ul.mli li .mlks{margin-top:10px!important;padding-top:0}
+/* 준비할 자재·공구: 옆으로 넘기기 대신 세로 체크 목록(빈칸 없이) */
+ul.mli{display:flex!important;flex-direction:column!important;overflow:visible!important;gap:8px!important;padding:0!important;margin:10px 0!important;scroll-snap-type:none!important}
+ul.mli li{flex:none!important;width:auto!important;min-height:0!important;display:grid!important;grid-template-columns:22px 1fr;column-gap:10px;row-gap:4px;align-items:start;padding:12px 14px!important;border-radius:14px!important}
+ul.mli li::before{content:"✓";grid-row:1;grid-column:1;width:22px;height:22px;border-radius:50%;background:#1D1B18;color:#fff;font-size:12px;font-weight:900;display:grid;place-items:center;margin-top:2px}
+ul.mli li>*{grid-column:2}
+ul.mli li>b{font-size:16px;line-height:1.5}
+ul.mli li .mnote{font-size:14px;line-height:1.6;margin:0!important}
+ul.mli li .mlks{margin-top:4px!important;padding-top:0!important;display:flex;flex-wrap:wrap;gap:6px}
+ul.mli li .mnote{display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important;font-size:14px!important}
