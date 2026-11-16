@@ -1330,6 +1330,7 @@ def build():
     import mirigi as _mr
     _mr.gen(page, P, E, CTA, faqslide, TEL, PROD, ROOT)
     import yesi as _ys; _ys.gen(page, P, E, CTA, faqslide, TEL)
+    import unit as _un; _un.gen(page, E, CTA, faqslide, TEL)
     # 가격 가이드·자재 백과 → 평수별 예시 링크(같은 자재끼리)
     _YK = {"gagyeok/deck-gagyeok": "데크", "gagyeok/hinoki-ruba": "루바", "gagyeok/spruce-ruba": "루바", "gagyeok/seokgo-gagyeok": "석고보드",
            "gagyeok/tempa-board": "템바보드", "gagyeok/siding-gagyeok": "사이딩", "gagyeok/hapan-gagyeok": "합판", "gagyeok/danyeol-gagyeok": "단열재",
@@ -1464,6 +1465,8 @@ f"""<section class="wrap sec"><h1>자재 계산기</h1><p class="lead">필요한
 <a class="ct" href="/dobae-jangpan.html"><i style="background:#eaf2ec;color:#2f7a4a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="13" height="7" rx="2"/><path d="M16 7.5h3v5h-7v3"/><rect x="10.5" y="15.5" width="3" height="5" rx="1"/></svg></i><span><b>도배·장판·타일</b><small>롤·m·장·페인트 L</small></span></a>
 <a class="ct" href="/deck-gyesan.html"><i style="background:#f3ece4;color:#8a5a2b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18M3 13h18M3 17h18"/><path d="M6 9v10M18 9v10"/></svg></i><span><b>데크 자재</b><small>데크재·장선·기둥</small></span></a>
 <a class="ct" href="/gabyeok-gyesan.html"><i style="background:#e9eef6;color:#3b5b8c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="1.5"/><path d="M10 4v16M4 10h6M4 15h6"/></svg></i><span><b>가벽 자재</b><small>각재·석고·단열</small></span></a>
+<a class="ct" href="/pyeong.html"><i style="background:#eef3e6;color:#4a7a2c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16M12 4v16"/></svg></i><span><b>평수 계산기</b><small>평 ↔ ㎡ 바로 변환</small></span></a>
+<a class="ct" href="/jae.html"><i style="background:#f6efe2;color:#9a6a2a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8l8-4 8 4-8 4z"/><path d="M4 8v8l8 4 8-4V8"/></svg></i><span><b>목재 재 계산기</b><small>재 수·㎥ 계산</small></span></a>
 <a class="ct ctw" href="/yesi/"><i style="background:#fdecec;color:#c41a1f"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></i><span><b>평수별 자재비 예시</b><small>데크 3평·천장 루바 4평·농막 사이딩… 몇 평이면 얼마?</small></span></a>
 </div>
 <h2 class="cqh">빠른 계산</h2>
