@@ -114,3 +114,30 @@ def gen2(page, P, E, CTA, faqslide, TEL):
 <h2>자주 묻는 질문</h2>{faqslide(fq)}</section>''' + CTA
     page("seokgo-pis.html", "석고보드 피스 길이·간격·개수 — 1장에 몇 개? | 영진목재",
          "석고보드 피스 9.5T는 25mm, 가장자리 약 200mm·가운데 250~300mm 간격, 3×6 1장에 약 24~30개. 매장 기준가.", body, jsonld=_fq(fq))
+
+
+def gen3(page, P, E, CTA, faqslide, TEL):
+    """목재 피스 길이 고르는 법(/pis-gilee.html)"""
+    tel = TEL.replace("-", "")
+    rx = re.compile(r"@\s*(\d+)\s*\*\s*(\d+)")
+    pis = [p for p in P if p["cat"] == "피스" and rx.search(p["name"])]
+    pis.sort(key=lambda p: (int(rx.search(p["name"]).group(2)), p["name"]))
+    ptb = _tbl(["매장 품명", "굵기×길이(mm)", "기준가"], [(E(p["name"]), "{}×{}".format(*rx.search(p["name"]).groups()), f"{p['price']:,}원~") for p in pis])
+    rows = [("4.8~5.5T 합판·MDF", "12~16mm 판끼리 / 25mm 각재에", "얇은 판은 타카가 편할 때도"), ("9~12T 합판·MDF·석고", "25mm", "석고는 석고 전용 피스"), ("15~18T 합판·MDF·집성판", "38~45mm", "가구·선반에 가장 많이"),
+            ("18T OSB(벽·바닥 덮개)", "38~50mm", "각재·구조재에 박힘"), ("19~25T 데크재·판재", "50~65mm", "밖에서는 스텐"), ("30T 각재·집성판", "65~75mm", ""), ("38T 구조재(2×4)끼리", "75~90mm", "비스듬히 박을 때 더 길게"), ("89T 각재(4×4)", "120mm 이상·볼트", "구조 연결은 철물·볼트")]
+    tb = _tbl(["붙이는 판(위쪽 판 두께)", "피스 길이(대략)", "메모"], rows)
+    fq = [("피스 길이는 어떻게 고르나요?", "위에 대는 판 두께의 약 2~2.5배를 고르면 아래 자재에 충분히 박힙니다. 18T 판이면 38~45mm, 38T 구조재면 75~90mm 정도입니다."),
+          ("피스가 너무 길면요?", "뒤로 튀어나오거나 판이 갈라질 수 있습니다. 아래 자재 두께보다 짧게 고르고, 끝 부분은 구멍을 먼저 뚫어 주세요."),
+          ("외날·양날·윙 피스 차이는요?", "외날은 일반 목재용, 양날은 빨리 박히고 단단한 곳에, 윙 피스는 날개가 구멍을 넓혀 두꺼운 판을 철판·각재에 붙일 때 씁니다."),
+          ("아연과 스텐 피스는 언제 쓰나요?", "실내는 아연 피스로 충분하고, 비를 맞는 데크·외부·방부목에는 녹이 덜 슬도록 스텐 피스를 많이 씁니다.")]
+    body = f'''<section class="wrap sec"><p class="crumb"><a href="/">홈</a> › <a href="/gyugyeok.html">규격표</a> › 피스 길이</p>
+<h1>목재 피스 길이 고르는 법 — 판 두께별 한눈에</h1>
+<p class="lead">피스는 위에 대는 판 두께의 약 2~2.5배 길이가 기본입니다. 합판·MDF·집성판·데크재·구조재별로 많이 쓰는 길이와 매장 피스 {len(pis)}가지 기준가를 정리했습니다.</p>
+<div class="row"><a class="b r" href="/deck-pis.html">데크 피스</a><a class="b o" href="/seokgo-pis.html">석고보드 피스</a><a class="b o" href="/bupum/">철물·공구·부속</a><a class="b d" href="tel:{tel}">전화 문의</a></div>
+<h2>판 두께별 피스 길이</h2>{tb}
+<p class="small muted">일반적인 기준입니다. 아래 자재 두께와 하중에 따라 조정하세요.</p>
+<h2>매장 피스 기준가</h2>{ptb}
+<p class="small muted">매장 소매 기준가(부가세 별도) · 수량 표시(EA)는 한 통 기준</p>
+<h2>자주 묻는 질문</h2>{faqslide(fq)}</section>''' + CTA
+    page("pis-gilee.html", "목재 피스 길이 고르는 법 — 합판·집성판·데크·구조재 두께별 | 영진목재",
+         "피스 길이는 판 두께의 2~2.5배. 18T 판 38~45mm, 데크재 50~65mm, 2×4 75~90mm. 매장 피스 규격·기준가.", body, jsonld=_fq(fq))
