@@ -1981,6 +1981,28 @@ Promise.all([0,1,2,3,4,5,6].map(function(i){return g("d"+day(i))})).then(functio
         _i = _h.rfind('<section class="wrap sec shr">')
         if _i < 0: _i = _h.rfind("</main>")
         if _i > 0: open(_f, "w", encoding="utf-8").write(_h[:_i] + _box + _h[_i:])
+    # 떨이몰 상품을 관련 페이지에 연결(문짝 → 문·중문 페이지, 판재·고재 → 내장재 페이지)
+    try:
+        import tteori as _ttm
+        _tti = [d for d in _ttm.load(ROOT) if d["status"] != "판매완료"]
+        _ttmap = [(r"문짝|방문|도어", ["gagyeok/door-gagyeok", "yeongyeol/shassi", "local/door-daejeon", "local/door-sejong", "yerim/index", "younglim/index", "shenu/index"]),
+                  (r"판재|고재|패널|루바", ["gagyeok/tempa-board", "gagyeok/hinoki-ruba", "trend/index", "mandeul/index"]),
+                  (r"테이블|좌탁|가구", ["mandeul/index", "yeongyeol/gagu"])]
+        for _rx, _pgs in _ttmap:
+            _its = [d for d in _tti if re.search(_rx, d["title"])]
+            if not _its: continue
+            _box = ('<section class="wrap sec ttbx"><a class="jfb" href="/tteori/' + _its[0]["id"] + '.html" style="background:#c41a1f"><b>🏷 떨이몰: ' + E(_its[0]["title"]) + '</b><span>'
+                    + (_ttm.won(_its[0]["price"]) + ("/" + E(_its[0]["unit"]) if _its[0]["unit"] else "") if _its[0]["price"] else "매장 문의") + ' · 수량 한정 재고 정리</span><u>떨이 상품 보기 ›</u></a></section>')
+            for _k in _pgs:
+                _f = os.path.join(OUT, _k + ".html")
+                if not os.path.exists(_f): continue
+                _h = open(_f, encoding="utf-8").read()
+                if "ttbx" in _h: continue
+                _i = _h.rfind('<section class="wrap sec shr">')
+                if _i < 0: _i = _h.rfind("</main>")
+                if _i > 0: open(_f, "w", encoding="utf-8").write(_h[:_i] + _box + _h[_i:])
+    except Exception as _e:
+        print("tteori link skip", _e)
     # 시공법·만들기 → 평수별 자재비 예시 연결
     for _k, _kind in {"sigongbeop/seokgo-byeok": "석고보드", "sigongbeop/seokgo-cheonjang": "석고보드", "sigongbeop/rubaa-cheonjang": "루바",
                       "sigongbeop/siding-oebyeok": "사이딩", "sigongbeop/ceramic-siding": "사이딩", "sigongbeop/metal-siding": "사이딩", "sigongbeop/tempa-byeok": "템바보드",
