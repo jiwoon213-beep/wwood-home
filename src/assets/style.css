@@ -557,3 +557,5 @@ nav a[href="/tteori/"] .ni{color:#c41a1f}
 .ttm{flex:0 0 150px;scroll-snap-align:start;display:flex;flex-direction:column;gap:3px;background:#fff;border:1px solid #ece6dc;border-radius:14px;padding:7px 7px 10px;color:#1D1B18!important;text-decoration:none!important}
 .ttm img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px}.ttm b{font-size:13.5px;line-height:1.35;padding:0 3px}.ttm span{font-size:15px;font-weight:900;color:#c41a1f;padding:0 3px}
 .ttm.ttall{justify-content:center;align-items:center;background:#c41a1f;border-color:#c41a1f}.ttm.ttall b{color:#fff;font-size:15px;text-align:center}
+.jcx{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 6px}.jcx a{padding:8px 12px;border:1px solid #ddd;border-radius:20px;text-decoration:none;color:#222;font-size:15px;background:#fff}.jcx small{color:#c41a1f;font-weight:700}
+.jcl{columns:2 260px;column-gap:24px;padding-left:18px;margin:8px 0 22px}.jcl li{break-inside:avoid;margin:5px 0;font-size:15px;line-height:1.45}.jcl a{color:#1d1b18}
