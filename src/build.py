@@ -1912,8 +1912,8 @@ table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;ove
 <p><small>같은 사람이 하루에 여러 번 들어와도 1번으로 셉니다. 경로 집계는 2026-11-11 오후부터 시작했어요.</small></p>
 <script>
 var b="https://abacus.jasoncameron.dev/get/wwood-co-kr/",S=[["yt","유튜브"],["naver","네이버"],["google","구글"],["daum","다음·카카오"],["bing","빙"],["daangn","당근"],["wwoodkr","쇼핑몰(wwood.kr)"],["etc","다른 사이트"],["direct","주소 입력·즐겨찾기"]];
-var fail=0,Q=[],act=0;function pump(){while(act<3&&Q.length){act++;Q.shift()()}}
-function g1(k,n){return fetch(b+k).then(function(r){if(r.status==404)return {value:0};if(!r.ok)throw r.status;return r.json()}).then(function(j){return j.value||0}).catch(function(e){if(n<3)return new Promise(function(ok){setTimeout(ok,800*(n+1))}).then(function(){return g1(k,n+1)});fail++;return "-"})}
+var fail=0,Q=[],act=0;function pump(){while(act<2&&Q.length){act++;Q.shift()()}}
+function g1(k,n){return fetch(b+k).then(function(r){if(r.status==404)return {value:0};if(!r.ok)throw r.status;return r.json()}).then(function(j){return j.value||0}).catch(function(e){if(n<6)return new Promise(function(ok){setTimeout(ok,1200*(n+1))}).then(function(){return g1(k,n+1)});fail++;return "-"})}
 function g(k){return new Promise(function(ok){Q.push(function(){g1(k,0).then(function(v){act--;pump();ok(v)})});pump()})}
 setInterval(function(){if(fail){var p=document.getElementById("note");p.style.display="block"}},3000);
 function day(i){return new Date(Date.now()+9*3600e3-i*864e5).toISOString().slice(0,10).replace(/-/g,"")}
@@ -1922,7 +1922,7 @@ Promise.all(S.map(function(s){return Promise.all([g("src-"+s[0]+"-d"+k),g("src-"
  S.forEach(function(s,i){var t=document.createElement("tr");t.innerHTML="<td>"+s[1]+"</td><td>"+R[i][0]+"</td><td>"+R[i][1]+"<span class=bar style='width:"+Math.round((+R[i][1]||0)/mx*60)+"px'></span></td>";document.getElementById("src").appendChild(t)})});
 var EV=[["appinstall","앱 설치(홈 화면 추가)"],["appguide","아이폰 홈 화면 안내 본 횟수"],["appopen","앱으로 들어온 사람(하루 1번)"],["hjsave","내 현장함 저장"],["order","미리 재단 주문서 보냄"],["share","공유 버튼 누름"]];
 Promise.all(EV.map(function(s){return Promise.all([g("ev-"+s[0]+"-d"+k),g("ev-"+s[0])])})).then(function(R){EV.forEach(function(s,i){var t=document.createElement("tr");t.innerHTML="<td>"+s[1]+"</td><td>"+R[i][0]+"</td><td>"+R[i][1]+"</td>";document.getElementById("ev").appendChild(t)})});
-Promise.all([0,1,2,3,4,5,6,7,8,9,10,11,12,13].map(function(i){return g("d"+day(i))})).then(function(R){R.forEach(function(v,i){var d=day(i),t=document.createElement("tr");t.innerHTML="<td>"+d.slice(4,6)+"/"+d.slice(6)+(i?"":" (오늘)")+"</td><td>"+v+"</td>";document.getElementById("days").appendChild(t)})});
+Promise.all([0,1,2,3,4,5,6].map(function(i){return g("d"+day(i))})).then(function(R){R.forEach(function(v,i){var d=day(i),t=document.createElement("tr");t.innerHTML="<td>"+d.slice(4,6)+"/"+d.slice(6)+(i?"":" (오늘)")+"</td><td>"+v+"</td>";document.getElementById("days").appendChild(t)})});
 </script></body></html>""")
     open(f"{OUT}/b4237bce57cfb60c93b64e5203857f41.txt", "w").write("b4237bce57cfb60c93b64e5203857f41")  # IndexNow 키(네이버·빙)
     # RSS (네이버 서치어드바이저 RSS 제출용)
