@@ -459,6 +459,7 @@ def build():
 <a class="b r" href="/sigong.html">시공 사례 보기</a></div></section>{CTA}"""
     import nation as _nt
     _jg = '<section class="wrap sec"><h2>전국 배송 — 원하는 크기로 재단해서 보내 드립니다</h2><p>서울·경기부터 부산·제주까지, 3000평 매장의 자재를 재단해 용달(제주는 배편)로 보냅니다. 운임은 품목·수량을 보고 먼저 견적 드립니다.</p><div class="qk">' + "".join(f'<a href="/jeonguk/{r[0]}.html">{r[1]} 목재 배송</a>' for r in _nt.REG) + '<a href="/jaedan-baesong.html">재단 후 전국 배송 방법</a></div></section>'
+    _jg += '<section class="wrap sec"><h2>제품별로 찾아보기 — 사진·규격·기준가</h2><div class="qk">' + "".join(f'<a href="{h}">{t}</a>' for h, t in [("/bupum/p/", "철물·공구·부속 제품"), ("/bondex/p/", "본덱스 스테인·페인트"), ("/younglim/p/", "영림 도어·몰딩·필름"), ("/yerim/p/", "예림 중문·도어"), ("/shenu/p/", "쉐누 도어·몰딩"), ("/knauf/", "크나우프 석고·천장·단열"), ("/geonjae/p/", "목조·외장·내장 건축자재"), ("/suip/p/", "수입 창호·목조주택 자재"), ("/bigyo/", "자재·인테리어 비교")]) + '</div></section>'
     body = body.replace('<section class="cta">', _jg + '<section class="cta">', 1) if '<section class="cta">' in body else body + _jg
     page("index.html", "대전 목재 영진목재 | 3000평 목재소, 원하는 사이즈 재단·전국 배송", "대전 영진목재(월드건축자재) 3000평 목재소. 합판·방부목·데크·구조재를 원하는 크기로 재단해 서울·경기·부산·제주까지 전국 배송, 기준가·시공 영상.", body, "", BIZ)
 
