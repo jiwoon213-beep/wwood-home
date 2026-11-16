@@ -149,3 +149,9 @@ function cp(){var d=function(){b.textContent="복사됐어요 ✓";setTimeout(fu
 if(s=="os"){if(navigator.share)navigator.share({title:t,url:u}).catch(function(){});else cp();return}
 if(s=="copy")return cp();if(s=="insta"){/* 인스타는 웹 공유 주소가 없어 휴대폰 공유창(인스타 DM·스토리) 또는 링크 복사 후 앱 열기 */if(navigator.share&&/Android|iPhone|iPad/i.test(navigator.userAgent)){navigator.share({title:t,url:u}).catch(function(){});return}var go=function(){b.textContent="링크 복사됨 · 인스타에 붙여넣기";setTimeout(function(){b.textContent="인스타"},2500);window.open("https://www.instagram.com/","_blank","noopener")};if(navigator.clipboard)navigator.clipboard.writeText(u).then(go,go);else go();return}
 var w={naver:"https://share.naver.com/web/shareView?url="+U+"&title="+T,band:"https://band.us/plugin/share?body="+T+"%0A"+U+"&route="+encodeURIComponent(location.host),fb:"https://www.facebook.com/sharer/sharer.php?u="+U}[s];if(w)window.open(w,"_blank","noopener,width=560,height=640")});
+
+/* 내 현장함에 저장(계산 결과·평수별 자재비 등) */
+window.WWHJ=function(t,sum,b){var a;try{a=JSON.parse(localStorage.getItem("wwHJ")||"[]")}catch(e){a=[]}
+var tt=document.title.split(" | ")[0].split(" — ")[0];a.unshift({t:t,ts:Date.now(),title:tt,sum:String(sum||"").trim().slice(0,1500),url:location.pathname+location.hash});
+try{localStorage.setItem("wwHJ",JSON.stringify(a.slice(0,60)))}catch(e){alert("이 브라우저에서는 저장이 안 돼요.");return}
+if(b){b.textContent="저장됨 ✓ 현장함 보기 ›";b.onclick=function(){location.href="/hyeonjang.html"}}};
