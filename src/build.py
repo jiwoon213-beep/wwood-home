@@ -1581,7 +1581,9 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         return h
     _vt_used = set()
     def _vtitle(v):  # 영상 페이지 제목 겹침 방지(구글 중복 제목 경고)
-        b = vshort(v["title"])[:40]
+        _cl = lambda t: re.sub(r"[“”\"']", "", t).strip()
+        b = _cl(vshort(v["title"]))[:40]
+        if len(b) < 10: b = _cl(v["title"])[:40].strip(" ,")
         for c in (b, v["title"][:44].strip(), b + (" (쇼츠)" if v["type"] == "S" else " (영상)"), v["title"][:44].strip() + (" 쇼츠" if v["type"] == "S" else " 풀영상")):
             if c not in _vt_used: _vt_used.add(c); return c
         k = 2
