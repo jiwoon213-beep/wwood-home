@@ -20,8 +20,11 @@ def _ld(name, img, desc, brand, cat, price=None):
 def _vendor(page, E, CTA, faqslide, HOURS, d, label, home, items, VID=None):
     """items: dict(id, name, img, spec[(k,v)], cat, cathref, lead, tips[], brand, price)"""
     if not items: return 0
-    used, bycat = set(), {}
+    used, bycat, ids = set(), {}, set()
     for it in items:
+        b, k = it["id"], 2
+        while it["id"] in ids: it["id"] = f"{b}-{k}"; k += 1
+        ids.add(it["id"])
         bycat.setdefault(it["cat"], []).append(it)
         t = it["name"]
         if t in used: t = f'{t} ({it["id"]})'
@@ -43,7 +46,7 @@ def _vendor(page, E, CTA, faqslide, HOURS, d, label, home, items, VID=None):
         fq = [(f"{it['title']} 어디서 사나요?", f"대전 서구 영진종합목재(월드건축자재) 매장에서 상담·주문하실 수 있고, 전국 용달 배송도 됩니다. {HOURS}."),
               (f"{it['title']} 가격은 얼마인가요?", (f"매장 기준 {pz}입니다. 색상·용량·수량에 따라 달라질 수 있습니다." if it.get("price") else f"규격·수량에 따라 달라 매장이나 전화({TEL})로 견적을 드립니다.")),
               (f"{PG._jo(it['title'], '은', '는')} 어떤 제품인가요?", use)]
-        gd = PG.find(it["cat"]) or PG.find(it["name"])
+        gd = PG.find(it["cat"]) or PG.find(" ".join(b for a, b in it["spec"] if a in ("세부 분류", "라인"))) or PG.find(it["name"])
         allt = (gd["how"] if gd else []) + [t for t in it["tips"] if not gd or t not in gd["how"]]
         tips = ("<h2 class='gt'>" + (E(gd["t"]) + " 고르는 법" if gd else "고를 때 확인할 점") + "</h2><ul class='gtip'>" + "".join(f"<li>{E(t)}</li>" for t in allt) + "</ul>") if allt else ""
         if gd:
