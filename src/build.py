@@ -400,7 +400,7 @@ def build():
 <div>{embed(tour) if tour else ''}<p class="small muted">대전 목재소·건축자재 백화점 3000평 투어 · 조회 18만회</p></div></div></section>
 <section class="stat"><div class="wrap g4"><div><b>구독 {ST["subs"]}명</b><small>유튜브 월드건축자재DIY</small></div><div><b>영상 {int(ST["videos"]):,}개</b><small>시공·DIY·자재 정보</small></div>
 <div><b>소매 + 도매</b><small>셀프 고객부터 현장 납품까지</small></div><div><b>직접 시공</b><small>월드아키텍쳐 · {LIC}</small></div></div></section>
-<section class="wrap sec"><div class="tl4"><a href="/cut.html"><b>✂ 재단 미리보기</b><span>치수만 넣으면 원판에서 어떻게 잘리는지 그림으로</span></a><a href="/mandeul/"><b>🪚 DIY 만들기</b><span>평상·책장·데크·울타리 재단 목록</span></a><a href="/gyugyeok.html"><b>📏 규격표</b><span>합판 두께·2×4 실제 치수 한눈에</span></a><a href="/baesong.html"><b>🚚 전국 배송</b><span>재단해서 용달로 전국 현장까지</span></a><a href="/jaedan-bi.html"><b>💲 재단비</b><span>두께별 1컷 1,000원부터</span></a><a href="/yesi/"><b>📐 몇 평이면 얼마?</b><span>데크·루바·석고 평수별 자재비</span></a></div></section><!--MKHOME-->
+<section class="wrap sec"><div class="tl4"><a href="/cut.html"><b>✂ 재단 미리보기</b><span>치수만 넣으면 원판에서 어떻게 잘리는지 그림으로</span></a><a href="/mandeul/"><b>🪚 DIY 만들기</b><span>평상·책장·데크·울타리 재단 목록</span></a><a href="/gyugyeok.html"><b>📏 규격표</b><span>합판 두께·2×4 실제 치수 한눈에</span></a><a href="/baesong.html"><b>🚚 전국 배송</b><span>재단해서 용달로 전국 현장까지</span></a><a href="/jaedan-bi.html"><b>💲 재단비</b><span>두께별 1컷 1,000원부터</span></a><a href="/yesi/"><b>📐 몇 평이면 얼마?</b><span>데크·루바·석고 평수별 자재비</span></a><a href="/yeongyeol/"><b>🤝 시공팀 연결</b><span>도배·타일·샷시·마루 등 12개 공정</span></a></div></section><!--MKHOME-->
 <style>.tl4{{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}}.tl4 a{{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;color:inherit;text-decoration:none}}.tl4 a:hover{{border-color:var(--red)}}.tl4 b{{display:block;font-size:17px;margin-bottom:4px}}.tl4 span{{font-size:13px;color:var(--mut)}}@media(max-width:760px){{.tl4{{grid-template-columns:1fr 1fr}}}}</style>
 <div class="hx"><section class="wrap sec"><h2>무엇을 만들고 싶으세요?</h2><p class="muted">고르면 그 용도의 자재와 시공 영상이 한 번에 나옵니다.</p><div class="ug">{use}</div></section>
 <section class="wrap sec"><h2>자재 백과 — 이 나무, 어디에 쓰나요?</h2><p class="muted">용도·인테리어 효과·기준가·관련 영상을 자재별로 정리했습니다.</p><div class="mg">{mats}</div></section>
@@ -607,7 +607,7 @@ def build():
     page("sigong.html", "대전·세종 인테리어 시공 — 외벽·샷시·데크·리모델링 | 월드아키텍쳐(실내건축공사업)", f"월드아키텍쳐 {LIC}. 대전·세종 외벽 사이딩, 샷시 교체, 데크, 실내 인테리어 시공. 관급·대기업 공사 수행. 전화 {TEL}.",
          f"""<section class="hero dark"><div class="wrap"><span class="chip red">월드아키텍쳐 · {LIC}</span><h1>직접 하기 어렵다면,<br>자재 파는 저희가 시공까지 합니다</h1>
 <p class="lead">자재를 가장 잘 아는 목재상이 직접 시공합니다. 관급·대기업 공사를 수행하는 시공팀이 작업하고, 모든 시공 현장은 유튜브에 그대로 공개합니다.</p>
-<div class="row"><a class="b r" href="tel:{TEL.replace('-','')}">시공 상담 전화 {TEL}</a></div><p class="small">시공 지역: 대전·세종 전 공정 · 관급·대기업·전국 공사는 전화 문의</p></div></section><section class="wrap sec gg"><h2 class="gt">우리 동네 시공 찾기</h2><div class="qk">{"".join(f'<a href="/local/{a}-{b}.html">{c} {d}</a>' for a, d in (("jungmun", "중문"), ("door", "방문 교체"), ("film", "필름"), ("molding", "몰딩"), ("wall", "템바보드 벽")) for b, c in (("yuseong", "유성구"), ("seogu", "서구"), ("sejong", "세종")))}<a href="/local/">전체 지역 보기 ›</a></div></section>
+<div class="row"><a class="b r" href="tel:{TEL.replace('-','')}">시공 상담 전화 {TEL}</a><a class="b" href="/yeongyeol/">공정별 시공팀 연결 ›</a></div><p class="small">시공 지역: 대전·세종 전 공정 · 관급·대기업·전국 공사는 전화 문의</p></div></section><section class="wrap sec gg"><h2 class="gt">우리 동네 시공 찾기</h2><div class="qk">{"".join(f'<a href="/local/{a}-{b}.html">{c} {d}</a>' for a, d in (("jungmun", "중문"), ("door", "방문 교체"), ("film", "필름"), ("molding", "몰딩"), ("wall", "템바보드 벽")) for b, c in (("yuseong", "유성구"), ("seogu", "서구"), ("sejong", "세종")))}<a href="/local/">전체 지역 보기 ›</a></div></section>
 {"".join([]) if not os.path.exists(ROOT+"/data/cases.json") else "<section class=\"wrap sec\"><h2>시공 사례</h2><div class=\"pl hs\">" + "".join(f'<a class="pc" href="/sigong/{c["slug"]}.html"><img loading="lazy" src="https://i.ytimg.com/vi/{c["videos"][0]}/mqdefault.jpg" alt=""><small>{E(c["place"] or "월드아키텍쳐 시공")}</small><b>{E(c["title"])}</b><span>{E(c["desc"][:70])}…</span></a>' for c in json.load(open(ROOT+"/data/cases.json", encoding="utf-8"))) + "</div><p class=\"hsh\">옆으로 밀어서 더 보기 ›</p></section>"}
 <section class="wrap sec"><h2>시공 현장 영상</h2>{sv}</section>{casesec}
 <section class="wrap sec g2"><div class="card"><h2>상담 순서</h2><ol><li>전화 상담 {TEL}</li><li>현장 방문 · 실측</li><li>견적서</li><li>시공 (현장은 유튜브 공개)</li></ol></div>
@@ -1346,6 +1346,7 @@ def build():
     import mirigi as _mr
     _mr.gen(page, P, E, CTA, faqslide, TEL, PROD, ROOT)
     import yesi as _ys; _ys.gen(page, P, E, CTA, faqslide, TEL)
+    import yeongyeol as _yg; _yg.gen(page, E, CTA, faqslide, TEL, ROOT)
     import unit as _un; _un.gen(page, E, CTA, faqslide, TEL)
     # 가격 가이드·자재 백과 → 평수별 예시 링크(같은 자재끼리)
     _YK = {"gagyeok/deck-gagyeok": "데크", "gagyeok/hinoki-ruba": "루바", "gagyeok/spruce-ruba": "루바", "gagyeok/seokgo-gagyeok": "석고보드",

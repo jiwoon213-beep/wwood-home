@@ -536,3 +536,13 @@ ul.mli{align-items:stretch!important}ul.mli li{align-self:stretch!important}
 @media(max-width:700px){.cta .row{display:grid!important;grid-template-columns:1fr 1fr;gap:10px}.cta .row .b{width:100%;text-align:center;margin:0!important;padding-left:6px;padding-right:6px}}
 .shrb{align-items:stretch}.shx{margin:0!important;vertical-align:top;box-sizing:border-box;align-self:stretch}
 .shx.bd{display:flex!important;margin:0!important}.shx.ig{border:1px solid transparent}
+
+/* 시공팀 연결 */
+.ygg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.ygc{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid #ece6dc;border-radius:16px;padding:14px;color:#1D1B18!important;text-decoration:none!important}
+.ygc b{font-size:16.5px;font-weight:900}.ygc span{font-size:13px;color:#6b655c;line-height:1.45;flex:1}.ygc u{text-decoration:none;color:#c41a1f;font-weight:800;font-size:13.5px;margin-top:4px}
+.ygbox{display:flex;flex-direction:column;gap:4px;background:#1D1B18;color:#fff;border-radius:18px;padding:16px;margin:14px 0}
+.ygbox b{font-size:20px}.ygbox span{opacity:.85}.ygbox small{opacity:.65}.ygbox .b{margin-top:10px;text-align:center}
+.ygvs{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:6px}
+.ygv{flex:0 0 220px;scroll-snap-align:start;color:#1D1B18!important;text-decoration:none!important;font-size:13.5px;font-weight:700;line-height:1.4}
+.ygv img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;display:block;margin-bottom:6px}
