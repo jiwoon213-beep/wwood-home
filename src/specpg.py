@@ -141,3 +141,38 @@ def gen3(page, P, E, CTA, faqslide, TEL):
 <h2>자주 묻는 질문</h2>{faqslide(fq)}</section>''' + CTA
     page("pis-gilee.html", "목재 피스 길이 고르는 법 — 합판·집성판·데크·구조재 두께별 | 영진목재",
          "피스 길이는 판 두께의 2~2.5배. 18T 판 38~45mm, 데크재 50~65mm, 2×4 75~90mm. 매장 피스 규격·기준가.", body, jsonld=_fq(fq))
+
+
+def gen4(page, P, E, CTA, faqslide, TEL):
+    """원하는 크기로 재단해서 전국 배송(/jaedan-baesong.html) — '합판 재단 배송', 'MDF 재단 주문' 등"""
+    tel = TEL.replace("-", "")
+    MS = [("hapan", "합판", r"^합판-", "가구·벽·바닥 바탕, 선반"), ("mdf", "MDF", r"MDF 4\*8", "가구 문짝·수납장·도장 마감"), ("jipseong", "집성판", r"^집성판-", "책상 상판·선반·책장"),
+          ("osb", "OSB", r"OSB 4\*8", "벽·지붕 덮개, 인테리어 벽"), ("gypsum", "석고보드", r"^석고-(일반|방수|방화)", "가벽·천장"), ("gujo", "구조재·각재", r"^구조", "골조·틀·평상 다리")]
+    REG = [("seoul", "서울"), ("gyeonggi-south", "경기 남부"), ("gyeonggi-north", "경기 북부"), ("incheon", "인천"), ("gangwon", "강원"), ("chungbuk", "충북"), ("chungnam", "충남"),
+           ("jeonbuk", "전북"), ("gwangju-jeonnam", "광주·전남"), ("daegu-gyeongbuk", "대구·경북"), ("busan-gyeongnam", "부산·울산·경남"), ("jeju", "제주")]
+    rows = []
+    for k, nm, rx, use in MS:
+        ps = sorted([p for p in P if re.search(rx, p["name"])], key=lambda p: p["price"])
+        rows.append((f'<a href="/cut.html#m={k}"><b>{nm}</b></a>', use, f"{ps[0]['price']:,}원~" if ps else "매장 문의"))
+    tb = _tbl(["자재", "많이 쓰는 곳", "기준가(1장·1개)"], rows)
+    steps = ('<ol class="sstp" style="padding-left:0">' + "".join(f'<li><b>{a}</b><span>{b}</span></li>' for a, b in [
+        ("재단 미리보기에 크기 넣기", "자재를 고르고 필요한 조각 크기·개수를 넣으면 원판에서 자르는 그림, 컷 수, 재단비, 자재비 합계가 바로 나옵니다."),
+        ("미리 주문 보내기", "화면 아래 '미리 주문'으로 이름·연락처·받을 방법을 적어 보내면 주문 번호가 나옵니다."),
+        ("전화 확인·결제", "매장에서 전화로 수량·운임을 확인하고, 결제가 확인되면 재단을 시작합니다."),
+        ("재단 후 용달 발송", "자른 자재를 묶어 용달로 보내 드립니다. 운임은 지역·양에 따라 견적입니다.")]) + "</ol>")
+    fq = [("합판을 원하는 크기로 잘라서 택배·배송해 주나요?", "네. 매장에서 원하는 크기로 재단한 뒤 전국 용달로 보내 드립니다. 운임은 지역과 양에 따라 견적으로 안내합니다."),
+          ("재단비는 얼마인가요?", "1컷(한 번 자르기)당 12T 이하 1,000원, 15·18T 1,500원, 30T 이하 3,000원입니다(부가세 별도). 30T가 넘으면 전화 문의."),
+          ("주문은 어떻게 하나요?", "재단 미리보기에서 크기를 넣고 '미리 주문'을 보내면 매장에서 전화로 확인합니다. 결제 확인 후 재단·발송합니다."),
+          ("제주도도 되나요?", "제주는 배편이 따로 필요해 별도 상담합니다(042-545-2900).")]
+    body = f'''<section class="wrap sec"><p class="crumb"><a href="/jaedan-bi.html">목재 재단</a> › 재단 후 전국 배송</p>
+<h1>원하는 크기로 재단해서 전국 배송 — 합판·MDF·집성판</h1>
+<p class="lead">합판·MDF·집성판·OSB·석고보드·구조재를 원하는 크기로 잘라 전국 어디든 용달로 보내 드립니다. 크기만 넣으면 재단 그림과 재단비·자재비가 바로 나오고, 그대로 미리 주문할 수 있습니다.</p>
+<div class="row"><a class="b r" href="/cut.html">재단 미리보기·미리 주문</a><a class="b o" href="/jaedan-bi.html">재단비 보기</a><a class="b d" href="tel:{tel}">전화 {TEL}</a></div>
+<h2>주문 순서</h2>{steps}
+<h2>재단해서 보내는 자재</h2>{tb}
+<p class="small muted">매장 소매 기준가(부가세 별도) · 자재를 누르면 재단 미리보기로 바로 이동</p>
+<h2>보내는 지역</h2><div class="glk tkn">{"".join(f'<a href="/jeonguk/{s}.html">{n}</a>' for s, n in REG)}</div>
+<p class="small muted">운임·도착 시간은 지역·양에 따라 견적입니다. 대전·세종·공주·계룡·논산·금산·옥천은 매장 배송.</p>
+<h2>자주 묻는 질문</h2>{faqslide(fq)}</section>''' + CTA
+    page("jaedan-baesong.html", "합판·MDF·집성판 원하는 크기로 재단 후 전국 배송 | 영진목재",
+         "합판·MDF·집성판·OSB를 원하는 크기로 재단해 전국 용달 배송. 크기만 넣으면 재단비·자재비 계산, 미리 주문 후 전화 확인.", body, jsonld=_fq(fq))
