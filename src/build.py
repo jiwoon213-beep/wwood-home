@@ -924,11 +924,27 @@ def build():
            ("재단할 때 톱날 두께는 얼마나 빠지나요?", "한 번 자를 때마다 약 3mm가 빠집니다. 이 계산기는 3mm를 빼고 배치하므로 실제 재단과 거의 같게 나옵니다."),
            ("나뭇결 방향을 맞춰서 자를 수 있나요?", "네. 집성판이나 무늬목처럼 결이 중요한 자재는 '나뭇결 방향 유지'를 체크하면 조각을 돌리지 않고 배치합니다."),
            ("재단 그림을 매장에 어떻게 보내나요?", "'링크 복사'를 눌러 카톡이나 문자로 보내시거나, 화면을 매장에 보여주시면 그대로 잘라 드립니다. 인쇄도 됩니다.")]
-    _sz = "".join(f"<li><b>{E(c['n'])}</b> — " + ", ".join(sorted({(f"{i[1]}×{i[2]}mm" if not c['lin'] else f"길이 {i[1]}mm") for i in c['items']})) + "</li>" for c in _cd["cats"] if c.get("items"))
-    _seo = (f'<section class="wrap sec"><h2>매장 원판·각재 규격 (재단 기준)</h2><ul>{_sz}</ul>'
-            '<h2>재단 미리보기 사용법</h2><ol><li>자재(합판·MDF·집성판·석고보드·단열재·구조재·방부목·각재·데크)를 고릅니다.</li><li>자를 크기(가로×세로×개수, 각재는 길이×개수)를 넣습니다.</li><li>필요한 원판 장수와 재단 그림을 확인하고, 링크를 매장에 보내거나 화면을 보여주세요.</li></ol>'
-            '<h2>자주 묻는 질문</h2>' + "".join(f"<h3>{E(q)}</h3><p>{E(a)}</p>" for q, a in _CF) +
-            '<p>👉 <a href="/gyugyeok.html">합판·목재 규격표</a> · <a href="/mandeul/">만들기 자재 목록(평상·책장·데크·가벽)</a> · <a href="/calc.html">자재 계산기(몇 장 필요한지)</a> · <a href="/jajae/">자재 백과</a> · <a href="/visit.html">매장 안내·길찾기</a></p></section>')
+    def _szcard(c):
+        sz = sorted({(i[1], i[2]) if not c["lin"] else (i[1], 0) for i in c["items"]}, key=lambda x: (x[0] * (x[1] or 1)))
+        if c["lin"]:
+            mx = max(w for w, _ in sz)
+            pic = '<svg viewBox="0 0 100 40">' + "".join(f'<rect x="4" y="{6 + k * 9}" width="{max(8, 92 * w / mx):.0f}" height="5" rx="1.5" fill="#d9ad74" stroke="#8f5f2c" stroke-width=".6"/>' for k, (w, _) in enumerate(sz[:4])) + '</svg>'
+            chips = "".join(f"<span>{w:,}mm</span>" for w, _ in sz)
+        else:
+            w0, h0 = max(sz, key=lambda x: x[0] * x[1])
+            sc = 34 / max(w0, h0)
+            pic = '<svg viewBox="0 0 100 40">' + "".join(f'<rect x="{50 - w * sc / 2 + k * 3:.1f}" y="{3 + k * 2}" width="{w * sc:.1f}" height="{h * sc:.1f}" rx="1.5" fill="{["#ecd6ad", "#e3c38f", "#d9ad74"][k % 3]}" stroke="#8f5f2c" stroke-width=".6"/>' for k, (w, h) in enumerate(sz[:3])) + '</svg>'
+            chips = "".join(f"<span>{w}×{h}</span>" for w, h in sz)
+        return f'<div class="szc"><div class="szp">{pic}</div><b>{E(c["n"])}</b><small>{"길이" if c["lin"] else "원판 크기(mm)"}</small><div class="szs">{chips}</div></div>'
+    _sz = "".join(_szcard(c) for c in _cd["cats"] if c.get("items"))
+    _STEP = [("자재 고르기", "합판·MDF·집성판·석고보드·단열재·구조재·방부목·각재·데크 중에서"), ("크기 넣기", "가로×세로×개수, 각재는 길이×개수"), ("그림·금액 확인", "원판 장수·재단 그림·컷 수·재단비가 바로 나와요"), ("매장에 보여주기", "링크를 보내거나 화면을 보여주면 그대로 잘라 드려요")]
+    _seo = (f'<section class="wrap sec cuts2"><h2>매장 원판·각재 규격 <small>재단 기준</small></h2><div class="szg">{_sz}</div>'
+            '<h2>재단 미리보기 사용법</h2><div class="stp">' + "".join(f'<div><i>{k + 1}</i><b>{t}</b><span>{d}</span></div>' for k, (t, d) in enumerate(_STEP)) + '</div>'
+            '<h2>자주 묻는 질문</h2>' + faqslide(_CF) +
+            '<div class="cul"><a href="/jaedan-bi.html"><b>재단비</b><span>두께별 1컷 단가</span></a><a href="/gyugyeok.html"><b>규격표</b><span>합판 두께·2×4 실제 치수</span></a><a href="/mandeul/"><b>DIY 만들기</b><span>평상·책장·데크 재단 목록</span></a><a href="/calc.html"><b>자재 계산기</b><span>몇 장 필요한지</span></a><a href="/visit.html"><b>매장 안내</b><span>길찾기·영업시간</span></a></div></section>'
+            '<style>.cuts2 h2 small{font-size:13px;color:#8a8378;font-weight:700;margin-left:4px}.szg{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(min-width:760px){.szg{grid-template-columns:repeat(3,1fr)}}.szc{background:#fff;border:1px solid #ece6dc;border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:3px}.szp{background:#f7f4ee;border-radius:10px;padding:6px;margin-bottom:6px}.szp svg{display:block;width:100%;height:44px}.szc b{font-size:16px}.szc small{font-size:11.5px;color:#8a8378;font-weight:700}.szs{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}.szs span{font-size:12px;font-weight:800;background:#f3ece4;color:#6b4a26;border-radius:999px;padding:4px 8px}'
+            '.stp{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 10px;scrollbar-width:none}.stp::-webkit-scrollbar{display:none}.stp div{flex:0 0 72%;max-width:260px;scroll-snap-align:start;background:#fff;border:1px solid #ece6dc;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:4px}.stp i{font-style:normal;width:30px;height:30px;border-radius:50%;background:#c41a1f;color:#fff;font-weight:900;display:grid;place-items:center;margin-bottom:4px}.stp b{font-size:16px}.stp span{font-size:13px;color:#6b645a;line-height:1.5}'
+            '.cul{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}.cul a{display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid #ece6dc;border-radius:14px;padding:12px;color:#1D1B18!important;text-decoration:none!important}.cul a:first-child{grid-column:1/-1;background:#1D1B18;color:#fff!important;border-color:#1D1B18}.cul b{font-size:15px}.cul span{font-size:12.5px;opacity:.7}</style>')
     _ld = [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in _CF]},
            {"@context": "https://schema.org", "@type": "WebApplication", "name": "재단 미리보기 — 영진종합목재", "applicationCategory": "UtilityApplication", "operatingSystem": "All", "url": BASE + "/cut.html", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}, "provider": {"@type": "HardwareStore", "name": "영진종합목재(월드건축자재)", "telephone": TEL, "address": ADDR}}]
     # 만들기별 자재 안내 — 자재 목록·재단 크기·재단 미리보기 연결(가격 없음)
