@@ -1829,6 +1829,11 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         if _knh: _bc.append(("/knauf/", "크나우프 석고보드·천장재·단열재", f"{len(_knh)}종", _knH.IMG(_knh[0][4], 400)))
     except Exception: pass
     try:
+        import homewood as _hwH
+        _hwh = _hwH.load(ROOT)
+        if _hwh: _bc.append(("/suip/", "수입 목조주택 자재·창호", f"{len(_hwh)}종", _hwH.img(next((r["i"] for r in _hwh if "벨룩스" in r["n"]), _hwh[0]["i"]))))
+    except Exception: pass
+    try:
         import emall as _emH
         _ehc, _ehr = _emH.load(ROOT)
         if _ehr: _bc.append(("/bondex/", "본덱스 스테인·페인트", f"{len(_ehr)}종", _emH.IMG(_ehr[0][3])))
