@@ -27,8 +27,29 @@
  <button class="b r" id="cpng" type="button">그림 사진으로 저장</button>
  <button class="b o" id="cshare" type="button">링크 복사</button>
  <button class="b o" id="cprint" type="button">인쇄</button>
- <a class="b d" id="cshop" href="mailto:__EMAIL__">메일로 재단 요청</a>
+ <button class="b o" id="chsave" type="button">내 현장함에 저장</button>
  <a class="b d" href="tel:__TEL__">전화 문의</a>
+</div>
+<div class="cord" id="cord">
+ <button class="b r cordgo" id="cordgo" type="button">✂ 미리 재단 주문하기<small>잘라 두면 오셔서 바로 가져가요</small></button>
+ <div class="cordf" id="cordf" hidden>
+  <h3>미리 재단 주문</h3>
+  <ol class="costeps"><li><b>1</b>주문서 보내기</li><li><b>2</b>매장에 전화</li><li><b>3</b>입금 확인 후 재단</li></ol>
+  <label>이름<input id="coname" autocomplete="name" placeholder="홍길동"></label>
+  <label>연락처<input id="cotel" type="tel" autocomplete="tel" placeholder="010-0000-0000"></label>
+  <div class="cogrp"><label class="corad"><input type="radio" name="cohow" value="방문" checked> 매장 방문</label><label class="corad"><input type="radio" name="cohow" value="배송"> 배송(운임 견적)</label></div>
+  <label>희망 날짜<input id="codate" type="date"></label>
+  <label>메모 <small>(선택)</small><input id="comemo" placeholder="예: 오후 3시쯤 방문"></label>
+  <button class="b r" id="cosend" type="button">주문서 보내기</button>
+  <p class="small muted">메일 앱이 열려요. 안 열리면 아래 '주문서 복사' 후 문자·메일로 보내 주세요.</p>
+ </div>
+ <div class="cordd" id="cordd" hidden>
+  <div class="cono"><small>주문번호</small><b id="cono"></b></div>
+  <p class="codone">주문서를 보냈어요. <b>꼭 매장에 전화</b>해 주문번호를 말씀해 주세요.<br>메일은 바로 확인하지 못할 수 있어요.</p>
+  <a class="b r cocall" href="tel:__TEL__">② 지금 전화하기 · __TELD__</a>
+  <p class="copay">③ <b>입금(결제)이 확인된 뒤에 재단을 시작합니다.</b> 계좌·금액은 전화로 안내해 드려요.</p>
+  <div class="row"><button class="b o" id="cocopy" type="button">주문서 복사</button><a class="b o" href="/hyeonjang.html">내 현장함 보기</a></div>
+ </div>
 </div></div></div>
 <details class="cemb"><summary>블로그·카페에 이 재단 계산기 붙이기</summary><p class="small">아래 코드를 블로그(티스토리·워드프레스 등) HTML 편집에 붙여 넣으면 이 계산기가 그대로 보입니다. 누구나 무료로 쓰셔도 됩니다.</p><textarea readonly rows="3" class="cin" onclick="this.select()">&lt;iframe src="https://www.wwood.co.kr/cut.html?embed=1" width="100%" height="900" style="border:0" loading="lazy" title="합판·목재 재단 미리보기"&gt;&lt;/iframe&gt;&lt;p&gt;재단 계산기 제공: &lt;a href="https://www.wwood.co.kr/cut.html"&gt;영진종합목재 재단 미리보기&lt;/a&gt;&lt;/p&gt;</textarea></details>
 <h2 id="fee">목재 재단비 (1컷당)</h2>
@@ -299,7 +320,6 @@ $("cadd").onclick=function(){parts.push(isLin()?[0,0,1]:[0,0,1]);act={k:parts.le
 $("cprint").onclick=function(){window.print()};
 if(/[?&]embed=1/.test(location.search)){document.documentElement.className+=" emb";[].forEach.call(document.querySelectorAll('.cutp a[href^="/"]'),function(a){a.target="_blank";a.href="https://www.wwood.co.kr"+a.getAttribute("href")})}
 function summary(){var c=curCat(),it=custom()?null:c.items[prod],L=isLin(),t=(it?it[0]:c.n)+"\n";parts.forEach(function(p){if(p[0])t+=(L?p[0]+"mm":p[0]+"×"+p[1]+"mm")+" × "+(p[2]||1)+"개\n"});var e=document.querySelector("#cres .cest"),rb=document.querySelector("#cres b");if(rb)t+="\n필요한 "+(L?"자재":"원판")+": "+rb.textContent+"\n";if(e)t+="기준가 예상 자재비: "+e.querySelector("b").textContent+" ("+e.querySelectorAll("small")[1].textContent+")\n";return t}
-$("cshop").onclick=function(e){e.preventDefault();var b="안녕하세요. 아래 크기로 재단 부탁드립니다.\n\n"+summary()+"\n재단 그림: "+location.href+"\n\n이름:\n연락처:\n방문(또는 배송) 희망일:\n";location.href="mailto:__EMAIL__?subject="+encodeURIComponent("재단 요청")+"&body="+encodeURIComponent(b)};
 $("cpng").onclick=function(){var btn=this,svgs=[].slice.call(document.querySelectorAll("#csvg svg"));if(!svgs.length)return;btn.textContent="만드는 중…";
  var W=1200,pad=40,imgs=[],done=0;svgs.forEach(function(sv,i){var vb=sv.viewBox.baseVal,h=Math.round(W*vb.height/vb.width),x=new XMLSerializer().serializeToString(sv),im=new Image();im.onload=function(){imgs[i]={im:im,h:h};if(++done==svgs.length)draw()};im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(x)});
  function draw(){var head=150,foot=110,H=head+foot+imgs.reduce(function(a,o){return a+o.h+pad},0),cv=document.createElement("canvas");cv.width=W+pad*2;cv.height=H;var g=cv.getContext("2d");g.fillStyle="#f6f3ee";g.fillRect(0,0,cv.width,H);g.fillStyle="#1d1b18";g.font="bold 40px sans-serif";g.fillText("재단 그림",pad,70);g.font="26px sans-serif";g.fillStyle="#5e574e";g.fillText(summary().split("\n").filter(Boolean).join("  ·  ").slice(0,70),pad,115);
@@ -310,4 +330,27 @@ $("cshare").onclick=function(){var u=location.href,b=this;function ok(){b.textCo
  if(navigator.clipboard)navigator.clipboard.writeText(u).then(ok,function(){prompt("이 주소를 복사하세요",u)});else prompt("이 주소를 복사하세요",u)};
 if(!load())setCat(0,true);
 })();
-</script>
+
+/* 내 현장함·미리 재단 주문 */
+function HJ(){try{return JSON.parse(localStorage.getItem("wwHJ")||"[]")}catch(e){return[]}}
+function HJset(a){try{localStorage.setItem("wwHJ",JSON.stringify(a.slice(0,60)));return true}catch(e){return false}}
+function hjItem(t,extra){var c=curCat(),it=custom()?null:c.items[prod],o={t:t,ts:Date.now(),title:(it?it[0]:c.n),sum:summary(),url:location.pathname+location.hash};for(var k in extra)o[k]=extra[k];return o}
+$("chsave").onclick=function(){var a=HJ(),b=this;a.unshift(hjItem("cut",{}));if(HJset(a)){b.textContent="저장됨 ✓ 현장함 보기 ›";b.onclick=function(){location.href="/hyeonjang.html"}}else alert("이 브라우저에서는 저장이 안 돼요. '링크 복사'로 보관해 주세요.")};
+$("cordgo").onclick=function(){$("cordf").hidden=false;this.hidden=true;try{var u=JSON.parse(localStorage.getItem("wwME")||"{}");if(u.n)$("coname").value=u.n;if(u.t)$("cotel").value=u.t}catch(e){}$("cordf").scrollIntoView({block:"start",behavior:"smooth"})};
+var ORDTXT="";
+$("cosend").onclick=function(){var n=$("coname").value.trim(),t=$("cotel").value.trim();if(!n||!t){alert("이름과 연락처를 넣어 주세요.");return}
+ var d=new Date(),no="YJ"+(""+(d.getMonth()+1)).padStart(2,"0")+(""+d.getDate()).padStart(2,"0")+"-"+Math.floor(1000+Math.random()*9000),how=(document.querySelector('input[name=cohow]:checked')||{}).value||"방문",dt=$("codate").value,memo=$("comemo").value.trim();
+ ORDTXT="[미리 재단 주문] 주문번호 "+no+"\n\n"+summary()+"\n재단 그림: "+location.href+"\n\n이름: "+n+"\n연락처: "+t+"\n받는 방법: "+how+(dt?"\n희망 날짜: "+dt:"")+(memo?"\n메모: "+memo:"")+"\n\n※ 주문서를 보낸 뒤 매장(__TELD__)에 전화로 주문번호를 알려 주세요. 입금 확인 후 재단합니다.";
+ try{localStorage.setItem("wwME",JSON.stringify({n:n,t:t}))}catch(e){}
+ var a=HJ();a.unshift(hjItem("order",{no:no,how:how,date:dt}));HJset(a);
+ $("cono").textContent=no;$("cordf").hidden=true;$("cordd").hidden=false;$("cordd").scrollIntoView({block:"start",behavior:"smooth"});
+ location.href="mailto:__EMAIL__?subject="+encodeURIComponent("미리 재단 주문 "+no+" ("+n+")")+"&body="+encodeURIComponent(ORDTXT)};
+$("cocopy").onclick=function(){var b=this;function ok(){b.textContent="복사됨 ✓";setTimeout(function(){b.textContent="주문서 복사"},1500)}if(navigator.clipboard)navigator.clipboard.writeText(ORDTXT).then(ok,function(){prompt("복사하세요",ORDTXT)});else prompt("복사하세요",ORDTXT)};
+</script><style>.cord{margin:14px 0}.cordgo{width:100%;display:flex!important;flex-direction:column;align-items:center;gap:2px;padding:14px!important;font-size:17px!important}.cordgo small{font-size:12.5px;font-weight:600;opacity:.85}
+.cordf,.cordd{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}.cordf h3{margin:0}
+.cordf label{display:flex;flex-direction:column;gap:4px;font-size:14px;font-weight:700}.cordf input:not([type=radio]){font-size:16px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font-family:inherit}
+.cogrp{display:grid;grid-template-columns:1fr 1fr;gap:8px}.corad{flex-direction:row!important;align-items:center;gap:6px!important;border:1px solid var(--line);border-radius:10px;padding:11px 12px}
+.costeps{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.costeps li{background:#faf8f4;border-radius:10px;padding:8px 6px;text-align:center;font-size:12.5px;font-weight:700}.costeps b{display:block;width:22px;height:22px;margin:0 auto 3px;border-radius:50%;background:#c41a1f;color:#fff;line-height:22px;font-size:12px}
+.cono{background:#1D1B18;color:#fff;border-radius:14px;padding:14px;text-align:center}.cono small{display:block;opacity:.7;font-size:12px}.cono b{font-size:28px;letter-spacing:1px;color:#ffd27a}
+.codone{margin:0;font-size:15px;line-height:1.6}.cocall{text-align:center;font-size:17px!important;padding:14px!important}.copay{margin:0;background:#fff4e5;border-radius:10px;padding:10px 12px;font-size:14px;line-height:1.6}
+@media print{.cord{display:none}}</style>
