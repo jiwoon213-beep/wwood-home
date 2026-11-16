@@ -357,7 +357,8 @@ CTA = f"""<section class="cta"><div class="wrap g2"><div><h2>실물 보고, 원�
 BIZ = {"@context": "https://schema.org", "@type": "HardwareStore", "name": "영진종합목재",
        "telephone": "+82-42-545-2900", "address": {"@type": "PostalAddress", "streetAddress": "유성대로 44, 1층", "addressLocality": "대전", "addressCountry": "KR"},
        "openingHours": ["Mo-Fr 07:00-18:00", "Sa-Su 07:00-15:00"], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "07:00", "closes": "18:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday", "Sunday"], "opens": "07:00", "closes": "15:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "PublicHolidays", "opens": "07:00", "closes": "16:00"}], "url": BASE + "/", "sameAs": [YT, YT2, MALL, KAKAO, NPLACE, "https://g.page/r/CZcZc9J-M0L0EAE"], "alternateName": ["영진목재", "월드건축자재", "영진우드"], "legalName": "영진우드",
-       "image": [BASE + "/assets/store/storefront.jpg", BASE + "/assets/store/yard-aisle2.jpg", BASE + "/assets/store/showroom.jpg"], "priceRange": "₩", "areaServed": ["대전", "세종", "공주", "계룡", "논산", "금산", "옥천"]}
+       "image": [BASE + "/assets/store/storefront.jpg", BASE + "/assets/store/yard-aisle2.jpg", BASE + "/assets/store/showroom.jpg"], "priceRange": "₩", "areaServed": ["대전", "세종", "공주", "계룡", "논산", "금산", "옥천", "천안", "청주", {"@type": "Country", "name": "대한민국"}],
+       "subOrganization": {"@type": "GeneralContractor", "name": "월드아키텍쳐", "description": "실내건축공사업 대전서구24-나-19 · 외벽 사이딩 전국 시공, 실내 공정 대전·세종·공주·계룡·금산·옥천·천안·청주", "telephone": "+82-42-545-2900", "url": BASE + "/sigong.html", "areaServed": {"@type": "Country", "name": "대한민국"}}}
 
 # ---------- pages ----------
 def build():
