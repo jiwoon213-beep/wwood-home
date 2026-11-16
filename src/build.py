@@ -259,8 +259,32 @@ _SHR = ('<section class="wrap sec shr"><p class="shrt">도움이 됐다면 <b>�
 PGMETA = {}
 
 
+_REL = {  # 새 검색용 페이지로 가는 내부 링크(관련 있는 기존 페이지에만)
+    "gyugyeok.html": [("/bangbu-gyugyeok.html", "방부목 규격표"), ("/muge.html", "자재 무게 계산기"), ("/deck-pis.html", "데크 피스 길이·개수"), ("/bigyo/gypsum-vs-hapan-wall.html", "석고보드 vs 합판 벽")],
+    "calc.html": [("/muge.html", "자재 무게 계산기"), ("/deck-pis.html", "데크 피스 개수"), ("/island-size.html", "아일랜드 식탁 사이즈")],
+    "deck-gyesan.html": [("/deck-pis.html", "데크 피스 길이·개수"), ("/bangbu-gyugyeok.html", "방부목 규격표"), ("/muge.html", "자재 무게(용달 몇 번?)")],
+    "jaedan-bi.html": [("/mokgongso.html", "근처 목공소 대신 목재 재단"), ("/muge.html", "자재 무게 계산기"), ("/island-size.html", "아일랜드 식탁 사이즈")],
+    "cut.html": [("/mokgongso.html", "목재 재단(목공소)"), ("/muge.html", "자재 무게 계산기")],
+    "baesong.html": [("/muge.html", "자재 무게 계산기 — 1톤에 몇 장")],
+    "jajae/molding.html": [("/bigyo/molding-types.html", "몰딩 종류 비교")],
+    "jajae/sound.html": [("/bigyo/heupeum-board.html", "흡음보드 vs 흡음재")],
+    "jajae/hinoki.html": [("/bigyo/tempa-vs-ruba.html", "템바보드 vs 루바")],
+    "jajae/gypsum.html": [("/bigyo/gypsum-vs-hapan-wall.html", "석고보드 vs 합판 벽"), ("/muge.html", "석고보드 무게")],
+    "jajae/hapan.html": [("/muge.html", "합판 무게"), ("/bigyo/gypsum-vs-hapan-wall.html", "석고보드 vs 합판 벽")],
+    "jajae/bangbu.html": [("/bangbu-gyugyeok.html", "방부목 규격표"), ("/deck-pis.html", "데크 피스")],
+    "jajae/jipseong.html": [("/island-size.html", "아일랜드 식탁 사이즈")],
+    "gagyeok/deck-gagyeok.html": [("/bangbu-gyugyeok.html", "방부목 규격표"), ("/deck-pis.html", "데크 피스")],
+    "gagyeok/molding-gagyeok.html": [("/bigyo/molding-types.html", "몰딩 종류 비교")],
+    "gagyeok/tempa-board.html": [("/bigyo/tempa-vs-ruba.html", "템바보드 vs 루바")],
+    "gagyeok/jipseong-gagyeok.html": [("/island-size.html", "아일랜드 식탁 사이즈")],
+}
+
+
 def page(path, title, desc, body, active="", jsonld=None, img=None):
     title = _tshort(title)
+    if path in _REL:
+        _rb = '<section class="wrap sec"><div class="qk qk2"><b>👉 함께 보기</b>' + "".join(f'<a href="{h}">{t}</a>' for h, t in _REL[path]) + '</div></section>'
+        body = body.replace('<section class="cta">', _rb + '<section class="cta">', 1) if '<section class="cta">' in body else body + _rb
     if img and (" " in img.strip() or not img.strip().lower().split("?")[0].endswith((".jpg", ".jpeg", ".png", ".webp"))): img = None  # 깨진 대표 사진 주소는 버림
     if not img and not _noidx(path) and path != "404.html":
         try:
