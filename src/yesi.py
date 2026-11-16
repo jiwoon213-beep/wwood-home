@@ -117,6 +117,39 @@ def gen(page, P, E, CTA, faqslide, TEL):
                               note="네 벽 모두 한 겹 기준, 로스 10% 포함. 아이소핑크 본드·우레탄폼·석고보드 마감은 따로입니다.",
                               calc="/gabyeok-gyesan.html", calcn="가벽 자재 계산기", mat="/jajae/insul.html", matn="단열재", gg="/gagyeok/danyeol-gagyeok.html", vn="아이소핑크 단열 시공"))
 
+    # 8) 방 벽 석고보드
+    for py in (3, 4, 5, 8, 10):
+        A = (math.sqrt(py * PY) * 4) * 2.4 * 0.85
+        its = items("wall_gyp", ["일반 3×6 · 9.5T", "방화 3×6 · 12.5T", "방수 3×6 · 9.5T"])
+        rows = [(i["n"], f'{_ceil(A * 1.1 / i["a"])}장', _ceil(A * 1.1 / i["a"]) * int(i["p"]), "", 0) for i in its]
+        if rows:
+            pages.append(dict(slug=f"gypsum-wall-{py}py", kind="석고보드", h1=f"방 {py}평 벽 석고보드 몇 장? 일반·방화·방수 비교",
+                              title=f"방 {py}평 벽 석고보드 몇 장·자재비? 9.5T·12.5T 비교", area=A, size=f"벽 약 {A:.0f}㎡(높이 2.4m, 창·문 15% 뺌)", where="방 네 벽 마감·리모델링", rows=rows,
+                              note="네 벽 한 겹 기준, 로스 10% 포함. 두 겹이면 두 배로 잡으세요. 각재·피스·퍼티·코너비드는 따로입니다.",
+                              calc="/gabyeok-gyesan.html", calcn="가벽 자재 계산기", mat="/jajae/gypsum.html", matn="석고보드", gg="/gagyeok/seokgo-gagyeok.html", vn="석고보드 벽 시공"))
+
+    # 9) 방 벽 이보드(단열 도배)
+    for py in (3, 4, 5, 8):
+        A = (math.sqrt(py * PY) * 4) * 2.4 * 0.85
+        its = items("wall_ins", ["이보드(도배용)", "아이소핑크 · 900×1800×30T"])
+        rows = [(i["n"], f'{_ceil(A * 1.1 / i["a"])}장', _ceil(A * 1.1 / i["a"]) * int(i["p"]), "", 0) for i in its]
+        if rows:
+            pages.append(dict(slug=f"eboard-wall-{py}py", kind="단열재", h1=f"방 {py}평 이보드 몇 장? 결로·곰팡이 벽 단열",
+                              title=f"방 {py}평 이보드 몇 장·얼마? 도배용 단열보드·아이소핑크 비교", area=A, size=f"벽 약 {A:.0f}㎡(높이 2.4m, 창·문 15% 뺌)", where="결로·곰팡이 생기는 방 벽", rows=rows,
+                              note="네 벽 한 겹 기준, 로스 10% 포함. 이보드는 붙이고 바로 도배할 수 있는 단열보드입니다. 본드·폼·도배지는 따로입니다.",
+                              calc="/gabyeok-gyesan.html", calcn="가벽 자재 계산기", mat="/jajae/insul.html", matn="단열재", gg="/gagyeok/danyeol-gagyeok.html", vn="이보드 단열 시공"))
+
+    # 10) 벽 루바
+    for py in (3, 4, 5):
+        A = (math.sqrt(py * PY) * 4) * 2.4 * 0.85
+        its = items("ceil_ruba", ["히노끼/유절", "히노끼/무절", "스프러스"])
+        rows = [(i["n"].replace("/", " "), f'{_ceil(A * 1.1 / i["a"])}단', _ceil(A * 1.1 / i["a"]) * int(i["p"]), "", 0) for i in its]
+        if rows:
+            pages.append(dict(slug=f"ruba-wall-{py}py", kind="루바", h1=f"방 {py}평 벽 루바 자재비 — 히노끼·스프러스 비교",
+                              title=f"방 {py}평 벽 루바 몇 단·얼마? 히노끼 유절·무절·스프러스 비교", area=A, size=f"벽 약 {A:.0f}㎡(높이 2.4m, 창·문 15% 뺌)", where="편백 방·황토방·사우나 벽", rows=rows,
+                              note="루바는 1단(8장) 단위, 네 벽 기준, 로스 10% 포함. 다루끼(바탕 각재)·타카핀·몰딩은 따로 필요합니다.",
+                              calc="/gyeonjeok.html", calcn="방 통째로 계산", mat="/jajae/hinoki.html", matn="히노끼·루바", gg="/gagyeok/hinoki-ruba.html", vn="루바 벽 히노끼 시공"))
+
     # 페이지 생성
     links = []
     for d in pages:
