@@ -125,16 +125,30 @@ window.addEventListener("pointerup",function(){{drag=-1}});
 function load(src,ex){{EX=!!ex;tapH=null;$("mrpb").children[2].textContent=EX?"지붕":"천장";var im=new Image();im.onload=function(){{var s=Math.min(1,1200/Math.max(im.width,im.height));cv.width=Math.round(im.width*s);cv.height=Math.round(im.height*s);img=im;var w=cv.width,h=cv.height;HOLES=EX?EXH.map(function(q){{return q.map(function(a){{return [a[0]*w/1200,a[1]*h/900]}})}}):[];
  Q=[[0,0],[w,0],[w,h],[0,h]];autoPos();var e=$("mrtip");e.className="mrtip";e.hidden=false;e.innerHTML="자리가 맞지 않으면 아래 <b>바닥·벽·천장</b>을 눌러 보세요";setTimeout(function(){{e.hidden=true}},3500)}};im.src=src}}
 function file(f){{if(f){{$("mrba").value=100;load(URL.createObjectURL(f))}}}}$("mrba").oninput=function(){{draw()}};$("mrc").onchange=function(){{file(this.files[0])}};$("mra").onchange=function(){{file(this.files[0])}};
-$("mrd").onclick=function(){{$("mrba").value=50;var c=document.createElement("canvas");c.width=1200;c.height=900;var g=c.getContext("2d");function P(pts,f){{g.beginPath();pts.forEach(function(p,i){{i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1])}});g.closePath();g.fillStyle=f;g.fill()}}
- var gr=g.createLinearGradient(0,0,0,560);gr.addColorStop(0,"#b9d3ea");gr.addColorStop(1,"#eef2f3");g.fillStyle=gr;g.fillRect(0,0,1200,560);gr=g.createLinearGradient(0,520,0,900);gr.addColorStop(0,"#a3ae92");gr.addColorStop(1,"#6c7a5c");g.fillStyle=gr;g.fillRect(0,520,1200,380);
- g.fillStyle="rgba(255,255,255,.7)";[[180,90,60],[240,80,45],[930,120,50],[980,110,38]].forEach(function(a){{g.beginPath();g.arc(a[0],a[1],a[2],0,7);g.fill()}});
- P([[200,330],[700,360],[700,640],[200,672]],"#e4ddd0");P([[700,360],[1010,388],[1010,612],[700,640]],"#c9c0b1");P([[700,360],[1010,388],[855,215]],"#d3cabb");
- P([[160,334],[718,364],[860,206],[350,172]],"#5d4a40");g.strokeStyle="rgba(0,0,0,.18)";g.lineWidth=2;for(var i=1;i<8;i++){{var f=i/8;g.beginPath();g.moveTo(160+(350-160)*f,334+(172-334)*f);g.lineTo(718+(860-718)*f,364+(206-364)*f);g.stroke()}}
- P([[700,360],[718,364],[870,198],[860,206]],"#3f322b");P([[1010,388],[1026,392],[870,198],[860,206]],"#4a3c33");
- P([[260,420],[400,428],[400,530],[260,524]],"#5d7385");P([[520,436],[640,442],[640,545],[520,540]],"#5d7385");P([[430,470],[500,474],[500,642],[430,646]],"#6b5340");
- P([[780,430],[900,440],[900,520],[780,512]],"#56697a");g.fillStyle="rgba(255,255,255,.25)";P([[268,428],[330,431],[290,520],[268,519]],"rgba(255,255,255,.18)");
- P([[200,672],[700,640],[1010,612],[1010,622],[700,652],[200,684]],"#8d8273");
- P([[150,690],[740,655],[880,820],[40,880]],"rgba(0,0,0,.05)");load(c.toDataURL(),1)}};
+$("mrd").onclick=function(){{$("mrba").value=50;var c=document.createElement("canvas");c.width=1200;c.height=900;var g=c.getContext("2d");
+function P(pts,f){{g.beginPath();pts.forEach(function(p,i){{i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1])}});g.closePath();g.fillStyle=f;g.fill()}}
+function LG(x0,y0,x1,y1,a){{var q=g.createLinearGradient(x0,y0,x1,y1);a.forEach(function(s){{q.addColorStop(s[0],s[1])}});return q}}
+g.fillStyle=LG(0,0,0,560,[[0,"#7fb0dc"],[.7,"#cfe2f0"],[1,"#eef3f5"]]);g.fillRect(0,0,1200,560);
+g.fillStyle="rgba(255,255,255,.85)";[[170,110,46],[220,96,58],[275,112,40],[900,80,38],[950,70,50],[995,84,34]].forEach(function(a){{g.beginPath();g.arc(a[0],a[1],a[2],0,7);g.fill()}});
+g.fillStyle=LG(0,470,0,560,[[0,"#7f9a8a"],[1,"#93ab88"]]);P([[0,520],[180,470],[420,500],[700,455],[1000,490],[1200,470],[1200,560],[0,560]],g.fillStyle);
+g.fillStyle=LG(0,540,0,900,[[0,"#93a86f"],[1,"#5f7a3f"]]);g.fillRect(0,540,1200,360);
+g.strokeStyle="rgba(255,255,255,.07)";g.lineWidth=40;for(var x=-400;x<1400;x+=110){{g.beginPath();g.moveTo(x,900);g.lineTo(x+380,540);g.stroke()}}
+g.fillStyle="#6b4f37";g.fillRect(1078,430,16,220);g.fillStyle="#4f7a3a";[[1086,410,70],[1050,450,52],[1125,455,56],[1086,360,52]].forEach(function(a){{g.beginPath();g.arc(a[0],a[1],a[2],0,7);g.fill()}});g.fillStyle="rgba(255,255,255,.08)";g.beginPath();g.arc(1070,380,40,0,7);g.fill();
+g.fillStyle="rgba(0,0,0,.18)";P([[190,676],[1010,618],[1060,640],[200,700]],g.fillStyle);
+P([[200,330],[700,360],[700,640],[200,672]],LG(200,330,700,640,[[0,"#f1ebe0"],[1,"#ddd4c5"]]));
+P([[700,360],[1010,388],[1010,612],[700,640]],LG(700,360,1010,612,[[0,"#cfc6b6"],[1,"#b9af9e"]]));
+P([[700,360],[1010,388],[855,215]],"#d8cfc0");
+P([[160,334],[718,364],[860,206],[350,172]],LG(350,172,160,334,[[0,"#4a3a31"],[1,"#6b554a"]]));
+g.strokeStyle="rgba(0,0,0,.22)";g.lineWidth=2;for(var i=1;i<10;i++){{var f=i/10;g.beginPath();g.moveTo(160+(350-160)*f,334+(172-334)*f);g.lineTo(718+(860-718)*f,364+(206-364)*f);g.stroke()}}
+P([[700,360],[718,364],[870,198],[860,206]],"#3a2d26");P([[1010,388],[1026,392],[870,198],[860,206]],"#45372f");
+P([[160,334],[718,364],[718,374],[160,344]],"rgba(0,0,0,.25)");
+function win(q){{P(q,"#ffffff");var m=[[q[0][0]+8,q[0][1]+8],[q[1][0]-8,q[1][1]+8],[q[2][0]-8,q[2][1]-8],[q[3][0]+8,q[3][1]-8]];P(m,LG(m[0][0],m[0][1],m[2][0],m[2][1],[[0,"#9cc3e0"],[.5,"#5f7f98"],[1,"#45627a"]]));g.strokeStyle="#fff";g.lineWidth=5;g.beginPath();g.moveTo((m[0][0]+m[1][0])/2,(m[0][1]+m[1][1])/2);g.lineTo((m[3][0]+m[2][0])/2,(m[3][1]+m[2][1])/2);g.stroke();P([[m[0][0]+6,m[0][1]+4],[m[0][0]+40,m[0][1]+6],[m[3][0]+14,m[3][1]-6],[m[3][0]+6,m[3][1]-6]],"rgba(255,255,255,.25)")}}
+win([[260,420],[400,428],[400,530],[260,524]]);win([[520,436],[640,442],[640,545],[520,540]]);win([[780,430],[900,440],[900,520],[780,512]]);
+P([[430,470],[500,474],[500,642],[430,646]],LG(430,470,500,646,[[0,"#7a5b42"],[1,"#5a412e"]]));g.fillStyle="#d8b45a";g.beginPath();g.arc(488,560,5,0,7);g.fill();
+P([[200,672],[700,640],[1010,612],[1010,624],[700,654],[200,686]],"#8d8273");
+P([[150,690],[740,655],[880,820],[40,880]],"rgba(0,0,0,.06)");
+[[90,600],[150,640],[1010,700],[960,640]].forEach(function(a){{g.fillStyle="#3f6a2c";g.beginPath();g.arc(a[0],a[1],26,0,7);g.arc(a[0]+24,a[1]+6,22,0,7);g.arc(a[0]-20,a[1]+8,20,0,7);g.fill();g.fillStyle="#d96a7a";g.beginPath();g.arc(a[0]+6,a[1]-8,5,0,7);g.arc(a[0]-12,a[1]+2,4,0,7);g.fill()}});
+load(c.toDataURL(),1)}};
 function chips(){{var q=($("mrq").value||"").replace(/\s/g,""),pd="",cl="",tot=0,n=0;COL[mat].forEach(function(c,i){{var on=i==col?' class="on"':'',nm=c[0].replace(/</g,"");if(c[2]){{tot++;if(q&&c[0].replace(/\s/g,"").indexOf(q)<0)return;n++;pd+='<button type="button" data-i="'+i+'"'+on+'><img src="'+c[2]+'" alt="" loading="lazy" referrerpolicy="no-referrer"><span>'+nm+'</span></button>'}}else cl+='<button type="button" data-i="'+i+'"'+on+'><i style="background:'+c[1]+'"></i>'+nm+'</button>'}});
  $("mrpw").style.display=tot?"":"none";$("mrpd").innerHTML=pd||'<p class="mrnone">맞는 제품이 없어요</p>';$("mrcol").innerHTML=cl;$("mrn").textContent=q?n+" / "+tot+"개":tot+"개 · 옆으로 넘겨 보세요"}}
 $("mrq").oninput=function(){{chips();$("mrpd").scrollLeft=0}};
