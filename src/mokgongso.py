@@ -24,7 +24,7 @@ def gen(page, E, CTA, faqslide, TEL, ADDR, HOURS):
 <p class="lead">나무를 원하는 크기로 잘라 줄 곳을 찾는다면, 대전 영진종합목재에서 자재를 고르고 그 자리에서 잘라 가세요. 합판·MDF·집성판·OSB·석고보드·구조재까지 3000평 매장에서 바로 고르고 즉석 재단합니다.</p>
 <div class="row"><a class="b r" href="/cut.html">재단 미리보기(크기 넣으면 컷 수·재단비)</a><a class="b o" href="tel:{TEL.replace('-', '')}">전화 {TEL}</a><a class="b d" href="/visit.html">매장 길찾기</a></div>
 <h2>목공소 대신 이렇게 하면 됩니다</h2>
-<ul class="mli"><li><b>판재·각재 자르기</b> — 매장에서 산 자재를 원하는 크기로 바로 재단</li><li><b>미리 계산</b> — <a href="/cut.html">재단 미리보기</a>에 크기를 넣고 그 화면을 매장에 보여 주기</li><li><b>DIY 도안</b> — 선반·책장·평상·벤치 등 <a href="/mandeul/">DIY 만들기</a> 재단 목록 그대로 주문</li><li><b>가구·목공 시공</b> — 직접 만들기 어렵다면 <a href="/yeongyeol/mokgong.html">목공 시공팀 연결</a>(매장 접수)</li></ul>
+<ul class="mgl"><li><b>판재·각재 자르기</b><span>매장에서 산 자재를 원하는 크기로 바로 재단</span></li><li><b>미리 계산</b><span><a href="/cut.html">재단 미리보기</a>에 크기를 넣고 그 화면을 매장에 보여 주기</span></li><li><b>DIY 도안</b><span>선반·책장·평상·벤치 등 <a href="/mandeul/">DIY 만들기</a> 재단 목록 그대로 주문</span></li><li><b>가구·목공 시공</b><span>직접 만들기 어렵다면 <a href="/yeongyeol/mokgong.html">목공 시공팀 연결</a>(매장 접수)</span></li></ul>
 <h2>두께별 1컷 재단비</h2>
 <div class="tw"><table><tr><th>두께</th><th>1컷</th><th>이런 자재</th></tr>{t}</table></div>
 <p class="small muted">부가세 별도 · 자세한 예시는 <a href="/jaedan-bi.html">합판·목재 재단비</a></p>
