@@ -1355,6 +1355,7 @@ def build():
     import hyeonjang as _hj; _hj.gen(page, E, CTA, TEL)
     import gongjeong as _gjp; _gjp.gen(page, E, CTA, TEL)
     import tteori as _tt; _tt.gen(page, E, CTA, TEL, ADDR, HOURS, BASE, ROOT)
+    import qrposter as _qrp; _qrp.gen(OUT)
     import unit as _un; _un.gen(page, E, CTA, faqslide, TEL)
     # 가격 가이드·자재 백과 → 평수별 예시 링크(같은 자재끼리)
     _YK = {"gagyeok/deck-gagyeok": "데크", "gagyeok/hinoki-ruba": "루바", "gagyeok/spruce-ruba": "루바", "gagyeok/seokgo-gagyeok": "석고보드",
