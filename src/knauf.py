@@ -54,6 +54,29 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
                 f'<img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{IMG(r[4], 400)}" alt="크나우프 {E(r[1])}"><span>{E(r[1])}</span><em class="cbp q">매장 문의</em></a>')
     tops = [g for g in GRP if any(r[0] == g for r in rows)]
     nav = lambda cur: '<div class="glk tkn">' + "".join(f'<a href="/knauf/{GRP[g][0]}.html"{" class=on" if g == cur else ""}>{E(g)}</a>' for g in tops) + '</div>'
+    def pslug(r):
+        t = re.sub(r"[^a-z0-9.-]+", "-", r[3].lower()).strip("-")
+        return t if len(t) <= 80 else t[:64] + "-" + t[-15:]
+    for g in tops:  # 제품별 상세 페이지 /knauf/p/
+        xs = [r for r in rows if r[0] == g]
+        for r in xs:
+            sp = spec(r)
+            rel = [x for x in xs if x is not r][:8]
+            tb = "".join(f"<tr><th>{E(a)}</th><td>{E(b)}</td></tr>" for a, b in sp)
+            fq = [(f"크나우프 {r[1]} 어디서 사나요?", f"대전 서구 영진종합목재(월드건축자재) 매장에서 상담·주문하실 수 있고, 전국 용달 배송도 됩니다. {HOURS}."),
+                  (f"크나우프 {r[1]} 가격은 얼마인가요?", "규격·수량에 따라 달라 매장이나 전화(042-545-2900)로 견적을 드립니다."),
+                  (f"크나우프 {r[1]}는 어디에 쓰나요?", r[2] or g)]
+            ld = [{"@context": "https://schema.org", "@type": "Product", "name": f"크나우프 {r[1]}", "image": IMG(r[4], 900), "description": (r[2] or g)[:200], "brand": {"@type": "Brand", "name": "Knauf"}, "category": g},
+                  {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}]
+            body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/knauf/">크나우프</a> › <a href="/knauf/{GRP[g][0]}.html">{E(g)}</a> › {E(r[1])}</p>'
+                    f'<h1>크나우프 {E(r[1])}</h1><p class="glead">{E(r[2] or g)}</p>'
+                    f'<p><img src="{IMG(r[4], 800)}" alt="크나우프 {E(r[1])}" width="600" height="600" referrerpolicy="no-referrer" style="max-width:100%;height:auto;border-radius:12px;background:#fff"></p>'
+                    f'<div class="tw"><table class="cmp"><tbody>{tb}<tr><th>가격</th><td>매장 문의 (규격·수량별 견적)</td></tr></tbody></table></div>'
+                    f'<div class="row"><a class="b d" href="tel:0425452900">전화 문의 042-545-2900</a><a class="b o" href="/jeonguk/">전국 배송 지역</a><a class="b o" href="/knauf/{GRP[g][0]}.html">{E(g)} 전체 보기</a></div></section>'
+                    f'<section class="wrap sec gg"><h2 class="gt">같은 분류 제품</h2><ul class="mgl">' + "".join(f'<li><a href="/knauf/p/{pslug(x)}.html">크나우프 {E(x[1])}</a></li>' for x in rel) + '</ul></section>'
+                    f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>{CTA}')
+            page(f"knauf/p/{pslug(r)}.html", f"크나우프 {r[1]} — 규격·특징·구매 | 대전 영진목재",
+                 f"크나우프(Knauf) {r[1]}: {(r[2] or g)[:70]}. 규격 {r[6] or '확인'}. 대전 영진종합목재 상담·전국 배송.", body, "/jaryo/", ld, IMG(r[4], 800))
     out = []
     for g in tops:
         xs = [r for r in rows if r[0] == g]
@@ -62,6 +85,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
         body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/knauf/">크나우프</a> › {E(g)}</p><h1>크나우프 {E(g)} <small>{len(xs)}가지</small></h1>'
                 f'<p class="glead">{E(GRP[g][2])}. 사진을 누르면 크게 보고 규격·특징을 확인할 수 있습니다.</p>{nav(g)}'
                 f'<h2 class="gt"><span>{E(g)} <small style="font-size:14px">{len(xs)}가지</small></span><small>옆으로 넘겨 보세요 ›</small></h2><div class="yrg">{"".join(card(r) for r in xs)}</div></section>'
+                f'<section class="wrap sec gg"><h2 class="gt">제품별 자세히 보기</h2><ul class="mgl">' + "".join(f'<li><a href="/knauf/p/{pslug(r)}.html">{E(r[1])}</a></li>' for r in xs) + '</ul></section>'
                 f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{fq}</section>{CTA}' + LB)
         nm = ", ".join(dict.fromkeys(re.sub(r"\s*[\d.]+mm.*$|\s*\(.*$", "", r[1]) for r in xs))
         page(f"knauf/{GRP[g][0]}.html", f"크나우프 {g} {len(xs)}종 — {nm[:40]} | 대전 영진목재",
