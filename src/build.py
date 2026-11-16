@@ -317,6 +317,19 @@ def _tbl_cards(body):
         return f'<div class="tsw-t">{t}</div><div class="tsw-c"><div class="fqs">{cards}</div><p class="small muted fqh">옆으로 밀어서 더 보기 ›</p></div>'
     return re.sub(r"<table\b.*?</table>", conv, body, flags=re.S)
 
+def _lazyimg(doc):
+    """본문 이미지: 첫 장(대표 사진)만 바로, 나머지는 화면에 보일 때 불러오기"""
+    n = [0]
+    def f(m):
+        t = m.group(0)
+        if "loading=" in t: return t
+        n[0] += 1
+        if n[0] == 1: return t.replace("<img ", '<img decoding="async" fetchpriority="high" ', 1)
+        return t.replace("<img ", '<img loading="lazy" decoding="async" ', 1)
+    b = doc.find("<body")
+    return doc[:b] + re.sub(r"<img [^>]*>", f, doc[b:]) if b >= 0 else doc
+
+
 def page(path, title, desc, body, active="", jsonld=None, img=None):
     if path not in _SW_SKIP and "<table" in body and "/p/" not in path: body = _tbl_cards(body)
     title = _tshort(title)
@@ -385,6 +398,7 @@ Promise.all([fetch(b+(nd?"hit":"get")+"/"+n+"/d"+k).then(function(r){{return r.j
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
 <script src="/assets/site.js?v={ASSET_V}" defer></script></body></html>"""
     if PREFIX: doc = doc.replace('href="/', f'href="{PREFIX}/').replace('src="/', f'src="{PREFIX}/')
+    doc = _lazyimg(doc)
     fp = os.path.join(OUT, path); os.makedirs(os.path.dirname(fp), exist_ok=True)
     open(fp, "w", encoding="utf-8").write(doc)
     if not _noidx(path): SITEMAP.append(canon); SIMG[canon] = img  # 상품 상세(/p/)는 얇은 페이지라 색인 제외(구글: 크롤링됨-색인 안 됨 734건)
@@ -1822,7 +1836,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         if _sgs: _mkln += '<p>🔨 시공법 보기: ' + " · ".join(f'<a href="/sigongbeop/{x[0]}.html">{E(x[1])} 순서·필요 자재</a>' for x in _sgs) + '</p>'
         _PV = [(r"중문|3연동|슬라이딩도어", "/yerim/p/", "예림 중문 제품"), (r"방문|도어|문틀|ABS", "/younglim/p/", "영림 도어·문틀 제품"), (r"몰딩|걸레받이|필름|시트지", "/younglim/p/", "영림 몰딩·필름 제품"),
                (r"스테인|오일|페인트|바니쉬|칠하", "/bondex/p/", "본덱스 스테인·페인트 제품"), (r"경첩|손잡이|피스|앙카|철물|실리콘|레일|선반|공구|드릴|타카", "/bupum/p/", "철물·공구 제품"),
-               (r"석고|텍스|천장|흡음|단열", "/knauf/p/", "크나우프 석고·천장·단열 제품"), (r"사이딩|외벽|루바|계단|목조주택", "/geonjae/p/", "외장·내장 건축자재 제품"), (r"창호|창문|천창|지붕", "/suip/p/", "수입 창호·지붕재 제품")]
+               (r"석고|텍스|천장|흡음|단열", "/knauf/", "크나우프 석고·천장·단열 제품"), (r"사이딩|외벽|루바|계단|목조주택", "/geonjae/p/", "외장·내장 건축자재 제품"), (r"창호|창문|천창|지붕", "/suip/p/", "수입 창호·지붕재 제품")]
         _pvs = list(dict.fromkeys((h, t) for rx, h, t in _PV if re.search(rx, v["title"])))[:3]
         if _pvs: _mkln += '<p>🛒 영상에 나온 제품 찾기: ' + " · ".join(f'<a href="{h}">{t}</a>' for h, t in _pvs) + '</p>'
         page(f"v/{v['id']}.html", f"{st} — {'쇼츠' if v['type'] == 'S' else '영상'}" + (f" 조회 {views(v['n'])}" if v['n'] >= 1000 else "") + " | 영진목재", vds,
@@ -2310,6 +2324,7 @@ Promise.all([0,1,2,3,4,5,6].map(function(i){return g("d"+day(i))})).then(functio
         _k = _m.group(1)
         if _k not in _TT: _TT[_k] = _f; continue
         _id = os.path.basename(_f)[:-5] if "/p/" in _f else os.path.relpath(_f, OUT)[:-5].replace("/index", "")
+        if "/p/" in _f and len(_id) > 15: _id = "-".join(_id.split("-")[-2:]).upper()
         _tag = f" (품번 {_id})" if "/p/" in _f else f" ({_id})"
         _new = re.sub(r"( [|—] )", _tag + r"\1", _k, count=1) if re.search(r" [|—] ", _k) else _k + _tag
         _t = _t.replace(f"<title>{_k}</title>", f"<title>{_new}</title>", 1).replace(f'content="{_k}"', f'content="{_new}"')

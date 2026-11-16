@@ -165,7 +165,7 @@ def gen(page, E, CTA, faqslide, HOURS, ROOT, VID=None):
         seen.add(r[1])
         par = cats[r[0]][0]
         cn = cats[r[0]][1] if (par in cb.TOP or par not in cats) else f"{cats[par][1]} {cats[r[0]][1]}"
-        its.append(dict(id=r[1], name=r[2], img=cb.IMG(r[3]), spec=cb.spec(r[5], DET.get(r[1])) or [], cat=cn, cathref=curl(r[0]),
+        its.append(dict(id=r[1], name=r[2], img=cb.IMG(r[3]), spec=cb.spec(r[5], DET.get(r[1])) or [], cat=cn, cathref=(cb.catlink(ROOT, r[0]) or curl(r[0])).split("#")[0] if (cb.catlink(ROOT, r[0]) or "").split("#")[0] else curl(r[0]),
                         lead=f"{cn} — {cb.TOP[t][1]}({cb.TOP[t][2]}).", tips=["쓰던 부품이나 사진을 가져오시면 맞는 규격을 찾기 쉽습니다.", "목재·합판과 같이 주문하시면 한 번에 실어 보내 드립니다."], brand=None, price=r[4]))
     n["bupum"] = _vendor(page, E, CTA, faqslide, HOURS, "bupum", "철물·공구·부속", "/bupum/", its, VID)
     # 제일타카(JITOOL) 타카·콤프레셔 — 제조사 규격(가격은 매장 문의, 기준가와 섞지 않음)
