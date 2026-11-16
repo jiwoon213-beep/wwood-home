@@ -1487,6 +1487,14 @@ def build():
         f'<item><g:id>{_fx(i)}</g:id><title>{_fx(t[:150])}</title><description>{_fx(dsc[:4900])}</description><link>{BASE}{u}</link><g:image_link>{_fx(im)}</g:image_link>'
         f'<g:availability>in_stock</g:availability><g:price>{p} KRW</g:price><g:condition>new</g:condition>' + (f'<g:brand>{_fx(br)}</g:brand>' if br else '<g:identifier_exists>no</g:identifier_exists>') + f'<g:product_type>{_fx(c)}</g:product_type></item>\n'
         for i, t, dsc, u, im, p, br, c in dict((x[0], x) for x in _ppg.FEED).values()) + '</channel></rss>\n')
+    # 매장 재고(무료 로컬 등록정보) — 상품 정보(링크 없음) + 매장 재고(store_code, id, 재고, 가격)
+    _STORE = "11962997655006403809"
+    _fd = list(dict((x[0], x) for x in _ppg.FEED).values())
+    open(f"{OUT}/merchant-local-products.xml", "w", encoding="utf-8").write('<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0"><channel><title>영진종합목재(월드건축자재) 매장 상품</title><link>' + BASE + '</link><description>매장 판매 건축자재·철물·도료</description>\n' + "".join(
+        f'<item><g:id>{_fx(i)}</g:id><title>{_fx(t[:150])}</title><description>{_fx(dsc[:4900])}</description><g:image_link>{_fx(im)}</g:image_link>'
+        f'<g:price>{p} KRW</g:price><g:condition>new</g:condition>' + (f'<g:brand>{_fx(br)}</g:brand>' if br else '<g:identifier_exists>no</g:identifier_exists>') + f'<g:product_type>{_fx(c)}</g:product_type></item>\n'
+        for i, t, dsc, u, im, p, br, c in _fd) + '</channel></rss>\n')
+    open(f"{OUT}/merchant-local-inventory.txt", "w", encoding="utf-8").write("store_code\tid\tavailability\tprice\tpickup_method\tpickup_sla\n" + "".join(f"{_STORE}\t{x[0]}\tin_stock\t{x[5]} KRW\tbuy\tsame_day\n" for x in _fd))
     import local as _lc
     LCLIST = _lc.gen(page, E, CTA, faqslide, ADDR, HOURS, TEL, ROOT, CASES, top, vsplit)
     import nation as _nt
