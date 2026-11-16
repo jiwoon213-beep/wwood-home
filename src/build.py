@@ -455,7 +455,10 @@ def build():
 <p class="small"><a href="/cut.html#fee">재단비</a> 1컷 1,000원~(두께별) · 운임·수량 할인은 매장에서 계산 · 고재·수입목·특수목은 매장 문의 · 도매가는 회원 로그인 후</p><a href="/price.html">기준가 전체 보기 →</a><div class="qk"><b>💰 1평에 얼마?</b><a href="/gagyeok/hapan-gagyeok.html">합판</a><a href="/gagyeok/seokgo-gagyeok.html">석고보드</a><a href="/gagyeok/deck-gagyeok.html">데크</a><a href="/gagyeok/danyeol-gagyeok.html">아이소핑크</a><a href="/gagyeok/hinoki-ruba.html">루바</a><a href="/gagyeok/tempa-board.html">템바보드</a><a href="/gagyeok/">전체 가격 가이드</a></div></div>
 <div class="card dark"><h2>직접 하기 어렵다면, 시공까지</h2><p>자재를 가장 잘 아는 목재상이 직접 시공합니다. 월드아키텍쳐({LIC})가 대전·세종 전 공정을 시공하고, 모든 현장은 유튜브에 공개합니다.</p>
 <a class="b r" href="/sigong.html">시공 사례 보기</a></div></section>{CTA}"""
-    page("index.html", "대전 목재·세종 목재 영진목재 | 3000평 목재소, 원하는 사이즈 즉석 재단", "대전 목재·세종 목재 영진목재(월드건축자재). 3000평 목재소, 합판·방부목·데크 즉석 재단, 기준가·시공 영상.", body, "", BIZ)
+    import nation as _nt
+    _jg = '<section class="wrap sec"><h2>전국 배송 — 원하는 크기로 재단해서 보내 드립니다</h2><p>서울·경기부터 부산·제주까지, 3000평 매장의 자재를 재단해 용달(제주는 배편)로 보냅니다. 운임은 품목·수량을 보고 먼저 견적 드립니다.</p><div class="qk">' + "".join(f'<a href="/jeonguk/{r[0]}.html">{r[1]} 목재 배송</a>' for r in _nt.REG) + '<a href="/jaedan-baesong.html">재단 후 전국 배송 방법</a></div></section>'
+    body = body.replace('<section class="cta">', _jg + '<section class="cta">', 1) if '<section class="cta">' in body else body + _jg
+    page("index.html", "대전 목재 영진목재 | 3000평 목재소, 원하는 사이즈 재단·전국 배송", "대전 영진목재(월드건축자재) 3000평 목재소. 합판·방부목·데크·구조재를 원하는 크기로 재단해 서울·경기·부산·제주까지 전국 배송, 기준가·시공 영상.", body, "", BIZ)
 
     # 소식·정보
     page("news/index.html", "소식·자재 정보 — 목재·건축자재 가격, 시공 팁 | 대전 월드건축자재", "대전 월드건축자재(영진목재)의 자재 정보, 기준가, 시공 사례, 새 영상 소식.",
