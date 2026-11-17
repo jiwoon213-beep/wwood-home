@@ -362,6 +362,27 @@ SCENES += [
    (20, 61, "중문 손잡이", "handle", "프레임에 붙은 세로 손잡이입니다.", "/qna/son-jabi-chai.html", "손잡이 고르기", [("/bupum/", "손잡이·부속")]),
    (90, 55, "짙은 색 방문", "door", "안쪽 방에 짙은 색 방문과 레버 손잡이를 달았습니다.", "/younglim/", "영림 도어 보기", [("/qna/door-silcheuk.html", "문 실측"), ("/qna/gyeongcheop-jojeol.html", "경첩 조절")]),
    (50, 93, "밝은 마루 바닥", "maru", "옅은 나뭇결 마루를 깔아 네이비 문이 돋보입니다.", "/younglim/maru.html", "마루 보기", [("/qna/badakjae-goreugi.html", "바닥재 고르는 법")])]),
+ ('ext-basalt-stone', '현무암 판석 외벽 건물 — 건물 외장 자재 둘러보기', G + 'ext-basalt-stone.jpg', '사진: 영진종합목재 제공',
+  '구멍 난 현무암 판석으로 외벽 전체를 덮고, 창 둘레를 빨간 패널로 강조한 상가 건물입니다.',
+  [(30, 60, '현무암 판석 외벽', 'tile', '구멍 난 질감의 검은 돌판입니다. 큰 판을 줄눈 맞춰 붙였습니다.', '/jaryo/stone.html', '스톤 보기', [('/bigyo/siding-types.html', '외장재 비교')]), (64, 30, '빨간 금속 패널 띠', 'siding', '창 둘레를 색 패널로 두른 포인트입니다.', '/jaryo/siding.html', '외장재 보기', []), (40, 20, '베이지 석재 패널', 'tile', '창 사이 밝은 석재 판입니다.', '/jaryo/stone.html', '스톤 보기', []), (82, 73, '골드 샷시 창호', 'door', '금색 프레임 미서기 창입니다.', '/qna/shassi-gyoche-check.html', '창 교체 전 확인', []), (88, 20, '선홈통', 'roof', '외벽을 따라 내려오는 빗물 홈통입니다.', '/geonjae/jibung.html', '지붕 부자재', [])]),
+ ('ext-granite-window', '적갈색 화강석 외벽과 창 몰딩 — 건물 외장 둘러보기', G + 'ext-granite-window.jpg', '사진: 영진종합목재 제공',
+  '적갈색 화강석 판으로 외벽을 덮고, 창마다 회색 석재 몰딩으로 테를 두른 다가구 건물입니다.',
+  [(15, 62, '적갈색 화강석 판', 'tile', '붉은 점무늬 화강석을 줄눈 맞춰 붙였습니다.', '/jaryo/stone.html', '스톤 보기', [('/bigyo/siding-types.html', '외장재 비교')]), (56, 85, '석재 창 몰딩', 'molding', '창 위·아래에 돌출 몰딩을 둘러 입체감을 냈습니다.', '/qna/crown-molding.html', '몰딩 모양', []), (64, 74, '흰 PVC 샷시', 'door', '흰색 미서기 창입니다.', '/qna/shassi-gyoche-check.html', '창 교체 전 확인', [])]),
+ ('cafe-concrete-floor', '노출 천장·콘크리트 바닥 카페 — 카페 인테리어 둘러보기', G + 'cafe-concrete-floor.jpg', '사진: 영진종합목재 제공',
+  '노출 천장에 레일 조명을 달고, 바닥은 콘크리트 질감 마감, 벽은 판넬로 덮은 카페입니다.',
+  [(50, 85, '콘크리트 질감 바닥', 'tile', '광이 나는 콘크리트 느낌 바닥입니다.', '/qna/badak-epoxy.html', '에폭시 바닥', [('/qna/concrete-bunjin.html', '콘크리트 먼지 잡기')]), (40, 12, '레일 스포트 조명', 'ceiling', '레일에 다는 조명입니다.', '/sigongbeop/seokgo-cheonjang.html', '천장 시공', []), (52, 42, '판넬 벽', 'wall', '큰 판을 줄 맞춰 붙인 벽입니다.', '/jaryo/naejang.html', '내장재 보기', []), (22, 40, '검은 프레임 큰 창', 'door', '검은 창틀 통창입니다.', '/qna/shassi-gyoche-check.html', '창 교체 전 확인', []), (32, 55, '대리석 원형 테이블', 'furniture', '대리석 상판 원형 테이블입니다.', '/qna/siktak-sangpan.html', '상판 고르기', [])]),
+ ('park-wood-arch', '원목 아치 파고라 — 정원 입구 목재 구조물', G + 'park-wood-arch.jpg', '사진: 영진종합목재 제공',
+  '정원 입구에 각재로 아치 모양 파고라를 세우고 옆에 격자 트렐리스를 단 모습입니다.',
+  [(45, 10, '아치 보(곡선 각재)', 'gakjae', '두꺼운 각재를 아치 모양으로 잘라 위에 걸쳤습니다.', '/qna/pergola-mandeulgi.html', '파고라 만들기', [('/qna/arch-mun.html', '아치 만들기')]), (17, 60, '방부목 기둥', 'deck', '굵은 각기둥 2개가 아치를 받칩니다.', '/jaryo/gakjae.html', '각재 보기', [('/cheolmul/gidungbatchim.html', '기둥받침')]), (21, 50, '격자 트렐리스', 'woodwall', '기둥 옆 격자에 덩굴이 타고 올라갑니다.', '/mandeul/', 'DIY 만들기', []), (66, 14, '서까래 살', 'gakjae', '아치 위 짧은 각재들입니다.', '/cheolmul/jeongja.html', '정자·파고라 철물', []), (74, 30, '오래된 목재 이끼', 'paint', '오래된 외부 목재엔 이끼가 낍니다. 주기적으로 오일스테인을 칠하세요.', '/sigongbeop/oilstain.html', '오일스테인 칠하기', [])]),
+ ('ext-siding-deck', '사이딩 외벽과 옥상 목재 난간 — 주택 외장 리모델링', G + 'ext-siding-deck.jpg', '사진: 영진종합목재 제공',
+  '오래된 주택 외벽을 짙은 회색 사이딩으로 덮고, 옥상 테라스에 목재 난간을 두른 모습입니다.',
+  [(55, 55, '가로 사이딩 외벽', 'siding', '가로줄 사이딩을 겹쳐 붙였습니다.', '/jaryo/siding.html', '외장재 보기', [('/bigyo/siding-types.html', '외장재 비교'), ('/qna/siding-haji.html', '사이딩 하지')]), (52, 32, '옥상 목재 난간', 'deck', '각재 기둥과 살로 만든 난간입니다.', '/cheolmul/deck-fence.html', '데크 난간 철물', [('/mandeul/deck.html', '데크 만들기')]), (39, 45, '코너 마감재', 'siding', '모서리를 덮는 마감 몰딩입니다.', '/sigongbeop/ceramic-siding.html', '사이딩 시공', []), (68, 93, '구옥 리모델링', 'siding', '외벽을 철거하지 않고 사이딩으로 덮어 새집처럼 바꿨습니다.', '/yeongyeol/siding.html', '사이딩 시공 연결', [])]),
+ ('home-tile-tvwall', '포세린 타일 거실 TV 벽 — 거실 아트월 둘러보기', G + 'home-tile-tvwall.jpg', '사진: 영진종합목재 제공',
+  '거실 TV 벽 전체를 큰 판 포세린 타일로 엇갈려 붙이고, 아래에 원목 거실장을 둔 모습입니다.',
+  [(20, 30, '대형 포세린 타일 아트월', 'tile', '큰 판 타일을 반장씩 엇갈려 붙였습니다.', '/qna/tile-primer.html', '타일 바탕 처리', [('/qna/tile-jareugi.html', '타일 자르기'), ('/qna/wallpanel-vs-tempa.html', '벽 마감 비교')]), (42, 88, '원목 거실장', 'furniture', '원목 집성판으로 만든 낮은 거실장입니다.', '/mandeul/', 'DIY 만들기', [('/jaryo/jipseong.html', '집성판 보기')]), (96, 40, '원목 문선', 'door', '문 둘레 원목 마감입니다.', '/qna/door-silcheuk.html', '문 실측', [])]),
+ ('ext-granite-entrance', '화강석 외벽 공동주택 현관 — 건물 입구 외장', G + 'ext-granite-entrance.jpg', '사진: 영진종합목재 제공',
+  '밝은 화강석과 짙은 석재로 무늬를 낸 공동주택 출입구입니다. 스테인리스 자동문을 달았습니다.',
+  [(20, 45, '밝은 화강석 외벽', 'tile', '점무늬 화강석 판을 줄눈 맞춰 붙였습니다.', '/jaryo/stone.html', '스톤 보기', []), (60, 40, '짙은 석재 무늬판', 'tile', '짙은 돌을 사선으로 끼워 무늬를 냈습니다.', '/jaryo/stone.html', '스톤 보기', []), (50, 72, '스테인리스 현관문', 'door', '스테인리스 틀 유리 자동문입니다.', '/younglim/', '도어 보기', []), (95, 12, '창 안전 난간', 'door', '창 밖 장식 난간입니다.', '/qna/shassi-gyoche-check.html', '창 교체 전 확인', [])]),
 ]
 
 # 분류 (공간 사진 목록 페이지에서 줄별로 옆으로 넘기기)
@@ -381,7 +402,7 @@ _CM = {
     "wood": "store-lumber-rack store-plywood-wall store-sugi-ruba store-ruba-upper store-hardwood-ruba store-gujomok-board store-stair-tread",
     "hw": "store-tool-wall store-hardware-bins store-handle-showcase",
     "stock": "store-silicone-room store-molding-rack store-molding-panel",
-    "out": "store-garden-picnic store-greenhouse store-greenhouse-shelf store-greenhouse-wall store-canopy-roof store-front-siding store-siding-closeup",
+    "out": "ext-basalt-stone ext-granite-window park-wood-arch ext-siding-deck ext-granite-entrance store-garden-picnic store-greenhouse store-greenhouse-shelf store-greenhouse-wall store-canopy-roof store-front-siding store-siding-closeup",
 }
 _CMAP = {s: k for k, v in _CM.items() for s in v.split()}
 
