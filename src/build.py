@@ -262,17 +262,38 @@ def _dnav(active):
               + "".join(f'<a href="{a}"{" class=on" if active == a else ""}><svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{NAVI.get(a, "")}</svg><span><b>{n}</b><small>{d}</small></span></a>' for a, n, d in sub)
               + '</div></div>')
     return f'<nav class="dnav" aria-label="주 메뉴">{o}<a class="dv" href="/visit.html">매장 안내</a></nav>'
+_GTHC = {}
 def _gth(src, w=640, sub="t"):
+    k = (src, w, sub)
+    if k not in _GTHC: _GTHC[k] = _gth0(src, w, sub)
+    return _GTHC[k]
+def _gth0(src, w, sub):
     # 공간 사진 미리보기(작은 사진) — 우리 사진만, 없으면 만들고 실패하면 원본
-    if not src.startswith("/assets/gonggan/"): return src
+    _yl = src.startswith("https://s3.ap-northeast-2.amazonaws.com/younglim-bucket/")
+    if not (src.startswith("/assets/gonggan/") or _yl): return src
     nm = src.rsplit("/", 1)[1]; rel = f"assets/gonggan/{sub}/{nm}"
+    if _yl:  # 영림 공간 사진(회사 허락) — 원본을 한 번 받아 두고 작은 사진을 만듦
+        org = f"{ROOT}/assets/gonggan/yl/{nm}"
+        if src in _GTHC.get("_fail", ()): return src
+        if not os.path.exists(org):
+            try:
+                import urllib.request
+                os.makedirs(os.path.dirname(org), exist_ok=True)
+                dat = urllib.request.urlopen(urllib.request.Request(src, headers={"User-Agent": "Mozilla/5.0"}), timeout=8).read()
+                if len(dat) < 5000: return src
+                open(org, "wb").write(dat)
+            except Exception:
+                _GTHC.setdefault("_fail", set()).add(src); return src
+        srcf = org
+    else:
+        srcf = f"{ROOT}{src}"
     for base in (ROOT, OUT):
         dst = f"{base}/{rel}"
         if not os.path.exists(dst):
             try:
                 from PIL import Image as _I
                 os.makedirs(os.path.dirname(dst), exist_ok=True)
-                im = _I.open(f"{ROOT}{src}").convert("RGB"); im.thumbnail((w, w)); im.save(dst, quality=78, optimize=True, progressive=True)
+                im = _I.open(srcf).convert("RGB"); im.thumbnail((w, w)); im.save(dst, quality=78, optimize=True, progressive=True)
             except Exception:
                 return src
     return "/" + rel
@@ -1834,7 +1855,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
             pops += (f'<div class="hsp" id="hs-{slug}-{i}" data-i="{i}"><small>{E(kn)}</small><b>{E(n)}</b><p>{E(w)}</p>'
                      f'<p class="hsh2">이렇게 시공해요</p><ol>' + "".join(f"<li>{E(t)}</li>" for t in how) + '</ol>'
                      f'<a class="b r hsgo" href="{h1}">{E(t1)} ›</a><div class="hsm">{ml}</div></div>')
-        _ss = f' srcset="{_gth(img, 1000, "m")} 1000w, {img} 1600w" sizes="(max-width:900px) 100vw, 820px"' if img.startswith("/assets/") else ""
+        _ss = f' srcset="{_gth(img, 1000, "m")} 1000w, {img} 1600w" sizes="(max-width:900px) 100vw, 820px"' if _gth(img, 1000, "m") != img else ""
         return (f'<div class="hsw" data-s="{slug}"><div class="hsi"><img src="{_gth(img, 1000, chr(109))}"{_ss} alt="{E(ttl.split(" — ")[0])}">{dots}</div><p class="hsc">{E(cred)} · +를 누르면 자재와 시공법이 나와요</p>'
                 f'<div class="hsl">{pops}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p></div>')
     for sc in _GG.SCENES:
