@@ -305,6 +305,7 @@ def _noidx(path):
     if path.startswith("p/"): return path not in POPEN
     if re.match(r"(daejeon|sejong)/(?!index\.html)[^/]+\.html$", path): return True  # 대전·세종 × 자재 = /jajae/ 와 거의 같음
     if path.startswith("v/") and path[2:-5] in VTHIN: return True
+    if re.match(r"bupum/samu(-\d+)?\.html$", path): return True  # 사무용품: 우리 업종과 무관 — 크롤링 예산 낭비
     return False
 def _tshort(t):
     # 60자 넘는 제목: 끝의 업체명은 두고, 나열·부제부터 줄임(검색 결과에서 잘리지 않게)
@@ -2469,7 +2470,7 @@ Promise.all([0,1,2,3,4,5,6].map(function(i){return g("d"+day(i))})).then(functio
                 + (f"<video:publication_date>{_dt.datetime.fromtimestamp(ts, _dt.timezone(_dt.timedelta(hours=9))).isoformat()}</video:publication_date>" if ts else "")
                 + "<video:family_friendly>yes</video:family_friendly></video:video></url>\n" for u, v, dd, ts, ln in VSM if v["id"] not in VTHIN) + "</urlset>\n")
     _isp = lambda u: re.search(r"/[a-z]+/p/[^/]+\.html$", u) is not None
-    for _fn, _us in (("sitemap.xml", [u for u in SITEMAP if not _isp(u)]), ("sitemap-products.xml", [u for u in SITEMAP if _isp(u)])):
+    for _fn, _us in (("sitemap.xml", [u for u in SITEMAP if not _isp(u)]), ("sitemap-products.xml", [u for u in SITEMAP if _isp(u) and "/bupum/p/" not in u])):
       open(f"{OUT}/{_fn}", "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' +
         "".join(f"<url><loc>{u}</loc><lastmod>{LMD[u]}</lastmod>" + (f"<image:image><image:loc>{html.escape((BASE + SIMG[u]) if SIMG[u].startswith('/') else SIMG[u])}</image:loc></image:image>" if SIMG.get(u) else "") + "".join(f"<image:image><image:loc>{BASE}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg</image:loc></image:image>" for d_ in ("mandeul", "sigongbeop") if f"/{d_}/" in u and not u.endswith("/") and os.path.exists(f"{ROOT}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg")) + "</url>\n" for u in _us) + "</urlset>\n")
     # 전체 자재 검색: 쇼핑몰 자재 + 제조사·철물·본덱스 사진 카드(.yri) 전부 → /assets/search.json
