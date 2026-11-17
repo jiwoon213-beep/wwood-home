@@ -2,6 +2,7 @@
 # 동(읍면동)마다 한 페이지: 단지별 준공연도·세대수·복도유형·난방 + 연식에 맞는 자재 안내.
 # 단지 이름은 공개 정보 그대로. 시공비·가격 숫자 없음.
 import os, re, csv
+import aptplan as AP
 from urllib.parse import quote
 
 YEAR = 2026
@@ -17,6 +18,13 @@ def load(root):
         y = r.get("사용승인일", "")[:4]
         r["y"] = int(y) if y.isdigit() else 0
         if r["시도"] == "전남" and r["시군구"].endswith("구"): r["시도"] = "광주"  # K-apt 표기 보정
+    A = {}
+    pa = f"{root}/data/apt_area.tsv"
+    if os.path.exists(pa):
+        for l in open(pa, encoding="utf-8"):
+            k, _, v = l.rstrip("\n").partition("\t")
+            A[k] = [(int(a), int(n)) for a, n in (x.split(":") for x in v.split(",") if ":" in x)]
+    for r in rows: r["ar"] = A.get(r["단지코드"], [])
     return [r for r in rows if r["n"] >= 100 and r["단지명"].strip()]
 
 
@@ -90,8 +98,19 @@ def build(root, page, E, CTA):
         for r in L[:40]:
             tips = "".join(f'<a href="{u}">{E(t)}</a>' for t, u in age_tips(r["y"]))
             meta = " · ".join(x for x in [f'{r["n"]:,}세대', f'{r["동수"]}개 동' if r.get("동수") not in ("", "0") else "", f'{r["y"]}년' if r["y"] else "", r.get("복도유형", ""), r.get("난방방식", "")] if x)
+            pl = ""
+            if r["ar"]:
+                grp = {}
+                for ar, nn in r["ar"]:
+                    k = AP.ptype(ar, r["y"]); grp.setdefault(k, [0, []]); grp[k][0] += nn; grp[k][1].append(ar)
+                main = max(grp, key=lambda k: grp[k][0])
+                chips = "".join(f'<a href="/apt/plan/{k}.html"><b>{min(v[1])}{"~" + str(max(v[1])) if max(v[1]) != min(v[1]) else ""}㎡</b> {v[0]:,}세대</a>' for k, v in sorted(grp.items(), key=lambda kv: min(kv[1][1])))
+                pl = (f'<div class="apar"><a class="apth" href="/apt/plan/{main}.html"><img loading="lazy" src="/assets/apt/plan-{main}.svg" width="1000" height="680" alt="{E(AP.P[main][0])} 예시 평면도"></a>'
+                      f'<div><p class="small"><b>평형(전용면적)</b> — 누르면 예시 평면도</p><div class="apl apch">{chips}</div></div></div>')
+            nq = quote(f'{r["단지명"].strip()} {dong} 평면도')
             cards += (f'<article class="apc" id="{E(r["단지코드"])}"><h3>{E(r["단지명"].strip())}</h3><p class="small muted">{E(meta)}</p>'
-                      f'<p>{E(age_text(r["y"]))}</p><div class="apl">{tips}</div></article>')
+                      f'<p>{E(age_text(r["y"]))}</p>{pl}<div class="apl">{tips}</div>'
+                      f'<p class="small"><a class="apreal" href="https://search.naver.com/search.naver?query={nq}" target="_blank" rel="noopener nofollow">이 단지 실제 평면도 보기(네이버) ↗</a></p></article>')
         more = (f'<p class="small muted">그 밖에 {len(L) - 40}개 단지: ' + ", ".join(E(r["단지명"].strip()) for r in L[40:]) + "</p>") if len(L) > 40 else ""
         near = "".join(f'<a href="/{fname(*k)}">{E(k[2])}</a>' for k in sorted(bygu.get((sd, gu), [])) if k[2] != dong)
         stat = (f'평균 약 {avg}년 차' + (f', 20년 넘은 단지 {old}곳' if old else '') + (f', 복도식 {bok}곳' if bok else '')) if ys else ""
@@ -131,4 +150,14 @@ def build(root, page, E, CTA):
     page("apt/index.html", "전국 아파트별 인테리어 자재 — 우리 단지 연식에 맞춘 안내 | 영진목재",
          f"전국 {len(pages):,}개 동, {sum(p[4] for p in pages):,}개 아파트 단지의 준공연도에 맞춘 중문·방문·몰딩·필름·바닥 자재 안내. 영진종합목재(대전) 재단·전국 배송.",
          f'<section class="wrap sec"><h1>전국 아파트별 인테리어 자재</h1><p class="lead">우리 동네 아파트를 고르면 단지 연식에 맞춰 많이 하는 공사와 자재를 보여 드립니다. (전국 100세대 이상, K-apt 공개 정보 · 매주 갱신)</p><div class="olk aplk apsd">{idx}</div></section>' + CTA, "/apt/")
+    AP.write(root)
+    for k in AP.ORDER:
+        t, d = AP.P[k][0], AP.P[k][1]
+        oth = "".join(f'<a href="/apt/plan/{x}.html">{E(AP.P[x][0])}</a>' for x in AP.ORDER if x != k)
+        page(f"apt/plan/{k}.html", f"아파트 {t} 평면도 예시 — 중문·방문·몰딩 위치 | 영진목재",
+             f"아파트 {t} 예시 평면도에 현관 중문, 방문, 걸레받이·몰딩, 아트월, 주방 상부장, 베란다 선반 자리를 번호로 표시했습니다. 누르면 시공법·자재로 이동합니다.",
+             f'<section class="wrap sec"><p class="crumb"><a href="/apt/">아파트별 자재</a> › 평면도 예시</p><h1>아파트 {E(t)} 평면도 예시</h1><p class="lead">{E(d)} 번호를 누르면 그 자리에 많이 쓰는 자재·시공법으로 이동합니다.</p>'
+             f'<figure class="apfig"><img src="/assets/apt/plan-{k}.svg" width="1000" height="680" alt="아파트 {E(t)} 예시 평면도 — 자재 위치 번호"></figure>{AP.legend(k, E)}'
+             '<p class="small muted">영진종합목재가 흔한 구조를 참고해 직접 그린 <b>예시</b>입니다. 실제 구조·치수는 단지와 세대마다 다르니, 문 크기·벽 길이는 현장에서 재 주세요. 실제 평면도는 각 단지 카드의 "실제 평면도 보기"로 확인하세요.</p></section>'
+             f'<section class="wrap sec"><h2>다른 평형</h2><div class="olk">{oth}</div><p class="hsh olh">옆으로 넘겨 보세요 ›</p></section>' + CTA, "/apt/")
     return pages
