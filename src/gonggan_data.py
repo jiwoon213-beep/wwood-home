@@ -333,29 +333,33 @@ SCENES += [
   [(10, 50, '나뭇결 월판넬', 'wall', '벽에 붙이는 나뭇결 판넬입니다.', '/younglim/wall.html', '영림 월판넬', [('/qna/wallpanel-vs-tempa.html', '월판넬 vs 템바')]), (45, 50, '흰색 몰딩·판넬', 'molding', '흰색 계열 몰딩입니다.', '/bigyo/mdf-vs-pvc-molding.html', 'MDF vs PVC 몰딩', []), (75, 50, '짙은 색 몰딩', 'molding', '월넛·체리 계열 몰딩입니다.', '/gagyeok/molding-gagyeok.html', '몰딩 가격', []), (90, 45, '장식 몰딩', 'molding', '금색·무늬 몰딩입니다.', '/qna/crown-molding.html', '크라운 몰딩', [])]),
 ]
 
-# 분류 (공간 사진 목록 페이지에서 줄별로 옆으로 넘기기)
-CATS = [
-    ("home", "집 인테리어", "거실·현관·방·주방 사진 속 도어·중문·마루·아트월"),
-    ("cafe", "카페·상가 인테리어", "카페 창가·단상·테라스·외벽 자재"),
-    ("space", "매장 공간 둘러보기", "영진목재 매장 입구·계산대·천장·쇼룸"),
-    ("wall", "벽재·아트월 견본", "우드월·러스틱월·코코넛 타일·스톤·불연 보드·타공 판넬"),
-    ("wood", "목재·합판·루바 진열", "구조목·방부목·합판·OSB·루바·계단판"),
-    ("hw", "철물·공구·부속", "피스·연결철물·서랍레일·경첩·손잡이"),
-    ("stock", "몰딩·실리콘 창고", "몰딩·걸레받이·문틀·실리콘·폼"),
-    ("out", "외장·정원·온실", "사이딩·지붕 차양·데크 테이블·나무 온실"),
+# 2026-11-17 추가 4곳(영림 공간 연출 사진)
+SCENES += [
+ ("hidden-folding-closet", "히든 폴딩 도어와 간접조명 수납 — 거실 옆 수납공간 자재 둘러보기", YL + "12933513-3976-4f9d-b274-cec1fd3b0a30.jpg", "사진: 영림",
+  "나뭇결 벽 안에 수납 공간을 만들고, 접어서 여는 히든 폴딩 도어로 가린 거실입니다. 문을 닫으면 벽처럼 보입니다.",
+  [(24, 55, "영림 베네토/소프 라인 히든폴딩 도어", "door", "문짝이 반으로 접히며 열리는 도어입니다. 닫으면 나뭇결 벽과 이어져 문이 잘 보이지 않습니다.", "/younglim/p/3338.html", "제품 보기", [("/bigyo/hidden-vs-normal-door.html", "히든도어 vs 일반 방문"), ("/younglim/jungmun-folding.html", "폴딩 도어 전체")]),
+   (47, 40, "간접조명 오픈 선반", "shelf", "선반 아래에 조명을 숨겨 수납공간이 은은하게 밝습니다.", "/qna/floating-shelf.html", "무지주 선반 만들기", [("/mandeul/byeokseonban.html", "벽 선반 만들기")]),
+   (35, 68, "흰 수납장", "cabinet", "선반 아래를 문 달린 수납장으로 채웠습니다.", "/qna/butbakijang-self.html", "붙박이장 만들기", [("/qna/push-latch.html", "손잡이 없는 문")]),
+   (63, 45, "나뭇결 월판넬 벽", "wall", "벽과 수납 박스를 같은 나뭇결 판넬로 감싸 하나로 이어 보이게 했습니다.", "/younglim/wall.html", "월판넬 보기", [("/qna/wallpanel-vs-tempa.html", "월패널 vs 템바보드")]),
+   (85, 86, "원목 낮은 테이블", "furniture", "두꺼운 원목 다리의 낮은 테이블입니다.", "/mandeul/teibeul.html", "테이블 만들기", [("/qna/table-dari.html", "테이블 다리")]),
+   (20, 90, "밝은 바닥 타일", "tile", "큰 판 타일로 바닥을 밝게 깔았습니다.", "/qna/badakjae-goreugi.html", "바닥재 고르는 법", [("/qna/tile-primer.html", "타일 프라이머")])]),
+ ("pocket-door-woodwall", "무레일 포켓 도어와 짙은 우드월 — 라운지 방 자재 둘러보기", YL + "257bcafb-3e55-4c5a-8c20-3e54b93e514d.jpg", "사진: 영림",
+  "짙은 나뭇결 벽 속으로 문이 들어가는 포켓 도어 방입니다. 바닥 레일 없이 문이 벽 안에 숨습니다.",
+  [(69, 45, "영림 프레임리스 라인 무레일 포켓 시스템", "door", "문이 벽 속으로 밀려 들어가는 포켓 도어입니다. 바닥에 레일이 없어 문턱이 깔끔합니다.", "/younglim/p/2655.html", "제품 보기", [("/bigyo/pocket-vs-sliding-door.html", "포켓 vs 슬라이딩"), ("/younglim/door-apel.html", "프리미엄 도어 전체")]),
+   (30, 30, "짙은 나뭇결 월판넬", "wall", "벽 전체를 짙은 나뭇결 판넬로 덮어 차분한 분위기를 냈습니다.", "/younglim/wall.html", "월판넬 보기", [("/qna/wallpanel-vs-tempa.html", "월패널 vs 템바보드")]),
+   (88, 50, "옆 벽 나뭇결 판넬", "woodwall", "복도 쪽 벽도 같은 나뭇결로 이어 붙였습니다.", "/qna/hapan-interior.html", "나무로 벽 마감", [("/younglim/wall.html", "월판넬 보기")]),
+   (60, 88, "짙은 색 마루", "maru", "벽과 어울리는 짙은 톤 마루 바닥입니다.", "/younglim/maru.html", "마루 보기", [("/bigyo/wonmok-vs-kangmaru.html", "원목마루 vs 강마루"), ("/qna/badakjae-goreugi.html", "바닥재 고르는 법")])]),
+ ("damping-3yeondong-hall", "반자동 댐핑 3연동 중문과 곡선 수납장 — 밝은 현관 자재 둘러보기", YL + "763743bc-5eee-444b-a905-404a44a77203.jpg", "사진: 영림",
+  "흰 프레임 3연동 중문으로 현관과 복도를 나누고, 옆 벽에 모서리가 둥근 낮은 수납장을 둔 현관입니다.",
+  [(38, 52, "영림 반자동 · 댐핑 3연동", "jungmun", "문 세 짝이 함께 움직이고, 끝에서 천천히 닫히는(댐핑) 3연동 중문입니다. 유리가 커서 현관이 밝습니다.", "/younglim/p/2675.html", "제품 보기", [("/qna/3yeondong-self.html", "3연동 중문 셀프 시공"), ("/bigyo/3yeondong-vs-one-sliding.html", "3연동 vs 원슬라이딩")]),
+   (38, 18, "중문 상부 레일·프레임", "jungmun", "천장 아래에 레일 프레임을 수평으로 달아 문을 겁니다.", "/sigongbeop/jungmun.html", "중문 시공법", [("/qna/door-silcheuk.html", "문·중문 실측")]),
+   (78, 76, "곡선 낮은 수납장", "cabinet", "모서리를 둥글린 흰 수납장입니다. 위는 소품 선반처럼 씁니다.", "/qna/sinbaljang-jomyeong.html", "신발장 만들기", [("/qna/push-latch.html", "손잡이 없는 문")]),
+   (40, 93, "현관 바닥 타일", "tile", "큰 판 타일을 깔아 현관과 복도를 이어 줬습니다.", "/qna/hyeongwan-tile-deotbang.html", "현관 타일 덧방", [("/qna/tile-jareugi.html", "타일 자르기")])]),
+ ("navy-season-3yeondong", "네이비 시즌 3연동 중문과 짙은 방문 — 거실 자재 둘러보기", YL + "d34ae162-0e52-42a4-b2e8-37481e6e755b.jpg", "사진: 영림",
+  "짙은 네이비 프레임 3연동 중문과 위쪽 같은 색 막음판으로 방 입구를 포인트로 만든 거실입니다. 안쪽에 짙은 색 방문도 보입니다.",
+  [(40, 58, "영림 시즌(YT-119) 3연동", "jungmun", "줄무늬 유리가 들어간 네이비 프레임 3연동 문입니다. 빛은 들고 안은 덜 보입니다.", "/younglim/p/1742.html", "제품 보기", [("/qna/3yeondong-self.html", "3연동 중문 셀프 시공"), ("/younglim/jungmun.html", "영림 중문 전체")]),
+   (40, 12, "문 위 막음판", "jungmun", "문 위 빈 벽을 문틀과 같은 색 판으로 막아 문이 천장까지 이어져 보입니다.", "/sigongbeop/jungmun.html", "중문 시공법", [("/qna/door-silcheuk.html", "문·중문 실측")]),
+   (20, 61, "중문 손잡이", "handle", "프레임에 붙은 세로 손잡이입니다.", "/qna/son-jabi-chai.html", "손잡이 고르기", [("/bupum/", "손잡이·부속")]),
+   (90, 55, "짙은 색 방문", "door", "안쪽 방에 짙은 색 방문과 레버 손잡이를 달았습니다.", "/younglim/", "영림 도어 보기", [("/qna/door-silcheuk.html", "문 실측"), ("/qna/gyeongcheop-jojeol.html", "경첩 조절")]),
+   (50, 93, "밝은 마루 바닥", "maru", "옅은 나뭇결 마루를 깔아 네이비 문이 돋보입니다.", "/younglim/maru.html", "마루 보기", [("/qna/badakjae-goreugi.html", "바닥재 고르는 법")])]),
 ]
-_CM = {
-    "space": "store-entrance-door store-counter store-beam-entrance store-emboss-ceiling store-header-panel store-barn-door store-mokmo-wall store-blue-molding showroom-hall showroom-jipseong",
-    "wall": "showroom-woodwall store-scrapart-wall store-diagonal-panel store-stone-panel store-cork-wall store-scrapart-lattice store-spiral-art store-mosaic-wall store-whitewash-wall store-coconut-tile store-rustic-wall store-lattice-perforated store-buryeon-board store-marble-panel",
-    "wood": "store-lumber-rack store-plywood-wall store-sugi-ruba store-ruba-upper store-hardwood-ruba store-gujomok-board store-stair-tread",
-    "hw": "store-tool-wall store-hardware-bins store-handle-showcase",
-    "stock": "store-silicone-room store-molding-rack store-molding-panel",
-    "out": "store-garden-picnic store-greenhouse store-greenhouse-shelf store-greenhouse-wall store-canopy-roof store-front-siding store-siding-closeup",
-}
-_CMAP = {s: k for k, v in _CM.items() for s in v.split()}
-
-def cat(slug):
-    if slug in _CMAP: return _CMAP[slug]
-    if slug.startswith("cafe-"): return "cafe"
-    if slug.startswith(("store-", "showroom-")): return "space"
-    return "home"
