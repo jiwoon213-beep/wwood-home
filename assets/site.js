@@ -258,3 +258,43 @@ document.addEventListener("click", function (e) {
   },{passive:true});
   document.addEventListener('keydown',function(e){if(e.target.closest&&e.target.closest('input,textarea'))return;if(e.key==='ArrowRight')location.href=nav.getAttribute('data-next');if(e.key==='ArrowLeft')location.href=nav.getAttribute('data-prev')});
 })();
+
+/* 계산 결과 → 공유용 이미지 카드 (저장·카톡 등 공유) */
+(function(){
+  var crs=document.querySelectorAll('.cslide .cr');
+  if(!crs.length) return;
+  function wrap(c,t,w){var o=[],l='';for(var i=0;i<t.length;i++){var ch=t[i];if(c.measureText(l+ch).width>w&&l){o.push(l);l=ch.trim();}else l+=ch;}if(l)o.push(l);return o;}
+  function card(box){
+    var cd=box.closest('.card'),h=(cd.querySelector('h2')||{}).textContent||'자재 계산';
+    var cond=[];cd.querySelectorAll('.cg label').forEach(function(lb){var f=lb.querySelector('input,select');if(!f)return;var v=f.tagName=='SELECT'?f.options[f.selectedIndex].text:f.value;var n=(lb.childNodes[0]&&lb.childNodes[0].textContent||'').trim();if(n&&v!=='')cond.push(n+': '+v);});
+    var hd=(box.querySelector('.crh')||{}).textContent||'';var rows=[];box.querySelectorAll('.crw').forEach(function(r){var n=r.querySelector('span'),v=r.querySelector('b');if(n&&v)rows.push([n.textContent.trim(),v.textContent.trim()]);});
+    var also=[].map.call(box.querySelectorAll('.qb .qc'),function(a){return a.textContent.trim();}).join(' · ');
+    var W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');
+    var F='"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif';
+    x.fillStyle='#faf7f1';x.fillRect(0,0,W,H);x.fillStyle='#1d1b18';x.fillRect(0,0,W,150);
+    x.fillStyle='#fff';x.font='900 46px '+F;x.fillText('영진종합목재',70,92);x.fillStyle='#f0c896';x.font='700 30px '+F;x.textAlign='right';x.fillText('자재 계산 결과',W-70,90);x.textAlign='left';
+    var y=240;x.fillStyle='#1d1b18';x.font='900 58px '+F;wrap(x,h,W-140).slice(0,2).forEach(function(l){x.fillText(l,70,y);y+=72;});
+    y+=10;x.fillStyle='#6e6860';x.font='500 32px '+F;cond.slice(0,5).forEach(function(l){wrap(x,'· '+l,W-140).slice(0,1).forEach(function(s){x.fillText(s,70,y);y+=46;});});
+    y+=30;var top=y;x.fillStyle='#fff';x.strokeStyle='#e6dccb';x.lineWidth=3;x.beginPath();if(x.roundRect)x.roundRect(50,y-10,W-100,H-y-230,28);else x.rect(50,y-10,W-100,H-y-230);x.fill();x.stroke();
+    y+=62;if(hd){x.fillStyle='#b06a2c';x.font='900 48px '+F;wrap(x,hd,W-180).slice(0,2).forEach(function(s){x.fillText(s,90,y);y+=64;});y+=8;}
+    rows.slice(0,6).forEach(function(r){if(y>H-300)return;x.strokeStyle='#efe7da';x.lineWidth=2;x.beginPath();x.moveTo(90,y-44);x.lineTo(W-90,y-44);x.stroke();x.fillStyle='#4a453e';x.font='500 36px '+F;x.fillText(wrap(x,r[0],560)[0],90,y+6);x.fillStyle='#1d1b18';x.font='900 46px '+F;x.textAlign='right';x.fillText(r[1],W-90,y+8);x.textAlign='left';y+=84;});
+    if(also&&y<H-300){x.fillStyle='#6e6860';x.font='500 30px '+F;wrap(x,'함께 필요한 것: '+also,W-180).slice(0,2).forEach(function(s){x.fillText(s,90,y);y+=42;});}
+    x.fillStyle='#b06a2c';x.font='700 30px '+F;x.fillText('이 카드를 매장에 보여주시면 바로 준비·재단해 드립니다',90,H-275);
+    x.fillStyle='#1d1b18';x.fillRect(0,H-190,W,190);x.fillStyle='#fff';x.font='900 44px '+F;x.fillText('www.wwood.co.kr/calc.html',70,H-110);
+    x.fillStyle='#d9cfbf';x.font='500 28px '+F;x.fillText('대전 유성대로 44 · 042-545-2900 · 재단·전국 배송',70,H-56);
+    return c;
+  }
+  crs.forEach(function(box){
+    var b=document.createElement('button');b.type='button';b.className='b o shcard';b.textContent='📷 결과 카드로 저장·공유';
+    box.insertAdjacentElement('afterend',b);
+    b.addEventListener('click',function(){
+      var c=card(box),nm='영진목재_계산결과.png';
+      c.toBlob(function(bl){
+        try{if(window.gtag)gtag('event','share_card',{calc:box.id});}catch(e){}
+        var f=null;try{f=new File([bl],nm,{type:'image/png'});}catch(e){}
+        if(f&&navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f],title:'자재 계산 결과',text:'영진종합목재 자재 계산기 https://www.wwood.co.kr/calc.html'}).catch(function(){});return;}
+        var a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download=nm;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},800);
+      },'image/png');
+    });
+  });
+})();
