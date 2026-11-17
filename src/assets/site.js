@@ -185,3 +185,11 @@ WWC("hjsave");if(b){b.textContent="저장됨 ✓ 현장함 보기 ›";b.onclick
 })();
 /* 사진 아래 카드 줄: 점을 누르면 해당 카드로 옆으로 이동 */
 (function () { document.querySelectorAll(".hsw .hsd").forEach(function (d) { d.addEventListener("click", function () { var w = d.closest(".hsw"), c = w && w.querySelector('.hsl .hsp[data-i="' + d.getAttribute("data-i") + '"]'), l = w && w.querySelector(".hsl"); if (c && l) l.scrollTo({ left: c.offsetLeft - l.offsetLeft, behavior: "smooth" }); }); }); })();
+/* 홈 '더 둘러보기' 탭: 한 번에 한 묶음만 보이기 */
+(function () {
+  var bar = document.querySelector(".tgb"); if (!bar) return;
+  var S = document.querySelectorAll("[data-tg]");
+  function show(t) { S.forEach(function (s) { s.classList.toggle("tghide", s.getAttribute("data-tg") !== t); }); bar.querySelectorAll("button").forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-t") === t); }); }
+  bar.addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; show(b.getAttribute("data-t")); try { if (window.WWC) WWC("hometab"); } catch (x) {} });
+  show(bar.querySelector("button").getAttribute("data-t"));
+})();

@@ -578,3 +578,10 @@ ul.mgl{list-style:none;padding:0;margin:10px 0}ul.mgl li{padding:12px 14px;borde
 @media(max-width:700px){.hspop{position:fixed;left:8px!important;right:8px!important;bottom:70px!important;top:auto!important;width:auto;max-height:60vh;z-index:60}}
 .ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}.ggi{position:relative;display:block}.ggi img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;display:block}.ggi i{position:absolute;width:14px;height:14px;border-radius:50%;background:#2f8bff;border:2px solid #fff;transform:translate(-50%,-50%)}
 .mallbox{border:2px solid #c62a1f22;background:#fffaf7}.mallbox h2{margin-top:0}
+/* 홈: 3단계 동선 + 탭 */
+.f3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.f3c{background:#fff;border:1px solid var(--line,#e4ded4);border-radius:16px;padding:16px;position:relative}
+.f3n{display:inline-flex;width:30px;height:30px;border-radius:50%;background:#c62a1f;color:#fff;font-weight:900;align-items:center;justify-content:center;margin-right:8px}.f3c b{font-size:18px}.f3c p{margin:6px 0 10px;color:#5e574e;font-size:14px}
+.f3l{display:flex;flex-wrap:wrap;gap:6px}.f3l a{border:1px solid #ddd;border-radius:20px;padding:6px 12px;font-size:14px;background:#faf8f5;text-decoration:none;color:inherit}.f3l a:first-child{background:#1d1b18;color:#fff;border-color:#1d1b18}
+@media(max-width:700px){.f3{grid-template-columns:1fr}}
+.tgb{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;position:sticky;top:0}.tgb button{flex:0 0 auto;border:1px solid #ddd;background:#fff;border-radius:22px;padding:8px 16px;font:inherit;font-weight:700;cursor:pointer}.tgb button.on{background:#c62a1f;color:#fff;border-color:#c62a1f}
+.tghide{display:none!important}

@@ -59,14 +59,14 @@ MALLCAT = {"hapan": ("24", "합판·판재"), "osb": ("24", "OSB·판재"), "mdf
            "chimmok": ("23", "침목·각재"), "hapdeck": ("25", "데크재"), "jipseong": ("53", "집성판·우드슬랩"), "hinoki": ("27", "루바·내장재"), "molding": ("27", "몰딩·내장재"), "film": ("27", "내장재"),
            "gypsum": ("27", "석고·내장재"), "maru": ("26", "마루·후로링"), "tile": ("28", "스톤·타일"), "siding": ("31", "외장재·사이딩"), "insul": ("30", "방음·단열·방수"), "sound": ("30", "방음·흡음"),
            "door": ("29", "실내 도어·문틀"), "hardware": ("32", "철물"), "stain": ("35", "페인트·스테인")}
-def mallbox(mats):
+def mallbox(mats, mx=2):
     """설명 끝에 '이 자재 사러 가기' — 매장 쇼핑몰(wwood.kr) 해당 분류로 바로"""
     seen, a = set(), []
     for m in mats:
         c = MALLCAT.get(m)
         if not c or c[0] in seen: continue
         seen.add(c[0]); a.append(f'<a class="b r" href="https://wwood.kr/home/mall/shoplist.php?depth=1&amp;code1_idx={c[0]}">{c[1]} 쇼핑몰에서 보기 ›</a>')
-        if len(a) >= 2: break
+        if len(a) >= mx: break
     if not a: return ""
     return '<section class="wrap sec"><div class="card mallbox"><h2>이 자재 사러 가기</h2><p class="small muted">영진종합목재 쇼핑몰(wwood.kr)에서 바로 보거나, 매장에서 원하는 크기로 재단해 가세요.</p><div class="row">' + "".join(a) + '<a class="b o" href="/cut.html">재단 그림 만들기</a><a class="b o" href="/visit.html">매장 길찾기</a></div></div></section>'
 def plink(p):
@@ -345,7 +345,18 @@ def _lazyimg(doc):
     return doc[:b] + re.sub(r"<img [^>]*>", f, doc[b:]) if b >= 0 else doc
 
 
+_MKW = [("hapdeck", r"합성\s?데크"), ("bangbu", r"방부목|방부 ?데크"), ("hapan", r"합판"), ("osb", r"OSB"), ("mdf", r"MDF"), ("jipseong", r"집성"), ("gypsum", r"석고"),
+        ("insul", r"단열|아이소핑크|이보드"), ("hinoki", r"루바|편백|히노끼"), ("molding", r"몰딩|걸레받이"), ("film", r"필름|시트지"), ("siding", r"사이딩"), ("maru", r"마루|장판|데코타일"),
+        ("stain", r"스테인|페인트|바니쉬"), ("gujo", r"구조목|구조재|각재|다루끼|2×4"), ("door", r"도어|중문|문틀|방문"), ("tile", r"타일"), ("sound", r"흡음|방음"), ("hardware", r"철물|앙카|피스")]
+def _guessmats(t):
+    sc = sorted(((len(re.findall(rx, t)), k) for k, rx in _MKW), reverse=True)
+    return [k for n, k in sc if n >= 2][:2]
 def page(path, title, desc, body, active="", jsonld=None, img=None):
+    if 'card mallbox' not in body and re.match(r"(jajae|mandeul|sigongbeop|gagyeok|gonggan)/(?!index)", path) or path in ("calc.html", "cut.html", "price.html"):
+        _mm = [path.split("/")[1][:-5]] if path.startswith("jajae/") else (["hapan", "gujo", "hapdeck"] if path in ("calc.html", "cut.html", "price.html") else _guessmats(re.sub(r"<[^>]+>", " ", body)))
+        if path in ("calc.html", "cut.html", "price.html"): _mb = mallbox(_mm, 3)
+        else: _mb = mallbox(_mm)
+        if _mb: body = body.replace('<section class="cta">', _mb + '<section class="cta">', 1) if '<section class="cta">' in body else body + _mb
     if path not in _SW_SKIP and "<table" in body and "/p/" not in path: body = _tbl_cards(body)
     title = _tshort(title)
     if path in _REL:
@@ -519,6 +530,29 @@ def build():
     _jg = '<section class="wrap sec"><h2>전국 배송 — 원하는 크기로 재단해서 보내 드립니다</h2><p>서울·경기부터 부산·제주까지, 3000평 매장의 자재를 재단해 용달(제주는 배편)로 보냅니다. 운임은 품목·수량을 보고 먼저 견적 드립니다.</p><div class="qk">' + "".join(f'<a href="/jeonguk/{r[0]}.html">{r[1]} 목재 배송</a>' for r in _nt.REG) + '<a href="/jaedan-baesong.html">재단 후 전국 배송 방법</a></div></section>'
     _jg += '<section class="wrap sec"><h2>제품별로 찾아보기 — 사진·규격·기준가</h2><div class="qk">' + "".join(f'<a href="{h}">{t}</a>' for h, t in [("/bupum/p/", "철물·공구·부속 제품"), ("/bondex/p/", "본덱스 스테인·페인트"), ("/younglim/p/", "영림 도어·몰딩·필름"), ("/yerim/p/", "예림 중문·도어"), ("/shenu/p/", "쉐누 도어·몰딩"), ("/knauf/", "크나우프 석고·천장·단열"), ("/geonjae/p/", "목조·외장·내장 건축자재"), ("/suip/p/", "수입 창호·목조주택 자재"), ("/bigyo/", "자재·인테리어 비교")]) + '</div></section>'
     body = body.replace('<section class="cta">', _jg + '<section class="cta">', 1) if '<section class="cta">' in body else body + _jg
+    # 처음 온 손님용 3단계 동선 + 나머지는 탭으로 접기(내용은 그대로 HTML에 있음 — 검색엔진은 전부 읽음)
+    _f3 = ('<section class="wrap sec flow3"><h2>3단계로 끝내기</h2><div class="f3">'
+           '<div class="f3c"><span class="f3n">1</span><b>자재 찾기·계산</b><p>어떤 자재가 얼마나 필요한지 확인해요.</p><div class="f3l"><a href="/jaryo/">전체 자재</a><a href="/calc.html">자재비 계산기</a><a href="/sajin.html">사진으로 찾기</a><a href="/price.html">기준가</a></div></div>'
+           '<div class="f3c"><span class="f3n">2</span><b>재단·배송 문의</b><p>원하는 크기로 잘라 매장 픽업 또는 전국 배송.</p><div class="f3l"><a href="/cut.html">재단 그림 만들기</a><a href="/jeonguk/">전국 배송</a><a href="https://wwood.kr/home/mall/">쇼핑몰 주문</a><a href="tel:' + TEL.replace("-", "") + '">전화 ' + TEL + '</a></div></div>'
+           '<div class="f3c"><span class="f3n">3</span><b>시공 의뢰</b><p>직접 하기 어렵다면 시공까지 맡기세요.</p><div class="f3l"><a href="/yeongyeol/">시공팀 연결</a><a href="/sigong.html">시공 사례</a><a href="/local/">지역별 시공</a></div></div>'
+           '</div></section>')
+    _TG = [("make", "만들기·시공법", r"DIY 만들기|자재 시공법|무엇을 만들고"), ("mat", "자재·가격", r"자재 백과|제품별로 찾아보기|기본 자재 기준가"), ("photo", "공간 사진", r"공간 사진 둘러보기"),
+           ("video", "영상", r"새로 올라온 영상|많이 본 영상"), ("news", "소식", r"소식·자재 정보")]
+    _first = [None]
+    def _tag(mm):
+        head = body[mm.end():mm.end() + 600]
+        h = re.search(r"<h2[^>]*>(.*?)</h2>", head, re.S)
+        if not h: return mm.group(0)
+        for tid, _n, rx in _TG:
+            if re.search(rx, re.sub(r"<[^>]+>", "", h.group(1))):
+                if _first[0] is None: _first[0] = mm.start()
+                return mm.group(0)[:-1] + f' data-tg="{tid}">'
+        return mm.group(0)
+    body = re.sub(r'<section class="wrap sec[^"]*">', _tag, body)
+    _bar = '<section class="wrap sec tgbar" id="more"><h2>더 둘러보기</h2><div class="tgb" role="tablist">' + "".join(f'<button role="tab" data-t="{t}"{" class=on" if i == 0 else ""}>{n}</button>' for i, (t, n, _r) in enumerate(_TG)) + '</div></section>'
+    body = body.replace("<!--MKHOME-->", _bar + "<!--MKHOME-->", 1) if "<!--MKHOME-->" in body else body
+    _tl = body.find('<section class="wrap sec"><div class="tl4">')
+    body = (body[:_tl] + _f3 + body[_tl:]) if _tl >= 0 else _f3 + body
     page("index.html", "대전 목재 영진목재 | 3000평 목재소, 원하는 사이즈 재단·전국 배송", "대전 영진목재(월드건축자재) 3000평 목재소. 합판·방부목·데크·구조재를 원하는 크기로 재단해 서울·경기·부산·제주까지 전국 배송, 기준가·시공 영상.", body, "", BIZ)
 
     # 소식·정보
@@ -1987,10 +2021,10 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     _newmk = sorted([x for x in MK if x[0] not in _nx0], key=lambda x: _recent(x, "mandeul"))[:4]
     _hm = (_newmk + [x for x in _hm if x not in _newmk])[:8]
     _sgh = sorted(SG, key=lambda x: _recent(x, "sigongbeop"))[:8]  # 새 시공법 먼저
-    MKHOME = ('<section class="wrap sec"><h2>DIY 만들기 — 자재와 재단 크기</h2><p class="small muted">만들 것을 고르면 필요한 자재, 몇 mm로 몇 개 자를지, 만드는 순서와 영상까지 나옵니다. 매장에서 그 크기대로 잘라 드려요.</p><div class="mg m2">'
+    MKHOME = ('<section class="wrap sec" data-tg="make"><h2>DIY 만들기 — 자재와 재단 크기</h2><p class="small muted">만들 것을 고르면 필요한 자재, 몇 mm로 몇 개 자를지, 만드는 순서와 영상까지 나옵니다. 매장에서 그 크기대로 잘라 드려요.</p><div class="mg m2">'
               + "".join(f'<a class="mc" href="/mandeul/{x[0]}.html">' + (f'<img loading="lazy" src="/assets/mandeul/{x[0]}.jpg" alt="{E(x[1])}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if os.path.exists(f"{ROOT}/assets/mandeul/{x[0]}.jpg") else "") + f'<b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in _hm)
               + f'</div><p><a class="b o" href="/mandeul/">DIY 만들기 {len(MK)}가지 전체 보기 ›</a></p></section>'
-              + '<section class="wrap sec"><h2>인테리어 자재 시공법</h2><p class="small muted">석고보드·루바·사이딩·몰딩·마루·필름·문 교체까지 — 필요한 자재 수량, 그림 설명서, 시공 영상을 정리했습니다. 어려운 공사는 직접 시공도 합니다.</p><div class="mg m2">'
+              + '<section class="wrap sec" data-tg="make"><h2>인테리어 자재 시공법</h2><p class="small muted">석고보드·루바·사이딩·몰딩·마루·필름·문 교체까지 — 필요한 자재 수량, 그림 설명서, 시공 영상을 정리했습니다. 어려운 공사는 직접 시공도 합니다.</p><div class="mg m2">'
               + "".join(f'<a class="mc" href="/sigongbeop/{x[0]}.html">' + (f'<img loading="lazy" src="/assets/sigongbeop/{x[0]}.jpg" alt="{E(x[1])}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if os.path.exists(f"{ROOT}/assets/sigongbeop/{x[0]}.jpg") else "") + f'<b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in _sgh)
               + f'</div><p><a class="b o" href="/sigongbeop/">시공법 {len(SG)}가지 전체 보기 ›</a></p></section>')
     # 첫 화면: 제품 사진(제조사)·인테리어 트렌드·우리 동네 시공·전국 배송 — 주요 섹션으로 내부 링크
