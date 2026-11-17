@@ -1957,7 +1957,8 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         if v["id"] not in VD: continue
         d, ln, ts = VD[v["id"]]
         st = _vtitle(v)
-        first = re.split(r"(?<=[.!?다요])\s", d.replace("\n", " "), maxsplit=1)[0] if d else v["title"]
+        _dl = "\n".join(l for l in (d or "").split("\n") if l.strip() and not re.match(r"\s*(📍|▶|📦|#|https?://|\d+:\d\d)", l))
+        first = re.split(r"(?<=[.!?다요])\s", _dl.replace("\n", " "), maxsplit=1)[0] if _dl else v["title"]
         rel = [x for x in V if x["cat"] == v["cat"] and x["id"] != v["id"]]
         rel = sorted(rel, key=lambda x: -x["n"])[:8]
         ml = " · ".join(f'<a href="/jajae/{m}.html">{matname3[m]} 용도·기준가</a>' for m in v["mats"] if m in matname3)
@@ -1967,7 +1968,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         if ts: ld["uploadDate"] = _dt.datetime.fromtimestamp(ts, _dt.timezone(_dt.timedelta(hours=9))).isoformat()
         if ln: ld["duration"] = f"PT{ln // 60}M{ln % 60}S"
         cn = CATN.get(v["cat"], "영상")
-        vds = (first or st)[:110]
+        vds = (("1분 쇼츠: " if v["type"] == "S" else "") + (first or st))[:110]
         if len(vds) < 60: vds = (vds + " " + (v["title"] if v["title"] not in vds else "") + f" — 대전 영진종합목재(월드건축자재) {cn} 영상. 자재 재단·전국 배송.").replace("  ", " ")[:150]
         VSM.append((f"{BASE}/v/{v['id']}.html", v, (d or v["title"]), ts, ln))
         _mfq = json.load(open(f"{ROOT}/data/mat_faq.json", encoding="utf-8")) if "_MFQ" not in globals() else _MFQ
@@ -2292,6 +2293,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
              "sigong": "시공 사례", "video": "시공 영상", "v": "영상별 페이지", "news": "소식", "bigyo": "자재 비교", "daejeon": "대전", "sejong": "세종", "p": "상품 안내", "gongju": "공주", "cheongju": "청주", "cheonan-asan": "천안·아산", "gyeryong-nonsan": "계룡·논산", "geumsan-okcheon": "금산·옥천"}
     _grp = {}
     for _u in SITEMAP:
+        if "/bupum/p/" in _u: continue  # 철물박사 상품 6천여 개는 빼서 핵심 페이지 목록을 가볍게
         _p = _u[len(BASE) + 1:]
         _k = _p.split("/")[0] if "/" in _p else ""
         _pp = (_p if _p.endswith(".html") else _p + "index.html") or "index.html"
