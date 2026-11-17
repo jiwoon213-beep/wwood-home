@@ -226,3 +226,16 @@ WWC("hjsave");if(b){b.textContent="저장됨 ✓ 현장함 보기 ›";b.onclick
   window.addEventListener('load',function(){setTimeout(setup,800)});
   var _t;document.addEventListener('click',function(){clearTimeout(_t);_t=setTimeout(setup,350)},true);window.addEventListener('resize',function(){clearTimeout(_t);_t=setTimeout(setup,400)});
 })();
+
+/* 구글 애널리틱스: 전화·길찾기·쇼핑몰 이동 클릭 */
+document.addEventListener("click", function (e) {
+  try {
+    var a = e.target.closest && e.target.closest("a[href]"); if (!a || !window.gtag) return;
+    var h = a.getAttribute("href") || "", ev = "";
+    if (/^tel:/.test(h)) ev = "call_click";
+    else if (/visit\.html|map\.naver|naver\.me|map\.kakao|google\.[a-z.]+\/maps|g\.page/.test(h)) ev = "directions_click";
+    else if (/wwood\.kr/.test(h) && !/wwood\.co\.kr/.test(h)) ev = "shop_click";
+    else if (/youtube\.com|youtu\.be/.test(h)) ev = "youtube_click";
+    if (ev) gtag("event", ev, { link_url: h, page_path: location.pathname });
+  } catch (x) {}
+}, true);
