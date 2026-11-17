@@ -425,6 +425,8 @@ def _newrel(path, body):
     hit = [p for p, pm in _PMATS if pm & mm and f"/news/{p['slug']}.html" not in body][:3]
     if not hit: return ""
     return ('<section class="wrap sec"><h2>새로 올라온 관련 글</h2><div class="pl hs">' + "".join(f'<a class="pc" href="/news/{p["slug"]}.html"><b>{html.escape(p["title"])}</b><span>{p.get("date", "")}</span></a>' for p in hit) + '</div></section>')
+# 검색 클릭률 개선: data/title_override.json {"경로.html": {"title": .., "desc": .., "date": .., "why": ..}} — 주간 자동 작업이 서치콘솔 실적 보고 고침
+TOV = json.load(open(f"{ROOT}/data/title_override.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/title_override.json") else {}
 def page(path, title, desc, body, active="", jsonld=None, img=None):
     if 'card mallbox' not in body and re.match(r"(jajae|mandeul|sigongbeop|gagyeok|gonggan)/(?!index)", path) or path in ("calc.html", "cut.html", "price.html"):
         _mm = [path.split("/")[1][:-5]] if path.startswith("jajae/") else (["hapan", "gujo", "hapdeck"] if path in ("calc.html", "cut.html", "price.html") else _guessmats(re.sub(r"<[^>]+>", " ", body)))
@@ -434,6 +436,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
     _nr = _newrel(path, body)
     if _nr: body = body.replace('<section class="cta">', _nr + '<section class="cta">', 1) if '<section class="cta">' in body else body + _nr
     if path not in _SW_SKIP and "<table" in body and "/p/" not in path: body = _tbl_cards(body)
+    if path in TOV: title = TOV[path].get("title") or title; desc = TOV[path].get("desc") or desc
     title = _tshort(title)
     if path in _REL:
         _rb = '<section class="wrap sec"><div class="qk qk2"><b>👉 함께 보기</b>' + "".join(f'<a href="{h}">{t}</a>' for h, t in _REL[path]) + '</div></section>'
