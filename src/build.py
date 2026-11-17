@@ -1795,17 +1795,28 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
                 f'<div class="hsl">{pops}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p></div>')
     for sc in _GG.SCENES:
         slug, ttl, img, cred, lead, spots = sc
-        oth = [x for x in _GG.SCENES if x[0] != slug]
+        _mc = _GG.cat(slug); _mct = dict((k, t) for k, t, d in _GG.CATS)[_mc]
+        oth = [x for x in _GG.SCENES if x[0] != slug and _GG.cat(x[0]) == _mc]
+        oth2 = [x for x in _GG.SCENES if _GG.cat(x[0]) != _mc]
         ld = {"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": img if img.startswith("http") else BASE + img, "name": ttl, "description": lead,
               "about": [{"@type": "Thing", "name": sp[2], "url": BASE + sp[5]} for sp in spots]}
         page(f"gonggan/{slug}.html", ttl + " | 영진목재", (lead + " " + ", ".join(sp[2] for sp in spots))[:155],
              f'''<section class="wrap sec"><p class="crumb"><a href="/gonggan/">공간 사진 둘러보기</a> › {E(ttl.split(" — ")[0])}</p><h1>{E(ttl)}</h1><p class="lead">{E(lead)}</p>
 {_gscene(sc)}
 <p class="small muted">사진 속 제품은 매장에서 주문·상담할 수 있습니다(가격·재고는 매장 문의). 비슷한 다른 자재로 같은 느낌을 내는 방법도 안내해 드립니다.</p></section>
-<section class="wrap sec"><h2>다른 공간 사진</h2><div class="pl hs">{"".join(f'<a class="pc" href="/gonggan/{x[0]}.html"><img loading="lazy" src="{x[2]}" alt=""><b>{E(x[1].split(" — ")[0])}</b><span>+ {len(x[5])}곳</span></a>' for x in oth)}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>{CTA}''', "/trend/", ld, img)
+<section class="wrap sec">{(f'<h2>같은 분류: {E(_mct)}</h2><div class="pl hs">' + "".join(f'<a class="pc" href="/gonggan/{x[0]}.html"><img loading="lazy" src="{x[2]}" alt=""><b>{E(x[1].split(" — ")[0])}</b><span>+ {len(x[5])}곳</span></a>' for x in oth) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p>') if oth else ""}<h2>다른 공간 사진</h2><div class="pl hs">{"".join(f'<a class="pc" href="/gonggan/{x[0]}.html"><img loading="lazy" src="{x[2]}" alt=""><b>{E(x[1].split(" — ")[0])}</b><span>+ {len(x[5])}곳</span></a>' for x in oth2[:24])}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p><p><a class="b" href="/gonggan/">분류별로 전체 보기 ›</a></p></section>{CTA}''', "/trend/", ld, img)
+    def _ggcard(x):
+        return (f'<a class="pc" href="/gonggan/{x[0]}.html"><span class="ggi"><img loading="lazy" src="{x[2]}" alt="{E(x[1].split(" — ")[0])}">'
+                + "".join(f'<i style="left:{sp[0]}%;top:{sp[1]}%"></i>' for sp in x[5])
+                + f'</span><b>{E(x[1].split(" — ")[0])}</b><span>+ {len(x[5])}곳 · {E(x[4][:40])}…</span></a>')
+    _ggidx = '<nav class="ggc">' + "".join(f'<a href="#c-{k}">{E(t)} <small>{sum(1 for x in _GG.SCENES if _GG.cat(x[0]) == k)}</small></a>' for k, t, d in _GG.CATS) + '</nav>'
+    for k, t, d in _GG.CATS:
+        _xs = [x for x in _GG.SCENES if _GG.cat(x[0]) == k]
+        if _xs:
+            _ggidx += f'<h2 id="c-{k}" class="ggh">{E(t)} <small>{len(_xs)}곳</small></h2><p class="small muted">{E(d)}</p><div class="pl hs gg">{"".join(_ggcard(x) for x in _xs)}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p>'
     page("gonggan/index.html", "공간 사진 둘러보기 — 사진 속 자재·시공법 바로 찾기 | 영진목재", "거실·현관·방 사진 속 +를 누르면 어떤 자재인지, 어떻게 시공하는지, 어디서 사는지 바로 볼 수 있어요. 중문·도어·마루·아트월·우드월·수납장.",
          f'''<section class="wrap sec"><p class="crumb"><a href="/trend/">인테리어 트렌드</a> › 공간 사진 둘러보기</p><h1>공간 사진 둘러보기 <small>{len(_GG.SCENES)}곳</small></h1><p class="lead">사진 속 <b>+</b>를 누르면 그 자재가 무엇인지, 어떻게 시공하는지 나오고 제품 페이지로 바로 넘어갑니다.</p>
-<div class="ggrid">{"".join(f'<a class="pc" href="/gonggan/{x[0]}.html"><span class="ggi"><img loading="lazy" src="{x[2]}" alt="">' + "".join(f'<i style="left:{sp[0]}%;top:{sp[1]}%"></i>' for sp in x[5]) + f'</span><b>{E(x[1].split(" — ")[0])}</b><span>{E(x[4][:60])}…</span></a>' for x in _GG.SCENES)}</div></section>{CTA}''', "/trend/")
+{_ggidx}</section>{CTA}''', "/trend/")
 
     # 하는 법 Q&A (실제 유튜브 검색어 기준, src/qna_data.py) — /qna/
     from qna_data import QNA as _QNA

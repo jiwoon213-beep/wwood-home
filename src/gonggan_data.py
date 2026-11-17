@@ -332,3 +332,30 @@ SCENES += [
   '나뭇결·흰색 월판넬과 몰딩을 색깔별로 세워 둔 거치대입니다. 직접 보고 색을 맞출 수 있습니다.',
   [(10, 50, '나뭇결 월판넬', 'wall', '벽에 붙이는 나뭇결 판넬입니다.', '/younglim/wall.html', '영림 월판넬', [('/qna/wallpanel-vs-tempa.html', '월판넬 vs 템바')]), (45, 50, '흰색 몰딩·판넬', 'molding', '흰색 계열 몰딩입니다.', '/bigyo/mdf-vs-pvc-molding.html', 'MDF vs PVC 몰딩', []), (75, 50, '짙은 색 몰딩', 'molding', '월넛·체리 계열 몰딩입니다.', '/gagyeok/molding-gagyeok.html', '몰딩 가격', []), (90, 45, '장식 몰딩', 'molding', '금색·무늬 몰딩입니다.', '/qna/crown-molding.html', '크라운 몰딩', [])]),
 ]
+
+# 분류 (공간 사진 목록 페이지에서 줄별로 옆으로 넘기기)
+CATS = [
+    ("home", "집 인테리어", "거실·현관·방·주방 사진 속 도어·중문·마루·아트월"),
+    ("cafe", "카페·상가 인테리어", "카페 창가·단상·테라스·외벽 자재"),
+    ("space", "매장 공간 둘러보기", "영진목재 매장 입구·계산대·천장·쇼룸"),
+    ("wall", "벽재·아트월 견본", "우드월·러스틱월·코코넛 타일·스톤·불연 보드·타공 판넬"),
+    ("wood", "목재·합판·루바 진열", "구조목·방부목·합판·OSB·루바·계단판"),
+    ("hw", "철물·공구·부속", "피스·연결철물·서랍레일·경첩·손잡이"),
+    ("stock", "몰딩·실리콘 창고", "몰딩·걸레받이·문틀·실리콘·폼"),
+    ("out", "외장·정원·온실", "사이딩·지붕 차양·데크 테이블·나무 온실"),
+]
+_CM = {
+    "space": "store-entrance-door store-counter store-beam-entrance store-emboss-ceiling store-header-panel store-barn-door store-mokmo-wall store-blue-molding showroom-hall showroom-jipseong",
+    "wall": "showroom-woodwall store-scrapart-wall store-diagonal-panel store-stone-panel store-cork-wall store-scrapart-lattice store-spiral-art store-mosaic-wall store-whitewash-wall store-coconut-tile store-rustic-wall store-lattice-perforated store-buryeon-board store-marble-panel",
+    "wood": "store-lumber-rack store-plywood-wall store-sugi-ruba store-ruba-upper store-hardwood-ruba store-gujomok-board store-stair-tread",
+    "hw": "store-tool-wall store-hardware-bins store-handle-showcase",
+    "stock": "store-silicone-room store-molding-rack store-molding-panel",
+    "out": "store-garden-picnic store-greenhouse store-greenhouse-shelf store-greenhouse-wall store-canopy-roof store-front-siding store-siding-closeup",
+}
+_CMAP = {s: k for k, v in _CM.items() for s in v.split()}
+
+def cat(slug):
+    if slug in _CMAP: return _CMAP[slug]
+    if slug.startswith("cafe-"): return "cafe"
+    if slug.startswith(("store-", "showroom-")): return "space"
+    return "home"
