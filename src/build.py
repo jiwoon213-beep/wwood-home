@@ -303,6 +303,7 @@ _PSEEN = set()
 POPEN = set()  # 내용이 충분해 검색에 여는 제품 상세(/p/)
 VTHIN = set(l.strip() for l in open(f"{ROOT}/data/vthin.txt", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/vthin.txt") else set()
 def _noidx(path):
+    if path == "price-change.html" and not _HASCHG: return True
     # 얇거나 다른 페이지와 거의 같은 페이지는 검색 제외(사람은 볼 수 있음) — 구글 '크롤링됨-색인 안 됨' 줄이기
     if path.startswith("p/"): return path not in POPEN
     if re.match(r"(daejeon|sejong)/(?!index\.html)[^/]+\.html$", path): return True  # 대전·세종 × 자재 = /jajae/ 와 거의 같음
@@ -410,12 +411,28 @@ _MKW = [("hapdeck", r"합성\s?데크"), ("bangbu", r"방부목|방부 ?데크")
 def _guessmats(t):
     sc = sorted(((len(re.findall(rx, t)), k) for k, rx in _MKW), reverse=True)
     return [k for n, k in sc if n >= 2][:2]
+_PMATS = None
+_HASCHG = bool(PREV) and any(True for r in csv.DictReader(open(f"{ROOT}/data/prices.csv", encoding="utf-8")) if r.get("price") and r["name"] in PREV and PREV[r["name"]] != int(float(r["price"])))
+def _newrel(path, body):
+    global _PMATS
+    if not re.match(r"(jajae|gagyeok|sigongbeop|mandeul|bigyo|qna)/(?!index)[^/]+\.html$", path): return ""
+    if _PMATS is None:
+        import datetime as _d
+        _cut = (_d.date.today() - _d.timedelta(days=14)).isoformat()
+        _PMATS = [(p, set(_guessmats(p["title"] + " " + p.get("desc", "") + " " + p["title"]))) for p in POSTS if p.get("date", "") >= _cut and not p["title"].startswith("[영상]")]
+    mm = set([path.split("/")[1][:-5]] if path.startswith("jajae/") else _guessmats(re.sub(r"<[^>]+>", " ", body)))
+    if not mm: return ""
+    hit = [p for p, pm in _PMATS if pm & mm and f"/news/{p['slug']}.html" not in body][:3]
+    if not hit: return ""
+    return ('<section class="wrap sec"><h2>새로 올라온 관련 글</h2><div class="pl hs">' + "".join(f'<a class="pc" href="/news/{p["slug"]}.html"><b>{html.escape(p["title"])}</b><span>{p.get("date", "")}</span></a>' for p in hit) + '</div></section>')
 def page(path, title, desc, body, active="", jsonld=None, img=None):
     if 'card mallbox' not in body and re.match(r"(jajae|mandeul|sigongbeop|gagyeok|gonggan)/(?!index)", path) or path in ("calc.html", "cut.html", "price.html"):
         _mm = [path.split("/")[1][:-5]] if path.startswith("jajae/") else (["hapan", "gujo", "hapdeck"] if path in ("calc.html", "cut.html", "price.html") else _guessmats(re.sub(r"<[^>]+>", " ", body)))
         if path in ("calc.html", "cut.html", "price.html"): _mb = mallbox(_mm, 3)
         else: _mb = mallbox(_mm)
         if _mb: body = body.replace('<section class="cta">', _mb + '<section class="cta">', 1) if '<section class="cta">' in body else body + _mb
+    _nr = _newrel(path, body)
+    if _nr: body = body.replace('<section class="cta">', _nr + '<section class="cta">', 1) if '<section class="cta">' in body else body + _nr
     if path not in _SW_SKIP and "<table" in body and "/p/" not in path: body = _tbl_cards(body)
     title = _tshort(title)
     if path in _REL:
@@ -2441,6 +2458,15 @@ Promise.all([0,1,2,3,4,5,6].map(function(i){return g("d"+day(i))})).then(functio
     open(f"{OUT}/wwoodkr-rss.xml", "w", encoding="utf-8").write('<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>영진종합목재(월드건축자재) 쇼핑몰 새 상품</title><link>https://wwood.kr/home/mall/</link><description>대전 유성 영진종합목재(월드건축자재) 목재·합판·건축자재 쇼핑몰 상품 소식</description><language>ko</language>\n'
         + "".join(f"<item><title>{html.escape(p_['name'])} 규격·주문</title><link>{html.escape(u_)}</link><guid>{html.escape(u_)}</guid><pubDate>{_rfc2(d_)}</pubDate><description>{html.escape(ds_)}</description>" + (f'<enclosure url="{html.escape(p_["img"])}" type="image/jpeg" length="0"/>' if p_.get("img", "").startswith("http") else "") + "</item>\n" for d_, p_, u_, ds_ in _ri)
         + "</channel></rss>\n")
+    _CUR = {r["name"]: (r["cat"], int(float(r["price"]))) for r in csv.DictReader(open(f"{ROOT}/data/prices.csv", encoding="utf-8")) if r.get("price")}
+    _chg = sorted([(c, n, PREV[n], p) for n, (c, p) in _CUR.items() if n in PREV and PREV[n] != p], key=lambda x: -abs(x[3] - x[2]) / max(x[2], 1))
+    _up = [x for x in _chg if x[3] > x[2]]; _dn = [x for x in _chg if x[3] < x[2]]
+    def _ctab(rows): return '<div class="tw"><table><tr><th>분류</th><th>자재</th><th class="r">이전</th><th class="r">지금</th><th class="r">변동</th></tr>' + "".join(f'<tr><td>{E(c)}</td><td>{E(clean_name(n))}</td><td class="r">{a:,}원</td><td class="r"><b>{b:,}원</b></td><td class="r">{"▲" if b > a else "▼"} {abs(b - a):,}원 ({(b - a) / a * 100:+.1f}%)</td></tr>' for c, n, a, b in rows) + '</table></div>'
+    _pcb = (f'<section class="wrap sec"><h1>이번 기준가 변동 — 오른 자재·내린 자재</h1><p class="lead">매장 소매 기준가(부가세 별도)를 지난 갱신({E(PMETA.get("prev", ""))})과 비교해 실제로 바뀐 품목만 모았습니다. 기준일 {E(PMETA.get("updated", ""))}.</p>'
+            + (f'<h2>내린 자재 {len(_dn)}개</h2>' + _ctab(_dn) if _dn else "") + (f'<h2>오른 자재 {len(_up)}개</h2>' + _ctab(_up) if _up else "")
+            + ("" if _chg else '<p>이번 갱신에서는 기준가가 바뀐 품목이 없습니다. 전체 기준가는 <a href="/price.html">기준가</a>에서 보세요.</p>')
+            + '<p class="small muted">규격·수량·재고에 따라 다를 수 있습니다. 정확한 금액은 매장(042-545-2900)에 확인해 주세요.</p><p><a class="b r" href="/price.html">전체 기준가 보기 ›</a></p></section>')
+    page("price-change.html", "목재·건축자재 기준가 변동 — 이번 주 오른·내린 자재 | 영진목재", f"대전 영진목재 매장 기준가 변동: 내린 자재 {len(_dn)}개, 오른 자재 {len(_up)}개. 합판·구조재·방부목·석고보드 등 실제로 바뀐 품목만 정리.", _pcb, "/price.html")
     import aiinfo as _AI
     _FQ = _AI.facts(BASE, TEL, ADDR, HOURS, YT); _PR = _AI.prices(ROOT)
     _ab = ('<section class="wrap sec"><h1>영진종합목재 한눈에 — 자주 묻는 사실 정리</h1><p class="lead">대전 유성 영진종합목재(영진목재·월드건축자재)에 대해 손님이 가장 많이 묻는 것을 짧게 정리했습니다. 내용은 매장 안내·재단비·기준가 페이지와 같습니다.</p>'
