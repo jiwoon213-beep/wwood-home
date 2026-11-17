@@ -363,3 +363,30 @@ SCENES += [
    (90, 55, "짙은 색 방문", "door", "안쪽 방에 짙은 색 방문과 레버 손잡이를 달았습니다.", "/younglim/", "영림 도어 보기", [("/qna/door-silcheuk.html", "문 실측"), ("/qna/gyeongcheop-jojeol.html", "경첩 조절")]),
    (50, 93, "밝은 마루 바닥", "maru", "옅은 나뭇결 마루를 깔아 네이비 문이 돋보입니다.", "/younglim/maru.html", "마루 보기", [("/qna/badakjae-goreugi.html", "바닥재 고르는 법")])]),
 ]
+
+# 분류 (공간 사진 목록 페이지에서 줄별로 옆으로 넘기기)
+CATS = [
+    ("home", "집 인테리어", "거실·현관·방·주방 사진 속 도어·중문·마루·아트월"),
+    ("cafe", "카페·상가 인테리어", "카페 창가·단상·테라스·외벽 자재"),
+    ("space", "매장 공간 둘러보기", "영진목재 매장 입구·계산대·천장·쇼룸"),
+    ("wall", "벽재·아트월 견본", "우드월·러스틱월·코코넛 타일·스톤·불연 보드·타공 판넬"),
+    ("wood", "목재·합판·루바 진열", "구조목·방부목·합판·OSB·루바·계단판"),
+    ("hw", "철물·공구·부속", "피스·연결철물·서랍레일·경첩·손잡이"),
+    ("stock", "몰딩·실리콘 창고", "몰딩·걸레받이·문틀·실리콘·폼"),
+    ("out", "외장·정원·온실", "사이딩·지붕 차양·데크 테이블·나무 온실"),
+]
+_CM = {
+    "space": "store-entrance-door store-counter store-beam-entrance store-emboss-ceiling store-header-panel store-barn-door store-mokmo-wall store-blue-molding showroom-hall showroom-jipseong",
+    "wall": "showroom-woodwall store-scrapart-wall store-diagonal-panel store-stone-panel store-cork-wall store-scrapart-lattice store-spiral-art store-mosaic-wall store-whitewash-wall store-coconut-tile store-rustic-wall store-lattice-perforated store-buryeon-board store-marble-panel",
+    "wood": "store-lumber-rack store-plywood-wall store-sugi-ruba store-ruba-upper store-hardwood-ruba store-gujomok-board store-stair-tread",
+    "hw": "store-tool-wall store-hardware-bins store-handle-showcase",
+    "stock": "store-silicone-room store-molding-rack store-molding-panel",
+    "out": "store-garden-picnic store-greenhouse store-greenhouse-shelf store-greenhouse-wall store-canopy-roof store-front-siding store-siding-closeup",
+}
+_CMAP = {s: k for k, v in _CM.items() for s in v.split()}
+
+def cat(slug):
+    if slug in _CMAP: return _CMAP[slug]
+    if slug.startswith("cafe-"): return "cafe"
+    if slug.startswith(("store-", "showroom-")): return "space"
+    return "home"
