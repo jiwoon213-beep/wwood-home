@@ -640,3 +640,11 @@ dl.abf{margin:14px 0}dl.abf dt{font-weight:800;font-size:16.5px;margin-top:16px}
 .hspop .hscl{flex:1 1 0;min-height:44px;border:1px solid #d9d2c7;border-radius:12px;background:#fff;color:#1d1b18;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit}
 .hspop .hscl:active{background:#f3efe8}
 .shcard{margin:10px 0 0;font-size:14px}
+.dwz{display:grid;gap:14px;margin:18px 0}.dq{border:1px solid #e6dccb;border-radius:16px;padding:12px 14px;background:#fff;margin:0}.dq legend{font-weight:800;padding:0 6px}
+.dqo{display:flex;flex-wrap:wrap;gap:8px}.dqo button{border:1.5px solid #d9cfbf;background:#faf7f1;border-radius:999px;padding:9px 15px;font:inherit;font-size:15px;cursor:pointer}
+.dqo button.on{background:#1d1b18;color:#fff;border-color:#1d1b18}.dres{margin-top:8px}.dli{list-style:none;padding:0;margin:10px 0;display:grid;gap:8px;counter-reset:d}
+.dli a{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid #e6dccb;border-radius:14px;background:#fff;text-decoration:none;color:inherit;counter-increment:d}
+.dli a:before{content:counter(d);min-width:28px;height:28px;border-radius:50%;background:#b06a2c;color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px}
+.dli small{color:#8a6a46;font-weight:700;min-width:62px}.dli b{flex:1}.dli i{font-style:normal;color:#999}
+@media(min-width:900px){.dli{grid-template-columns:1fr 1fr}}
+.dli a b,.dli a small{text-decoration:none;border:0;background:none}
