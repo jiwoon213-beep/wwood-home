@@ -37,3 +37,27 @@ for x in rows[hi + 1:]:
 if len(out) < 8000: print("행 적음", len(out)); sys.exit(0)
 open("src/data/apt.tsv", "w", encoding="utf-8").write("\t".join(W) + "\n" + "\n".join(out) + "\n")
 print("단지", len(out), "seq", seq)
+
+# 면적정보(단지코드별 전용면적·세대수) → src/data/apt_area.tsv  (코드 \t 59:90,84:324)
+try:
+    seq2 = None
+    h = s.post(U + "/web/board/webReference/boardListAjax.do", data={"scode": "04", "boardType": "03", "pageNo": "1", "stype": "", "keyword": "", "_csrf": tok.group(1)}, headers={"X-CSRF-TOKEN": tok.group(1), "X-Requested-With": "XMLHttpRequest"}, timeout=60).text
+    for m in re.finditer(r"fileDown\('(\d+)','03','1'\)", h):
+        if "면적정보" in h[max(0, m.start() - 1500):m.start() + 200]: seq2 = m.group(1); break
+    r = s.post(U + f"/board/getFileDownload.do?seq={seq2}&boardType=03", data={"_csrf": tok.group(1), "fileNum": "1"}, headers={"X-CSRF-TOKEN": tok.group(1)}, timeout=180)
+    wb = openpyxl.load_workbook(io.BytesIO(r.content), read_only=True); ws = wb.active; ws.reset_dimensions()
+    codes = {l.split("\t")[3] for l in out}
+    A = {}; hd = None
+    for x in ws.iter_rows(values_only=True):
+        x = [html.unescape(html.unescape(c)).strip() if isinstance(c, str) else c for c in x]
+        if hd is None:
+            if "단지코드" in x: hd = x; ic, ia, iv = x.index("단지코드"), x.index("주거전용면적(세부)"), x.index("세대수")
+            continue
+        if x[ic] not in codes: continue
+        try: a = round(float(x[ia])); v = int(float(x[iv]))
+        except Exception: continue
+        A.setdefault(x[ic], {}); A[x[ic]][a] = A[x[ic]].get(a, 0) + v
+    if len(A) > 8000:
+        open("src/data/apt_area.tsv", "w", encoding="utf-8").write("".join(f"{k}\t" + ",".join(f"{a}:{v}" for a, v in sorted(d.items())) + "\n" for k, d in sorted(A.items())))
+    print("면적", len(A), seq2)
+except Exception as e: print("면적 실패", e)
