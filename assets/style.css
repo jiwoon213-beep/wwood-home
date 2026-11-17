@@ -623,3 +623,10 @@ ul.mgl{list-style:none;padding:0;margin:10px 0}ul.mgl li{padding:12px 14px;borde
  .dm{left:0;transform:translateY(6px)}.dg:hover>.dm,.dg:focus-within>.dm{transform:translateY(2px)}
  .dg:nth-last-child(-n+4)>.dm{left:auto;right:0}
 }
+/* 준비할 자재·공구: 옆으로 넘기는 카드 (2026-11-17 사장님 요청) */
+ul.mli{flex-direction:row!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;gap:10px!important;padding:4px 2px 12px!important;margin:10px 0 2px!important;align-items:stretch!important;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+ul.mli::-webkit-scrollbar{display:none}
+ul.mli li{flex:0 0 min(80%,300px)!important;scroll-snap-align:start;align-self:stretch!important;align-content:start}
+ul.mli li .mlks{align-self:end}
+@media(min-width:900px){ul.mli li{flex-basis:280px!important}}
+ul.mli{align-items:flex-start!important}ul.mli li{align-self:flex-start!important}

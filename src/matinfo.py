@@ -104,7 +104,7 @@ class M:
                     if lab in used: continue
                     used.add(lab)
                     note += f'<span class="mnote">{E(lab)}: <b>{E(what)}</b></span>'
-                    if key not in used: links += f'<a class="mlk" href="/taka/">타카핀 보기 ›</a>' if key == "taka" else self.bl(key, "피스 보기")
+                    if key not in used: links += f'<a class="mlk" href="/taka/">타카핀 보기 ›</a>' if key == "taka" else self.bl(key, {"목공피스봉": "구조용 피스", "목공피스": "목공 피스", "스텐피스": "스텐 피스"}.get(key, "피스 보기"))
                     used.add(key)
                 if not note:
                     links += self.bl("목공피스", "피스 보기")
