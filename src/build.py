@@ -226,9 +226,11 @@ def clean_name(n):  # "합판- 일반 4*8 @ 8.5mm(베)" → "합판 일반 4×8 
 
 def prod_ld(rows, url, img=None):
     if not rows: return []
-    return [{"@context": "https://schema.org", "@type": "Product", "name": clean_name(r["name"]), "category": r["cat"],
-             **({"image": img} if img else {}),
-             "offers": {"@type": "Offer", "price": int(r["price"]), "priceCurrency": "KRW", "url": url,
+    im = img or "/assets/store/yard-aisle.jpg"
+    im = im if im.startswith("http") else BASE + im
+    return [{"@context": "https://schema.org", "@type": "Product", "name": clean_name(r["name"]),
+             "image": im, "description": f"{clean_name(r['name'])} — {r['cat']}. 대전 유성 영진종합목재 매장 기준가(부가세 별도), 원하는 크기로 즉석 재단.",
+             "offers": {"@type": "Offer", "price": int(r["price"]), "priceCurrency": "KRW", "url": url, "availability": "https://schema.org/InStoreOnly",
                         "priceSpecification": {"@type": "UnitPriceSpecification", "price": int(r["price"]), "priceCurrency": "KRW", "valueAddedTaxIncluded": False},
                         "seller": {"@type": "Organization", "name": "영진종합목재"}}} for r in rows]
 
