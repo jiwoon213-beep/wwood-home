@@ -224,4 +224,5 @@ WWC("hjsave");if(b){b.textContent="저장됨 ✓ 현장함 보기 ›";b.onclick
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
   window.addEventListener('load',function(){setTimeout(setup,800)});
+  var _t;document.addEventListener('click',function(){clearTimeout(_t);_t=setTimeout(setup,350)},true);window.addEventListener('resize',function(){clearTimeout(_t);_t=setTimeout(setup,400)});
 })();
