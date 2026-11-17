@@ -158,3 +158,28 @@ window.WWHJ=function(t,sum,b){var a;try{a=JSON.parse(localStorage.getItem("wwHJ"
 var tt=document.title.split(" | ")[0].split(" — ")[0];a.unshift({t:t,ts:Date.now(),title:tt,sum:String(sum||"").trim().slice(0,1500),url:location.pathname+location.hash});
 try{localStorage.setItem("wwHJ",JSON.stringify(a.slice(0,60)))}catch(e){alert("이 브라우저에서는 저장이 안 돼요.");return}
 WWC("hjsave");if(b){b.textContent="저장됨 ✓ 현장함 보기 ›";b.onclick=function(){location.href="/hyeonjang.html"}}};
+/* 공간 사진 + 핫스팟: 누르면 사진 위에 설명 카드, 다시 누르거나 바깥 누르면 닫힘 */
+(function () {
+  var W = document.querySelectorAll(".hsw"); if (!W.length) return;
+  function close(w) { var o = w.querySelector(".hspop"); if (o) o.remove(); w.querySelectorAll(".hsd.on,.hsp.on").forEach(function (e) { e.classList.remove("on"); }); }
+  W.forEach(function (w) {
+    w.querySelectorAll(".hsd").forEach(function (d) {
+      d.addEventListener("click", function (ev) {
+        ev.stopPropagation(); var on = d.classList.contains("on"); close(w); if (on) return;
+        d.classList.add("on"); var i = d.getAttribute("data-i"), src = w.querySelector('.hsp[data-i="' + i + '"]'); if (!src) return;
+        src.classList.add("on"); var c = src.cloneNode(true); c.removeAttribute("id"); c.classList.add("hspop");
+        var box = w.querySelector(".hsi"), x = parseFloat(d.style.left), y = parseFloat(d.style.top);
+        c.style.left = x > 55 ? "auto" : "calc(" + x + "% + 20px)"; if (x > 55) c.style.right = "calc(" + (100 - x) + "% + 20px)";
+        c.style.top = y > 55 ? "auto" : "calc(" + y + "% - 10px)"; if (y > 55) c.style.bottom = "calc(" + (100 - y) + "% - 10px)";
+        box.appendChild(c); c.addEventListener("click", function (e) { e.stopPropagation(); });
+        try { if (window.WWC) WWC("hotspot"); } catch (e) {}
+      });
+    });
+    w.querySelectorAll(".hsl .hsp").forEach(function (p) {
+      p.addEventListener("mouseenter", function () { var d = w.querySelector('.hsd[data-i="' + p.getAttribute("data-i") + '"]'); if (d) d.classList.add("on"); });
+      p.addEventListener("mouseleave", function () { if (!w.querySelector(".hspop")) w.querySelectorAll(".hsd.on").forEach(function (e) { e.classList.remove("on"); }); });
+    });
+  });
+  document.addEventListener("click", function () { W.forEach(close); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") W.forEach(close); });
+})();

@@ -225,7 +225,7 @@ def mat_prices(m, k=10):
     return sorted(rows, key=lambda p: -p["qty"])[:k]
 
 # ---------- layout ----------
-NAV = [("/visit.html", "매장 안내"), ("/jaryo/", "전체 자재"), ("/news/", "소식·정보"), ("/tteori/", "떨이몰"), ("/price.html", "기준가"), ("/mandeul/", "DIY 만들기"), ("/sigongbeop/", "자재 시공법"), ("/trend/", "인테리어 트렌드"), ("/calc.html", "자재비 계산기"), ("/cut.html", "목재 재단"), ("/sajin.html", "사진으로 찾기"), ("/video/", "영상"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/yeongyeol/", "시공팀 연결")]
+NAV = [("/visit.html", "매장 안내"), ("/jaryo/", "전체 자재"), ("/news/", "소식·정보"), ("/tteori/", "떨이몰"), ("/price.html", "기준가"), ("/mandeul/", "DIY 만들기"), ("/sigongbeop/", "자재 시공법"), ("/trend/", "인테리어 트렌드"), ("/gonggan/", "공간 사진"), ("/calc.html", "자재비 계산기"), ("/cut.html", "목재 재단"), ("/sajin.html", "사진으로 찾기"), ("/video/", "영상"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/yeongyeol/", "시공팀 연결")]
 
 NAVI = {"/tteori/": '<path d="M3.5 12.5 11.5 4.5H19.5v8l-8 8z"/><path d="M10 14l5-5"/><circle cx="10.5" cy="9.5" r=".9"/><circle cx="14.5" cy="13.5" r=".9"/>', "/yeongyeol/": '<circle cx="8" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.5"/><path d="M3 19c.6-3.2 2.6-5 5-5s4.4 1.8 5 5"/><path d="M13.5 18.5c.4-2.6 1.6-4 3-4s2.6 1.4 3 4"/>', "/calc.html": '<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h2M12 18h2"/><path d="M16 14v4"/>', '/visit.html': '<path d="M12 21s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>', '/jaryo/': '<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>', '/news/': '<path d="M5 4.5h11.5v15H6.5A1.5 1.5 0 0 1 5 18z"/><path d="M16.5 8.5H19v9.5a1.5 1.5 0 0 1-3 0"/><path d="M8 8.5h5.5M8 12h5.5M8 15.5h3.5"/>', '/price.html': '<path d="M3.5 12.5 11.5 4.5H19.5v8l-8 8z"/><circle cx="15.5" cy="8.5" r="1.4"/>', '/mandeul/': '<path d="M14.5 5.5l4 4L9 19H5v-4z"/><path d="M12.5 7.5l4 4"/>', '/sigongbeop/': '<path d="M4 20h16"/><path d="M6 20V9l6-4.5L18 9v11"/><path d="M10 20v-5h4v5"/>', '/trend/': '<path d="M12 3.5l2.4 5 5.4.6-4 3.7 1.1 5.4L12 15.5l-4.9 2.7 1.1-5.4-4-3.7 5.4-.6z"/>', '/cut.html': '<circle cx="6.5" cy="6.5" r="2.5"/><circle cx="6.5" cy="17.5" r="2.5"/><path d="M8.6 8 20 19M8.6 16 20 5"/>', '/sajin.html': '<path d="M3.5 8.5A2.5 2.5 0 0 1 6 6h1.7l1.4-1.9h5.8L16.3 6H18a2.5 2.5 0 0 1 2.5 2.5v8.5A2.5 2.5 0 0 1 18 19.5H6A2.5 2.5 0 0 1 3.5 17z"/><circle cx="12" cy="12.6" r="3.5"/>', '/video/': '<rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M10.5 9.5v5l4.5-2.5z"/>', '/dome.html': '<path d="M3.5 17V8h10v9"/><path d="M13.5 11h4l3 3v3h-7"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>', '/sigong.html': '<path d="M14 6.5a4 4 0 0 0-5 5L4 16.5 7.5 20l5-5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z"/>'}
 _PSEEN = set()
@@ -260,6 +260,7 @@ PGMETA = {}
 
 
 _REL = {  # 새 검색용 페이지로 가는 내부 링크(관련 있는 기존 페이지에만)
+    **{k: [("/gonggan/", "공간 사진 둘러보기 — 사진 속 + 누르면 자재·시공법")] for k in ("trend/index.html", "qna/index.html", "younglim/jungmun.html", "younglim/jungmun-slim.html", "younglim/maru.html", "younglim/wall.html", "younglim/door-apel.html", "sigongbeop/index.html", "jaryo/maru.html", "jaryo/jipseong.html", "jaryo/door.html", "visit.html")},
     **{f"{d}/index.html": [(f"/{d}/p/", "제품별 자세히 보기(사진·규격)")] for d in ("younglim", "yerim", "shenu", "bondex", "geonjae", "suip", "bupum", "taka", "nichiha")},
     "deck-pis.html": [("/pis-gilee.html", "피스 길이 고르는 법(전체)"), ("/seokgo-pis.html", "석고보드 피스")],
     "seokgo-pis.html": [("/pis-gilee.html", "피스 길이 고르는 법(전체)"), ("/deck-pis.html", "데크 피스")],
@@ -473,7 +474,9 @@ def build():
     plist = lambda ps: "".join(f'<a class="pc" href="/news/{p["slug"]}.html">{_pth(p)}<small>{E(p.get("date",""))}</small><b>{E(p["title"])}</b><span>{E(p.get("desc",""))}</span></a>' for p in ps)
     _isv = lambda p: p["title"].startswith("[영상]")
     def nrow(h, ps): return (f'<h2 class="gt">{h} <small>옆으로 넘겨 보세요 ›</small></h2><div class="pl hs nw">{plist(ps)}</div>') if ps else ""
-    postsec = (f'<section class="wrap sec"><h2>소식·자재 정보</h2><div class="pl hs nw">{plist(POSTS[:10])}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p><p><a href="/news/">전체 글 보기 →</a></p></section>' if POSTS else "")
+    import gonggan_data as _GG0
+    postsec = f'<section class="wrap sec"><h2>공간 사진 둘러보기 <small class="muted">사진 속 + 누르면 자재·시공법</small></h2><div class="pl hs">' + "".join(f'<a class="pc" href="/gonggan/{x[0]}.html"><span class="ggi"><img loading="lazy" src="{x[2]}" alt="">' + "".join(f'<i style="left:{sp[0]}%;top:{sp[1]}%"></i>' for sp in x[5]) + f'</span><b>{E(x[1].split(" — ")[0])}</b></a>' for x in _GG0.SCENES) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p><p><a href="/gonggan/">전체 보기 →</a></p></section>'
+    postsec += (f'<section class="wrap sec"><h2>소식·자재 정보</h2><div class="pl hs nw">{plist(POSTS[:10])}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p><p><a href="/news/">전체 글 보기 →</a></p></section>' if POSTS else "")
     base8 = [("합판","일반 4×8 · 8.5mm(베트남)",22800),("OSB합판","T&G 4×8 · 18.3mm",35200),("MDF","4×8 · 9mm",14800),("구조재 2×4","38×89 · 12ft",10700),
              ("방부목 데크재","20×120 · 12자",10500),("석고보드","3×6 · 9.5T",5200),("합성데크","20×140 · 3000",21500),("다루끼(소송)","1.0×1.0 · 12자 · 12개",42400)]
     bt = "".join(f"<tr><td>{a}</td><td>{b}</td><td class=r><b>{won(c)}</b></td></tr>" for a, b, c in base8)
@@ -1726,6 +1729,34 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
              {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in _cfq(c)]})
     page("bigyo/index.html", "자재 비교 — 합판·사이딩·단열재·바닥재·도어·루바 종류별 차이 | 영진목재", "헷갈리는 건축 자재를 종류별로 비교했습니다. 합판 vs OSB vs MDF, 세라믹·메탈·비닐 사이딩, 단열재, 바닥재, 실내 도어, 루바, 집성판, 각재, 방음·흡음재.",
          f'<section class="wrap sec"><p class="crumb"><a href="/jajae/">자재 백과</a> › 자재 비교</p><h1>자재·인테리어 비교 <small>{len(CMP)}가지</small></h1><p class="lead">비슷해 보여도 쓰는 곳이 다른 자재들을 분류별로 비교했습니다.</p>' + _swipe_rows([(c["mats"], c) for c in CMP], lambda it: f'<a class="pc" href="/bigyo/{it[1]["slug"]}.html"><small>자재 비교</small><b>{E(it[1]["short"])}</b><span>{E(it[1]["desc"][:70])}…</span></a>') + f'</section>{CTA}', "/jajae/")
+
+    # 공간 사진 둘러보기 — 사진 위 +를 누르면 자재·시공법·제품 페이지로 (src/gonggan_data.py)
+    import gonggan_data as _GG
+    def _gscene(sc, big=True):
+        slug, ttl, img, cred, lead, spots = sc
+        dots = "".join(f'<button class="hsd" style="left:{x}%;top:{y}%" data-i="{i}" aria-label="{E(n)} 자세히"><span>+</span></button>' for i, (x, y, n, *_r) in enumerate(spots))
+        pops = ""
+        for i, (x, y, n, k, w, h1, t1, more) in enumerate(spots):
+            kn, how = _GG.K[k]
+            ml = "".join(f'<a href="{a}">{E(b)}</a>' for a, b in more)
+            pops += (f'<div class="hsp" id="hs-{slug}-{i}" data-i="{i}"><small>{E(kn)}</small><b>{E(n)}</b><p>{E(w)}</p>'
+                     f'<p class="hsh2">이렇게 시공해요</p><ol>' + "".join(f"<li>{E(t)}</li>" for t in how) + '</ol>'
+                     f'<a class="b r hsgo" href="{h1}">{E(t1)} ›</a><div class="hsm">{ml}</div></div>')
+        return (f'<div class="hsw" data-s="{slug}"><div class="hsi"><img src="{img}" alt="{E(ttl.split(" — ")[0])}">{dots}</div><p class="hsc">{E(cred)} · +를 누르면 자재와 시공법이 나와요</p>'
+                f'<div class="hsl">{pops}</div></div>')
+    for sc in _GG.SCENES:
+        slug, ttl, img, cred, lead, spots = sc
+        oth = [x for x in _GG.SCENES if x[0] != slug]
+        ld = {"@context": "https://schema.org", "@type": "ImageObject", "contentUrl": img if img.startswith("http") else BASE + img, "name": ttl, "description": lead,
+              "about": [{"@type": "Thing", "name": sp[2], "url": BASE + sp[5]} for sp in spots]}
+        page(f"gonggan/{slug}.html", ttl + " | 영진목재", (lead + " " + ", ".join(sp[2] for sp in spots))[:155],
+             f'''<section class="wrap sec"><p class="crumb"><a href="/gonggan/">공간 사진 둘러보기</a> › {E(ttl.split(" — ")[0])}</p><h1>{E(ttl)}</h1><p class="lead">{E(lead)}</p>
+{_gscene(sc)}
+<p class="small muted">사진 속 제품은 매장에서 주문·상담할 수 있습니다(가격·재고는 매장 문의). 비슷한 다른 자재로 같은 느낌을 내는 방법도 안내해 드립니다.</p></section>
+<section class="wrap sec"><h2>다른 공간 사진</h2><div class="pl hs">{"".join(f'<a class="pc" href="/gonggan/{x[0]}.html"><img loading="lazy" src="{x[2]}" alt=""><b>{E(x[1].split(" — ")[0])}</b><span>+ {len(x[5])}곳</span></a>' for x in oth)}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p></section>{CTA}''', "/trend/", ld, img)
+    page("gonggan/index.html", "공간 사진 둘러보기 — 사진 속 자재·시공법 바로 찾기 | 영진목재", "거실·현관·방 사진 속 +를 누르면 어떤 자재인지, 어떻게 시공하는지, 어디서 사는지 바로 볼 수 있어요. 중문·도어·마루·아트월·우드월·수납장.",
+         f'''<section class="wrap sec"><p class="crumb"><a href="/trend/">인테리어 트렌드</a> › 공간 사진 둘러보기</p><h1>공간 사진 둘러보기 <small>{len(_GG.SCENES)}곳</small></h1><p class="lead">사진 속 <b>+</b>를 누르면 그 자재가 무엇인지, 어떻게 시공하는지 나오고 제품 페이지로 바로 넘어갑니다.</p>
+<div class="ggrid">{"".join(f'<a class="pc" href="/gonggan/{x[0]}.html"><span class="ggi"><img loading="lazy" src="{x[2]}" alt="">' + "".join(f'<i style="left:{sp[0]}%;top:{sp[1]}%"></i>' for sp in x[5]) + f'</span><b>{E(x[1].split(" — ")[0])}</b><span>{E(x[4][:60])}…</span></a>' for x in _GG.SCENES)}</div></section>{CTA}''', "/trend/")
 
     # 하는 법 Q&A (실제 유튜브 검색어 기준, src/qna_data.py) — /qna/
     from qna_data import QNA as _QNA
