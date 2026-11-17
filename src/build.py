@@ -2512,6 +2512,8 @@ Promise.all([0,1,2,3,4,5,6].map(function(i){return g("d"+day(i))})).then(functio
         if "/p/" in _f and len(_id) > 15: _id = "-".join(_id.split("-")[-2:]).upper()
         _tag = f" (품번 {_id})" if "/p/" in _f else f" ({_id})"
         _new = re.sub(r"( [|—] )", _tag + r"\1", _k, count=1) if re.search(r" [|—] ", _k) else _k + _tag
+        if len(_new) > 62 and " | " in _new:  # 품번을 붙여 길어지면 앞 이름을 줄임(업체명·품번은 유지)
+            _hd, _tl = _new.split(_tag, 1); _new = _hd[:max(10, 62 - len(_tag) - len(_tl)) - 1].rstrip() + "…" + _tag + _tl
         _t = _t.replace(f"<title>{_k}</title>", f"<title>{_new}</title>", 1).replace(f'content="{_k}"', f'content="{_new}"')
         _t = re.sub(r'(<meta name="description" content=")([^"]*)"', lambda m: m.group(1) + m.group(2).rstrip(". ") + f". 품번 {_id}." + '"', _t, count=1) if "/p/" in _f else _t
         open(_f, "w", encoding="utf-8").write(_t)
