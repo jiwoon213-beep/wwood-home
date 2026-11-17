@@ -676,3 +676,6 @@ dl.abf{margin:14px 0}dl.abf dt{font-weight:800;font-size:16.5px;margin-top:16px}
 .apr{display:grid;gap:6px;margin-top:8px}.apr a{display:flex;flex-direction:column;padding:11px 14px;background:#fff;border:1px solid #e6dccb;border-radius:12px;text-decoration:none;color:inherit}.apr a small{color:#8a8278;font-size:13px}
 .apc:target{outline:3px solid #b06a2c;outline-offset:2px}
 .apr a,.apr a *{text-decoration:none!important;box-shadow:none!important;background-image:none!important;border-bottom:0!important}.apr a{border:1px solid #e6dccb!important}
+.apfp{margin:10px 0;padding:10px;border-radius:12px;background:#faf7f1}.apsv svg{width:100%;height:auto;display:block;border-radius:10px;border:1px solid #e6dccb}
+.aptab{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:8px}.aptab button{flex:0 0 auto;font:inherit;font-size:14px;font-weight:800;padding:7px 12px;border-radius:999px;border:1.5px solid #d9cfbf;background:#fff;cursor:pointer}.aptab button small{font-weight:400;color:#8a8278}
+.aptab button.on{background:#1d1b18;color:#fff;border-color:#1d1b18}.aptab button.on small{color:#ddd}.aplg{margin-top:6px;font-size:14px}.aplg summary{cursor:pointer;color:#8a6a46;font-weight:700}

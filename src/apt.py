@@ -100,13 +100,9 @@ def build(root, page, E, CTA):
             meta = " · ".join(x for x in [f'{r["n"]:,}세대', f'{r["동수"]}개 동' if r.get("동수") not in ("", "0") else "", f'{r["y"]}년' if r["y"] else "", r.get("복도유형", ""), r.get("난방방식", "")] if x)
             pl = ""
             if r["ar"]:
-                grp = {}
-                for ar, nn in r["ar"]:
-                    k = AP.ptype(ar, r["y"]); grp.setdefault(k, [0, []]); grp[k][0] += nn; grp[k][1].append(ar)
-                main = max(grp, key=lambda k: grp[k][0])
-                chips = "".join(f'<a href="/apt/plan/{k}.html"><b>{min(v[1])}{"~" + str(max(v[1])) if max(v[1]) != min(v[1]) else ""}㎡</b> {v[0]:,}세대</a>' for k, v in sorted(grp.items(), key=lambda kv: min(kv[1][1])))
-                pl = (f'<div class="apar"><a class="apth" href="/apt/plan/{main}.html"><img loading="lazy" src="/assets/apt/plan-{main}.svg" width="1000" height="680" alt="{E(AP.P[main][0])} 예시 평면도"></a>'
-                      f'<div><p class="small"><b>평형(전용면적)</b> — 누르면 예시 평면도</p><div class="apl apch">{chips}</div></div></div>')
+                da = ",".join(f"{a}:{n}" for a, n in r["ar"])
+                pl = (f'<div class="apfp" data-a="{da}" data-y="{r["y"] or ""}" data-h="{E(r.get("복도유형", ""))}" data-n="{E(r["단지명"].strip())}">'
+                      + "".join(f'<a href="/apt/plan/{AP.ptype(a, r["y"])}.html">{a}㎡ {n:,}세대</a> ' for a, n in r["ar"]) + '</div>')
             nq = quote(f'{r["단지명"].strip()} {dong} 평면도')
             cards += (f'<article class="apc" id="{E(r["단지코드"])}"><h3>{E(r["단지명"].strip())}</h3><p class="small muted">{E(meta)}</p>'
                       f'<p>{E(age_text(r["y"]))}</p>{pl}<div class="apl">{tips}</div>'
@@ -130,7 +126,7 @@ def build(root, page, E, CTA):
                 '<p class="small muted">단지 정보: 국토교통부 공동주택관리정보시스템(K-apt) 공개 단지 기본정보, 매주 갱신. 실제와 다를 수 있습니다. 이 페이지는 해당 단지·관리사무소와 관계없는 자재 안내입니다.</p></section>'
                 '<section class="wrap sec"><h2>아파트에서 많이 하는 것</h2><div class="olk"><a href="/sigongbeop/jungmun.html">원슬라이딩 중문 셀프 설치</a><a href="/sigongbeop/munteul-gyoche.html">방문 교체</a><a href="/sigongbeop/film-sigong.html">인테리어 필름</a><a href="/sigongbeop/molding-georebatgi.html">걸레받이·천장 몰딩</a><a href="/sigongbeop/tempa-byeok.html">템바보드 아트월</a><a href="/mandeul/beranda.html">베란다 선반</a></div><p class="hsh olh">옆으로 넘겨 보세요 ›</p></section>'
                 + (f'<section class="wrap sec"><h2>{E(areaname(sd, gu, ""))} 다른 동</h2><div class="olk">{near}</div><p class="hsh olh">옆으로 넘겨 보세요 ›</p></section>' if near else "")
-                + CTA)
+                + '<script src="/assets/apt/plan.js?v=3" defer></script>' + CTA)
         page(fn, title, desc[:155], body, "/apt/")
         pages.append((fn, sd, gu, dong, len(L), tot))
         for r in L: SRCH.append([r["단지명"].strip(), area, fn, r["단지코드"], r["n"]])
