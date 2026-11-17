@@ -1863,7 +1863,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         for r in c["rows"]:
             if r[0] in ("물", "물 흡수", "관리", "시공", "작업"):
                 out.append((f"{_jo(a, '과', '와')} {b}, {_jo(r[0], '은', '는')} 어떻게 다른가요?", f"{_jo(a, '은', '는')} {r[1]}, {_jo(b, '은', '는')} {r[2]}.")); break
-        out.append(("매장에서 실물을 볼 수 있나요?", "대전 서구 영진종합목재(월드건축자재) 매장에서 실물을 비교해 보실 수 있고, 원하는 크기로 재단해 전국 배송도 합니다. 전화 문의 후 방문하시면 편합니다."))
+        out.append(("매장에서 실물을 볼 수 있나요?", "대전 유성구 영진종합목재(월드건축자재) 매장에서 실물을 비교해 보실 수 있고, 원하는 크기로 재단해 전국 배송도 합니다. 전화 문의 후 방문하시면 편합니다."))
         return out
     for c in CMP:
         th = "<tr><th></th>" + "".join(f"<th>{E(x)}</th>" for x in c["cols"]) + "</tr>"

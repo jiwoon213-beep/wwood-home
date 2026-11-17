@@ -138,5 +138,5 @@ def intro(name, cat, spec, price):
     s = [f"{_jo(nm, '은', '는')} {cat} 제품입니다."]
     sp = [(a, b) for a, b in spec if a not in ("제조사", "분류", "세부 분류", "가격") and b]
     if sp: s.append(" ".join(f"{_jo(a, '은', '는')} {b}." for a, b in sp[:3]).replace("..", "."))
-    s.append(f"대전 서구 영진종합목재(월드건축자재) 매장에서 {'기준가 ' + format(price, ',') + '원~(부가세 포함)으로 ' if price else ''}상담·주문할 수 있고, 목재·합판 등 다른 자재와 함께 전국 용달로 보내 드립니다.")
+    s.append(f"대전 유성구 영진종합목재(월드건축자재) 매장에서 {'기준가 ' + format(price, ',') + '원~(부가세 포함)으로 ' if price else ''}상담·주문할 수 있고, 목재·합판 등 다른 자재와 함께 전국 용달로 보내 드립니다.")
     return " ".join(s)

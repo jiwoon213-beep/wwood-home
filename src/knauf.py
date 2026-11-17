@@ -63,7 +63,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT):
             sp = spec(r)
             rel = [x for x in xs if x is not r][:8]
             tb = "".join(f"<tr><th>{E(a)}</th><td>{E(b)}</td></tr>" for a, b in sp)
-            fq = [(f"크나우프 {r[1]} 어디서 사나요?", f"대전 서구 영진종합목재(월드건축자재) 매장에서 상담·주문하실 수 있고, 전국 용달 배송도 됩니다. {HOURS}."),
+            fq = [(f"크나우프 {r[1]} 어디서 사나요?", f"대전 유성구 영진종합목재(월드건축자재) 매장에서 상담·주문하실 수 있고, 전국 용달 배송도 됩니다. {HOURS}."),
                   (f"크나우프 {r[1]} 가격은 얼마인가요?", "규격·수량에 따라 달라 매장이나 전화(042-545-2900)로 견적을 드립니다."),
                   (f"크나우프 {r[1]}는 어디에 쓰나요?", r[2] or g)]
             ld = [{"@context": "https://schema.org", "@type": "Product", "name": f"크나우프 {r[1]}", "image": IMG(r[4], 900), "description": (r[2] or g)[:200], "brand": {"@type": "Brand", "name": "Knauf"}, "category": g},

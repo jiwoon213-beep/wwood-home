@@ -47,7 +47,7 @@ def _vendor(page, E, CTA, faqslide, HOURS, d, label, home, items, VID=None):
         pz = f'{it["price"]:,}원~ (부가세 포함)' if it.get("price") else "매장 문의 (규격·수량별 견적)"
         tb = "".join(f"<tr><th>{E(a)}</th><td>{E(b)}</td></tr>" for a, b in it["spec"]) + f"<tr><th>분류</th><td>{E(it['cat'])}</td></tr><tr><th>가격</th><td>{E(pz)}</td></tr>"
         use = it["lead"] or it["cat"]
-        fq = [(f"{it['title']} 어디서 사나요?", f"대전 서구 영진종합목재(월드건축자재) 매장에서 상담·주문하실 수 있고, 전국 용달 배송도 됩니다. {HOURS}."),
+        fq = [(f"{it['title']} 어디서 사나요?", f"대전 유성구 영진종합목재(월드건축자재) 매장에서 상담·주문하실 수 있고, 전국 용달 배송도 됩니다. {HOURS}."),
               (f"{it['title']} 가격은 얼마인가요?", (f"매장 기준 {pz}입니다. 색상·용량·수량에 따라 달라질 수 있습니다." if it.get("price") else f"규격·수량에 따라 달라 매장이나 전화({TEL})로 견적을 드립니다.")),
               (f"{PG._jo(it['title'], '은', '는')} 어떤 제품인가요?", use)]
         gd = PG.find(it["cat"]) or PG.find(" ".join(b for a, b in it["spec"] if a in ("세부 분류", "라인"))) or PG.find(it["name"])
