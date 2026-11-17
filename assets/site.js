@@ -193,3 +193,35 @@ WWC("hjsave");if(b){b.textContent="저장됨 ✓ 현장함 보기 ›";b.onclick
   bar.addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; show(b.getAttribute("data-t")); try { if (window.WWC) WWC("hometab"); } catch (x) {} });
   show(bar.querySelector("button").getAttribute("data-t"));
 })();
+
+/* PC: 옆으로 넘기는 줄마다 ‹ › 버튼 */
+(function(){
+  if(!window.matchMedia||!matchMedia('(min-width:900px) and (hover:hover)').matches)return;
+  var SKIP='nav,header,table,tbody,.tw,.ggc,.tgb,.tgbar,.chips,.jchips,.plc,.tkn,.sarw';
+  function setup(){
+    var all=document.querySelectorAll('main *,section *,.wrap *');
+    for(var i=0;i<all.length;i++){
+      var el=all[i];
+      if(el.__sar||el.closest(SKIP))continue;
+      var cs=getComputedStyle(el);
+      if(cs.overflowX!=='auto'&&cs.overflowX!=='scroll')continue;
+      if(el.children.length<2||el.scrollWidth<=el.clientWidth+20)continue;
+      if(el.children[0].getBoundingClientRect().width<90)continue;
+      el.__sar=1;
+      var w=document.createElement('div');w.className='sarw';
+      el.parentNode.insertBefore(w,el);w.appendChild(el);
+      (function(el,w){
+        var l=document.createElement('button'),r=document.createElement('button');
+        l.type=r.type='button';l.className='sarb l';r.className='sarb r';l.innerHTML='&#8249;';r.innerHTML='&#8250;';
+        l.setAttribute('aria-label','이전');r.setAttribute('aria-label','다음');
+        function upd(){l.hidden=el.scrollLeft<5;r.hidden=el.scrollLeft+el.clientWidth>=el.scrollWidth-5}
+        function go(d){el.scrollBy({left:d*el.clientWidth*.85,behavior:'smooth'})}
+        l.onclick=function(){go(-1)};r.onclick=function(){go(1)};
+        el.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);
+        w.appendChild(l);w.appendChild(r);upd();
+      })(el,w);
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+  window.addEventListener('load',function(){setTimeout(setup,800)});
+})();
