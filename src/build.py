@@ -1525,7 +1525,7 @@ def build():
         _hi = os.path.exists(f"{ROOT}/assets/mandeul/{slug}.jpg"); _si = os.path.exists(f"{ROOT}/assets/mandeul/{slug}-steps.jpg")
         _hero = f'<figure class="mkfig"><img src="/assets/mandeul/{slug}.jpg" width="1200" height="800" alt="{E(nm)} 완성 모습 그림"><figcaption class="small muted">완성 모습 그림 — 표의 크기대로 만들면 이렇게 됩니다.</figcaption></figure>' if _hi else ""
         _stp = f'<section class="wrap sec"><h2>{E(nm)} 만드는 순서 (그림 설명서)</h2><img class="mkfig" loading="lazy" src="/assets/mandeul/{slug}-steps.jpg" alt="{E(nm)} 만드는 순서 그림 설명서" style="width:100%;height:auto;border-radius:14px;border:1px solid #e6e0d4"><p class="small muted">빨간 테두리가 그 단계에서 새로 붙이는 부재입니다.</p></section>' if _si else ""
-        _tot = 0; _grp = {}; _seen = set(); _ml = []
+        _tot = 0; _grp = {}; _seen = set(); _ml = []; _pl = []
         _ms = []
         for r_ in rows:
             m_ = {"합판": "hapan", "MDF": "mdf", "집성판": "jipseong", "석고보드": "gypsum", "단열재": "insul", "구조재": "gujo", "방부목": "bangbu", "각재·다루끼": "gujo", "데크": "hapdeck"}.get(r_[1])
@@ -1562,7 +1562,15 @@ def build():
                     money = "매장 문의"
             trs += f'<tr><th>{E(part)}</th><td data-l="자재·재단 크기">{E(desc)}</td><td data-l="필요 수량">{cnt}</td><td data-l="기준가 예상 금액">{money}</td></tr>'
             _ml.append(f"- {part}: {desc} / {re.sub(r'<[^>]+>', '', cnt)} / {re.sub(r'<[^>]+>', '', money)}")
+            _pl.append((part, desc, re.sub(r'<[^>]+>', '', cnt)))
             btns += f'<a class="b o" href="{cutlink(cat, rx, parts)}">{E(part)} 재단 그림</a> '
+        try:
+            import mkpdf as _mkp
+            if _mkp.make(ROOT, slug, nm, title, lead, _pl, steps, mats, BASE): print("도면 PDF", slug)
+        except Exception as _e: print("PDF 실패", slug, _e)
+        _pdf = os.path.exists(f"{ROOT}/assets/mandeul/pdf/{slug}.pdf")
+        if _pdf and not os.path.exists(f"{OUT}/assets/mandeul/pdf/{slug}.pdf"): os.makedirs(f"{OUT}/assets/mandeul/pdf", exist_ok=True); shutil.copy(f"{ROOT}/assets/mandeul/pdf/{slug}.pdf", f"{OUT}/assets/mandeul/pdf/{slug}.pdf")
+        if _pdf: btns += f'<a class="b r pdfdl" href="/assets/mandeul/pdf/{slug}.pdf" download="{nm}_도면_영진종합목재.pdf">⬇ 무료 도면 PDF (인쇄용)</a> '
         body = f"""<section class="wrap sec"><p class="crumb"><a href="/mandeul/">DIY 만들기</a> › {E(nm)}</p><h1>{E(title.split(" — ")[0])}</h1><p class="lead">{E(lead)}</p>
 {_hero}<div class="tw"><table class="rt"><thead><tr><th>부분</th><th>자재·재단 크기</th><th>필요 수량</th><th>기준가 예상 금액</th></tr></thead><tbody>{trs}</tbody></table></div>
 {f'<div class="est"><b>예상 자재비 약 {_tot:,}원</b><span>소매 기준가 기준 · 부가세 별도 · 피스·철물·마감재 제외 · <a href="/cut.html#fee">재단비</a> 1컷 1,000원~(두께별) · 운임은 매장에서 계산 · 가격은 바뀔 수 있어요</span></div>' if _tot else ''}
@@ -1736,7 +1744,7 @@ def build():
         SGMAT_HTML.setdefault(x[9], []).append(x)
     SGMAT_HTML = {k: '<section class="wrap sec"><h2>시공법</h2><div class="mg m2">' + "".join(f'<a class="mc" href="/sigongbeop/{x[0]}.html">' + (f'<img loading="lazy" src="/assets/sigongbeop/{x[0]}.jpg" alt="{E(x[1])}" style="width:100%;height:auto;border-radius:8px;margin-bottom:6px">' if os.path.exists(f"{ROOT}/assets/sigongbeop/{x[0]}.jpg") else "") + f'<b>{E(x[1])}</b><small>자재 수량·그림 설명서·영상</small></a>' for x in v) + '</div></section>' for k, v in SGMAT_HTML.items()}
     page("mandeul/index.html", "만들기 자재 목록 — 평상·책장·침대·신발장·작업대·데크·개집 재단 크기 | 영진목재", "평상, 책장, 신발장, 침대 프레임, 작업대, 벤치, 베란다 선반, 벽 단열, 데크, 가벽, 울타리, 테이블, 강아지집을 만들 때 필요한 자재와 재단 크기를 정리했습니다. 재단 그림까지 바로 확인하세요.",
-         f'<section class="wrap sec"><h1>DIY 만들기</h1><p class="lead">자주 만드는 것들의 자재와 재단 크기를 정리했습니다. 크기만 바꿔서 재단 그림으로 확인하고, 매장에 보여주시면 그대로 잘라 드려요.</p><div class="gsrch"><span>🔍</span><input id="mkq" type="search" placeholder="만들 것 검색 (예: 책장, 데크, 방부목, 집성판)" autocomplete="off" aria-label="검색"></div><p id="mkqn" class="small muted" style="margin:-4px 0 8px"></p><div class="mg m2" id="mkqg">{mk_cards}</div><script>(function(){{var q=document.getElementById("mkq"),n=document.getElementById("mkqn"),C=[].slice.call(document.querySelectorAll("#mkqg .mc"));function f(){{var v=q.value.replace(/\\s/g,"").toLowerCase(),k=0;C.forEach(function(c){{var ok=!v||c.textContent.replace(/\\s/g,"").toLowerCase().indexOf(v)>=0;c.style.display=ok?"":"none";if(ok)k++}});n.textContent=v?(k?k+"개 찾음":"찾는 게 없어요. 매장에 물어보세요."):""}}q.addEventListener("input",f)}})();</script></section><section class="wrap sec"><div class="card"><h2>직접 만드신 작품을 보내 주세요</h2><p>영진종합목재 자재로 만든 평상·선반·데크·가구 사진을 메일로 보내 주시면 이 페이지 「손님이 만든 작품」에 소개해 드립니다(이름은 원하시는 대로, 얼굴·주소가 나온 사진은 빼고 올립니다).</p><p><a class="b r" href="mailto:{EMAIL}?subject=%EC%9E%91%ED%92%88%20%EC%82%AC%EC%A7%84%20%EB%B3%B4%EB%83%85%EB%8B%88%EB%8B%A4&body=%EB%A7%8C%EB%93%A0%20%EA%B2%83%3A%0A%EC%93%B4%20%EC%9E%90%EC%9E%AC%3A%0A%EC%86%8C%EA%B0%9C%ED%95%A0%20%EC%9D%B4%EB%A6%84(%EB%8B%89%EB%84%A4%EC%9E%84)%3A%0A">작품 사진 메일로 보내기</a></p></div></section>{CTA}', "/mandeul/")
+         f'<section class="wrap sec"><h1>DIY 만들기</h1><p class="lead">자주 만드는 것들의 자재와 재단 크기를 정리했습니다. 크기만 바꿔서 재단 그림으로 확인하고, 매장에 보여주시면 그대로 잘라 드려요.</p><p class="small"><b>모든 만들기는 무료 도면 PDF</b>(완성 그림·재단 목록·순서 그림, A4 인쇄용)를 받을 수 있습니다 — 각 페이지의 <b>⬇ 무료 도면 PDF</b> 버튼.</p><div class="gsrch"><span>🔍</span><input id="mkq" type="search" placeholder="만들 것 검색 (예: 책장, 데크, 방부목, 집성판)" autocomplete="off" aria-label="검색"></div><p id="mkqn" class="small muted" style="margin:-4px 0 8px"></p><div class="mg m2" id="mkqg">{mk_cards}</div><script>(function(){{var q=document.getElementById("mkq"),n=document.getElementById("mkqn"),C=[].slice.call(document.querySelectorAll("#mkqg .mc"));function f(){{var v=q.value.replace(/\\s/g,"").toLowerCase(),k=0;C.forEach(function(c){{var ok=!v||c.textContent.replace(/\\s/g,"").toLowerCase().indexOf(v)>=0;c.style.display=ok?"":"none";if(ok)k++}});n.textContent=v?(k?k+"개 찾음":"찾는 게 없어요. 매장에 물어보세요."):""}}q.addEventListener("input",f)}})();</script></section><section class="wrap sec"><div class="card"><h2>직접 만드신 작품을 보내 주세요</h2><p>영진종합목재 자재로 만든 평상·선반·데크·가구 사진을 메일로 보내 주시면 이 페이지 「손님이 만든 작품」에 소개해 드립니다(이름은 원하시는 대로, 얼굴·주소가 나온 사진은 빼고 올립니다).</p><p><a class="b r" href="mailto:{EMAIL}?subject=%EC%9E%91%ED%92%88%20%EC%82%AC%EC%A7%84%20%EB%B3%B4%EB%83%85%EB%8B%88%EB%8B%A4&body=%EB%A7%8C%EB%93%A0%20%EA%B2%83%3A%0A%EC%93%B4%20%EC%9E%90%EC%9E%AC%3A%0A%EC%86%8C%EA%B0%9C%ED%95%A0%20%EC%9D%B4%EB%A6%84(%EB%8B%89%EB%84%A4%EC%9E%84)%3A%0A">작품 사진 메일로 보내기</a></p></div></section>{CTA}', "/mandeul/")
     # 목재·합판 재단비 안내(/jaedan-bi.html) — "합판 재단 비용", "목재 재단 가격" 검색용
     _FEE = [("12T 이하", 1000, "합판 4.8·8.5·11.5T, MDF 9T, 석고보드 9.5T 등"), ("15T·18T", 1500, "합판 15·17.5T, MDF 15·18T, 집성판 18T, OSB 18T 등"),
             ("20T 이하", 2000, "1×4 구조재(19T), 데크재 19·20T 등"), ("24T 이하", 2500, "집성판·원목 판재 24T 등"), ("30T 이하", 3000, "집성판 30T, 데크재 25T, 다루끼 30각 등")]
