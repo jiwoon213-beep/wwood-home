@@ -5,7 +5,7 @@ s = requests.Session(); s.headers["User-Agent"] = "Mozilla/5.0 (wwood.co.kr apt 
 h0 = s.get(U + "/web/board/webReference/boardList.do?boardType=03&scodeT=04", timeout=60).text
 tok = re.search(r'name="_csrf" content="([^"]+)"', h0) or re.search(r'name="_csrf"[^>]*value="([^"]+)"', h0)
 seq = None
-for sc in ("04", ""):
+for sc in ("01", "04"):
     if not tok: break
     h = s.post(U + "/web/board/webReference/boardListAjax.do", data={"scode": sc, "boardType": "03", "pageNo": "1", "stype": "", "keyword": "", "_csrf": tok.group(1)}, headers={"X-CSRF-TOKEN": tok.group(1), "X-Requested-With": "XMLHttpRequest"}, timeout=60).text
     for m in re.finditer(r"fileDown\('(\d+)','03','1'\)", h):
