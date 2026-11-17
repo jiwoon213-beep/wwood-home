@@ -636,3 +636,6 @@ dl.abf{margin:14px 0}dl.abf dt{font-weight:800;font-size:16.5px;margin-top:16px}
 .ggnav a span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.ggnav .ggn{justify-content:flex-end;background:#1d1b18;color:#fff;border-color:#1d1b18}
 .hsi.swl{transition:transform .2s,opacity .2s;opacity:.4;transform:translateX(-30px)}.hsi.swr{transition:transform .2s,opacity .2s;opacity:.4;transform:translateX(30px)}
 @media(hover:hover){.ggsw{display:none}}
+.hspop .hsbr{display:flex;gap:8px;align-items:stretch}.hspop .hsbr .hsgo{flex:1 1 0;margin:0!important}
+.hspop .hscl{flex:1 1 0;min-height:44px;border:1px solid #d9d2c7;border-radius:12px;background:#fff;color:#1d1b18;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit}
+.hspop .hscl:active{background:#f3efe8}

@@ -171,6 +171,9 @@ WWC("hjsave");if(b){b.textContent="저장됨 ✓ 현장함 보기 ›";b.onclick
         var box = w.querySelector(".hsi"), x = parseFloat(d.style.left), y = parseFloat(d.style.top);
         c.style.left = x > 55 ? "auto" : "calc(" + x + "% + 20px)"; if (x > 55) c.style.right = "calc(" + (100 - x) + "% + 20px)";
         c.style.top = y > 55 ? "auto" : "calc(" + y + "% - 10px)"; if (y > 55) c.style.bottom = "calc(" + (100 - y) + "% - 10px)";
+        var go = c.querySelector(".hsgo"), cb = document.createElement("button"); cb.type = "button"; cb.className = "hscl"; cb.textContent = "닫기";
+        cb.addEventListener("click", function (e) { e.stopPropagation(); close(w); });
+        if (go) { var row = document.createElement("div"); row.className = "hsbr"; go.parentNode.insertBefore(row, go); row.appendChild(go); row.appendChild(cb); } else c.appendChild(cb);
         box.appendChild(c); c.addEventListener("click", function (e) { e.stopPropagation(); });
         try { if (window.WWC) WWC("hotspot"); } catch (e) {}
       });
