@@ -1,5 +1,5 @@
 /* 사장님 통계용 횟수 세기(앱 설치·현장함 저장·미리 주문·공유) — 누적 + 오늘 */
-window.WWC=function(x){try{if(navigator.webdriver||/bot|crawl|spider|headless/i.test(navigator.userAgent))return;var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/hit/wwood-co-kr/";fetch(b+"ev-"+x).catch(function(){});fetch(b+"ev-"+x+"-d"+k).catch(function(){})}catch(e){}};
+window.WWC=function(x){try{if(navigator.webdriver||/bot|crawl|spider|headless/i.test(navigator.userAgent))return;var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/hit/wwood-co-kr/";if(window.WWH){WWH("ev-"+x);WWH("ev-"+x+"-d"+k)}else{fetch(b+"ev-"+x).catch(function(){});fetch(b+"ev-"+x+"-d"+k).catch(function(){})}}catch(e){}};
 (function(){try{var st=window.matchMedia&&matchMedia("(display-mode: standalone)").matches||navigator.standalone;if(!st)return;var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10);if(localStorage.getItem("wwAO")!==k){localStorage.setItem("wwAO",k);WWC("appopen")}}catch(e){}})();
 // 영상 카드: 일반 클릭은 페이지 안에서 재생, Ctrl/새 탭은 유튜브로
 document.addEventListener("click", function (e) {
