@@ -2336,6 +2336,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     _grp = {}
     for _u in SITEMAP:
         if "/bupum/p/" in _u: continue  # 철물박사 상품 6천여 개는 빼서 핵심 페이지 목록을 가볍게
+        if re.search(r"/p/[^/]+\.html$", _u) or re.search(r"/apt/[a-z]+/[^/]+\.html$", _u): continue  # 제품 상세·아파트 동 페이지는 각 목록(/…/p/, /apt/)과 XML 사이트맵으로
         _p = _u[len(BASE) + 1:]
         _k = _p.split("/")[0] if "/" in _p else ""
         _pp = (_p if _p.endswith(".html") else _p + "index.html") or "index.html"
@@ -2511,7 +2512,7 @@ Promise.all([0,1,2,3,4,5,6].map(function(i){return g("d"+day(i))})).then(functio
 - [공간 사진 둘러보기]({BASE}/gonggan/) · [인테리어 트렌드]({BASE}/trend/)
 - [전국 배송 지역]({BASE}/jeonguk/) · [시공팀 연결]({BASE}/yeongyeol/)
 """)
-    open(f"{OUT}/robots.txt", "w").write(f"User-agent: *\nAllow: /\n\nUser-agent: Googlebot\nAllow: /\n\nUser-agent: Bingbot\nAllow: /\n\nUser-agent: Yeti\nAllow: /\n\nUser-agent: Daumoa\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: ClaudeBot\nAllow: /\n\nUser-agent: Claude-SearchBot\nAllow: /\n\nUser-agent: Claude-User\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: Perplexity-User\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\n\nUser-agent: Applebot\nAllow: /\n\nUser-agent: Applebot-Extended\nAllow: /\n\nUser-agent: Bravebot\nAllow: /\n\nUser-agent: DuckAssistBot\nAllow: /\n\nUser-agent: Amazonbot\nAllow: /\n\nUser-agent: meta-externalagent\nAllow: /\n\nUser-agent: CCBot\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\nSitemap: {BASE}/sitemap-video.xml\nSitemap: {BASE}/sitemap-products.xml\nSitemap: {BASE}/rss.xml\n\n#DaumWebMasterTool:99e0908a419948d27287fb3d562fb5c6a299e4c3c385ed57b261247546dd22cc:VC4npJliHmrJLtJDnWYFDA==\n")
+    open(f"{OUT}/robots.txt", "w").write(f"User-agent: *\nAllow: /\n\nUser-agent: Googlebot\nAllow: /\n\nUser-agent: Bingbot\nAllow: /\n\nUser-agent: Yeti\nAllow: /\n\nUser-agent: Daumoa\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: ClaudeBot\nAllow: /\n\nUser-agent: Claude-SearchBot\nAllow: /\n\nUser-agent: Claude-User\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: Perplexity-User\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\n\nUser-agent: Applebot\nAllow: /\n\nUser-agent: Applebot-Extended\nAllow: /\n\nUser-agent: Bravebot\nAllow: /\n\nUser-agent: DuckAssistBot\nAllow: /\n\nUser-agent: Amazonbot\nAllow: /\n\nUser-agent: meta-externalagent\nAllow: /\n\nUser-agent: CCBot\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\nSitemap: {BASE}/sitemap-video.xml\nSitemap: {BASE}/sitemap-products.xml\nSitemap: {BASE}/sitemap-apt.xml\nSitemap: {BASE}/rss.xml\n\n#DaumWebMasterTool:99e0908a419948d27287fb3d562fb5c6a299e4c3c385ed57b261247546dd22cc:VC4npJliHmrJLtJDnWYFDA==\n")
     today = datetime.date.today().isoformat()
     # lastmod: 내용이 실제로 바뀐 날만 갱신(매일 오늘 날짜면 구글이 lastmod를 무시함)
     _lmf = f"{ROOT}/data/lastmod.json"
@@ -2537,9 +2538,10 @@ Promise.all([0,1,2,3,4,5,6].map(function(i){return g("d"+day(i))})).then(functio
                 + (f"<video:publication_date>{_dt.datetime.fromtimestamp(ts, _dt.timezone(_dt.timedelta(hours=9))).isoformat()}</video:publication_date>" if ts else "")
                 + "<video:family_friendly>yes</video:family_friendly></video:video></url>\n" for u, v, dd, ts, ln in VSM if v["id"] not in VTHIN) + "</urlset>\n")
     _isp = lambda u: re.search(r"/[a-z]+/p/[^/]+\.html$", u) is not None
-    for _fn, _us in (("sitemap.xml", [u for u in SITEMAP if not _isp(u)]), ("sitemap-products.xml", [u for u in SITEMAP if _isp(u) and "/bupum/p/" not in u])):
+    _isapt = lambda u: bool(re.search(r"/apt/[a-z]+/[^/]+\.html$", u))
+    for _fn, _us in (("sitemap.xml", [u for u in SITEMAP if not _isp(u) and not _isapt(u)]), ("sitemap-products.xml", [u for u in SITEMAP if _isp(u) and "/bupum/p/" not in u]), ("sitemap-apt.xml", [u for u in SITEMAP if _isapt(u)])):
       open(f"{OUT}/{_fn}", "w").write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' +
-        "".join(f"<url><loc>{u}</loc><lastmod>{LMD[u]}</lastmod>" + (f"<image:image><image:loc>{html.escape((BASE + SIMG[u]) if SIMG[u].startswith('/') else SIMG[u])}</image:loc></image:image>" if SIMG.get(u) else "") + "".join(f"<image:image><image:loc>{BASE}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg</image:loc></image:image>" for d_ in ("mandeul", "sigongbeop") if f"/{d_}/" in u and not u.endswith("/") and os.path.exists(f"{ROOT}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg")) + "</url>\n" for u in _us) + "</urlset>\n")
+        "".join(f"<url><loc>{quote(u, safe=':/?=&%#')}</loc><lastmod>{LMD[u]}</lastmod>" + (f"<image:image><image:loc>{html.escape((BASE + SIMG[u]) if SIMG[u].startswith('/') else SIMG[u])}</image:loc></image:image>" if SIMG.get(u) else "") + "".join(f"<image:image><image:loc>{BASE}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg</image:loc></image:image>" for d_ in ("mandeul", "sigongbeop") if f"/{d_}/" in u and not u.endswith("/") and os.path.exists(f"{ROOT}/assets/{d_}/{u.rsplit('/', 1)[1][:-5]}-steps.jpg")) + "</url>\n" for u in _us) + "</urlset>\n")
     # 전체 자재 검색: 쇼핑몰 자재 + 제조사·철물·본덱스 사진 카드(.yri) 전부 → /assets/search.json
     _sx, _seen = list(idx), set()
     for d_ in ("bondex", "bupum", "yerim", "younglim", "shenu", "nichiha", "geonjae", "knauf", "suip"):
