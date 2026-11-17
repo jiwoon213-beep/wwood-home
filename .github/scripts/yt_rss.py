@@ -46,6 +46,10 @@ def page_fallback(cid, name):
             known.add(vid); n += 1; print("new", vid, typ, title)
     return n
 
+import gzip
+VDF = "src/data/vdesc.json.gz"
+vdesc = json.loads(gzip.open(VDF).read()) if os.path.exists(VDF) else {}
+vd_new = 0
 added = 0
 for cid, name in CH.items():
     root = None
@@ -61,6 +65,11 @@ for cid, name in CH.items():
     print("feed", name, author, len(root.findall("a:entry", NS)))
     for en in root.findall("a:entry", NS):
         vid = en.findtext("yt:videoId", "", NS)
+        if vid and vid not in vdesc:  # 영상 설명 → 영상별 페이지(/v/) 생성용
+            dsc = (en.findtext("m:group/m:description", "", NS) or "").strip()
+            pub0 = en.findtext("a:published", "", NS)[:19]
+            if dsc:
+                vdesc[vid] = [dsc, 0, calendar.timegm(time.strptime(pub0, "%Y-%m-%dT%H:%M:%S")) if pub0 else int(time.time())]; vd_new += 1
         if not vid or vid in known: continue
         title = re.sub(r"[\t\r\n]+", " ", en.findtext("a:title", "", NS)).strip()
         pub = en.findtext("a:published", "", NS)[:19]
@@ -71,4 +80,6 @@ for cid, name in CH.items():
         if s is None: s = bool(re.search(r"#shorts?", title, re.I))
         open(f"src/data/new_videos/{vid}.tsv", "w", encoding="utf-8").write(f"{vid}\t{'S' if s else 'L'}\t{views}\t{ts}\t{title}\n")
         known.add(vid); added += 1; print("new", vid, "S" if s else "L", title)
+if vd_new:
+    gzip.open(VDF, "wb").write(json.dumps(vdesc, ensure_ascii=False).encode()); print("vdesc added", vd_new)
 print("added", added)
