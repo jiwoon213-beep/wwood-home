@@ -2,11 +2,16 @@
 import re, sys, io, requests, openpyxl
 U = "https://www.k-apt.go.kr"
 s = requests.Session(); s.headers["User-Agent"] = "Mozilla/5.0 (wwood.co.kr apt list)"
-h = s.get(U + "/web/board/webReference/boardView.do?seq=20&boardSecret=0&boardType=03&pageNo=1&keyword=&board_pwd=&scodeT=04", timeout=60).text
-tok = re.search(r'name="_csrf"[^>]*value="([^"]+)"', h) or re.search(r'name="_csrf" content="([^"]+)"', h)
+h0 = s.get(U + "/web/board/webReference/boardList.do?boardType=03&scodeT=04", timeout=60).text
+tok = re.search(r'name="_csrf" content="([^"]+)"', h0) or re.search(r'name="_csrf"[^>]*value="([^"]+)"', h0)
 seq = None
-for m in re.finditer(r"fileDown\('(\d+)','03','1'\)", h):
-    if "기본정보" in h[max(0, m.start() - 1500):m.start() + 1500]: seq = m.group(1); break
+for sc in ("04", ""):
+    if not tok: break
+    h = s.post(U + "/web/board/webReference/boardListAjax.do", data={"scode": sc, "boardType": "03", "pageNo": "1", "stype": "", "keyword": "", "_csrf": tok.group(1)}, headers={"X-CSRF-TOKEN": tok.group(1), "X-Requested-With": "XMLHttpRequest"}, timeout=60).text
+    for m in re.finditer(r"fileDown\('(\d+)','03','1'\)", h):
+        if "기본정보" in h[max(0, m.start() - 1500):m.start() + 200]: seq = m.group(1); break
+    if seq: break
+print("html", len(h0), bool(tok), seq)
 if not (tok and seq): print("목록 못 읽음", bool(tok), seq); sys.exit(0)
 r = s.post(U + f"/board/getFileDownload.do?seq={seq}&boardType=03", data={"_csrf": tok.group(1), "fileNum": "1"}, headers={"X-CSRF-TOKEN": tok.group(1)}, timeout=180)
 if len(r.content) < 1_000_000: print("파일 작음", len(r.content)); sys.exit(0)
