@@ -1,0 +1,18 @@
+name: 아파트 단지 정보(K-apt) 갱신
+on:
+  workflow_dispatch:
+  schedule: [{ cron: '17 1 * * 6' }]
+permissions: { contents: write }
+jobs:
+  kapt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install -q requests openpyxl
+      - run: python3 .github/scripts/fetch_kapt.py
+      - run: |
+          git config user.name "wwood-build-bot"; git config user.email "actions@users.noreply.github.com"
+          git add src/data/apt.tsv 2>/dev/null; git diff --cached --quiet && exit 0
+          git commit -m "아파트 단지 정보 갱신(K-apt)"; git pull --rebase && git push
