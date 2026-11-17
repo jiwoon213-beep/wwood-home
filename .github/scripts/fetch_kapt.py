@@ -1,5 +1,5 @@
 # K-apt '관리비공개의무단지 기본정보'(매주 금요일) → 대전·세종 아파트 단지 목록 src/data/apt.tsv
-import re, sys, io, requests, openpyxl
+import re, sys, io, html, requests, openpyxl
 U = "https://www.k-apt.go.kr"
 s = requests.Session(); s.headers["User-Agent"] = "Mozilla/5.0 (wwood.co.kr apt list)"
 h0 = s.get(U + "/web/board/webReference/boardList.do?boardType=03&scodeT=04", timeout=60).text
@@ -16,7 +16,7 @@ if not (tok and seq): print("목록 못 읽음", bool(tok), seq); sys.exit(0)
 r = s.post(U + f"/board/getFileDownload.do?seq={seq}&boardType=03", data={"_csrf": tok.group(1), "fileNum": "1"}, headers={"X-CSRF-TOKEN": tok.group(1)}, timeout=180)
 if len(r.content) < 1_000_000: print("파일 작음", len(r.content)); sys.exit(0)
 wb = openpyxl.load_workbook(io.BytesIO(r.content), read_only=True)
-rows = list(wb.active.iter_rows(values_only=True))
+rows = [tuple(html.unescape(c) if isinstance(c, str) else c for c in x) for x in wb.active.iter_rows(values_only=True)]
 hi = next(i for i, x in enumerate(rows) if x and "단지명" in x); H = list(rows[hi])
 W = ["시도", "시군구", "동리", "단지코드", "단지명", "단지분류", "도로명주소", "사용승인일", "동수", "세대수", "난방방식", "복도유형", "최고층수", "시공사"]
 I = [H.index(w) for w in W]
