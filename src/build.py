@@ -558,6 +558,8 @@ def build():
         return f'<i class="pci"><em>{"자재·인테리어 소식" if "-news-" in p.get("slug", "") else "자재 정보"}</em>{E(t)}</i>'
     plist = lambda ps: "".join(f'<a class="pc" href="/news/{p["slug"]}.html">{_pth(p)}<small>{E(p.get("date",""))}</small><b>{E(p["title"])}</b><span>{E(p.get("desc",""))}</span></a>' for p in ps)
     _isv = lambda p: p["title"].startswith("[영상]")
+    _vtyp = {l.split("\t")[0]: l.split("\t")[1] for l in open(f"{ROOT}/data/yt_all.tsv", encoding="utf-8") if l.count("\t") >= 2}
+    _iss = lambda p: _vtyp.get((p.get("videos") or [""])[0]) == "S" or "#shorts" in p["title"].lower() or "쇼츠" in p["title"]
     def nrow(h, ps): return (f'<h2 class="gt">{h} <small>옆으로 넘겨 보세요 ›</small></h2><div class="pl hs nw">{plist(ps)}</div>') if ps else ""
     import gonggan_data as _GG0
     postsec = f'<section class="wrap sec"><h2>공간 사진 둘러보기 <small class="muted">사진 속 + 누르면 자재·시공법</small></h2><div class="pl hs">' + "".join(f'<a class="pc" href="/gonggan/{x[0]}.html"><span class="ggi"><img loading="lazy" src="{_gth(x[2])}" alt="">' + "".join(f'<i style="left:{sp[0]}%;top:{sp[1]}%"></i>' for sp in x[5]) + f'</span><b>{E(x[1].split(" — ")[0])}</b></a>' for x in _GG0.SCENES) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p><p><a href="/gonggan/">전체 보기 →</a></p></section>'
@@ -616,7 +618,7 @@ def build():
 
     # 소식·정보
     page("news/index.html", "소식·자재 정보 — 목재·건축자재 가격, 시공 팁 | 대전 월드건축자재", "대전 월드건축자재(영진목재)의 자재 정보, 기준가, 시공 사례, 새 영상 소식.",
-         f'<section class="wrap sec"><h1>소식·자재 정보</h1><p class="lead">자재 고르는 법, 기준가, 시공 사례와 새 영상 소식을 매일 올립니다.</p>{nrow("▶ 새 영상 소식", [p for p in POSTS if _isv(p)])}{nrow("📘 자재 정보 글", [p for p in POSTS if not _isv(p) and "-news-" not in p.get("slug", "")])}{nrow("📰 자재·인테리어 소식", [p for p in POSTS if "-news-" in p.get("slug", "")])}</section>{CTA}', "/news/")
+         f'<section class="wrap sec"><h1>소식·자재 정보</h1><p class="lead">자재 고르는 법, 기준가, 시공 사례와 새 영상 소식을 매일 올립니다.</p>{nrow("▶ 새 영상", [p for p in POSTS if _isv(p) and not _iss(p)])}{nrow("⚡ 새 쇼츠", [p for p in POSTS if _isv(p) and _iss(p)])}{nrow("📘 자재 정보 글", [p for p in POSTS if not _isv(p) and "-news-" not in p.get("slug", "")])}{nrow("📰 자재·인테리어 소식", [p for p in POSTS if "-news-" in p.get("slug", "")])}</section>{CTA}', "/news/")
     for p in POSTS:
         vids = "".join(embed(byid[i]) if i in byid else f'<div class="emb"><iframe loading="lazy" src="https://www.youtube.com/embed/{E(i)}" allowfullscreen></iframe></div>' for i in p.get("videos", [])[:2])
         art = {"@context": "https://schema.org", "@type": "Article", "headline": p["title"], "datePublished": p.get("date", ""), "author": {"@type": "Organization", "name": "월드건축자재(영진종합목재)"}, "publisher": {"@type": "Organization", "name": "월드건축자재(영진종합목재)"}}
