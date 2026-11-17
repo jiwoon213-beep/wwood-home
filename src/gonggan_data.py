@@ -110,12 +110,12 @@ SCENES += [
   [(40, 45, "영림 프리4도어", "jungmun", "얇은 프레임 유리문 4짝으로 주방을 나누는 파티션 도어입니다.", "/younglim/p/3530.html", "제품 보기", [("/qna/door-silcheuk.html", "실측 방법"), ("/younglim/jungmun.html", "중문 전체")]),
    (52, 72, "주방 아일랜드", "furniture", "작업대 겸 식탁으로 쓰는 아일랜드입니다.", "/mandeul/aillaendeu.html", "아일랜드 만들기", [("/island-size.html", "아일랜드 식탁 사이즈")]),
    (62, 40, "주방 상부장", "cabinet", "벽 위쪽 수납장입니다.", "/mandeul/sangbujang.html", "상부장 만들기", [("/qna/sink-paint.html", "싱크대 페인트")]),
-   (50, 96, "주방 바닥", "tile", "물 쓰는 주방은 물에 강한 바닥재가 좋습니다.", "/qna/badakjae-goreugi.html", "바닥재 고르는 법", [])]),
+   (50, 90, "주방 바닥", "tile", "물 쓰는 주방은 물에 강한 바닥재가 좋습니다.", "/qna/badakjae-goreugi.html", "바닥재 고르는 법", [])]),
  ("arch-3yeondong", "초슬림 아치 3연동 도어 — 아치 중문 자재 둘러보기", YL + "67f4ca4f-ad72-455a-8fcd-749d60a2f69f.jpg", "사진: 영림",
   "아치형 유리를 넣은 초슬림 3연동 중문으로 현관을 부드러운 느낌으로 만든 공간입니다.",
   [(63, 50, "영림 초슬림 아치 3연동 도어", "jungmun", "가운데 아치 무늬가 들어간 얇은 프레임 3연동 중문입니다.", "/younglim/jungmun.html", "중문 보기", [("/qna/arch-mun.html", "아치형 입구 만들기"), ("/qna/3yeondong-self.html", "3연동 셀프 시공")]),
    (88, 50, "밝은 벽 마감", "wall", "흰 벽으로 아치 문이 더 돋보입니다.", "/qna/gonggan-paint.html", "공간별 페인트 고르기", [("/qna/self-dobae.html", "셀프 도배")]),
-   (55, 95, "현관 바닥", "tile", "현관 바닥 타일입니다.", "/qna/hyeongwan-tile-deotbang.html", "현관 타일 덧방", [])]),
+   (55, 90, "현관 바닥", "tile", "현관 바닥 타일입니다.", "/qna/hyeongwan-tile-deotbang.html", "현관 타일 덧방", [])]),
  ("ganssal-3yeondong-bedroom", "간살 와이드 3연동 도어 침실 — 재팬디 침실 자재 둘러보기", YL + "0ab9feef-ba33-44ab-b1c2-0fc0c422e5c0.jpg", "사진: 영림",
   "세로 간살 3연동 도어와 원목 벽 선반으로 차분한 재팬디 느낌을 낸 침실입니다.",
   [(52, 45, "영림 간살 와이드 상부구동형 3연동 도어", "jungmun", "세로 간살이 들어간 넓은 3연동 도어로 빛을 은은하게 나눕니다.", "/younglim/jungmun-slim.html", "슬림 중문 보기", [("/trend/", "간살 재팬디 트렌드")]),
@@ -132,7 +132,7 @@ SCENES += [
   "촘촘한 간살 3연동 중문과 간접조명 선반으로 꾸민 현관입니다.",
   [(48, 50, "영림 YS-T 간살 초슬림 3연동 도어", "jungmun", "촘촘한 세로 간살이 들어간 초슬림 3연동 중문입니다.", "/younglim/jungmun.html", "중문 보기", [("/qna/3yeondong-self.html", "3연동 셀프 시공")]),
    (90, 45, "간접조명 선반", "shelf", "선반 아래 조명을 넣어 현관이 은은하게 밝습니다.", "/qna/sinbaljang-jomyeong.html", "신발장·간접조명", [("/qna/floating-shelf.html", "선반 만들기")]),
-   (50, 97, "현관 바닥", "tile", "밝은 현관 바닥입니다.", "/qna/hyeongwan-tile-deotbang.html", "현관 타일 덧방", [])]),
+   (50, 90, "현관 바닥", "tile", "밝은 현관 바닥입니다.", "/qna/hyeongwan-tile-deotbang.html", "현관 타일 덧방", [])]),
  ("arch-sidedoor-kitchen", "아치 쪽문 양개 중문 주방 — 원목 아치문 자재 둘러보기", YL + "4ef0b295-62a2-48b7-b5aa-25c7bcbfd7e3.jpg", "사진: 영림",
   "원목 프레임 아치 유리문으로 주방 뒤 공간을 나눈 모습입니다.",
   [(70, 55, "영림 1910MSA 쪽문 양개 도어", "jungmun", "원목 프레임에 아치 유리를 넣은 양개 도어입니다.", "/younglim/jungmun-yanggae.html", "양개 중문 보기", [("/qna/arch-mun.html", "아치형 입구 만들기")]),
@@ -410,6 +410,8 @@ _CMAP = {s: k for k, v in _CM.items() for s in v.split()}
 
 def cat(slug):
     if slug in _CMAP: return _CMAP[slug]
+    _t = next((x[1] for x in SCENES if x[0] == slug), "")
+    if any(w in _t for w in ("외벽", "사이딩", "외장")): return "ext"
     if slug.startswith("cafe-"): return "cafe"
     if slug.startswith(("store-", "showroom-")): return "space"
     return "home"
