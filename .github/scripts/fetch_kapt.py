@@ -16,7 +16,8 @@ if not (tok and seq): print("목록 못 읽음", bool(tok), seq); sys.exit(0)
 r = s.post(U + f"/board/getFileDownload.do?seq={seq}&boardType=03", data={"_csrf": tok.group(1), "fileNum": "1"}, headers={"X-CSRF-TOKEN": tok.group(1)}, timeout=180)
 if len(r.content) < 1_000_000: print("파일 작음", len(r.content)); sys.exit(0)
 wb = openpyxl.load_workbook(io.BytesIO(r.content), read_only=True)
-rows = [tuple(html.unescape(c) if isinstance(c, str) else c for c in x) for x in wb.active.iter_rows(values_only=True)]
+rows = [tuple(html.unescape(html.unescape(c)).strip() if isinstance(c, str) else c for c in x) for x in wb.active.iter_rows(values_only=True)]
+print("행", len(rows), [str(x)[:120] for x in rows[:3]])
 hi = next(i for i, x in enumerate(rows) if x and "단지명" in x); H = list(rows[hi])
 W = ["시도", "시군구", "동리", "단지코드", "단지명", "단지분류", "도로명주소", "사용승인일", "동수", "세대수", "난방방식", "복도유형", "최고층수", "시공사"]
 I = [H.index(w) for w in W]
