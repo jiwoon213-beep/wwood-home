@@ -84,7 +84,7 @@ def build(root, page, E, CTA):
     bygu = {}
     for k, L in by.items():
         if ok(L): bygu.setdefault((k[0], k[1]), []).append(k)
-    pages = []
+    pages = []; SRCH = []
     for (sd, gu, dong), L in sorted(by.items()):
         if not ok(L): continue
         L.sort(key=lambda r: -r["n"])
@@ -133,6 +133,19 @@ def build(root, page, E, CTA):
                 + CTA)
         page(fn, title, desc[:155], body, "/apt/")
         pages.append((fn, sd, gu, dong, len(L), tot))
+        for r in L: SRCH.append([r["단지명"].strip(), area, fn, r["단지코드"], r["n"]])
+    import json
+    os.makedirs(f"{root}/assets/apt", exist_ok=True)
+    js = json.dumps(SRCH, ensure_ascii=False, separators=(",", ":"))
+    jp = f"{root}/assets/apt/search.json"
+    if not os.path.exists(jp) or open(jp, encoding="utf-8").read() != js: open(jp, "w", encoding="utf-8").write(js)
+    SBOX = ('<div class="apsrch"><input id="apq" type="search" placeholder="아파트 이름 또는 동 이름 (예: 래미안, 봉명동)" autocomplete="off" aria-label="아파트·동 검색"><div id="apr" class="apr"></div></div>'
+            "<script>(function(){var q=document.getElementById('apq'),o=document.getElementById('apr'),D=null,ld=0;"
+            "function load(){if(ld)return;ld=1;fetch('/assets/apt/search.json').then(function(r){return r.json()}).then(function(j){D=j;run()})}"
+            "function nz(s){return s.replace(/\\s|아파트|APT/gi,'').toLowerCase()}"
+            "function run(){var v=nz(q.value);if(!D||v.length<2){o.innerHTML='';return}var R=[];for(var i=0;i<D.length&&R.length<30;i++){var d=D[i];if(nz(d[0]).indexOf(v)>=0||nz(d[1]).indexOf(v)>=0)R.push(d)}"
+            "R.sort(function(a,b){return b[4]-a[4]});o.innerHTML=R.length?R.map(function(d){return '<a href=\"/'+d[2]+'#'+d[3]+'\"><b>'+d[0].replace(/</g,'&lt;')+'</b><small>'+d[1]+' · '+d[4].toLocaleString()+'세대</small></a>'}).join(''):'<p class=\"small muted\">찾는 단지가 없어요. 100세대 이상 단지만 있습니다.</p>'}"
+            "q.addEventListener('focus',load);q.addEventListener('input',function(){load();run()});})();</script>")
     # 시도 페이지
     S = {}
     for p in pages: S.setdefault(p[1], {}).setdefault(p[2], []).append(p)
@@ -145,11 +158,11 @@ def build(root, page, E, CTA):
             sec += (f'<h2 class="ggh">{E(areaname(sd, gu, ""))}</h2>' if gu and not gu.startswith("세종") else "") + '<div class="olk aplk">' + "".join(f'<a href="/{p[0]}">{E(p[3])}<small> {p[4]}단지</small></a>' for p in ps) + "</div>"
         page(f"apt/{SDS.get(sd, 'etc')}/index.html", f"{sd} 아파트별 인테리어 자재 — 동네 단지 연식에 맞춘 안내 | 영진목재",
              f"{sd} {nd}개 동, {nc}개 아파트 단지의 준공연도에 맞춘 중문·방문·몰딩·필름·바닥 자재 안내. 영진종합목재 재단·전국 배송.",
-             f'<section class="wrap sec"><p class="crumb"><a href="/apt/">아파트별 자재</a> › {E(sd)}</p><h1>{E(sd)} 아파트별 인테리어 자재</h1><p class="lead">동네를 고르면 단지 연식에 맞춰 많이 하는 공사와 자재를 보여 드립니다. ({nd}개 동 · {nc:,}개 단지, K-apt 공개 정보)</p>{sec}</section>' + CTA, "/apt/")
+             f'<section class="wrap sec"><p class="crumb"><a href="/apt/">아파트별 자재</a> › {E(sd)}</p><h1>{E(sd)} 아파트별 인테리어 자재</h1><p class="lead">동네를 고르면 단지 연식에 맞춰 많이 하는 공사와 자재를 보여 드립니다. ({nd}개 동 · {nc:,}개 단지, K-apt 공개 정보)</p>{SBOX}{sec}</section>' + CTA, "/apt/")
         idx += f'<a href="/apt/{SDS.get(sd, "etc")}/"><b>{E(sd)}</b><small> {nd}개 동 · {nc:,}단지</small></a>'
     page("apt/index.html", "전국 아파트별 인테리어 자재 — 우리 단지 연식에 맞춘 안내 | 영진목재",
          f"전국 {len(pages):,}개 동, {sum(p[4] for p in pages):,}개 아파트 단지의 준공연도에 맞춘 중문·방문·몰딩·필름·바닥 자재 안내. 영진종합목재(대전) 재단·전국 배송.",
-         f'<section class="wrap sec"><h1>전국 아파트별 인테리어 자재</h1><p class="lead">우리 동네 아파트를 고르면 단지 연식에 맞춰 많이 하는 공사와 자재를 보여 드립니다. (전국 100세대 이상, K-apt 공개 정보 · 매주 갱신)</p><div class="olk aplk apsd">{idx}</div></section>' + CTA, "/apt/")
+         f'<section class="wrap sec"><h1>전국 아파트별 인테리어 자재</h1><p class="lead">우리 동네 아파트를 고르면 단지 연식에 맞춰 많이 하는 공사와 자재를 보여 드립니다. (전국 100세대 이상, K-apt 공개 정보 · 매주 갱신)</p>{SBOX}<div class="olk aplk apsd">{idx}</div></section>' + CTA, "/apt/")
     AP.write(root)
     for k in AP.ORDER:
         t, d = AP.P[k][0], AP.P[k][1]
