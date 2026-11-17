@@ -6,6 +6,12 @@ import aptplan as AP
 from urllib.parse import quote
 
 YEAR = 2026
+# 월드아키텍쳐 실제 시공 현장 (data/cases.json 의 시공 사례와 단지 연결) — 단지코드: (사례 slug, 한 일, 영상 순번)
+CASEMAP = {"A30272404": ("door-daejeon-seogu", "노후 방문 교체", 0), "A30515002": ("door-daejeon-yuseong", "문 교체", 0),
+           "A30581204": ("door-daejeon-yuseong", "문 교체", 1), "A30009002": ("door-daejeon-donggu-junggu", "문 교체", 1),
+           "A30175801": ("door-daejeon-donggu-junggu", "문 교체", 2), "A33983501": ("door-sejong", "문 1세트 교체(욕실문 ABS 도어·문틀 필름)", 0)}
+# 단지가 특정되지 않은 동 단위 현장
+DONGCASE = {("대전", "서구", "복수동"): ("door-daejeon-seogu", "복수동 초록마을 중문·방문 교체", 1)}
 
 
 def load(root):
@@ -71,6 +77,20 @@ def age_text(y):
     return f"{y}년 사용승인(약 {max(a,0)}년 차) — 입주 때 중문·아트월·수납을 더하는 경우가 많습니다."
 
 
+def _cases(root):
+    import json
+    p = f"{root}/data/cases.json"
+    return {c["slug"]: c for c in json.load(open(p, encoding="utf-8"))} if os.path.exists(p) else {}
+
+
+def casecard(C, slug, work, vi, E, place=""):
+    c = C.get(slug)
+    if not c: return ""
+    v = c.get("videos") or []
+    img = f'<img loading="lazy" src="https://i.ytimg.com/vi/{v[min(vi, len(v) - 1)]}/mqdefault.jpg" alt="" width="320" height="180">' if v else ""
+    return f'<a class="apcase" href="/sigong/{slug}.html">{img}<span><small>월드아키텍쳐 실제 시공 현장</small><b>{E((place + " " if place else "") + work)}</b><em>시공 사례·영상 보기 ›</em></span></a>'
+
+
 def ok(L):
     return len(L) >= 2 or sum(r["n"] for r in L) >= 300
 
@@ -81,13 +101,14 @@ def build(root, page, E, CTA):
     by = {}
     for r in rows:
         by.setdefault((r["시도"], r["시군구"], r["동리"]), []).append(r)
+    C = _cases(root)
     bygu = {}
     for k, L in by.items():
         if ok(L): bygu.setdefault((k[0], k[1]), []).append(k)
     pages = []; SRCH = []
     for (sd, gu, dong), L in sorted(by.items()):
         if not ok(L): continue
-        L.sort(key=lambda r: -r["n"])
+        L.sort(key=lambda r: (r["단지코드"] not in CASEMAP, -r["n"]))
         tot = sum(r["n"] for r in L)
         fn = fname(sd, gu, dong); area = areaname(sd, gu, dong)
         ys = [r["y"] for r in L if r["y"]]
@@ -103,6 +124,8 @@ def build(root, page, E, CTA):
                 da = ",".join(f"{a}:{n}" for a, n in r["ar"])
                 pl = (f'<div class="apfp" data-a="{da}" data-y="{r["y"] or ""}" data-h="{E(r.get("복도유형", ""))}" data-n="{E(r["단지명"].strip())}">'
                       + "".join(f'<a href="/apt/plan/{AP.ptype(a, r["y"])}.html">{a}㎡ {n:,}세대</a> ' for a, n in r["ar"]) + '</div>')
+            if r["단지코드"] in CASEMAP:
+                cs = CASEMAP[r["단지코드"]]; pl = casecard(C, cs[0], cs[1], cs[2], E) + pl
             nq = quote(f'{r["단지명"].strip()} {dong} 평면도')
             cards += (f'<article class="apc" id="{E(r["단지코드"])}"><h3>{E(r["단지명"].strip())}</h3><p class="small muted">{E(meta)}</p>'
                       f'<p>{E(age_text(r["y"]))}</p>{pl}<div class="apl">{tips}</div>'
@@ -122,7 +145,8 @@ def build(root, page, E, CTA):
         body = (f'<section class="wrap sec"><p class="crumb"><a href="/apt/">아파트별 자재</a> › <a href="/apt/{SDS.get(sd, "etc")}/">{E(sd)}</a> › {E(area)}</p><h1>{E(area)} 아파트 인테리어 자재</h1>'
                 f'<p class="lead">{E(area)}에는 100세대 이상 아파트가 <b>{len(L)}개 단지, {tot:,}세대</b> 있습니다' + (f' (사용승인 {min(ys)}~{max(ys)}년, {stat})' if ys else '') + '. 단지 연식에 맞춰 많이 하는 공사와 자재를 모았습니다.</p>'
                 f'<p>{how}</p><div class="olk">{rl}<a class="ac" href="/doumi.html">🧭 셀프 인테리어 도우미</a><a class="ac" href="/calc.html">🧮 문짝·중문 크기 계산</a></div>'
-                f'<div class="apg">{cards}</div>{more}'
+                + (('<h2>이 동네 실제 시공 현장</h2>' + casecard(C, *DONGCASE[(sd, gu, dong)][:3], E)) if (sd, gu, dong) in DONGCASE else '')
+                + f'<div class="apg">{cards}</div>{more}'
                 '<p class="small muted">단지 정보: 국토교통부 공동주택관리정보시스템(K-apt) 공개 단지 기본정보, 매주 갱신. 실제와 다를 수 있습니다. 이 페이지는 해당 단지·관리사무소와 관계없는 자재 안내입니다.</p></section>'
                 '<section class="wrap sec"><h2>아파트에서 많이 하는 것</h2><div class="olk"><a href="/sigongbeop/jungmun.html">원슬라이딩 중문 셀프 설치</a><a href="/sigongbeop/munteul-gyoche.html">방문 교체</a><a href="/sigongbeop/film-sigong.html">인테리어 필름</a><a href="/sigongbeop/molding-georebatgi.html">걸레받이·천장 몰딩</a><a href="/sigongbeop/tempa-byeok.html">템바보드 아트월</a><a href="/mandeul/beranda.html">베란다 선반</a></div><p class="hsh olh">옆으로 넘겨 보세요 ›</p></section>'
                 + (f'<section class="wrap sec"><h2>{E(areaname(sd, gu, ""))} 다른 동</h2><div class="olk">{near}</div><p class="hsh olh">옆으로 넘겨 보세요 ›</p></section>' if near else "")
