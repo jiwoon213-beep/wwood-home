@@ -631,3 +631,8 @@ ul.mli li .mlks{align-self:end}
 @media(min-width:900px){ul.mli li{flex-basis:280px!important}}
 ul.mli{align-items:flex-start!important}ul.mli li{align-self:flex-start!important}
 dl.abf{margin:14px 0}dl.abf dt{font-weight:800;font-size:16.5px;margin-top:16px}dl.abf dd{margin:6px 0 0;line-height:1.7;color:#333}
+.ggnav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 0 4px}.ggnav b{flex:none;font-size:13px;color:#888;font-weight:600}
+.ggnav a{flex:1 1 0;min-width:0;display:flex;align-items:center;gap:4px;padding:10px 12px;border:1px solid #e6dfd5;border-radius:12px;background:#fff;text-decoration:none;color:inherit;font-weight:700;font-size:14px}
+.ggnav a span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.ggnav .ggn{justify-content:flex-end;background:#1d1b18;color:#fff;border-color:#1d1b18}
+.hsi.swl{transition:transform .2s,opacity .2s;opacity:.4;transform:translateX(-30px)}.hsi.swr{transition:transform .2s,opacity .2s;opacity:.4;transform:translateX(30px)}
+@media(hover:hover){.ggsw{display:none}}

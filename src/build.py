@@ -1863,8 +1863,16 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         _ss = f' srcset="{_gth(img, 1000, "m")} 1000w, {img} 1600w" sizes="(max-width:900px) 100vw, 820px"' if _gth(img, 1000, "m") != img else ""
         return (f'<div class="hsw" data-s="{slug}"><div class="hsi"><img src="{_gth(img, 1000, chr(109))}"{_ss} alt="{E(ttl.split(" — ")[0])}">{dots}</div><p class="hsc">{E(cred)} · +를 누르면 자재와 시공법이 나와요</p>'
                 f'<div class="hsl">{pops}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p></div>')
+    _GORD = [x for k, t, d in _GG.CATS for x in _GG.SCENES if _GG.cat(x[0]) == k]
+    _GIX = {x[0]: i for i, x in enumerate(_GORD)}
     for sc in _GG.SCENES:
         slug, ttl, img, cred, lead, spots = sc
+        _gi = _GIX[slug]; _gp = _GORD[_gi - 1]; _gn = _GORD[(_gi + 1) % len(_GORD)]
+        _gnav = (f'<div class="ggnav" data-prev="/gonggan/{_gp[0]}.html" data-next="/gonggan/{_gn[0]}.html">'
+                 f'<a class="ggp" href="/gonggan/{_gp[0]}.html" rel="prev">‹ <span>{E(_gp[1].split(" — ")[0])}</span></a>'
+                 f'<b>{_gi + 1} / {len(_GORD)}</b>'
+                 f'<a class="ggn" href="/gonggan/{_gn[0]}.html" rel="next"><span>{E(_gn[1].split(" — ")[0])}</span> ›</a></div>'
+                 f'<link rel="prefetch" href="/gonggan/{_gn[0]}.html"><p class="hsh ggsw">사진을 옆으로 밀면 다음 현장 ›</p>')
         _mc = _GG.cat(slug); _mct = dict((k, t) for k, t, d in _GG.CATS)[_mc]
         oth = [x for x in _GG.SCENES if x[0] != slug and _GG.cat(x[0]) == _mc]
         oth2 = [x for x in _GG.SCENES if _GG.cat(x[0]) != _mc]
@@ -1872,7 +1880,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
               "about": [{"@type": "Thing", "name": sp[2], "url": BASE + sp[5]} for sp in spots]}
         page(f"gonggan/{slug}.html", ttl + " | 영진목재", (lead + " " + ", ".join(sp[2] for sp in spots))[:155],
              f'''<section class="wrap sec"><p class="crumb"><a href="/gonggan/">공간 사진 둘러보기</a> › {E(ttl.split(" — ")[0])}</p><h1>{E(ttl)}</h1><p class="lead">{E(lead)}</p>
-{_gscene(sc)}
+{_gscene(sc).replace('<div class="hsl', _gnav + '<div class="hsl', 1)}
 <p class="small muted">사진 속 제품은 매장에서 주문·상담할 수 있습니다(가격·재고는 매장 문의). 비슷한 다른 자재로 같은 느낌을 내는 방법도 안내해 드립니다.</p></section>
 <section class="wrap sec">{(f'<h2>같은 분류: {E(_mct)}</h2><div class="pl hs">' + "".join(f'<a class="pc" href="/gonggan/{x[0]}.html"><img loading="lazy" src="{_gth(x[2])}" alt=""><b>{E(x[1].split(" — ")[0])}</b><span>+ {len(x[5])}곳</span></a>' for x in oth) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p>') if oth else ""}<h2>다른 공간 사진</h2><div class="pl hs">{"".join(f'<a class="pc" href="/gonggan/{x[0]}.html"><img loading="lazy" src="{_gth(x[2])}" alt=""><b>{E(x[1].split(" — ")[0])}</b><span>+ {len(x[5])}곳</span></a>' for x in oth2[:24])}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p><p><a class="b" href="/gonggan/">분류별로 전체 보기 ›</a></p></section>{CTA}''', "/trend/", ld, img)
     def _ggcard(x):

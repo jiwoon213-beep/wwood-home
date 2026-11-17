@@ -239,3 +239,19 @@ document.addEventListener("click", function (e) {
     if (ev) gtag("event", ev, { link_url: h, page_path: location.pathname });
   } catch (x) {}
 }, true);
+
+/* 공간 사진: 사진을 옆으로 밀면 이전/다음 현장 */
+(function(){
+  var nav=document.querySelector('.ggnav'), im=document.querySelector('.hsw .hsi');
+  if(!nav||!im)return;
+  var x0=0,y0=0,t0=0;
+  im.addEventListener('touchstart',function(e){var t=e.touches[0];x0=t.clientX;y0=t.clientY;t0=Date.now()},{passive:true});
+  im.addEventListener('touchend',function(e){
+    var t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;
+    if(Math.abs(dx)<60||Math.abs(dy)>Math.abs(dx)*0.7||Date.now()-t0>800)return;
+    var u=dx<0?nav.getAttribute('data-next'):nav.getAttribute('data-prev');
+    im.classList.add(dx<0?'swl':'swr'); try{window.WWC&&WWC('gonggan_swipe')}catch(x){}
+    setTimeout(function(){location.href=u},150);
+  },{passive:true});
+  document.addEventListener('keydown',function(e){if(e.target.closest&&e.target.closest('input,textarea'))return;if(e.key==='ArrowRight')location.href=nav.getAttribute('data-next');if(e.key==='ArrowLeft')location.href=nav.getAttribute('data-prev')});
+})();
