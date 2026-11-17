@@ -651,3 +651,4 @@ dl.abf{margin:14px 0}dl.abf dt{font-weight:800;font-size:16.5px;margin-top:16px}
 .apg{display:grid;gap:12px;margin:14px 0}.apc{border:1px solid #e6dccb;border-radius:16px;padding:14px 16px;background:#fff}.apc h3{margin:0 0 4px;font-size:18px}.apc p{margin:4px 0}
 .apl{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.apl a{padding:6px 11px;border-radius:999px;background:#faf3e8;border:1px solid #ecdcc4;font-size:14px;text-decoration:none;color:#7a4a1c}
 @media(min-width:900px){.apg{grid-template-columns:1fr 1fr}}.aplk small{color:#999}
+.apl a,.apl a *{text-decoration:none!important;box-shadow:none!important;background-image:none}
