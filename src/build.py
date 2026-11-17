@@ -1743,7 +1743,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
                      f'<p class="hsh2">이렇게 시공해요</p><ol>' + "".join(f"<li>{E(t)}</li>" for t in how) + '</ol>'
                      f'<a class="b r hsgo" href="{h1}">{E(t1)} ›</a><div class="hsm">{ml}</div></div>')
         return (f'<div class="hsw" data-s="{slug}"><div class="hsi"><img src="{img}" alt="{E(ttl.split(" — ")[0])}">{dots}</div><p class="hsc">{E(cred)} · +를 누르면 자재와 시공법이 나와요</p>'
-                f'<div class="hsl">{pops}</div></div>')
+                f'<div class="hsl">{pops}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p></div>')
     for sc in _GG.SCENES:
         slug, ttl, img, cred, lead, spots = sc
         oth = [x for x in _GG.SCENES if x[0] != slug]
