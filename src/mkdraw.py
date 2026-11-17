@@ -533,7 +533,7 @@ STEPS = {"pyeongsang": "6:8,16:19|0:6|8:16|*", "chaekjang": "1:5|5:9|0|*", "tutb
          "hyeongwanbench": "1:4|4|0|*", "gaejip": "8:11|4:8|0:4|11", "hwabundae": "0:8|8:10|13:15,18:20|10:13,15:18,20:23", "aichaeksang": "0:3|3|*|*",
          "geosiljang": "1:4,5|4|0|*", "seutul": "0:2|2|3|*", "nopeuntutbat": "4:8|0:4|8|9:12", "haenggeo": "0:4|4|*|*", "yaoeteibeul": "4:6|0:4|6:11|*",
          "jangjak": "0:2|2:6|6:8|8:28", "gongguborad": "1:4|4|5:9|*", "cube": "1:5|0|5:20|*",
-         "sadariseonban": "0,1,4:9|2,3,9:14|14:18|*", "aillaendeu": "0:4|4:6|6|*", "balpan": "0:2,3|4|2|*", "bunrisugeo": "0,2,5|3:5|1|*", "kaetower": "0:3|3:5|5:7|*", "jangnangam": "0:5|0:5|5|*", "jwatak": "0:8|0:8|8|*", "renjidae": "0,6|2:6|1|*", "sunappyeongsang": "0:4|4:6|6|*", "hwajangdae": "0:4|4|5:8|*", "sangbujang": "1:5|0,5|6|7:11", "silwoegi": "0:6|6:12|12:15|*", "deckgyedan": "0:5|5:9|9:14|*", "kaempingbox": "0:3|3:5|6:8|*", "sinkmunjjak": "0:3|3:5|5:7|*", "headboard": "0:3|3|4|*", "silnaehwa": "0:3|3|4|5:7", "hwabunonsil": "0:8|8:16|16:28|*", "gangajigyedan": "0:7|7:9|9:13|13:16", "yangnyeomseonban": "0:3|3|4|5:7"}
+         "sadariseonban": "0,1,4:9|2,3,9:14|14:18|*", "aillaendeu": "0:4|4:6|6|*", "balpan": "0:2,3|4|2|*", "bunrisugeo": "0,2,5|3:5|1|*", "kaetower": "0:3|3:5|5:7|*", "jangnangam": "0:5|0:5|5|*", "jwatak": "0:8|0:8|8|*", "renjidae": "0,6|2:6|1|*", "sunappyeongsang": "0:4|4:6|6|*", "hwajangdae": "0:4|4|5:8|*", "sangbujang": "1:5|0,5|6|7:11", "silwoegi": "0:6|6:12|12:15|*", "deckgyedan": "0:5|5:9|9:14|*", "kaempingbox": "0:3|3:5|6:8|*", "sinkmunjjak": "0:3|3:5|5:7|*", "headboard": "0:3|3|4|*", "silnaehwa": "0:3|3|4|5:7", "hwabunonsil": "0:8|8:16|16:28|*", "gangajigyedan": "0:7|7:9|9:13|13:16", "yangnyeomseonban": "0:3|3|4|5:7", "mdfseonbanjang": "0:4|4:7|7|*", "teureongkeu": "0:3|3:5,7|5:7|*"}
 m = [B(0, 0, 0, 18, 260, 600, "misong"), B(582, 0, 0, 18, 260, 600, "misong"), B(18, 0, 30, 564, 260, 18, "misong"), B(18, 0, 290, 564, 260, 18, "misong"), B(18, 0, 582, 564, 260, 18, "misong"),
      B(18, 0, 48, 564, 18, 60, "misong"), B(18, 0, 308, 564, 18, 60, "misong")]
 MODELS["silnaehwa"] = ("원목 실내화 선반 600×260×600", m)
@@ -552,6 +552,15 @@ MODELS["gangajigyedan"] = ("강아지 계단 3단 400×600×450", m)
 m = [B(0, 0, 0, 18, 200, 450, "misong"), B(482, 0, 0, 18, 200, 450, "misong"), B(18, 0, 0, 464, 200, 18, "misong"), B(18, 0, 216, 464, 200, 18, "misong"), B(18, 0, 432, 464, 200, 18, "misong"),
      B(18, 182, 18, 464, 18, 40, "misong"), B(18, 182, 234, 464, 18, 40, "misong")]
 MODELS["yangnyeomseonban"] = ("원목 양념통 선반 500×200×450", m)
+m = [B(0, 0, 0, 15, 300, 1500, "mdf"), B(785, 0, 0, 15, 300, 1500, "mdf"), B(15, 0, 0, 770, 300, 15, "mdf"), B(15, 0, 1485, 770, 300, 15, "mdf")]
+m += [B(15, 0, z, 770, 300, 15, "mdf") for z in (360, 720, 1080)]
+m += [B(0, -6, 0, 800, 6, 1500, "mdf6")]
+MODELS["mdfseonbanjang"] = ("MDF 다용도 선반장 800×300×1500", m)
+m = [B(0, 0, 0, 800, 400, 12, "hapan"), B(0, 0, 12, 800, 12, 288, "hapan"), B(0, 388, 12, 800, 12, 288, "hapan"),
+     B(0, 12, 12, 12, 376, 288, "hapan"), B(788, 12, 12, 12, 376, 288, "hapan"),
+     B(263, 12, 12, 12, 376, 200, "hapan"), B(525, 12, 12, 12, 376, 200, "hapan"),
+     B(797, 140, 230, 4, 120, 35, "gap")]
+MODELS["teureongkeu"] = ("차량 트렁크 정리함 800×400×300", m)
 
 
 
