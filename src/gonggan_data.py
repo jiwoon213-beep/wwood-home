@@ -216,7 +216,7 @@ SCENES += [
   [(26, 24, '구조목 골조(지붕·기둥)', 'gakjae', '2x4 구조목으로 박공지붕 모양 뼈대를 세웠습니다.', '/jaryo/gakjae.html', '구조목·각재 보기', [('/qna/2x4-chisu.html', '2x4 실제 치수'), ('/gagyeok/gakjae-gagyeok.html', '각재 가격')]), (58, 72, '루바 판벽(아래쪽)', 'woodwall', '아래쪽은 루바를 세로로 붙이고 오일스테인으로 칠했습니다.', '/sigongbeop/oilstain.html', '오일스테인 칠하기', [('/qna/ruba-jongryu.html', '루바 종류'), ('/gagyeok/spruce-ruba.html', '루바 가격')]), (57, 38, '들창(밀어 여는 창)', 'door', '아래를 밀어 위로 여는 창입니다. 환기가 잘 됩니다.', '/qna/gas-shock.html', '창 받침 철물', [('/bupum/', '철물·부속')]), (44, 64, '출입문', 'door', '문틀에 문짝을 달고 손잡이를 달았습니다.', '/qna/gyeongcheop-jojeol.html', '경첩 조절', [('/qna/door-silcheuk.html', '문 실측')]), (30, 78, '온실 데크 바닥', 'deck', '바닥은 데크판을 깔아 신발 신고 드나듭니다.', '/mandeul/deck.html', '데크 만들기', [('/mandeul/hwabunonsil.html', '화분 온실 만들기')])]),
  ('store-greenhouse-shelf', '온실 안 원목 진열 선반과 의자 — 분재 온실 자재 둘러보기', G + 'store-greenhouse-in.jpg', '사진: 영진종합목재 매장(대전)',
   '온실 안쪽입니다. 기둥 사이에 두꺼운 판을 걸어 분재 선반을 만들고, 원목 의자를 두었습니다.',
-  [(52, 61, '원목 진열 선반', 'shelf', '기둥에 받침목을 대고 두꺼운 판을 얹은 긴 선반입니다.', '/qna/gujomok-seonban.html', '구조목 선반 만들기', [('/cut.html', '원하는 크기로 재단')]), (82, 40, '기둥·가새(버팀대)', 'gakjae', '기둥과 보 사이를 비스듬한 가새로 받쳐 흔들림을 줄였습니다.', '/qna/gakjae-yeongyeol.html', '각재 잇기', [('/jaryo/gakjae.html', '각재 보기')]), (64, 80, '원목 라운지 의자', 'furniture', '넓은 판재로 만든 등받이 의자입니다.', '/mandeul/seutul.html', '의자·스툴 만들기', [('/qna/danish-oil.html', '오일 마감')]), (25, 10, '투명 골판 지붕', 'roof', '빛이 드는 투명 골판으로 지붕을 덮었습니다.', '/geonjae/jibung.html', '지붕재 보기', [('/qna/pyeongsang-jibung.html', '지붕 얹기')]), (45, 97, '데크 바닥', 'deck', '짙게 칠한 데크판 바닥입니다.', '/sigongbeop/oilstain.html', '오일스테인', [('/qna/deck-bosu.html', '데크 보수')])]),
+  [(52, 61, '원목 진열 선반', 'shelf', '기둥에 받침목을 대고 두꺼운 판을 얹은 긴 선반입니다.', '/qna/gujomok-seonban.html', '구조목 선반 만들기', [('/cut.html', '원하는 크기로 재단')]), (82, 40, '기둥·가새(버팀대)', 'gakjae', '기둥과 보 사이를 비스듬한 가새로 받쳐 흔들림을 줄였습니다.', '/qna/gakjae-yeongyeol.html', '각재 잇기', [('/jaryo/gakjae.html', '각재 보기')]), (64, 80, '원목 라운지 의자', 'furniture', '넓은 판재로 만든 등받이 의자입니다.', '/mandeul/seutul.html', '의자·스툴 만들기', [('/qna/danish-oil.html', '오일 마감')]), (25, 10, '투명 골판 지붕', 'roof', '빛이 드는 투명 골판으로 지붕을 덮었습니다.', '/geonjae/jibung.html', '지붕재 보기', [('/qna/pyeongsang-jibung.html', '지붕 얹기')]), (45, 90, '데크 바닥', 'deck', '짙게 칠한 데크판 바닥입니다.', '/sigongbeop/oilstain.html', '오일스테인', [('/qna/deck-bosu.html', '데크 보수')])]),
  ('store-greenhouse-wall', 'Y자 가새와 루바 판벽 — 온실 안쪽 벽 자재 둘러보기', G + 'store-greenhouse-in2.jpg', '사진: 영진종합목재 매장(대전)',
   '온실 안에서 본 벽입니다. Y자 가새로 기둥을 받치고, 허리 아래는 루바 판벽, 위는 비닐 창으로 마감했습니다.',
   [(34, 26, 'Y자 가새', 'gakjae', '기둥 위를 Y자로 벌려 보를 받친 구조입니다. 보기에도 멋집니다.', '/qna/gakjae-yeongyeol.html', '각재 잇기', [('/cheolmul/mokjo.html', '목조 철물')]), (62, 75, '루바 판벽', 'woodwall', '세로 루바를 붙이고 가로 띠장으로 눌렀습니다.', '/qna/misong-ruba.html', '미송 루바', [('/gagyeok/spruce-ruba.html', '루바 가격')]), (58, 38, '들창', 'door', '아래를 밀어 여는 창으로 환기합니다.', '/qna/gas-shock.html', '창 받침 철물', []), (20, 60, '창가 선반', 'shelf', '기둥에 걸친 좁은 선반입니다.', '/mandeul/byeokseonban.html', '벽 선반 만들기', []), (37, 85, '계단식 스툴', 'furniture', '단을 높이 달리한 작은 스툴입니다.', '/mandeul/seutul.html', '스툴 만들기', [])]),
@@ -394,7 +394,8 @@ CATS = [
     ("wood", "목재·합판·루바 진열", "구조목·방부목·합판·OSB·루바·계단판"),
     ("hw", "철물·공구·부속", "피스·연결철물·서랍레일·경첩·손잡이"),
     ("stock", "몰딩·실리콘 창고", "몰딩·걸레받이·문틀·실리콘·폼"),
-    ("out", "외장·정원·온실", "사이딩·지붕 차양·데크 테이블·나무 온실"),
+    ("ext", "외장·외벽·사이딩", "건물 외벽 사이딩·석재·지붕 차양 실제 현장"),
+    ("out", "정원·온실·데크", "정원 테이블·나무 온실·파고라"),
 ]
 _CM = {
     "space": "store-entrance-door store-counter store-beam-entrance store-emboss-ceiling store-header-panel store-barn-door store-mokmo-wall store-blue-molding showroom-hall showroom-jipseong",
@@ -402,7 +403,8 @@ _CM = {
     "wood": "store-lumber-rack store-plywood-wall store-sugi-ruba store-ruba-upper store-hardwood-ruba store-gujomok-board store-stair-tread",
     "hw": "store-tool-wall store-hardware-bins store-handle-showcase",
     "stock": "store-silicone-room store-molding-rack store-molding-panel",
-    "out": "ext-basalt-stone ext-granite-window park-wood-arch ext-siding-deck ext-granite-entrance store-garden-picnic store-greenhouse store-greenhouse-shelf store-greenhouse-wall store-canopy-roof store-front-siding store-siding-closeup",
+    "ext": "ext-basalt-stone ext-granite-window ext-siding-deck ext-granite-entrance store-canopy-roof store-front-siding store-siding-closeup",
+    "out": "park-wood-arch store-garden-picnic store-greenhouse store-greenhouse-shelf store-greenhouse-wall",
 }
 _CMAP = {s: k for k, v in _CM.items() for s in v.split()}
 
