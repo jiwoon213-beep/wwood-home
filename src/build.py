@@ -1863,6 +1863,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         for r in c["rows"]:
             if r[0] in ("물", "물 흡수", "관리", "시공", "작업"):
                 out.append((f"{_jo(a, '과', '와')} {b}, {_jo(r[0], '은', '는')} 어떻게 다른가요?", f"{_jo(a, '은', '는')} {r[1]}, {_jo(b, '은', '는')} {r[2]}.")); break
+        out += [tuple(x) for x in c.get("faq", [])]
         out.append(("매장에서 실물을 볼 수 있나요?", "대전 유성구 영진종합목재(월드건축자재) 매장에서 실물을 비교해 보실 수 있고, 원하는 크기로 재단해 전국 배송도 합니다. 전화 문의 후 방문하시면 편합니다."))
         return out
     for c in CMP:
@@ -1873,7 +1874,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         page(f"bigyo/{c['slug']}.html", c["title"] + " | 영진목재", c["desc"],
              f"""<section class="wrap sec"><p class="crumb"><a href="/bigyo/">자재 비교</a> › {E(c["short"])}</p><h1>{E(c["title"])}</h1><p class="lead">{E(c["desc"])}</p>
 <div class="tw"><table class="cmp"><thead>{th}</thead><tbody>{tb}</tbody></table></div>
-<h2>정리하면</h2><p>{E(c["concl"])}</p><p><a class="b o" href="/jaryo/?q={c['q']}">매장 취급 제품 사진 보기</a> <a class="b o" href="/calc.html">자재 계산기</a></p><p>{ml}</p>
+<h2>정리하면</h2><p>{E(c["concl"])}</p>{"".join(f'<h2>{E(h)}</h2>' + (("<" + k + ">" + "".join(f"<li>{x}</li>" for x in L) + "</" + k + ">") if k in ("ul", "ol") else "".join(f"<p>{x}</p>" for x in L)) for h, k, L in c.get("secs", []))}<p><a class="b o" href="/jaryo/?q={c['q']}">매장 취급 제품 사진 보기</a> <a class="b o" href="/calc.html">자재 계산기</a></p><p>{ml}</p>
 <p class="small muted">일반적인 특징을 정리한 것으로 제품·등급에 따라 다를 수 있습니다. 매장에서 실물을 비교해 보세요.</p></section>
 <section class="wrap sec"><h2>관련 영상</h2>{vsplit(vs, "h3")}</section>
 <section class="wrap sec"><h2>자주 묻는 질문</h2>{"".join(f'<details class="cfq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q, a in _cfq(c))}</section>
