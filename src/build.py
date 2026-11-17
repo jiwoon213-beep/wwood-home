@@ -55,6 +55,20 @@ PLINK = {"문": "/jajae/door.html", "문틀": "/jajae/door.html", "문제": "/ja
          "단열": "/jajae/insul.html", "합성": "/jajae/hapdeck.html", "필름": "/jajae/film.html", "방부": "/jajae/bangbu.html",
          "목재": "/jajae/gujo.html", "각재": "/jajae/gujo.html", "구조": "/jajae/gujo.html", "계단": "/jaryo/gakjae.html", "석고": "/jajae/gypsum.html",
          "가든": "/jajae/chimmok.html", "마루": "/jajae/maru.html", "데크": "/jajae/maru.html", "루바": "/jajae/hinoki.html", "특수": "/jajae/hinoki.html"}
+MALLCAT = {"hapan": ("24", "합판·판재"), "osb": ("24", "OSB·판재"), "mdf": ("24", "MDF·판재"), "gujo": ("23", "각재·구조재"), "gakjae": ("23", "각재·구조재"), "bangbu": ("23", "방부목·각재"),
+           "chimmok": ("23", "침목·각재"), "hapdeck": ("25", "데크재"), "jipseong": ("53", "집성판·우드슬랩"), "hinoki": ("27", "루바·내장재"), "molding": ("27", "몰딩·내장재"), "film": ("27", "내장재"),
+           "gypsum": ("27", "석고·내장재"), "maru": ("26", "마루·후로링"), "tile": ("28", "스톤·타일"), "siding": ("31", "외장재·사이딩"), "insul": ("30", "방음·단열·방수"), "sound": ("30", "방음·흡음"),
+           "door": ("29", "실내 도어·문틀"), "hardware": ("32", "철물"), "stain": ("35", "페인트·스테인")}
+def mallbox(mats):
+    """설명 끝에 '이 자재 사러 가기' — 매장 쇼핑몰(wwood.kr) 해당 분류로 바로"""
+    seen, a = set(), []
+    for m in mats:
+        c = MALLCAT.get(m)
+        if not c or c[0] in seen: continue
+        seen.add(c[0]); a.append(f'<a class="b r" href="https://wwood.kr/home/mall/shoplist.php?depth=1&amp;code1_idx={c[0]}">{c[1]} 쇼핑몰에서 보기 ›</a>')
+        if len(a) >= 2: break
+    if not a: return ""
+    return '<section class="wrap sec"><div class="card mallbox"><h2>이 자재 사러 가기</h2><p class="small muted">영진종합목재 쇼핑몰(wwood.kr)에서 바로 보거나, 매장에서 원하는 크기로 재단해 가세요.</p><div class="row">' + "".join(a) + '<a class="b o" href="/cut.html">재단 그림 만들기</a><a class="b o" href="/visit.html">매장 길찾기</a></div></div></section>'
 def plink(p):
     if p["cat"] == "합판" and re.search(r"OSB", p["name"], re.I): return "/jajae/osb.html"
     return PLINK.get(p["cat"], "/jaryo/")
@@ -227,7 +241,7 @@ def mat_prices(m, k=10):
 # ---------- layout ----------
 NAV = [("/visit.html", "매장 안내"), ("/jaryo/", "전체 자재"), ("/news/", "소식·정보"), ("/tteori/", "떨이몰"), ("/price.html", "기준가"), ("/mandeul/", "DIY 만들기"), ("/sigongbeop/", "자재 시공법"), ("/trend/", "인테리어 트렌드"), ("/gonggan/", "공간 사진"), ("/calc.html", "자재비 계산기"), ("/cut.html", "목재 재단"), ("/sajin.html", "사진으로 찾기"), ("/video/", "영상"), ("/dome.html", "도매·납품"), ("/sigong.html", "시공"), ("/yeongyeol/", "시공팀 연결")]
 
-NAVI = {'/gonggan/': '<path d="M13.5 4H5.5A2.5 2.5 0 0 0 3 6.5v11A2.5 2.5 0 0 0 5.5 20h13a2.5 2.5 0 0 0 2.5-2.5v-6"/><path d="M8.5 14v-1.6A1.4 1.4 0 0 1 9.9 11h4.2a1.4 1.4 0 0 1 1.4 1.4V14"/><path d="M6.5 13.5v3.5h11v-3.5"/><circle cx="18.2" cy="5.8" r="2.7"/><path d="M18.2 4.5v2.6M16.9 5.8h2.6"/>', "/tteori/": '<path d="M3.5 12.5 11.5 4.5H19.5v8l-8 8z"/><path d="M10 14l5-5"/><circle cx="10.5" cy="9.5" r=".9"/><circle cx="14.5" cy="13.5" r=".9"/>', "/yeongyeol/": '<circle cx="8" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.5"/><path d="M3 19c.6-3.2 2.6-5 5-5s4.4 1.8 5 5"/><path d="M13.5 18.5c.4-2.6 1.6-4 3-4s2.6 1.4 3 4"/>', "/calc.html": '<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h2M12 18h2"/><path d="M16 14v4"/>', '/visit.html': '<path d="M12 21s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>', '/jaryo/': '<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>', '/news/': '<path d="M5 4.5h11.5v15H6.5A1.5 1.5 0 0 1 5 18z"/><path d="M16.5 8.5H19v9.5a1.5 1.5 0 0 1-3 0"/><path d="M8 8.5h5.5M8 12h5.5M8 15.5h3.5"/>', '/price.html': '<path d="M3.5 12.5 11.5 4.5H19.5v8l-8 8z"/><circle cx="15.5" cy="8.5" r="1.4"/>', '/mandeul/': '<path d="M14.5 5.5l4 4L9 19H5v-4z"/><path d="M12.5 7.5l4 4"/>', '/sigongbeop/': '<path d="M4 20h16"/><path d="M6 20V9l6-4.5L18 9v11"/><path d="M10 20v-5h4v5"/>', '/trend/': '<path d="M12 3.5l2.4 5 5.4.6-4 3.7 1.1 5.4L12 15.5l-4.9 2.7 1.1-5.4-4-3.7 5.4-.6z"/>', '/cut.html': '<circle cx="6.5" cy="6.5" r="2.5"/><circle cx="6.5" cy="17.5" r="2.5"/><path d="M8.6 8 20 19M8.6 16 20 5"/>', '/sajin.html': '<path d="M3.5 8.5A2.5 2.5 0 0 1 6 6h1.7l1.4-1.9h5.8L16.3 6H18a2.5 2.5 0 0 1 2.5 2.5v8.5A2.5 2.5 0 0 1 18 19.5H6A2.5 2.5 0 0 1 3.5 17z"/><circle cx="12" cy="12.6" r="3.5"/>', '/video/': '<rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M10.5 9.5v5l4.5-2.5z"/>', '/dome.html': '<path d="M3.5 17V8h10v9"/><path d="M13.5 11h4l3 3v3h-7"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>', '/sigong.html': '<path d="M14 6.5a4 4 0 0 0-5 5L4 16.5 7.5 20l5-5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z"/>'}
+NAVI = {'/gonggan/': '<path d="M13 4H5.5A2.5 2.5 0 0 0 3 6.5v11A2.5 2.5 0 0 0 5.5 20h13a2.5 2.5 0 0 0 2.5-2.5V11.5"/><g stroke="#b06a2c"><path d="M8.6 13.6v-1.3a1.3 1.3 0 0 1 1.3-1.3h4.2a1.3 1.3 0 0 1 1.3 1.3v1.3"/><path d="M6.6 13.4v3.4h10.8v-3.4"/></g><circle cx="18.3" cy="5.7" r="3.6" fill="#2f8bff" stroke="none"/><path d="M18.3 4.1v3.2M16.7 5.7h3.2" stroke="#fff" stroke-width="1.6"/>', "/tteori/": '<path d="M3.5 12.5 11.5 4.5H19.5v8l-8 8z"/><path d="M10 14l5-5"/><circle cx="10.5" cy="9.5" r=".9"/><circle cx="14.5" cy="13.5" r=".9"/>', "/yeongyeol/": '<circle cx="8" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.5"/><path d="M3 19c.6-3.2 2.6-5 5-5s4.4 1.8 5 5"/><path d="M13.5 18.5c.4-2.6 1.6-4 3-4s2.6 1.4 3 4"/>', "/calc.html": '<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h2M12 18h2"/><path d="M16 14v4"/>', '/visit.html': '<path d="M12 21s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>', '/jaryo/': '<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>', '/news/': '<path d="M5 4.5h11.5v15H6.5A1.5 1.5 0 0 1 5 18z"/><path d="M16.5 8.5H19v9.5a1.5 1.5 0 0 1-3 0"/><path d="M8 8.5h5.5M8 12h5.5M8 15.5h3.5"/>', '/price.html': '<path d="M3.5 12.5 11.5 4.5H19.5v8l-8 8z"/><circle cx="15.5" cy="8.5" r="1.4"/>', '/mandeul/': '<path d="M14.5 5.5l4 4L9 19H5v-4z"/><path d="M12.5 7.5l4 4"/>', '/sigongbeop/': '<path d="M4 20h16"/><path d="M6 20V9l6-4.5L18 9v11"/><path d="M10 20v-5h4v5"/>', '/trend/': '<path d="M12 3.5l2.4 5 5.4.6-4 3.7 1.1 5.4L12 15.5l-4.9 2.7 1.1-5.4-4-3.7 5.4-.6z"/>', '/cut.html': '<circle cx="6.5" cy="6.5" r="2.5"/><circle cx="6.5" cy="17.5" r="2.5"/><path d="M8.6 8 20 19M8.6 16 20 5"/>', '/sajin.html': '<path d="M3.5 8.5A2.5 2.5 0 0 1 6 6h1.7l1.4-1.9h5.8L16.3 6H18a2.5 2.5 0 0 1 2.5 2.5v8.5A2.5 2.5 0 0 1 18 19.5H6A2.5 2.5 0 0 1 3.5 17z"/><circle cx="12" cy="12.6" r="3.5"/>', '/video/': '<rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M10.5 9.5v5l4.5-2.5z"/>', '/dome.html': '<path d="M3.5 17V8h10v9"/><path d="M13.5 11h4l3 3v3h-7"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>', '/sigong.html': '<path d="M14 6.5a4 4 0 0 0-5 5L4 16.5 7.5 20l5-5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z"/>'}
 _PSEEN = set()
 POPEN = set()  # 내용이 충분해 검색에 여는 제품 상세(/p/)
 VTHIN = set(l.strip() for l in open(f"{ROOT}/data/vthin.txt", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/vthin.txt") else set()
@@ -378,6 +392,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
                  ([{"@type": "ListItem", "position": 2, "name": dict(NAV)[active], "item": BASE + active}] if active in dict(NAV) and active != "/" else []) +
                  ([{"@type": "ListItem", "position": 3 if (active in dict(NAV) and active != "/") else 2, "name": title.split(" — ")[0].split(" | ")[0], "item": canon}] if (canon.rstrip("/") != (BASE + active).rstrip("/") or active not in dict(NAV)) and path != "index.html" else [])}]
     ld = "".join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>' for x in lds)
+    if path != "index.html": ld += '<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@type": "Organization", "@id": BASE + "/#org", "name": "영진종합목재", "alternateName": ["영진목재", "월드건축자재", "월드아키텍쳐"], "url": BASE + "/", "logo": BASE + "/assets/icon-512.png", "telephone": TEL, "sameAs": [YT, YT2, "https://www.wwood.kr/", MALL, NPLACE, "https://g.page/r/CZcZc9J-M0L0EAE"]}, ensure_ascii=False) + '</script>'
     doc = f"""<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{E(title)}</title><meta name="description" content="{E(desc)}"><link rel="alternate" type="application/rss+xml" title="영진종합목재 소식" href="/rss.xml">
@@ -438,7 +453,7 @@ CTA = f"""<section class="cta"><div class="wrap g2"><div><h2>실물 보고, 원�
 
 BIZ = {"@context": "https://schema.org", "@type": "HardwareStore", "name": "영진종합목재",
        "telephone": "+82-42-545-2900", "address": {"@type": "PostalAddress", "streetAddress": "유성대로 44, 1층", "addressLocality": "대전", "addressCountry": "KR"},
-       "openingHours": ["Mo-Fr 07:00-18:00", "Sa-Su 07:00-15:00"], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "07:00", "closes": "18:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday", "Sunday"], "opens": "07:00", "closes": "15:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "PublicHolidays", "opens": "07:00", "closes": "16:00"}], "url": BASE + "/", "sameAs": [YT, YT2, MALL, KAKAO, NPLACE, "https://g.page/r/CZcZc9J-M0L0EAE"], "alternateName": ["영진목재", "월드건축자재", "영진우드"], "legalName": "영진우드",
+       "openingHours": ["Mo-Fr 07:00-18:00", "Sa-Su 07:00-15:00"], "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "07:00", "closes": "18:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday", "Sunday"], "opens": "07:00", "closes": "15:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "PublicHolidays", "opens": "07:00", "closes": "16:00"}], "url": BASE + "/", "@id": BASE + "/#org", "sameAs": [YT, YT2, "https://www.wwood.kr/", MALL, KAKAO, NPLACE, "https://g.page/r/CZcZc9J-M0L0EAE"], "alternateName": ["영진목재", "월드건축자재", "영진우드"], "legalName": "영진우드",
        "image": [BASE + "/assets/store/storefront.jpg", BASE + "/assets/store/yard-aisle2.jpg", BASE + "/assets/store/showroom.jpg"], "priceRange": "₩", "areaServed": ["대전", "세종", "공주", "계룡", "논산", "금산", "옥천", "천안", "청주", {"@type": "Country", "name": "대한민국"}],
        "subOrganization": {"@type": "GeneralContractor", "name": "월드아키텍쳐", "description": "실내건축공사업 대전서구24-나-19 · 외벽 사이딩 전국 시공, 실내 공정 대전·세종·공주·계룡·금산·옥천·천안·청주", "telephone": "+82-42-545-2900", "url": BASE + "/sigong.html", "areaServed": {"@type": "Country", "name": "대한민국"}}}
 
@@ -1725,7 +1740,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 <p class="small muted">일반적인 특징을 정리한 것으로 제품·등급에 따라 다를 수 있습니다. 매장에서 실물을 비교해 보세요.</p></section>
 <section class="wrap sec"><h2>관련 영상</h2>{vsplit(vs, "h3")}</section>
 <section class="wrap sec"><h2>자주 묻는 질문</h2>{"".join(f'<details class="cfq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q, a in _cfq(c))}</section>
-<section class="wrap sec"><h2>다른 자재 비교</h2>{cmpnav(c["slug"])}</section>{CTA}""", "/jajae/",
+<section class="wrap sec"><h2>다른 자재 비교</h2>{cmpnav(c["slug"])}</section>{mallbox(c["mats"])}{CTA}""", "/jajae/",
              {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in _cfq(c)]})
     page("bigyo/index.html", "자재 비교 — 합판·사이딩·단열재·바닥재·도어·루바 종류별 차이 | 영진목재", "헷갈리는 건축 자재를 종류별로 비교했습니다. 합판 vs OSB vs MDF, 세라믹·메탈·비닐 사이딩, 단열재, 바닥재, 실내 도어, 루바, 집성판, 각재, 방음·흡음재.",
          f'<section class="wrap sec"><p class="crumb"><a href="/jajae/">자재 백과</a> › 자재 비교</p><h1>자재·인테리어 비교 <small>{len(CMP)}가지</small></h1><p class="lead">비슷해 보여도 쓰는 곳이 다른 자재들을 분류별로 비교했습니다.</p>' + _swipe_rows([(c["mats"], c) for c in CMP], lambda it: f'<a class="pc" href="/bigyo/{it[1]["slug"]}.html"><small>자재 비교</small><b>{E(it[1]["short"])}</b><span>{E(it[1]["desc"][:70])}…</span></a>') + f'</section>{CTA}', "/jajae/")
@@ -1773,7 +1788,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 <div class="qk">{"".join(f'<a href="{h}">{E(t)}</a>' for h, t in links)}</div><p>{ml}</p>
 <p class="small muted">일반적인 방법을 정리한 것으로 제품·현장 상태에 따라 다를 수 있습니다. 자재 고르기는 매장(042-545-2900)에서 도와 드립니다.</p></section>
 {f'<section class="wrap sec"><h2>관련 영상 — 월드건축자재DIY</h2>{vsplit(vs, "h3")}</section>' if vs else ''}
-{('<section class="wrap sec"><h2>같이 많이 찾는 질문</h2><ul class="mgl">' + "".join(f'<li><a href="/qna/{x[0]}.html">{E(x[1].split(" — ")[0])}</a></li>' for x in oth) + '</ul></section>') if oth else ''}{CTA}""", "/jajae/", ld)
+{('<section class="wrap sec"><h2>같이 많이 찾는 질문</h2><ul class="mgl">' + "".join(f'<li><a href="/qna/{x[0]}.html">{E(x[1].split(" — ")[0])}</a></li>' for x in oth) + '</ul></section>') if oth else ''}{mallbox(mats)}{CTA}""", "/jajae/", ld)
     page("qna/index.html", "하는 법 Q&A — 석고보드 앙카·실리콘 쏘는법·경첩 조절·오일스테인 건조 | 영진목재",
          "사람들이 실제로 많이 검색하는 목공·인테리어 '하는 법' 질문에 매장에서 답했습니다. 석고보드 보수, 합판 자르기, 실리콘 제거, 경첩 조절, 데크 보수 등.",
          f'<section class="wrap sec"><p class="crumb"><a href="/jajae/">자재 백과</a> › 하는 법 Q&amp;A</p><h1>하는 법 Q&amp;A <small>{len(_QNA)}가지</small></h1><p class="lead">유튜브·검색에서 많이 찾는 질문을 골라 순서대로 답했습니다. 분류별로 옆으로 넘겨 보세요.</p>'
@@ -2301,7 +2316,24 @@ Promise.all([0,1,2,3,4,5,6].map(function(i){return g("d"+day(i))})).then(functio
     open(f"{OUT}/wwoodkr-rss.xml", "w", encoding="utf-8").write('<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>영진종합목재(월드건축자재) 쇼핑몰 새 상품</title><link>https://wwood.kr/home/mall/</link><description>대전 유성 영진종합목재(월드건축자재) 목재·합판·건축자재 쇼핑몰 상품 소식</description><language>ko</language>\n'
         + "".join(f"<item><title>{html.escape(p_['name'])} 규격·주문</title><link>{html.escape(u_)}</link><guid>{html.escape(u_)}</guid><pubDate>{_rfc2(d_)}</pubDate><description>{html.escape(ds_)}</description>" + (f'<enclosure url="{html.escape(p_["img"])}" type="image/jpeg" length="0"/>' if p_.get("img", "").startswith("http") else "") + "</item>\n" for d_, p_, u_, ds_ in _ri)
         + "</channel></rss>\n")
-    open(f"{OUT}/robots.txt", "w").write(f"User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\nSitemap: {BASE}/sitemap-video.xml\nSitemap: {BASE}/sitemap-products.xml\nSitemap: {BASE}/rss.xml\n\n#DaumWebMasterTool:99e0908a419948d27287fb3d562fb5c6a299e4c3c385ed57b261247546dd22cc:VC4npJliHmrJLtJDnWYFDA==\n")
+    open(f"{OUT}/llms.txt", "w", encoding="utf-8").write(f"""# 영진종합목재 (영진목재 · 월드건축자재 · 월드아키텍쳐)
+
+> 대전에 있는 3000평 규모 목재·건축자재 매장입니다. 합판·각재·방부목·데크·집성판·도어·중문·사이딩·단열재를 원하는 크기로 재단해 전국으로 보냅니다. 이 사이트(www.wwood.co.kr)는 자재 정보·시공법·계산기 사이트이고, 상품 주문은 매장 쇼핑몰 https://www.wwood.kr/ 에서 합니다.
+
+- 매장: 대전 · 전화 {TEL} · 길찾기 {BASE}/visit.html
+- 쇼핑몰(주문): https://www.wwood.kr/
+- 유튜브: {YT} , {YT2}
+
+## 자주 찾는 정보
+- [하는 법 Q&A]({BASE}/qna/): 자재 시공·보수 질문 답변
+- [자재 비교]({BASE}/bigyo/): 합판 vs OSB vs MDF, 강마루 vs 강화마루 등
+- [자재 가격 가이드]({BASE}/gagyeok/): 품목별 기준가와 1평 계산
+- [자재 시공법]({BASE}/sigongbeop/) · [DIY 만들기]({BASE}/mandeul/)
+- [자재비 계산기]({BASE}/calc.html) · [목재 재단 그림]({BASE}/cut.html) · [규격표]({BASE}/gyugyeok.html)
+- [공간 사진 둘러보기]({BASE}/gonggan/) · [인테리어 트렌드]({BASE}/trend/)
+- [전국 배송 지역]({BASE}/jeonguk/) · [시공팀 연결]({BASE}/yeongyeol/)
+""")
+    open(f"{OUT}/robots.txt", "w").write(f"User-agent: *\nAllow: /\n\nUser-agent: Googlebot\nAllow: /\n\nUser-agent: Bingbot\nAllow: /\n\nUser-agent: Yeti\nAllow: /\n\nUser-agent: Daumoa\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: ClaudeBot\nAllow: /\n\nUser-agent: Claude-SearchBot\nAllow: /\n\nUser-agent: Claude-User\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: Perplexity-User\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\n\nUser-agent: Applebot\nAllow: /\n\nUser-agent: Applebot-Extended\nAllow: /\n\nUser-agent: Bravebot\nAllow: /\n\nUser-agent: DuckAssistBot\nAllow: /\n\nUser-agent: Amazonbot\nAllow: /\n\nUser-agent: meta-externalagent\nAllow: /\n\nUser-agent: CCBot\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\nSitemap: {BASE}/sitemap-video.xml\nSitemap: {BASE}/sitemap-products.xml\nSitemap: {BASE}/rss.xml\n\n#DaumWebMasterTool:99e0908a419948d27287fb3d562fb5c6a299e4c3c385ed57b261247546dd22cc:VC4npJliHmrJLtJDnWYFDA==\n")
     today = datetime.date.today().isoformat()
     # lastmod: 내용이 실제로 바뀐 날만 갱신(매일 오늘 날짜면 구글이 lastmod를 무시함)
     _lmf = f"{ROOT}/data/lastmod.json"
