@@ -308,7 +308,8 @@ def _noidx(path):
     if path.startswith("p/"): return path not in POPEN
     if re.match(r"(daejeon|sejong)/(?!index\.html)[^/]+\.html$", path): return True  # 대전·세종 × 자재 = /jajae/ 와 거의 같음
     if path.startswith("v/") and path[2:-5] in VTHIN: return True
-    if re.match(r"bupum/samu(-\d+)?\.html$", path): return True  # 사무용품: 우리 업종과 무관 — 크롤링 예산 낭비
+    if re.match(r"bupum/samu(-\d+)?\.html$", path): return True
+    if path.startswith("bupum/p/") and path != "bupum/p/index.html": return True  # 철물박사 상품 6천여 개: 원 판매처와 같은 사진·이름이라 구글이 색인 안 함 — 크롤링을 우리만의 페이지로  # 사무용품: 우리 업종과 무관 — 크롤링 예산 낭비
     return False
 def _tshort(t):
     # 60자 넘는 제목: 끝의 업체명은 두고, 나열·부제부터 줄임(검색 결과에서 잘리지 않게)
