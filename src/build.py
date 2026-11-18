@@ -437,6 +437,37 @@ def _newrel(path, body):
     return ('<section class="wrap sec"><h2>새로 올라온 관련 글</h2><div class="pl hs">' + "".join(f'<a class="pc" href="/news/{p["slug"]}.html"><b>{html.escape(p["title"])}</b><span>{p.get("date", "")}</span></a>' for p in hit) + '</div></section>')
 # 검색 클릭률 개선: data/title_override.json {"경로.html": {"title": .., "desc": .., "date": .., "why": ..}} — 주간 자동 작업이 서치콘솔 실적 보고 고침
 TOV = json.load(open(f"{ROOT}/data/title_override.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/title_override.json") else {}
+_THC = {}
+def _thumbs(body):
+    """목록 카드의 lazy 사진: 480px webp 썸네일 + srcset + width/height(모바일 속도·화면 들썩임 방지)."""
+    def rep(m):
+        tag, rel = m.group(0), m.group(2)
+        if "srcset=" in tag: return tag
+        srcf = f"{ROOT}/assets/{rel}"
+        if not os.path.exists(srcf): return tag
+        if rel not in _THC:
+            try:
+                from PIL import Image
+                tr = re.sub(r"\.(jpe?g|png)$", ".webp", rel, flags=re.I); tf = f"{ROOT}/assets/t/{tr}"
+                with Image.open(srcf) as im: W, H = im.size
+                if W <= 520: _THC[rel] = None
+                else:
+                    if not os.path.exists(tf) or os.path.getmtime(tf) < os.path.getmtime(srcf):
+                        os.makedirs(os.path.dirname(tf), exist_ok=True)
+                        with Image.open(srcf) as im:
+                            im = im.convert("RGB"); im.thumbnail((480, 480 * H // W + 1)); im.save(tf, "WEBP", quality=72, method=4)
+                    of = f"{OUT}/assets/t/{tr}"
+                    if not os.path.exists(of): os.makedirs(os.path.dirname(of), exist_ok=True); shutil.copy2(tf, of)
+                    _THC[rel] = (tr, W, H)
+            except Exception: _THC[rel] = None
+        v = _THC[rel]
+        if not v: return tag
+        tr, W, H = v
+        add = f' srcset="/assets/t/{tr} 480w, /assets/{rel} {W}w" sizes="(max-width: 640px) 48vw, 300px"'
+        if " width=" not in tag: add += f' width="{W}" height="{H}"'
+        return tag[:-1].rstrip("/").rstrip() + add + ">"
+    return re.sub(r'<img\b(?=[^>]*loading="lazy")[^>]*\bsrc="(/assets/((?:store|mandeul|sigongbeop|tteori|gonggan|gj|vis)/[^"]+\.(?:jpe?g|png)))"[^>]*>', rep, body, flags=re.I)
+
 _YGL = None
 def _yglink(path, body):
     """본문에 나온 현장 용어 첫 번째를 /yongeo/ 뜻 페이지로 연결(문단·목록 글자만, 링크·제목·스크립트 안은 건드리지 않음)."""
@@ -479,6 +510,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
         else: _mb = mallbox(_mm)
         if _mb: body = body.replace('<section class="cta">', _mb + '<section class="cta">', 1) if '<section class="cta">' in body else body + _mb
     body = _yglink(path, body)
+    body = _thumbs(body)
     _nr = _newrel(path, body)
     if _nr: body = body.replace('<section class="cta">', _nr + '<section class="cta">', 1) if '<section class="cta">' in body else body + _nr
     if path not in _SW_SKIP and "<table" in body and "/p/" not in path: body = _tbl_cards(body)
@@ -2484,6 +2516,12 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     if PREVIEW: print(len(SITEMAP), "preview pages →", OUT); return
     json.dump({"cats": [[c, n, d] for c, n, d in CATS], "v": [[v["id"], v["type"], v["cat"], v["n"], v["title"]] for v in V]}, open(f"{OUT}/assets/videos.json", "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))  # wwood.kr 시공영상 페이지용
     # 404 — 없는 주소로 들어온 손님을 주요 페이지로
+    # 페이지를 만든 뒤 끼워 넣은 카드 사진까지 썸네일로(첫 화면 등)
+    for _hf in glob.glob(f"{OUT}/**/*.html", recursive=True):
+        _ht = open(_hf, encoding="utf-8").read()
+        if 'loading="lazy" src="/assets/' not in _ht: continue
+        _h2 = _thumbs(_ht)
+        if _h2 != _ht: open(_hf, "w", encoding="utf-8").write(_h2)
     open(f"{OUT}/404.html", "w", encoding="utf-8").write(open(f"{OUT}/index.html", encoding="utf-8").read().split("<main>")[0].replace('<link rel="canonical"', '<meta name="robots" content="noindex"><link rel="x-canonical"').replace(re.search(r"<title>.*?</title>", open(f"{OUT}/index.html", encoding="utf-8").read()).group(0), "<title>페이지를 찾을 수 없어요 | 영진목재</title>").replace(re.search(r'<meta name="description" content="[^"]*">', open(f"{OUT}/index.html", encoding="utf-8").read()).group(0), '<meta name="description" content="찾으시는 페이지가 없습니다. 영진목재 홈페이지 처음 화면이나 전체 자재에서 찾아보세요.">') + '<main><section class="wrap sec"><h1>찾으시는 페이지가 없어요</h1><p class="lead">주소가 바뀌었거나 없어진 페이지입니다. 아래에서 찾아보세요.</p><div class="row"><a class="b r" href="/">처음으로</a><a class="b o" href="/jaryo/">전체 자재</a><a class="b o" href="/cut.html">재단 미리보기</a><a class="b o" href="/price.html">기준가</a><a class="b o" href="/mandeul/">DIY 만들기</a><a class="b o" href="/sigongbeop/">자재 시공법</a><a class="b o" href="/faq.html">자주 묻는 질문</a><a class="b d" href="/visit.html">매장 안내</a></div></section></main></body></html>')
     # 사장님용 방문 통계(검색 제외, 메뉴 링크 없음)
     os.makedirs(f"{OUT}/stats", exist_ok=True)
