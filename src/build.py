@@ -2203,7 +2203,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         yv = [byid[x] for x in ["GGm4laQFUMg", "FNylPstDD4I", "jcqTf-1G5mA"] if x in byid]
         # 용어별 전용 페이지(/yongeo/<slug>.html) — "○○ 뜻" 검색용. 사전 본문의 각 용어에서 링크
         _GG = {"hapan": "hapan-gagyeok", "gujo": "gakjae-gagyeok", "hinoki": "hinoki-ruba", "molding": "molding-gagyeok", "door": "door-gagyeok"}
-        _XL = {"hebe": [("/pyeong.html", "평·㎡(헤베) 환산 계산기")], "rube": [("/pyeong.html", "평·㎡ 환산 계산기"), ("/muge.html", "자재 무게 계산기")],
+        _XL = {"sane": [("/qna/ruba-jongryu.html", "루바 종류"), ("/qna/pyeonbaek-ruba-self.html", "편백 루바 셀프 시공")], "haba": [("/yongeo/munseon.html", "문선 뜻")], "odoriba": [("/qna/gyedanjae-sujong.html", "계단재 수종 고르기")], "yokko-dade": [("/qna/pyeonbaek-ruba-self.html", "루바 붙이는 순서")], "hebe": [("/pyeong.html", "평·㎡(헤베) 환산 계산기")], "rube": [("/pyeong.html", "평·㎡ 환산 계산기"), ("/muge.html", "자재 무게 계산기")],
                "ja-chi": [("/qna/duchigak-darugi.html", "두치각·다루끼 규격 읽는 법"), ("/jae.html", "목재 재(才) 계산기")], "jae": [("/jae.html", "목재 재(才) 계산기")],
                "darugi": [("/qna/duchigak-darugi.html", "두치각·다루끼 규격"), ("/gagyeok/gakjae-gagyeok.html", "각재 가격")], "tubai": [("/bigyo/bangbu-vs-gujo.html", "방부목 vs 구조목"), ("/qna/gujomok-yeongyeol.html", "구조목 연결 방법")],
                "ppade": [("/qna/", "하는 법 Q&A")], "habaki": [("/sigongbeop/molding-georebatgi.html", "걸레받이·몰딩 시공")], "molding": [("/sigongbeop/molding-georebatgi.html", "몰딩 시공법"), ("/bigyo/molding-types.html", "몰딩 종류 비교")],
