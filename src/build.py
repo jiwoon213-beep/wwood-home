@@ -2100,10 +2100,42 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
             body += f'<h2>{E(g)}</h2><dl class="yg">'
             for t in ts:
                 ln = f' <a class="small" href="/jajae/{t[3]}.html">{mn[t[3]]} 보기 ›</a>' if t[3] in mn else ""
-                body += f'<dt id="t{i}">{E(t[0])} <span class="muted">= {E(t[1])}</span></dt><dd>{E(t[2])}{ln}</dd>'; i += 1
+                body += f'<dt id="t{i}">{f"<a href=/yongeo/{t[4]}.html>{E(t[0])}</a>" if len(t) > 4 and t[4] else E(t[0])} <span class="muted">= {E(t[1])}</span></dt><dd>{E(t[2])}{ln}</dd>'; i += 1
             body += "</dl>"
         byid = {v["id"]: v for v in V}
         yv = [byid[x] for x in ["GGm4laQFUMg", "FNylPstDD4I", "jcqTf-1G5mA"] if x in byid]
+        # 용어별 전용 페이지(/yongeo/<slug>.html) — "○○ 뜻" 검색용. 사전 본문의 각 용어에서 링크
+        _GG = {"hapan": "hapan-gagyeok", "gujo": "gakjae-gagyeok", "hinoki": "hinoki-ruba", "molding": "molding-gagyeok", "door": "door-gagyeok"}
+        _XL = {"hebe": [("/pyeong.html", "평·㎡(헤베) 환산 계산기")], "rube": [("/pyeong.html", "평·㎡ 환산 계산기"), ("/muge.html", "자재 무게 계산기")],
+               "ja-chi": [("/qna/duchigak-darugi.html", "두치각·다루끼 규격 읽는 법"), ("/jae.html", "목재 재(才) 계산기")], "jae": [("/jae.html", "목재 재(才) 계산기")],
+               "darugi": [("/qna/duchigak-darugi.html", "두치각·다루끼 규격"), ("/gagyeok/gakjae-gagyeok.html", "각재 가격")], "tubai": [("/bigyo/bangbu-vs-gujo.html", "방부목 vs 구조목"), ("/qna/gujomok-yeongyeol.html", "구조목 연결 방법")],
+               "ppade": [("/qna/", "하는 법 Q&A")], "habaki": [("/sigongbeop/molding-georebatgi.html", "걸레받이·몰딩 시공")], "molding": [("/sigongbeop/molding-georebatgi.html", "몰딩 시공법"), ("/bigyo/molding-types.html", "몰딩 종류 비교")],
+               "munseon": [("/sigongbeop/munteul-gyoche.html", "방문·문틀 교체")], "ruba": [("/bigyo/hinoki-vs-spruce-ruba.html", "히노끼 vs 스프러스 루바")], "denjo": [("/sigongbeop/seokgo-cheonjang.html", "석고보드 천장 시공")],
+               "gabe": [("/gabyeok-gyesan.html", "가벽 자재 계산기")], "uma": [("/cheolmul/diy.html", "우마·벤치 프레임 철물")], "desuri": [("/sigongbeop/deck-nangan.html", "데크 난간")], "nagasi": [("/mandeul/sinkmunjjak.html", "싱크대 문짝 만들기")]}
+        _pos = {t[4]: (g, j) for g, ts in YG for j, t in enumerate(ts)}
+        for g, ts in YG:
+            for t in ts:
+                if not t[4]: continue
+                key = re.split(r"[(·]", t[0])[0]
+                _c = t[0].rstrip(")")[-1]; _eun = "은" if ("가" <= _c <= "힣" and (ord(_c) - 0xAC00) % 28) else "는"
+                rv = [v for v in V if key in v["title"]][:6] if len(key) >= 2 and key not in ("시다", "네다") else []
+                sib = "".join(f'<a href="/yongeo/{x[4]}.html">{E(x[0])}</a>' for x in ts if x[4] and x[4] != t[4])
+                links = []
+                if t[3] in mn: links.append((f"/jajae/{t[3]}.html", f"{mn[t[3]]} 자재 백과"))
+                if t[3] in _GG: links.append((f"/gagyeok/{_GG[t[3]]}.html", f"{mn.get(t[3], '')} 가격 가이드".strip()))
+                links += _XL.get(t[4], [])
+                fq = [(f"{t[0]} 뜻이 뭔가요?", f"{t[1]}. {t[2]}"), *([(f"{t[0]}{_eun} 현장에서 어떻게 쓰나요?", t[5])] if len(t) > 5 and t[5] else []), (f"{t[0]}{_eun} 표준어로 뭐라고 하나요?", f"표준어·우리말로는 '{t[1]}'(이)라고 합니다. 현장·지역에 따라 조금 다르게 쓰기도 합니다.")]
+                ld = {"@context": "https://schema.org", "@graph": [{"@type": "DefinedTerm", "name": t[0], "description": f"{t[1]}. {t[2]}", "inDefinedTermSet": "https://www.wwood.co.kr/yongeo.html"},
+                      {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}]}
+                page(f"yongeo/{t[4]}.html", f"{t[0]} 뜻 — {t[1]} | 현장 용어 · 영진목재", f"{t[0]} 뜻: {t[1]}. {t[2]}"[:150],
+                     f"""<section class="wrap sec"><p class="crumb"><a href="/yongeo.html">현장 용어 사전</a> › {E(g)}</p><h1>{E(t[0])} 뜻</h1>
+<p class="lead"><b>{E(t[0])}</b> = <b>{E(t[1])}</b></p><p>{E(t[2])}</p>
+{f'<h2>현장에서 이렇게 써요</h2><p>{E(t[5])}</p>' if len(t) > 5 and t[5] else ''}
+<p class="small muted">목수·인테리어 현장에서 오래 써 온 말이라 견적서·상담에서 자주 나옵니다. 뜻을 알면 자재 주문과 업체 상담이 쉬워집니다.</p>
+{('<h2>같이 보면 좋은 페이지</h2><div class="olk">' + "".join(f'<a href="{h}">{E(n)}</a>' for h, n in links) + '</div>') if links else ''}
+<h2>자주 묻는 질문</h2>{"".join(f'<details class="faq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q, a in fq)}
+<h2>{E(g)} — 다른 용어</h2><div class="olk">{sib}</div><p><a class="b o" href="/yongeo.html">현장 용어 사전 전체 ({len(terms)}개) ›</a></p></section>
+{f'<section class="wrap sec"><h2>"{E(key)}" 나오는 영상</h2>{vsplit(rv, "h3")}</section>' if rv else ''}{CTA}""", "/jajae/", ld)
         page("yongeo.html", "건축 현장 용어 사전 — 다루끼·덴조·가베·오사마리·하바끼 뜻 | 영진목재", "목수·인테리어 현장에서 쓰는 일본어 잔재 용어와 자재 용어의 뜻을 정리했습니다. 다루끼, 덴조, 가베, 오사마리, 하바끼, 나라시, 메지 등.",
              f"""<section class="wrap sec"><h1>건축 현장 용어 사전</h1><p class="lead">현장에서 오가는 말을 알아야 자재 주문과 업체 상담이 쉬워집니다. 목수·인테리어 현장에서 자주 쓰는 용어 {len(terms)}개를 쉬운 말로 풀었습니다. 표준어로 바꿔 쓰는 것이 좋지만, 현장 소통을 위해 뜻은 알아 두세요.</p>
 <p class="small">바로가기: {toc}</p>{body}<p class="small muted">현장·지역마다 쓰는 뜻이 조금씩 다를 수 있습니다. 헷갈리는 자재는 매장(042-545-2900)에 물어보세요.</p></section>
