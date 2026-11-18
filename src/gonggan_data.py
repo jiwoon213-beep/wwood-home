@@ -386,6 +386,35 @@ SCENES += [
   [(20, 45, '밝은 화강석 외벽', 'tile', '점무늬 화강석 판을 줄눈 맞춰 붙였습니다.', '/jaryo/stone.html', '스톤 보기', []), (60, 40, '짙은 석재 무늬판', 'tile', '짙은 돌을 사선으로 끼워 무늬를 냈습니다.', '/jaryo/stone.html', '스톤 보기', []), (50, 72, '스테인리스 현관문', 'door', '스테인리스 틀 유리 자동문입니다.', '/younglim/', '도어 보기', []), (95, 12, '창 안전 난간', 'door', '창 밖 장식 난간입니다.', '/qna/shassi-gyoche-check.html', '창 교체 전 확인', [])]),
 ]
 
+SCENES += [
+ ("free-yeondong-wood-hall", "원목 프레임 프리연동도어 — 현관 복도 자재 둘러보기", YL + "233cb44b-abc1-470f-ab9d-79c05fb06b34.jpg", "사진: 영림",
+  "나뭇결 프레임 3짝 연동 중문을 같은 나무색 문틀 안에 넣고, 바닥은 밝은 원목 무늬 마루로 맞춘 현관 복도입니다.",
+  [(49, 55, "영림 프리연동도어", "jungmun", "나무색 얇은 프레임에 반투명 유리를 넣은 3짝 연동 슬라이딩 중문입니다.", "/younglim/p/2367.html", "제품 보기", [("/qna/3yeondong-self.html", "3연동 중문 셀프 시공"), ("/bigyo/3yeondong-vs-one-sliding.html", "3연동 vs 원슬라이딩")]),
+   (49, 17, "중문 둘레 나무 문틀", "jungmun", "중문 위·양옆을 같은 나무색 틀로 감싸 벽 속에 들어간 것처럼 보입니다.", "/sigongbeop/jungmun.html", "중문 시공법", [("/qna/door-silcheuk.html", "문·중문 실측")]),
+   (40, 94, "밝은 원목 무늬 마루", "maru", "옅은 나뭇결 마루를 중문 앞까지 깔았습니다.", "/younglim/maru.html", "마루 보기", [("/qna/badakjae-goreugi.html", "바닥재 고르는 법"), ("/bigyo/floor-types.html", "바닥재 비교")]),
+   (92, 55, "옆 방문", "door", "오른쪽 벽에 흰 방문과 레버 손잡이가 보입니다.", "/younglim/", "영림 도어 보기", [("/qna/door-silcheuk.html", "문 실측")]),
+   (14, 82, "원형 사이드 테이블", "furniture", "현관 옆에 둔 작은 원형 테이블입니다.", "/mandeul/saideu.html", "사이드 테이블 만들기", [("/jaryo/jipseong.html", "집성판 보기")])]),
+ ("slim-3yeondong-black-city", "검은 프레임 초슬림 3연동 — 도심 뷰 거실 둘러보기", YL + "f32751f4-1949-419e-8c48-21824a141d50.jpg", "사진: 영림",
+  "큰 창 옆 흰 벽에 검은 얇은 프레임 3연동 중문을 달아 방과 거실을 나눈 모습입니다. 가로 띠살이 포인트입니다.",
+  [(50, 45, "영림 초슬림 3연동 도어", "jungmun", "검은 얇은 프레임에 반투명 유리, 가운데 가로 띠살이 들어간 3연동 문입니다.", "/younglim/p/1712.html", "제품 보기", [("/younglim/jungmun-slim.html", "초슬림 중문 전체"), ("/qna/3yeondong-self.html", "3연동 중문 셀프 시공")]),
+   (50, 13, "검은 상부 프레임", "jungmun", "문 위에 레일을 숨긴 검은 틀이 천장 쪽까지 이어집니다.", "/sigongbeop/jungmun.html", "중문 시공법", [("/qna/door-silcheuk.html", "문·중문 실측")]),
+   (7, 50, "큰 통창", "door", "바닥까지 내려오는 큰 창입니다.", "/qna/shassi-gyoche-check.html", "창 교체 전 확인", [("/qna/chang-gyeolro.html", "창 결로")]),
+   (90, 75, "철제 콘솔 선반", "shelf", "검은 철제 다리에 판을 얹은 2단 콘솔입니다.", "/mandeul/byeokseonban.html", "선반 만들기", []),
+   (70, 95, "밝은 바닥", "tile", "밝은 회색 톤 바닥으로 검은 프레임이 돋보입니다.", "/bigyo/floor-types.html", "바닥재 비교", [])]),
+ ("noah-lattice-dining", "흰 격자무늬 노아 중문과 짙은 마루 — 식탁 공간 둘러보기", YL + "585fb46e-3cb0-4518-be99-afe048bf49a0.jpg", "사진: 영림",
+  "흰 프레임에 격자무늬 유리를 넣은 3짝 슬라이딩 문으로 공간을 나누고, 바닥은 짙은 나무색 마루로 깐 식탁 공간입니다.",
+  [(37, 45, "영림 노아(YT-120X)", "jungmun", "흰 프레임에 마름모 격자무늬 유리가 들어간 3짝 슬라이딩 문입니다.", "/younglim/p/1741.html", "제품 보기", [("/younglim/jungmun.html", "영림 중문 전체"), ("/bigyo/slide-vs-swing-jungmun.html", "슬라이딩 vs 스윙 중문")]),
+   (58, 48, "세로 바 손잡이", "handle", "문 끝 프레임에 붙은 짧은 바 손잡이입니다.", "/qna/son-jabi-chai.html", "손잡이 고르기", [("/bupum/", "손잡이·부속")]),
+   (25, 92, "짙은 나무색 마루", "maru", "짙은 갈색 나뭇결 마루로 흰 문이 돋보입니다.", "/younglim/maru.html", "마루 보기", [("/qna/badakjae-goreugi.html", "바닥재 고르는 법")]),
+   (82, 66, "식탁 의자", "furniture", "원형 식탁 옆에 둔 검은 다리 의자입니다.", "/mandeul/teibeul.html", "테이블 만들기", [("/qna/siktak-sangpan.html", "식탁 상판 고르기")])]),
+ ("rodi-round-window-entry", "원형 창 양개 중문 로디 — 현관 복도 둘러보기", YL + "d5b7fc80-bfc8-4dce-b806-c46506c7d62d.jpg", "사진: 영림",
+  "나뭇결 문짝 가운데 둥근 유리창을 낸 쪽문형 양개 중문을 복도 끝에 달고, 바닥은 밝은 마루로 깐 현관입니다.",
+  [(38, 61, "영림 1920MSA(쪽문) 로디", "jungmun", "큰 문과 작은 쪽문을 함께 여는 양개 중문입니다. 두 문에 걸쳐 둥근 유리창이 있습니다.", "/younglim/p/3347.html", "제품 보기", [("/younglim/jungmun-yanggae.html", "양개 중문 전체"), ("/qna/jungmun-gumae.html", "중문 고르기")]),
+   (55, 49, "세로 바 손잡이", "handle", "두 문이 만나는 자리의 긴 세로 손잡이입니다.", "/qna/pushpull-handle.html", "바 손잡이", [("/qna/son-jabi-chai.html", "손잡이 고르기")]),
+   (48, 88, "밝은 마루 복도", "maru", "복도 끝까지 옅은 나뭇결 마루를 깔았습니다.", "/younglim/maru.html", "마루 보기", [("/qna/badakjae-goreugi.html", "바닥재 고르는 법")]),
+   (8, 76, "나무 수납장", "cabinet", "왼쪽 벽에 붙인 낮은 나무 수납장입니다.", "/mandeul/sinbaljang.html", "신발장 만들기", [("/qna/butbakijang-self.html", "붙박이장 셀프")])]),
+]
+
 # 분류 (공간 사진 목록 페이지에서 줄별로 옆으로 넘기기)
 CATS = [
     ("home", "집 인테리어", "거실·현관·방·주방 사진 속 도어·중문·마루·아트월"),
