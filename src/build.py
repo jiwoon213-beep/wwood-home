@@ -437,12 +437,48 @@ def _newrel(path, body):
     return ('<section class="wrap sec"><h2>새로 올라온 관련 글</h2><div class="pl hs">' + "".join(f'<a class="pc" href="/news/{p["slug"]}.html"><b>{html.escape(p["title"])}</b><span>{p.get("date", "")}</span></a>' for p in hit) + '</div></section>')
 # 검색 클릭률 개선: data/title_override.json {"경로.html": {"title": .., "desc": .., "date": .., "why": ..}} — 주간 자동 작업이 서치콘솔 실적 보고 고침
 TOV = json.load(open(f"{ROOT}/data/title_override.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/title_override.json") else {}
+_YGL = None
+def _yglink(path, body):
+    """본문에 나온 현장 용어 첫 번째를 /yongeo/ 뜻 페이지로 연결(문단·목록 글자만, 링크·제목·스크립트 안은 건드리지 않음)."""
+    global _YGL
+    if _YGL is None:
+        _YGL = {}
+        try:
+            _ok = set("다루끼 오비끼 덴조 가베 떡가베 와꾸 마구사 오사마리 시마이 단도리 데나오시 바라시 나라시 도끼다시 곰방 야리끼리 아시바 반생 빠루 데모도 함바 하바끼 헤베 루베 공구리 빠데 헤라 고데 렌가 나가시 시아게 데스리 가꾸목 뺑끼 후끼 사춤 오야지 구루마 기레바시 투바이 등박스 구배".split())
+            for _g, _ts in json.load(open(f"{ROOT}/data/yongeo.json", encoding="utf-8")):
+                for _t in _ts:
+                    _k = re.split(r"[(·]", _t[0])[0]
+                    if len(_t) > 4 and _t[4] and _k in _ok: _YGL[_k] = _t[4]
+        except Exception: _YGL = {}
+    if not _YGL or not re.match(r"(qna|sigongbeop|mandeul|news|bigyo|gagyeok|jajae)/(?!index)", path): return body
+    rx = re.compile("(" + "|".join(sorted(map(re.escape, _YGL), key=len, reverse=True)) + ")")
+    _cr = re.findall(r'<p class="crumb">.*?</p>', body); body = re.sub(r'<p class="crumb">.*?</p>', "\x00CRUMB\x00", body)
+    parts = re.split(r"(<[^>]+>)", body); used = set(); skip = 0; inp = 0
+    for i, x in enumerate(parts):
+        if x.startswith("<"):
+            t = x[1:].split()[0].rstrip(">").lower() if len(x) > 2 else ""
+            if t in ("a", "script", "style", "h1", "h2", "h3", "title", "button", "summary", "label"): skip += 1
+            elif t in ("/a", "/script", "/style", "/h1", "/h2", "/h3", "/title", "/button", "/summary", "/label"): skip = max(0, skip - 1)
+            elif t in ("p", "li", "dd", "td"): inp += 1
+            elif t in ("/p", "/li", "/dd", "/td"): inp = max(0, inp - 1)
+            continue
+        if skip or not inp or not x.strip(): continue
+        def _r(m):
+            k = m.group(1)
+            if k in used or len(used) >= 5: return k
+            used.add(k); return f'<a class="ygl" href="/yongeo/{_YGL[k]}.html" title="{k} 뜻">{k}</a>'
+        parts[i] = rx.sub(_r, x)
+    out = "".join(parts)
+    for c in _cr: out = out.replace("\x00CRUMB\x00", c, 1)
+    return out
+
 def page(path, title, desc, body, active="", jsonld=None, img=None):
     if 'card mallbox' not in body and re.match(r"(jajae|mandeul|sigongbeop|gagyeok|gonggan)/(?!index)", path) or path in ("calc.html", "cut.html", "price.html"):
         _mm = [path.split("/")[1][:-5]] if path.startswith("jajae/") else (["hapan", "gujo", "hapdeck"] if path in ("calc.html", "cut.html", "price.html") else _guessmats(re.sub(r"<[^>]+>", " ", body)))
         if path in ("calc.html", "cut.html", "price.html"): _mb = mallbox(_mm, 3)
         else: _mb = mallbox(_mm)
         if _mb: body = body.replace('<section class="cta">', _mb + '<section class="cta">', 1) if '<section class="cta">' in body else body + _mb
+    body = _yglink(path, body)
     _nr = _newrel(path, body)
     if _nr: body = body.replace('<section class="cta">', _nr + '<section class="cta">', 1) if '<section class="cta">' in body else body + _nr
     if path not in _SW_SKIP and "<table" in body and "/p/" not in path: body = _tbl_cards(body)
