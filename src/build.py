@@ -2005,9 +2005,14 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     _vt_used = set()
     def _vtitle(v):  # 영상 페이지 제목 겹침 방지(구글 중복 제목 경고)
         _cl = lambda t: re.sub(r"[“”\"']", "", t).strip()
-        b = _cl(vshort(v["title"]))[:40]
-        if len(b) < 10: b = _cl(v["title"])[:40].strip(" ,")
-        for c in (b, v["title"][:44].strip(), b + (" (쇼츠)" if v["type"] == "S" else " (영상)"), v["title"][:44].strip() + (" 쇼츠" if v["type"] == "S" else " 풀영상")):
+        def _cut(t, n):  # 단어 중간에서 자르지 않기
+            t = t.strip()
+            if len(t) <= n: return t
+            u = t[:n]; i = u.rfind(" ")
+            return (u[:i] if i >= n * 0.6 else u).rstrip(" ,·-—|")
+        b = _cut(_cl(vshort(v["title"])), 40)
+        if len(b) < 10: b = _cut(_cl(v["title"]), 40).strip(" ,")
+        for c in (b, _cut(v["title"], 44), b + (" (쇼츠)" if v["type"] == "S" else " (영상)"), _cut(v["title"], 44) + (" 쇼츠" if v["type"] == "S" else " 풀영상")):
             if c not in _vt_used: _vt_used.add(c); return c
         k = 2
         while f"{b} {k}" in _vt_used: k += 1
