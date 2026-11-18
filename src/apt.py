@@ -91,6 +91,17 @@ def casecard(C, slug, work, vi, E, place=""):
     return f'<a class="apcase" href="/sigong/{slug}.html">{img}<span><small>월드아키텍쳐 실제 시공 현장</small><b>{E((place + " " if place else "") + work)}</b><em>시공 사례·영상 보기 ›</em></span></a>'
 
 
+LOCSVC = [("jungmun", "중문 설치"), ("door", "방문·문틀 교체"), ("film", "필름 시공"), ("molding", "몰딩 교체"), ("wall", "템바보드 벽")]
+
+
+def locreg(sd, gu):
+    if sd == "대전": return {"유성구": "yuseong", "서구": "seogu", "대덕구": "daedeok", "중구": "junggu-donggu", "동구": "junggu-donggu"}.get(gu)
+    if sd == "세종": return "sejong"
+    for k, v in (("공주", "gongju"), ("계룡", "gyeryong"), ("금산", "geumsan"), ("옥천", "okcheon"), ("천안", "cheonan"), ("청주", "cheongju")):
+        if gu.startswith(k): return v
+    return None
+
+
 def ok(L):
     return len(L) >= 2 or sum(r["n"] for r in L) >= 300
 
@@ -135,7 +146,10 @@ def build(root, page, E, CTA):
         stat = (f'평균 약 {avg}년 차' + (f', 20년 넘은 단지 {old}곳' if old else '') + (f', 복도식 {bok}곳' if bok else '')) if ys else ""
         if sd in NEAR:
             how = '자재는 대전 유성 매장에서 실물을 보고 원하는 크기로 잘라 가실 수 있고, 현장까지 배송도 됩니다.'
+            _lr = locreg(sd, gu)
+            if _lr: how += ' 이 지역은 <b>시공도</b> 합니다(실측 후 견적).'
             rl = '<a href="/visit.html">매장 길찾기</a><a href="/jaedan-baesong.html">재단 후 배송</a>'
+            if _lr: rl += "".join(f'<a href="/local/{k}-{_lr}.html">{E(gu if sd != "세종" else "세종")} {t}</a>' for k, t in LOCSVC)
         else:
             rg = reg(sd, gu)
             how = f'{E(sd)} 현장은 치수대로 재단해서 <b>전국 배송</b>으로 보내 드립니다(운임은 견적). 중문·방문·몰딩은 문 크기를 재서 보내 주세요.'
@@ -155,6 +169,14 @@ def build(root, page, E, CTA):
         pages.append((fn, sd, gu, dong, len(L), tot))
         for r in L: SRCH.append([r["단지명"].strip(), area, fn, r["단지코드"], r["n"]])
     import json
+    RG = {}
+    for p in pages:
+        r_ = locreg(p[1], p[2])
+        if r_: RG.setdefault(r_, []).append([p[0], p[3], p[4], p[5]])
+        if r_ in ("yuseong", "seogu", "daedeok", "junggu-donggu"): RG.setdefault("daejeon", []).append([p[0], p[3], p[4], p[5]])
+    RG = {k: sorted(v, key=lambda x: -x[3])[:24] for k, v in RG.items()}
+    rp = f"{root}/data/apt_reg.json"; rj = json.dumps(RG, ensure_ascii=False, indent=0)
+    if not os.path.exists(rp) or open(rp, encoding="utf-8").read() != rj: open(rp, "w", encoding="utf-8").write(rj)
     os.makedirs(f"{root}/assets/apt", exist_ok=True)
     js = json.dumps(SRCH, ensure_ascii=False, separators=(",", ":"))
     jp = f"{root}/assets/apt/search.json"

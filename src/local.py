@@ -1,9 +1,10 @@
 # 지역 × 시공 서비스 페이지 (대전 중문, 세종 방문 교체 …) — /local/
 # 시공은 월드아키텍쳐(대전·세종). 확인 안 된 숫자(시공비·소요일·거리) 쓰지 않음.
-import re, os
+import re, os, json
 import younglim as _yl, shenu as _sh
 from yerim import IMG as YIMG, LB
 
+APTREG = {}
 REG = [  # slug, 이름, 동네들
  ("daejeon", "대전", "유성·서구·중구·동구·대덕구 대전 전 지역"),
  ("yuseong", "대전 유성구", "도안·학하·노은·관평·반석·신성·원내동(진잠)"),
@@ -70,6 +71,9 @@ def gallery(kind, E, ROOT, k=14):
 
 
 def gen(page, E, CTA, faqslide, ADDR, HOURS, TEL, ROOT, CASES, top, vsplit):
+    global APTREG
+    try: APTREG = json.load(open(os.path.join(ROOT, "data", "apt_reg.json"), encoding="utf-8"))
+    except Exception: APTREG = {}
     hub = []
     for ss, sn, tail, desc, steps, links, gk, vrx, crx in SVC:
         gal = gallery(gk, E, ROOT)
@@ -91,6 +95,8 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, TEL, ROOT, CASES, top, vsplit):
                     + (f'<section class="wrap sec"><h2>{E(sn)} 영상</h2>{vsplit(vs, "h3")}</section>' if vs else "")
                     + f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>'
                     + f'<section class="wrap sec"><p class="small">{E(rn)} 다른 시공: {" · ".join(f"<a href=/local/{x[0]}-{rs}.html>{E(x[1])}</a>" for x in SVC if x[0] != ss)} · 다른 지역 {E(sn)}: {" · ".join(f"<a href=/local/{ss}-{r[0]}.html>{E(r[1])}</a>" for r in REG if r[0] != rs)}</p></section>{CTA}' + LB)
+            _ar = APTREG.get(rs, [])
+            if _ar: body = body.replace('<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>', f'<section class="wrap sec"><h2>{E(rn)} 아파트별 자재·평면</h2><p class="small">단지 연식·평형에 맞춰 많이 하는 공사와 추정 평면도를 볼 수 있습니다.</p><div class="olk">' + "".join(f'<a href="/{x[0]}">{E(x[1])}<small> {x[2]}단지</small></a>' for x in _ar[:16]) + '</div><p class="hsh olh">옆으로 넘겨 보세요 ›</p></section><section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>', 1)
             ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}
             page(f"local/{ss}-{rs}.html", f"{rn} {sn} — {tail} | 월드아키텍쳐·영진목재", f"{rn}({hood}) {sn}. {desc[:70]} 실측·견적·시공 상담 {TEL}.", body, "/sigong.html", ld, gal[0][1] if gal else None)
         hub.append((ss, sn, tail))
