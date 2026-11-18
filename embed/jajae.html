@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>자재 계산기 — 영진종합목재</title><meta name="robots" content="noindex,follow"><link rel="canonical" href="https://www.wwood.co.kr/calc.html">
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:#1d1b18;background:#fff}
+.w{border:2px solid #1d1b18;border-radius:14px;overflow:hidden;max-width:640px;margin:0 auto}
+.h{background:#1d1b18;color:#fff;padding:10px 14px;font-weight:900;font-size:16px;display:flex;justify-content:space-between;align-items:center}
+.h small{color:#f0c896;font-weight:700;font-size:12px}
+.t{display:flex;gap:4px;padding:8px 8px 0;flex-wrap:wrap}.t button{flex:1;min-width:90px;font:inherit;font-size:13px;font-weight:800;padding:8px 6px;border:1.5px solid #d9cfbf;border-radius:999px;background:#faf7f1;cursor:pointer}
+.t button.on{background:#b06a2c;border-color:#b06a2c;color:#fff}
+.p{padding:12px 14px;display:none}.p.on{display:block}
+label{display:block;font-size:13px;font-weight:700;margin:6px 0 3px;color:#4a453e}
+input,select{width:100%;font:inherit;font-size:16px;padding:9px 10px;border:1.5px solid #d9cfbf;border-radius:10px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.r{margin-top:10px;padding:12px;border-radius:12px;background:#faf3e8;font-size:15px;line-height:1.6}.r b{font-size:22px;color:#b06a2c}
+.f{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 14px;border-top:1px solid #eee;font-size:12.5px;background:#faf7f1}
+.f a{color:#b06a2c;font-weight:800;text-decoration:none}
+</style></head><body><div class="w">
+<div class="h">자재 계산기 <small>평수·장수 바로 계산</small></div>
+<div class="t"><button class="on" data-p="py">평 ↔ ㎡</button><button data-p="pn">판재 장수</button><button data-p="dk">데크재</button></div>
+<div class="p on" id="py"><div class="row"><div><label>평</label><input id="p1" type="number" inputmode="decimal" placeholder="예: 24"></div><div><label>㎡</label><input id="m1" type="number" inputmode="decimal" placeholder="예: 79.3"></div></div>
+<div class="r" id="r1">평을 넣으면 ㎡로, ㎡를 넣으면 평으로 바꿉니다. (1평 = 3.3058㎡)</div></div>
+<div class="p" id="pn"><label>자재</label><select id="s2"><option value="2.977">합판·MDF·OSB 4×8 (1220×2440)</option><option value="1.62">석고보드 900×1800</option><option value="2.16">석고보드 900×2400</option><option value="1.62">단열재 900×1800</option></select>
+<div class="row"><div><label>가로(m)</label><input id="w2" type="number" inputmode="decimal" placeholder="예: 3.6"></div><div><label>세로·높이(m)</label><input id="h2" type="number" inputmode="decimal" placeholder="예: 2.4"></div></div>
+<div class="r" id="r2">벽이나 바닥 크기를 넣으세요. 자투리 로스 10%를 더해 계산합니다.</div></div>
+<div class="p" id="dk"><label>데크재 규격</label><select id="s3"><option value="0.140">25×140×3600 (방부목·하드우드)</option><option value="0.120">20×120×3600</option><option value="0.145">합성데크 145폭×3000</option></select>
+<div class="row"><div><label>가로(m)</label><input id="w3" type="number" inputmode="decimal" placeholder="예: 4"></div><div><label>세로(m)</label><input id="h3" type="number" inputmode="decimal" placeholder="예: 3"></div></div>
+<div class="r" id="r3">데크 크기를 넣으세요. 틈 5mm, 로스 10%로 계산합니다(장선·피스 별도).</div></div>
+<div class="f"><span>원하는 크기로 재단·전국 배송</span><a href="https://www.wwood.co.kr/calc.html" target="_blank" rel="noopener">제공: 영진종합목재 자재 계산기 ›</a></div>
+</div>
+<script>
+(function(){var $=function(i){return document.getElementById(i)};var f=function(n){return(Math.round(n*100)/100).toLocaleString('ko-KR')};
+document.querySelectorAll('.t button').forEach(function(b){b.onclick=function(){document.querySelectorAll('.t button,.p').forEach(function(x){x.classList.remove('on')});b.classList.add('on');$(b.dataset.p).classList.add('on');rs()}});
+$('p1').oninput=function(){var v=+this.value;if(v>0){$('m1').value=(v*3.3058).toFixed(2);$('r1').innerHTML='<b>'+f(v)+'평 = '+f(v*3.3058)+'㎡</b>'}rs()};
+$('m1').oninput=function(){var v=+this.value;if(v>0){$('p1').value=(v/3.3058).toFixed(2);$('r1').innerHTML='<b>'+f(v)+'㎡ = '+f(v/3.3058)+'평</b>'}rs()};
+function pn(){var a=(+$('w2').value)*(+$('h2').value),s=+$('s2').value;if(a>0){var n=Math.ceil(a*1.1/s);$('r2').innerHTML='면적 '+f(a)+'㎡('+f(a/3.3058)+'평) → <b>약 '+n+'장</b><br><small>로스 10% 포함 · 창·문 자리는 빼고 계산하면 줄어듭니다</small>'}rs()}
+function dk(){var w=+$('w3').value,h=+$('h3').value,s=+$('s3').value;if(w>0&&h>0){var L=s==0.145?3.0:3.6,rows=Math.ceil(h/(s+0.005)),per=w/L,n=Math.ceil(rows*per*1.1);$('r3').innerHTML='데크 '+f(w*h)+'㎡('+f(w*h/3.3058)+'평) → <b>데크재 약 '+n+'개</b><br><small>'+rows+'줄 × 길이 '+L+'m 기준, 로스 10% 포함</small>'}rs()}
+['w2','h2','s2'].forEach(function(i){$(i).oninput=$(i).onchange=pn});['w3','h3','s3'].forEach(function(i){$(i).oninput=$(i).onchange=dk});
+function rs(){try{parent.postMessage({wwH:document.body.scrollHeight},'*')}catch(e){}}window.onload=rs;})();
+</script></body></html>
