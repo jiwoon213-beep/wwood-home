@@ -2441,7 +2441,9 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         _t = open(_f, encoding="utf-8").read()
         if "youtube.com/embed/" in _t and "<iframe" in _t:
             _t2 = _yrx.sub(_yf, _t)
-            _t2 = _t2.replace('/hqdefault.jpg" loading="lazy" decoding="async"', '/hqdefault.jpg" fetchpriority="high" decoding="async"', 1)  # 첫 영상 썸네일은 바로(화면 첫 그림)
+            _t2 = _t2.replace('/hqdefault.jpg" loading="lazy" decoding="async"', '/hqdefault.jpg" fetchpriority="high"', 1)  # 첫 영상 썸네일은 바로(화면 첫 그림)
+            _fm = re.search(r'src="(https://i\.ytimg\.com/vi/[^"/]+/hqdefault\.jpg)" fetchpriority="high"', _t2)
+            if _fm and 'rel="preload" as="image"' not in _t2: _t2 = _t2.replace("</head>", f'<link rel="preload" as="image" href="{_fm.group(1)}" fetchpriority="high"></head>', 1)
             if _t2 != _t: open(_f, "w", encoding="utf-8").write(_t2)
     # NEW 표시 — 7일 안에 새로 올라온 DIY 만들기·시공법·유튜브 영상/쇼츠·소식 글 카드
     _nd = datetime.date.today(); _NEWD = 7
