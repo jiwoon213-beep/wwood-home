@@ -146,6 +146,9 @@ def gen(page, E, CTA, faqslide, HOURS, ROOT, VID=None):
     for r in hw.load(ROOT):
         g = hw.GN[r["g"]]
         sid = re.sub(r"[^a-z0-9-]+", "-", r["s"].lower()).strip("-")[:80]
+        if not sid:  # 한글 slug → 빈 주소가 되던 문제
+            import hashlib
+            sid = "k-" + hashlib.md5(r["s"].encode("utf-8")).hexdigest()[:10]
         its.append(dict(id=sid, name=r["n"], img=hw.img(r["i"], True), spec=[("세부 분류", r["sub"])], cat=r["g"], cathref=f"/suip/{g[1]}.html",
                         lead=f"{r['sub']} — 수입 목조주택 자재. {g[2]}.", tips=["규격·수량과 현장 위치를 알려 주시면 견적과 배송 일정을 안내해 드립니다."], brand=None))
     n["suip"] = _vendor(page, E, CTA, faqslide, HOURS, "suip", "수입 목조주택 자재·창호", "/suip/", its, VID)

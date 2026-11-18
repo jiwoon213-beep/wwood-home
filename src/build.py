@@ -304,6 +304,7 @@ POPEN = set()  # 내용이 충분해 검색에 여는 제품 상세(/p/)
 VTHIN = set(l.strip() for l in open(f"{ROOT}/data/vthin.txt", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/vthin.txt") else set()
 def _noidx(path):
     if path == "price-change.html" and not _HASCHG: return True
+    if path == "r/index.html": return True  # 리뷰 남기기 안내(QR용) — 검색에 낼 내용 없음
     # 얇거나 다른 페이지와 거의 같은 페이지는 검색 제외(사람은 볼 수 있음) — 구글 '크롤링됨-색인 안 됨' 줄이기
     if path.startswith("p/"): return path not in POPEN
     if re.match(r"(daejeon|sejong)/(?!index\.html)[^/]+\.html$", path): return True  # 대전·세종 × 자재 = /jajae/ 와 거의 같음
@@ -613,6 +614,13 @@ def build():
     import nation as _nt
     _jg = '<section class="wrap sec"><h2>전국 배송 — 원하는 크기로 재단해서 보내 드립니다</h2><p>서울·경기부터 부산·제주까지, 3000평 매장의 자재를 재단해 용달(제주는 배편)로 보냅니다. 운임은 품목·수량을 보고 먼저 견적 드립니다.</p><div class="qk">' + "".join(f'<a href="/jeonguk/{r[0]}.html">{r[1]} 목재 배송</a>' for r in _nt.REG) + '<a href="/jaedan-baesong.html">재단 후 전국 배송 방법</a></div></section>'
     _jg += '<section class="wrap sec"><h2>제품별로 찾아보기 — 사진·규격·기준가</h2><div class="qk">' + "".join(f'<a href="{h}">{t}</a>' for h, t in [("/bupum/p/", "철물·공구·부속 제품"), ("/bondex/p/", "본덱스 스테인·페인트"), ("/younglim/p/", "영림 도어·몰딩·필름"), ("/yerim/p/", "예림 중문·도어"), ("/shenu/p/", "쉐누 도어·몰딩"), ("/knauf/", "크나우프 석고·천장·단열"), ("/geonjae/p/", "목조·외장·내장 건축자재"), ("/suip/p/", "수입 창호·목조주택 자재"), ("/bigyo/", "자재·인테리어 비교")]) + '</div></section>'
+    # 새로 올라온 하는 법·비교 — 새 글이 첫 화면에서 바로 링크되게(색인·노출 빨라짐)
+    try:
+        from qna_data import QNA as _HQ
+        _hc = json.load(open(f"{ROOT}/data/compare.json", encoding="utf-8"))
+        _nl = [(f"/qna/{q[0]}.html", q[1].split(" — ")[0]) for q in reversed(_HQ[-8:])] + [(f"/bigyo/{c['slug']}.html", c["title"].split(" — ")[0]) for c in reversed(_hc[-4:])]
+        _jg += '<section class="wrap sec"><h2>새로 올라온 하는 법·비교</h2><div class="qk">' + "".join(f'<a href="{h}">{html.escape(t)}</a>' for h, t in _nl) + '</div><p class="small"><a href="/qna/">하는 법 Q&amp;A 전체 ›</a> · <a href="/bigyo/">자재 비교 전체 ›</a></p></section>'
+    except Exception as _e: print("home new guide skip", _e)
     body = body.replace('<section class="cta">', _jg + '<section class="cta">', 1) if '<section class="cta">' in body else body + _jg
     # 처음 온 손님용 3단계 동선 + 나머지는 탭으로 접기(내용은 그대로 HTML에 있음 — 검색엔진은 전부 읽음)
     _f3 = ('<section class="wrap sec flow3"><h2>3단계로 끝내기</h2><div class="f3">'
