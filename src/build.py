@@ -373,6 +373,11 @@ _REL = {  # 새 검색용 페이지로 가는 내부 링크(관련 있는 기존
     "gagyeok/tempa-board.html": [("/bigyo/tempa-vs-ruba.html", "템바보드 vs 루바")],
     "gagyeok/jipseong-gagyeok.html": [("/island-size.html", "아일랜드 식탁 사이즈")],
 }
+for _a, _b, _n in [("hapan", "hapan-gagyeok", "합판"), ("mdf", "mdf-gagyeok", "MDF"), ("jipseong", "jipseong-gagyeok", "집성판"), ("seokgo", "seokgo-gagyeok", "석고보드"),
+                   ("danyeol", "danyeol-gagyeok", "단열재"), ("gakjae", "gakjae-gagyeok", "각재"), ("deck", "deck-gagyeok", "데크재")]:
+    _REL.setdefault(f"gagyeok/{_b}.html", []).append((f"/gyugyeok/{_a}.html", f"{_n} 규격표(크기·두께)"))
+for _a, _j, _n in [("hapan", "hapan", "합판"), ("mdf", "mdf", "MDF"), ("jipseong", "jipseong", "집성판"), ("seokgo", "gypsum", "석고보드"), ("danyeol", "insul", "단열재"), ("gujo", "gujo", "구조재"), ("deck", "hapdeck", "데크재")]:
+    _REL.setdefault(f"jajae/{_j}.html", []).append((f"/gyugyeok/{_a}.html", f"{_n} 규격표(크기·두께)"))
 
 
 _SW_SKIP = {"cut.html", "price.html", "jae.html", "index.html", "stats/index.html", "muge.html"}
