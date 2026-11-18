@@ -106,6 +106,74 @@ def ok(L):
     return len(L) >= 2 or sum(r["n"] for r in L) >= 300
 
 
+def _dongstat(L, area, E, plan_link):
+    """동마다 다른 통계·FAQ (K-apt 공개 정보에서 계산한 숫자만)."""
+    import json as _j
+    ys = [r["y"] for r in L if r["y"]]
+    dec = {}
+    for y in ys:
+        k = "1990년 이전" if y < 1990 else f"{y // 10 * 10}년대"
+        dec[k] = dec.get(k, 0) + 1
+    ar = {"60㎡ 미만(소형)": 0, "60~85㎡(중형)": 0, "85㎡ 초과(대형)": 0}; at = {}
+    for r in L:
+        for a, n in r["ar"]:
+            ar["60㎡ 미만(소형)" if a < 60 else ("60~85㎡(중형)" if a <= 85 else "85㎡ 초과(대형)")] += n
+            at[a] = at.get(a, 0) + n
+    ast = sum(ar.values())
+    def cnt(key):
+        d = {}
+        for r in L:
+            v = (r.get(key) or "").strip()
+            if v: d[v] = d.get(v, 0) + 1
+        return sorted(d.items(), key=lambda x: -x[1])
+    heat = cnt("난방방식"); hall = cnt("복도유형")
+    import re as _re
+    _b = {}
+    for r in L:
+        v = _re.sub(r"\(.*?\)|㈜|주식회사|\(주\)", "", (r.get("시공사") or "")).split(",")[0].strip()
+        v = _re.sub(r"\s+", "", v)
+        if v and v not in ("-", "기타", "미상"): _b[v] = _b.get(v, 0) + 1
+    bld = sorted(_b.items(), key=lambda x: -x[1])
+    fl = [int(r["최고층수"]) for r in L if str(r.get("최고층수", "")).isdigit() and int(r["최고층수"]) > 0]
+    rows = []
+    if dec: rows.append(("준공 시기", ", ".join(f"{k} {v}곳" for k, v in sorted(dec.items()))))
+    if ast: rows.append(("평형(세대 기준)", ", ".join(f"{k} {round(v * 100 / ast)}%" for k, v in ar.items() if v)))
+    if heat: rows.append(("난방", ", ".join(f"{k} {v}곳" for k, v in heat[:3])))
+    if hall: rows.append(("복도 구조", ", ".join(f"{k} {v}곳" for k, v in hall[:3])))
+    if fl: rows.append(("최고 층수", f"{min(fl)}층 ~ {max(fl)}층"))
+    if bld: rows.append(("많이 지은 건설사", ", ".join(f"{k}({v})" for k, v in bld[:3])))
+    tb = "".join(f"<tr><th>{E(a)}</th><td>{E(b)}</td></tr>" for a, b in rows)
+    pt = ""
+    if at:
+        top = max(at.items(), key=lambda x: x[1])
+        pt = (f'<p>이 동네에서 가장 흔한 집은 <b>전용 {top[0]}㎡</b>({top[1]:,}세대)입니다. '
+              f'<a href="{plan_link(top[0])}">{top[0]}㎡ 평면 예시와 자리별 자재</a>를 먼저 보세요.</p>')
+    tip = []
+    if ys:
+        o = sum(1 for y in ys if YEAR - y >= 25); n = sum(1 for y in ys if YEAR - y <= 10)
+        if o * 2 >= len(ys): tip.append("25년 넘은 단지가 절반 이상이라 방문·문틀 교체, 몰딩·걸레받이 교체, 샷시 주변 단열·결로 보수를 많이 합니다")
+        elif n * 2 >= len(ys): tip.append("10년 안쪽 새 단지가 많아 큰 공사보다 중문 추가, 아트월(템바보드), 베란다 선반·수납 같은 꾸밈 공사가 많습니다")
+        else: tip.append("연식이 섞여 있어 단지마다 필요한 공사가 다릅니다. 아래 단지별 안내를 보세요")
+    if hall and any("복도" in k for k, _ in hall[:1]): tip.append("복도식 단지가 많아 현관 쪽 외풍을 막는 중문·현관문 패킹 수요가 큽니다")
+    if heat and any("중앙" in k or "지역" in k for k, _ in heat[:1]): tip.append("중앙·지역난방 단지가 많아 바닥을 뜯는 공사는 관리사무소 확인이 먼저입니다")
+    tips = "".join(f"<li>{E(t)}</li>" for t in tip)
+    # FAQ (데이터로 답이 정해지는 질문만)
+    Ly = [r for r in L if r["y"]]
+    fq = []
+    if Ly:
+        ol = min(Ly, key=lambda r: r["y"]); nw = max(Ly, key=lambda r: r["y"])
+        fq.append((f"{area}에서 가장 오래된 아파트는?", f'{ol["단지명"].strip()}({ol["y"]}년 사용승인, {ol["n"]:,}세대)입니다. {age_text(ol["y"])}'))
+        if nw is not ol: fq.append((f"{area}에서 가장 최근에 지은 아파트는?", f'{nw["단지명"].strip()}({nw["y"]}년 사용승인, {nw["n"]:,}세대)입니다.'))
+    big = max(L, key=lambda r: r["n"])
+    fq.append((f"{area}에서 세대수가 가장 많은 아파트는?", f'{big["단지명"].strip()}({big["n"]:,}세대)입니다.'))
+    fq.append((f"{area} 아파트 인테리어 자재는 어디서 사나요?", "영진종합목재(대전 유성구 유성대로 44)에서 중문·방문·몰딩·필름·합판·각재를 원하는 크기로 재단해 드리고, 전국 배송도 합니다. 전화 042-545-2900."))
+    fh = "".join(f"<details class=\"faq\"><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in fq)
+    ld = _j.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}, ensure_ascii=False).replace("</", "<\\/")
+    return (f'<section class="wrap sec"><h2>{E(area)} 아파트 한눈에 보기</h2>'
+            + (f'<table class="tbl"><tbody>{tb}</tbody></table>' if tb else '') + pt
+            + (f'<ul>{tips}</ul>' if tips else '')
+            + f'<h2>자주 묻는 질문</h2>{fh}<script type="application/ld+json">{ld}</script></section>')
+
 def build(root, page, E, CTA):
     rows = load(root)
     if not rows: return []
@@ -154,13 +222,15 @@ def build(root, page, E, CTA):
             rg = reg(sd, gu)
             how = f'{E(sd)} 현장은 치수대로 재단해서 <b>전국 배송</b>으로 보내 드립니다(운임은 견적). 중문·방문·몰딩은 문 크기를 재서 보내 주세요.'
             rl = (f'<a href="/jeonguk/{rg}.html">{E(sd)} 배송 안내</a>' if rg else '') + '<a href="/jaedan-baesong.html">재단 후 전국 배송</a>'
-        title = f"{area} 아파트 인테리어 자재 — 중문·방문·몰딩·필름 | 영진목재"
+        _nm = [r["단지명"].strip() for r in L[:2]]
+        title = f"{area} 아파트 {len(L)}곳 인테리어 자재 — " + "·".join(_nm) + (" 등" if len(L) > 2 else "") + " | 영진목재"
         desc = f"{area} 아파트 {len(L)}개 단지({tot:,}세대) 준공연도별 중문·방문 교체·몰딩·필름·바닥 자재 안내. " + ", ".join(r["단지명"].strip() for r in L[:3]) + " 등. 재단·전국 배송."
         body = (f'<section class="wrap sec"><p class="crumb"><a href="/apt/">아파트별 자재</a> › <a href="/apt/{SDS.get(sd, "etc")}/">{E(sd)}</a> › {E(area)}</p><h1>{E(area)} 아파트 인테리어 자재</h1>'
                 f'<p class="lead">{E(area)}에는 100세대 이상 아파트가 <b>{len(L)}개 단지, {tot:,}세대</b> 있습니다' + (f' (사용승인 {min(ys)}~{max(ys)}년, {stat})' if ys else '') + '. 단지 연식에 맞춰 많이 하는 공사와 자재를 모았습니다.</p>'
                 f'<p>{how}</p><div class="olk">{rl}<a class="ac" href="/doumi.html">🧭 셀프 인테리어 도우미</a><a class="ac" href="/calc.html">🧮 문짝·중문 크기 계산</a></div>'
                 + (('<h2>이 동네 실제 시공 현장</h2>' + casecard(C, *DONGCASE[(sd, gu, dong)][:3], E)) if (sd, gu, dong) in DONGCASE else '')
                 + f'<div class="apg">{cards}</div>{more}'
+                + '</section>' + _dongstat(L, area, E, lambda a: f"/apt/plan/{AP.ptype(a, max(ys) if ys else 2000)}.html") + '<section class="wrap sec">'
                 '<p class="small muted">단지 정보: 국토교통부 공동주택관리정보시스템(K-apt) 공개 단지 기본정보, 매주 갱신. 실제와 다를 수 있습니다. 이 페이지는 해당 단지·관리사무소와 관계없는 자재 안내입니다.</p></section>'
                 '<section class="wrap sec"><h2>아파트에서 많이 하는 것</h2><div class="olk"><a href="/sigongbeop/jungmun.html">원슬라이딩 중문 셀프 설치</a><a href="/sigongbeop/munteul-gyoche.html">방문 교체</a><a href="/sigongbeop/film-sigong.html">인테리어 필름</a><a href="/sigongbeop/molding-georebatgi.html">걸레받이·천장 몰딩</a><a href="/sigongbeop/tempa-byeok.html">템바보드 아트월</a><a href="/mandeul/beranda.html">베란다 선반</a></div><p class="hsh olh">옆으로 넘겨 보세요 ›</p></section>'
                 + (f'<section class="wrap sec"><h2>{E(areaname(sd, gu, ""))} 다른 동</h2><div class="olk">{near}</div><p class="hsh olh">옆으로 넘겨 보세요 ›</p></section>' if near else "")
