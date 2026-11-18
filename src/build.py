@@ -2139,7 +2139,10 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
                "darugi": [("/qna/duchigak-darugi.html", "두치각·다루끼 규격"), ("/gagyeok/gakjae-gagyeok.html", "각재 가격")], "tubai": [("/bigyo/bangbu-vs-gujo.html", "방부목 vs 구조목"), ("/qna/gujomok-yeongyeol.html", "구조목 연결 방법")],
                "ppade": [("/qna/", "하는 법 Q&A")], "habaki": [("/sigongbeop/molding-georebatgi.html", "걸레받이·몰딩 시공")], "molding": [("/sigongbeop/molding-georebatgi.html", "몰딩 시공법"), ("/bigyo/molding-types.html", "몰딩 종류 비교")],
                "munseon": [("/sigongbeop/munteul-gyoche.html", "방문·문틀 교체")], "ruba": [("/bigyo/hinoki-vs-spruce-ruba.html", "히노끼 vs 스프러스 루바")], "denjo": [("/sigongbeop/seokgo-cheonjang.html", "석고보드 천장 시공")],
-               "gabe": [("/gabyeok-gyesan.html", "가벽 자재 계산기")], "uma": [("/cheolmul/diy.html", "우마·벤치 프레임 철물")], "desuri": [("/sigongbeop/deck-nangan.html", "데크 난간")], "nagasi": [("/mandeul/sinkmunjjak.html", "싱크대 문짝 만들기")]}
+               "gabe": [("/gabyeok-gyesan.html", "가벽 자재 계산기")], "uma": [("/cheolmul/diy.html", "우마·벤치 프레임 철물")], "desuri": [("/sigongbeop/deck-nangan.html", "데크 난간")], "nagasi": [("/mandeul/sinkmunjjak.html", "싱크대 문짝 만들기")],
+               "gakkumok": [("/gyugyeok/gakjae.html", "각재 규격표"), ("/gagyeok/gakjae-gagyeok.html", "각재 가격")], "niseu": [("/bigyo/oilstain-vs-varnish.html", "오일스테인 vs 바니시")],
+               "hukki": [("/qna/oilstain-spray.html", "오일스테인 스프레이건 칠하기")], "ppaengkki": [("/bigyo/water-vs-oil-paint.html", "수성 vs 유성 페인트")],
+               "giri": [("/qna/anka-ppaegi.html", "앙카 빼는 법"), ("/cheolmul/bolt.html", "앙카볼트·구조 피스")], "gada": [("/gyugyeok/hapan.html", "합판 규격표")]}
         _pos = {t[4]: (g, j) for g, ts in YG for j, t in enumerate(ts)}
         for g, ts in YG:
             for t in ts:
