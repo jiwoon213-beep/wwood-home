@@ -410,7 +410,7 @@ SCENES += [
  ("rodi-round-window-entry", "원형 창 양개 중문 로디 — 현관 복도 둘러보기", YL + "d5b7fc80-bfc8-4dce-b806-c46506c7d62d.jpg", "사진: 영림",
   "나뭇결 문짝 가운데 둥근 유리창을 낸 쪽문형 양개 중문을 복도 끝에 달고, 바닥은 밝은 마루로 깐 현관입니다.",
   [(38, 61, "영림 1920MSA(쪽문) 로디", "jungmun", "큰 문과 작은 쪽문을 함께 여는 양개 중문입니다. 두 문에 걸쳐 둥근 유리창이 있습니다.", "/younglim/p/3347.html", "제품 보기", [("/younglim/jungmun-yanggae.html", "양개 중문 전체"), ("/qna/jungmun-gumae.html", "중문 고르기")]),
-   (55, 49, "세로 바 손잡이", "handle", "두 문이 만나는 자리의 긴 세로 손잡이입니다.", "/qna/pushpull-handle.html", "바 손잡이", [("/qna/son-jabi-chai.html", "손잡이 고르기")]),
+   (55, 56, "세로 바 손잡이", "handle", "두 문이 만나는 자리의 긴 세로 손잡이입니다.", "/qna/pushpull-handle.html", "바 손잡이", [("/qna/son-jabi-chai.html", "손잡이 고르기")]),
    (48, 88, "밝은 마루 복도", "maru", "복도 끝까지 옅은 나뭇결 마루를 깔았습니다.", "/younglim/maru.html", "마루 보기", [("/qna/badakjae-goreugi.html", "바닥재 고르는 법")]),
    (8, 76, "나무 수납장", "cabinet", "왼쪽 벽에 붙인 낮은 나무 수납장입니다.", "/mandeul/sinbaljang.html", "신발장 만들기", [("/qna/butbakijang-self.html", "붙박이장 셀프")])]),
 ]
