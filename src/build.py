@@ -1780,6 +1780,8 @@ def build():
     try:
         import apt as _apt
         _APTP = _apt.build(ROOT, page, E, CTA); print("아파트 페이지", len(_APTP))
+        os.makedirs(f"{OUT}/assets/apt", exist_ok=True)
+        for _f in os.listdir(f"{ROOT}/assets/apt"): shutil.copy(f"{ROOT}/assets/apt/{_f}", f"{OUT}/assets/apt/{_f}")  # 빌드 중 새로 만든 검색 데이터·평면도 반영
     except Exception as _e: print("아파트 페이지 실패", _e)
     import doumi as _dm
     page("doumi.html", "셀프 인테리어 도우미 — 질문 4개로 시공법·자재·가격 한 번에 | 영진목재", "벽·바닥·천장·문·가구·단열·데크 중 하고 싶은 것을 고르면 필요한 시공법, 만들기 재단 목록, 자재 가격, 영상, 계산기를 순서대로 모아 드립니다. 대전 영진종합목재(월드건축자재).", _dm.body(E, ROOT) + CTA, "/doumi.html")

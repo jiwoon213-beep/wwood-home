@@ -167,7 +167,7 @@ def build(root, page, E, CTA):
                 + '<script src="/assets/apt/plan.js?v=4" defer></script>' + CTA)
         page(fn, title, desc[:155], body, "/apt/")
         pages.append((fn, sd, gu, dong, len(L), tot))
-        for r in L: SRCH.append([r["단지명"].strip(), area, fn, r["단지코드"], r["n"]])
+        for r in L: SRCH.append([r["단지명"].strip(), fn[4:-5], r["단지코드"][1:], r["n"]])
     import json
     RG = {}
     for p in pages:
@@ -184,9 +184,9 @@ def build(root, page, E, CTA):
     SBOX = ('<div class="apsrch"><input id="apq" type="search" placeholder="아파트 이름 또는 동 이름 (예: 래미안, 봉명동)" autocomplete="off" aria-label="아파트·동 검색"><div id="apr" class="apr"></div></div>'
             "<script>(function(){var q=document.getElementById('apq'),o=document.getElementById('apr'),D=null,ld=0;"
             "function load(){if(ld)return;ld=1;fetch('/assets/apt/search.json').then(function(r){return r.json()}).then(function(j){D=j;run()})}"
-            "function nz(s){return s.replace(/\\s|아파트|APT/gi,'').toLowerCase()}"
+            "var SN={seoul:'서울',busan:'부산',daegu:'대구',incheon:'인천',gwangju:'광주',daejeon:'대전',ulsan:'울산',sejong:'세종',gyeonggi:'경기',gangwon:'강원',chungbuk:'충북',chungnam:'충남',jeonbuk:'전북',jeonnam:'전남',gyeongbuk:'경북',gyeongnam:'경남',jeju:'제주'};function ar(p){var q=p.split('/');return (SN[q[0]]||'')+' '+q[1].replace(/-/g,' ')}function nz(s){return s.replace(/\\s|아파트|APT/gi,'').toLowerCase()}"
             "function run(){var v=nz(q.value);if(!D||v.length<2){o.innerHTML='';return}var R=[];for(var i=0;i<D.length&&R.length<30;i++){var d=D[i];if(nz(d[0]).indexOf(v)>=0||nz(d[1]).indexOf(v)>=0)R.push(d)}"
-            "R.sort(function(a,b){return b[4]-a[4]});o.innerHTML=R.length?R.map(function(d){return '<a href=\"/'+d[2]+'#'+d[3]+'\"><b>'+d[0].replace(/</g,'&lt;')+'</b><small>'+d[1]+' · '+d[4].toLocaleString()+'세대</small></a>'}).join(''):'<p class=\"small muted\">찾는 단지가 없어요. 100세대 이상 단지만 있습니다.</p>'}"
+            "R.sort(function(a,b){return b[3]-a[3]});o.innerHTML=R.length?R.map(function(d){return '<a href=\"/apt/'+d[1]+'.html#A'+d[2]+'\"><b>'+d[0].replace(/</g,'&lt;')+'</b><small>'+ar(d[1])+' · '+d[3].toLocaleString()+'세대</small></a>'}).join(''):'<p class=\"small muted\">찾는 단지가 없어요. 100세대 이상 단지만 있습니다.</p>'}"
             "q.addEventListener('focus',load);q.addEventListener('input',function(){load();run()});})();</script>")
     # 시도 페이지
     S = {}
