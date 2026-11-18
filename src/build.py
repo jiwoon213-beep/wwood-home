@@ -310,6 +310,7 @@ def _noidx(path):
     if re.match(r"(daejeon|sejong)/(?!index\.html)[^/]+\.html$", path): return True  # 대전·세종 × 자재 = /jajae/ 와 거의 같음
     if path.startswith("v/") and path[2:-5] in VTHIN: return True
     if re.match(r"bupum/samu(-\d+)?\.html$", path): return True
+    if re.match(r"bupum/(?!index\.html)[a-z]+(-\d+)?\.html$", path): return True  # 철물박사 분류 목록 100여 쪽: 원 판매처와 같은 목록이라 구글 '크롤링됨-색인 안 됨'(11/18 확인) — 사람은 그대로 보고, 크롤링은 우리만의 페이지로
     if path.startswith("bupum/p/") and path != "bupum/p/index.html": return True  # 철물박사 상품 6천여 개: 원 판매처와 같은 사진·이름이라 구글이 색인 안 함 — 크롤링을 우리만의 페이지로  # 사무용품: 우리 업종과 무관 — 크롤링 예산 낭비
     return False
 def _tshort(t):
