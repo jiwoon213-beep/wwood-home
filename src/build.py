@@ -393,6 +393,8 @@ _REL = {  # 새 검색용 페이지로 가는 내부 링크(관련 있는 기존
     "gagyeok/tempa-board.html": [("/bigyo/tempa-vs-ruba.html", "템바보드 vs 루바")],
     "gagyeok/jipseong-gagyeok.html": [("/island-size.html", "아일랜드 식탁 사이즈")],
 }
+for _k, _v in {"gagyeok/deck-gagyeok.html": [("/bigyo/bangbu-deck-duggae.html", "방부목 데크 두께 비교")], "bangbu-gyugyeok.html": [("/bigyo/bangbu-deck-duggae.html", "방부목 데크 두께 비교")], "gagyeok/osb-gagyeok.html": [("/bigyo/osb-duggae.html", "OSB 두께 비교")], "gyugyeok/hapan.html": [("/bigyo/osb-duggae.html", "OSB 두께 비교")], "gagyeok/mdf-gagyeok.html": [("/bigyo/mdf-duggae.html", "MDF 두께 비교")], "gyugyeok/mdf.html": [("/bigyo/mdf-duggae.html", "MDF 두께 비교")]}.items():
+    _REL[_k] = _REL.get(_k, []) + _v
 for _a, _b, _n in [("hapan", "hapan-gagyeok", "합판"), ("mdf", "mdf-gagyeok", "MDF"), ("jipseong", "jipseong-gagyeok", "집성판"), ("seokgo", "seokgo-gagyeok", "석고보드"),
                    ("danyeol", "danyeol-gagyeok", "단열재"), ("gakjae", "gakjae-gagyeok", "각재"), ("deck", "deck-gagyeok", "데크재")]:
     _REL.setdefault(f"gagyeok/{_b}.html", []).append((f"/gyugyeok/{_a}.html", f"{_n} 규격표(크기·두께)"))
