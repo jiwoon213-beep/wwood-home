@@ -263,7 +263,7 @@ def build(root, page, E, CTA):
     for p in pages: S.setdefault(p[1], {}).setdefault(p[2], []).append(p)
     # 시·군·구 페이지 (전국 지역 검색용) — 그 구의 동 목록·큰 단지·연식 통계
     GUP = {}
-    _CP = ("수원", "성남", "안양", "부천", "고양", "용인", "안산", "청주", "천안", "전주", "포항", "창원")
+    _CP = ("수원", "성남", "안양", "부천", "고양", "용인", "안산", "청주", "천안", "전주", "포항", "창원", "화성")
     def _gname(gu):
         for c in _CP:
             if gu.startswith(c) and gu.endswith("구") and len(gu) > len(c) + 1: return f"{c}시 {gu[len(c):]}"
