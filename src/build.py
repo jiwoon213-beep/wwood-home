@@ -2061,8 +2061,9 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
                 + "".join(f'<i style="left:{a}%;top:{b}%"></i>' for a, b in _pts)
                 + f'</span><b>{E(x[1].split(" — ")[0])}</b><span>+ {len(x[5])}곳 · {E(x[4][:40])}…</span></a>')
     _ggidx = '<nav class="ggc">' + "".join(f'<a href="#c-{k}">{E(t)} <small>{sum(1 for x in _GG.SCENES if _GG.cat(x[0]) == k)}</small></a>' for k, t, d in _GG.CATS) + '</nav>'
+    _ggidx += '<h2 id="c-new" class="ggh">새로 올라온 공간 <small>최근 8곳</small></h2><p class="small muted">가장 최근에 올린 사진부터 보여 드립니다.</p><div class="pl hs gg">' + "".join(_ggcard(x) for x in _GG.SCENES[::-1][:8]) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p>'
     for k, t, d in _GG.CATS:
-        _xs = [x for x in _GG.SCENES if _GG.cat(x[0]) == k]
+        _xs = [x for x in _GG.SCENES[::-1] if _GG.cat(x[0]) == k]
         if _xs:
             _ggidx += f'<h2 id="c-{k}" class="ggh">{E(t)} <small>{len(_xs)}곳</small></h2><p class="small muted">{E(d)}</p><div class="pl hs gg">{"".join(_ggcard(x) for x in _xs)}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p>'
     page("gonggan/index.html", "공간 사진 둘러보기 — 사진 속 자재·시공법 바로 찾기 | 영진목재", "거실·현관·방 사진 속 +를 누르면 어떤 자재인지, 어떻게 시공하는지, 어디서 사는지 바로 볼 수 있어요. 중문·도어·마루·아트월·우드월·수납장.",
