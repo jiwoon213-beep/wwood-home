@@ -225,7 +225,7 @@ def build(root, page, E, CTA):
         _nm = [r["단지명"].strip() for r in L[:2]]
         title = f"{area} 아파트 {len(L)}곳 인테리어 자재 — " + "·".join(_nm) + (" 등" if len(L) > 2 else "") + " | 영진목재"
         desc = f"{area} 아파트 {len(L)}개 단지({tot:,}세대) 준공연도별 중문·방문 교체·몰딩·필름·바닥 자재 안내. " + ", ".join(r["단지명"].strip() for r in L[:3]) + " 등. 재단·전국 배송."
-        body = (f'<section class="wrap sec"><p class="crumb"><a href="/apt/">아파트별 자재</a> › <a href="/apt/{SDS.get(sd, "etc")}/">{E(sd)}</a> › {E(area)}</p><h1>{E(area)} 아파트 인테리어 자재</h1>'
+        body = (f'<section class="wrap sec"><p class="crumb"><a href="/apt/">아파트별 자재</a> › <a href="/apt/{SDS.get(sd, "etc")}/">{E(sd)}</a> › ' + (f'<a href="/apt/{SDS.get(sd, "etc")}/{slug(gu)}.html">{E(gu)}</a> › ' if gu and gu != sd and not gu.startswith("세종") and len(bygu.get((sd, gu), [])) >= 2 else '') + f'{E(dong)}</p><h1>{E(area)} 아파트 인테리어 자재</h1>'
                 f'<p class="lead">{E(area)}에는 100세대 이상 아파트가 <b>{len(L)}개 단지, {tot:,}세대</b> 있습니다' + (f' (사용승인 {min(ys)}~{max(ys)}년, {stat})' if ys else '') + '. 단지 연식에 맞춰 많이 하는 공사와 자재를 모았습니다.</p>'
                 f'<p>{how}</p><div class="olk">{rl}<a class="ac" href="/doumi.html">🧭 셀프 인테리어 도우미</a><a class="ac" href="/calc.html">🧮 문짝·중문 크기 계산</a></div>'
                 + (('<h2>이 동네 실제 시공 현장</h2>' + casecard(C, *DONGCASE[(sd, gu, dong)][:3], E)) if (sd, gu, dong) in DONGCASE else '')
@@ -261,13 +261,49 @@ def build(root, page, E, CTA):
     # 시도 페이지
     S = {}
     for p in pages: S.setdefault(p[1], {}).setdefault(p[2], []).append(p)
+    # 시·군·구 페이지 (전국 지역 검색용) — 그 구의 동 목록·큰 단지·연식 통계
+    GUP = {}
+    _CP = ("수원", "성남", "안양", "부천", "고양", "용인", "안산", "청주", "천안", "전주", "포항", "창원")
+    def _gname(gu):
+        for c in _CP:
+            if gu.startswith(c) and gu.endswith("구") and len(gu) > len(c) + 1: return f"{c}시 {gu[len(c):]}"
+        return gu
+    for sd in S:
+        for gu, ps in S[sd].items():
+            if not gu or gu == sd or gu.startswith("세종") or len(ps) < 2: continue
+            fn = f"apt/{SDS.get(sd, 'etc')}/{slug(gu)}.html"
+            Lall = [r for p in ps for r in by[(sd, gu, p[3])]]
+            gn = _gname(gu); area = f"{sd} {gn}"
+            nd = len(ps); nc = len(Lall); tot = sum(r["n"] for r in Lall)
+            ys = [r["y"] for r in Lall if r["y"]]
+            big = sorted(Lall, key=lambda r: -r["n"])[:15]
+            dl = "".join(f'<a href="/{p[0]}">{E(p[3])}<small> {p[4]}단지</small></a>' for p in sorted(ps, key=lambda p: -p[5]))
+            bl = "".join(f'<li><a href="/{fname(sd, gu, r["동리"])}#{E(r["단지코드"])}">{E(r["단지명"].strip())}</a> <span class="small muted">{E(r["동리"])} · {r["n"]:,}세대' + (f' · {r["y"]}년' if r["y"] else '') + '</span></li>' for r in big)
+            if sd in NEAR:
+                how = f'{E(gn)}은(는) 대전 유성 매장에서 가까워 실물을 보고 원하는 크기로 잘라 가실 수 있고, 현장 배송도 됩니다.'
+                _lr = locreg(sd, gu)
+                rl = '<a href="/visit.html">매장 길찾기</a><a href="/jaedan-baesong.html">재단 후 배송</a>' + ("".join(f'<a href="/local/{k}-{_lr}.html">{E(gn)} {t}</a>' for k, t in LOCSVC) if _lr else "")
+            else:
+                rg = reg(sd, gu)
+                how = f'{E(area)} 현장은 대전 매장에서 치수대로 재단해 <b>전국 배송</b>으로 보내 드립니다(운임은 견적). 중문·방문·몰딩은 문 크기를 재서 보내 주세요.'
+                rl = (f'<a href="/jeonguk/{rg}.html">{E(sd)} 배송 안내</a>' if rg else '') + '<a href="/jaedan-baesong.html">재단 후 전국 배송</a><a href="/cut.html">재단 미리보기</a>'
+            title = f"{area} 아파트 인테리어 자재 — {nd}개 동 {nc}개 단지 연식별 안내 | 영진목재"
+            desc = f"{area} 아파트 {nc}개 단지({tot:,}세대)를 동별로 모아 준공연도에 맞는 중문·방문 교체·몰딩·필름·바닥 자재를 안내합니다. " + ", ".join(r["단지명"].strip() for r in big[:3]) + " 등. 재단·전국 배송."
+            body = (f'<section class="wrap sec"><p class="crumb"><a href="/apt/">아파트별 자재</a> › <a href="/apt/{SDS.get(sd, "etc")}/">{E(sd)}</a> › {E(gn)}</p><h1>{E(area)} 아파트 인테리어 자재</h1>'
+                    f'<p class="lead">{E(area)}의 100세대 이상 아파트 <b>{nc}개 단지, {tot:,}세대</b>를 {nd}개 동으로 나눠 모았습니다' + (f' (사용승인 {min(ys)}~{max(ys)}년)' if ys else '') + '. 동을 고르면 단지마다 연식에 맞는 공사와 자재를 볼 수 있어요.</p>'
+                    f'<p>{how}</p><div class="olk">{rl}<a class="ac" href="/doumi.html">🧭 셀프 인테리어 도우미</a></div>'
+                    f'<h2>{E(gn)} 동별 아파트</h2><div class="olk aplk">{dl}</div><h2>{E(gn)} 큰 단지</h2><ul>{bl}</ul></section>'
+                    + _dongstat(Lall, area, E, lambda a: f"/apt/plan/{AP.ptype(a, max(ys) if ys else 2000)}.html")
+                    + '<section class="wrap sec"><p class="small muted">단지 정보: 국토교통부 공동주택관리정보시스템(K-apt) 공개 단지 기본정보. 실제와 다를 수 있습니다. 이 페이지는 해당 단지·관리사무소와 관계없는 자재 안내입니다.</p></section>' + CTA)
+            page(fn, title, desc[:155], body, "/apt/")
+            GUP[(sd, gu)] = fn
     idx = ""
     for sd in sorted(S, key=lambda x: SDO.index(x) if x in SDO else 99):
         G = S[sd]; nd = sum(len(v) for v in G.values()); nc = sum(p[4] for v in G.values() for p in v)
         sec = ""
         for gu in sorted(G):
             ps = sorted(G[gu], key=lambda p: -p[5])
-            sec += (f'<h2 class="ggh">{E(areaname(sd, gu, ""))}</h2>' if gu and not gu.startswith("세종") else "") + '<div class="olk aplk">' + "".join(f'<a href="/{p[0]}">{E(p[3])}<small> {p[4]}단지</small></a>' for p in ps) + "</div>"
+            sec += ((f'<h2 class="ggh"><a href="/{GUP[(sd, gu)]}">{E(areaname(sd, gu, ""))}</a></h2>' if (sd, gu) in GUP else f'<h2 class="ggh">{E(areaname(sd, gu, ""))}</h2>') if gu and not gu.startswith("세종") else "") + '<div class="olk aplk">' + "".join(f'<a href="/{p[0]}">{E(p[3])}<small> {p[4]}단지</small></a>' for p in ps) + "</div>"
         page(f"apt/{SDS.get(sd, 'etc')}/index.html", f"{sd} 아파트별 인테리어 자재 — 동네 단지 연식에 맞춘 안내 | 영진목재",
              f"{sd} {nd}개 동, {nc}개 아파트 단지의 준공연도에 맞춘 중문·방문·몰딩·필름·바닥 자재 안내. 영진종합목재 재단·전국 배송.",
              f'<section class="wrap sec"><p class="crumb"><a href="/apt/">아파트별 자재</a> › {E(sd)}</p><h1>{E(sd)} 아파트별 인테리어 자재</h1><p class="lead">동네를 고르면 단지 연식에 맞춰 많이 하는 공사와 자재를 보여 드립니다. ({nd}개 동 · {nc:,}개 단지, K-apt 공개 정보)</p>{SBOX}{sec}</section>' + CTA, "/apt/")
