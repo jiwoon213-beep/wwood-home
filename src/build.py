@@ -359,6 +359,8 @@ _REL = {  # 새 검색용 페이지로 가는 내부 링크(관련 있는 기존
     "cut.html": [("/mokgongso.html", "목재 재단(목공소)"), ("/muge.html", "자재 무게 계산기")],
     "baesong.html": [("/jaedan-baesong.html", "원하는 크기로 재단해서 전국 배송"), ("/muge.html", "자재 무게 계산기 — 1톤에 몇 장")],
     "jajae/molding.html": [("/bigyo/molding-types.html", "몰딩 종류 비교")],
+    "qna/eboard-dobae-vs-paint.html": [("/bigyo/isopink-vs-eboard.html", "아이소핑크 vs 이보드")],
+    "qna/molding-ireum.html": [("/bigyo/mdf-vs-pvc-molding.html", "MDF 몰딩 vs PVC 몰딩")],
     "qna/cement-board.html": [("/bigyo/cement-vs-gypsum-board.html", "시멘트보드 vs 석고보드")],
     "qna/jeoksammok.html": [("/bigyo/jeoksammok-vs-bangbu.html", "적삼목 vs 방부목")],
     "qna/pombond-sseugi.html": [("/bigyo/foam-ilhoe-vs-gun.html", "일회용 폼 vs 건용 폼")],
