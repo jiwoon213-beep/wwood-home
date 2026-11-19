@@ -29,6 +29,22 @@ def gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, CASES, top, vsplit, P):
     ptab = ('<table class="rt"><thead><tr><th>자재</th><th>소매 기준가(부가세 별도)</th></tr></thead><tbody>' + "".join(f'<tr><td>{E(n)}</td><td>{p:,}원~</td></tr>' for n, p in rows) + '</tbody></table>') if rows else ""
     vs = top(lambda v: re.search(r"재단|합판|데크|방부목|구조재", v["title"]), 8)
     out = []
+    # 지역별 아파트 시·군·구 페이지(apt.py가 만드는 것과 같은 기준: 동 2곳 이상)
+    GU = {}
+    try:
+        import os as _os, apt as _A
+        _rows = _A.load(_os.path.dirname(_os.path.abspath(__file__)))
+        _by = {}
+        for r in _rows: _by.setdefault((r["시도"], r["시군구"], r["동리"]), []).append(r)
+        _cnt = {}
+        for k, L in _by.items():
+            if _A.ok(L): _cnt.setdefault((k[0], k[1]), []).append(sum(x["n"] for x in L))
+        for (sd, gu), v in _cnt.items():
+            if not gu or gu == sd or gu.startswith("세종") or len(v) < 2: continue
+            rg = _A.reg(sd, gu)
+            if rg: GU.setdefault(rg, []).append((sum(v), f"{sd} {gu}", f"/apt/{_A.SDS.get(sd, 'etc')}/{quote(_A.slug(gu))}.html"))
+    except Exception as _e:
+        print("nation apt 링크 실패", _e)
     for slug, nm, cities, uses, crx in REG:
         jeju = slug == "jeju"
         cs = [c for c in CASES if re.search(crx, c["title"])][:3]
@@ -50,6 +66,7 @@ def gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, CASES, top, vsplit, P):
                 f'<div class="qk"><a href="/gagyeok/hapan-gagyeok.html">합판 1평에 얼마</a><a href="/gagyeok/deck-gagyeok.html">데크 1평에 얼마</a><a href="/gagyeok/gakjae-gagyeok.html">구조재·각재</a><a href="/gagyeok/seokgo-gagyeok.html">석고보드</a><a href="/mandeul/">DIY 재단 목록</a><a href="/younglim/">영림 도어·중문</a><a href="/yerim/">예림 중문</a></div>'
                 f'{csec}</section>'
                 + (f'<section class="wrap sec"><h2>매장·재단 영상</h2>{vsplit(vs, "h3")}</section>' if vs else "")
+                + ((f'<section class="wrap sec"><h2>{E(nm)} 아파트별 인테리어 자재</h2><p class="small muted">시·군·구를 고르면 동별 아파트 단지와 연식에 맞는 자재를 볼 수 있어요.</p><div class="olk">' + "".join(f'<a href="{u}">{E(t)}</a>' for _, t, u in sorted(GU[slug], reverse=True)) + '</div><p class="hsh olh">옆으로 넘겨 보세요 ›</p></section>') if GU.get(slug) else "")
                 + f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>'
                 + f'<section class="wrap sec"><p class="small">다른 지역: {" · ".join(f"<a href=/jeonguk/{r[0]}.html>{E(r[1])}</a>" for r in REG if r[0] != slug)} · <a href="/cheongju.html">청주</a> · <a href="/cheonan-asan.html">천안·아산</a> · <a href="/daejeon.html">대전</a> · <a href="/sejong.html">세종</a></p></section>{CTA}')
         ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}
