@@ -269,6 +269,17 @@ def _gth(src, w=640, sub="t"):
     k = (src, w, sub)
     if k not in _GTHC: _GTHC[k] = _gth0(src, w, sub)
     return _GTHC[k]
+def _ggsq(src, x, y):
+    # 정사각형으로 잘라 보여 줄 때 + 위치를 잘린 화면에 맞춤(밖이면 None)
+    try:
+        from PIL import Image as _I
+        fp = f"{ROOT}{src}" if src.startswith("/assets/") else None
+        w, h = _I.open(fp).size if fp and os.path.exists(fp) else (1, 1)
+    except Exception:
+        w, h = 1, 1
+    if w > h: x = (x / 100 * w - (w - h) / 2) / h * 100
+    elif h > w: y = (y / 100 * h - (h - w) / 2) / w * 100
+    return (round(x, 1), round(y, 1)) if 3 <= x <= 97 and 3 <= y <= 97 else None
 def _gth0(src, w, sub):
     # 공간 사진 미리보기(작은 사진) — 우리 사진만, 없으면 만들고 실패하면 원본
     _yl = src.startswith("https://s3.ap-northeast-2.amazonaws.com/younglim-bucket/")
@@ -663,7 +674,7 @@ def build():
     _iss = lambda p: _vtyp.get((p.get("videos") or [""])[0]) == "S" or "#shorts" in p["title"].lower() or "쇼츠" in p["title"]
     def nrow(h, ps): return (f'<h2 class="gt">{h} <small>옆으로 넘겨 보세요 ›</small></h2><div class="pl hs nw">{plist(ps)}</div>') if ps else ""
     import gonggan_data as _GG0
-    postsec = f'<section class="wrap sec"><h2>공간 사진 둘러보기 <small class="muted">사진 속 + 누르면 자재·시공법</small></h2><div class="pl hs">' + "".join(f'<a class="pc" href="/gonggan/{x[0]}.html"><span class="ggi"><img loading="lazy" src="{_gth(x[2])}" alt="">' + "".join(f'<i style="left:{sp[0]}%;top:{sp[1]}%"></i>' for sp in x[5]) + f'</span><b>{E(x[1].split(" — ")[0])}</b></a>' for x in _GG0.SCENES) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p><p><a href="/gonggan/">전체 보기 →</a></p></section>'
+    postsec = f'<section class="wrap sec"><h2>공간 사진 둘러보기 <small class="muted">사진 속 + 누르면 자재·시공법</small></h2><div class="pl hs">' + "".join(f'<a class="pc" href="/gonggan/{x[0]}.html"><span class="ggi"><img loading="lazy" src="{_gth(x[2])}" alt="">' + "".join(f'<i style="left:{q[0]}%;top:{q[1]}%"></i>' for q in (_ggsq(_gth(x[2]), sp[0], sp[1]) for sp in x[5]) if q) + f'</span><b>{E(x[1].split(" — ")[0])}</b></a>' for x in _GG0.SCENES) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p><p><a href="/gonggan/">전체 보기 →</a></p></section>'
     postsec += (f'<section class="wrap sec"><h2>소식·자재 정보</h2><div class="pl hs nw">{plist(POSTS[:10])}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p><p><a href="/news/">전체 글 보기 →</a></p></section>' if POSTS else "")
     base8 = [("합판","일반 4×8 · 8.5mm(베트남)",22800),("OSB합판","T&G 4×8 · 18.3mm",35200),("MDF","4×8 · 9mm",14800),("구조재 2×4","38×89 · 12ft",10700),
              ("방부목 데크재","20×120 · 12자",10500),("석고보드","3×6 · 9.5T",5200),("합성데크","20×140 · 3000",21500),("다루끼(소송)","1.0×1.0 · 12자 · 12개",42400)]
@@ -2045,8 +2056,9 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 <p class="small muted">사진 속 제품은 매장에서 주문·상담할 수 있습니다(가격·재고는 매장 문의). 비슷한 다른 자재로 같은 느낌을 내는 방법도 안내해 드립니다.</p></section>
 <section class="wrap sec">{(f'<h2>같은 분류: {E(_mct)}</h2><div class="pl hs">' + "".join(f'<a class="pc" href="/gonggan/{x[0]}.html"><img loading="lazy" src="{_gth(x[2])}" alt=""><b>{E(x[1].split(" — ")[0])}</b><span>+ {len(x[5])}곳</span></a>' for x in oth) + '</div><p class="hsh">옆으로 밀어서 더 보기 ›</p>') if oth else ""}<h2>다른 공간 사진</h2><div class="pl hs">{"".join(f'<a class="pc" href="/gonggan/{x[0]}.html"><img loading="lazy" src="{_gth(x[2])}" alt=""><b>{E(x[1].split(" — ")[0])}</b><span>+ {len(x[5])}곳</span></a>' for x in oth2[:24])}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p><p><a class="b" href="/gonggan/">분류별로 전체 보기 ›</a></p></section>{CTA}''', "/trend/", ld, img)
     def _ggcard(x):
-        return (f'<a class="pc" href="/gonggan/{x[0]}.html"><span class="ggi"><img loading="lazy" src="{_gth(x[2])}" alt="{E(x[1].split(" — ")[0])}">'
-                + "".join(f'<i style="left:{sp[0]}%;top:{sp[1]}%"></i>' for sp in x[5])
+        _src = _gth(x[2]); _pts = [p for p in (_ggsq(_src, sp[0], sp[1]) for sp in x[5]) if p]
+        return (f'<a class="pc" href="/gonggan/{x[0]}.html"><span class="ggi"><img loading="lazy" src="{_src}" alt="{E(x[1].split(" — ")[0])}">'
+                + "".join(f'<i style="left:{a}%;top:{b}%"></i>' for a, b in _pts)
                 + f'</span><b>{E(x[1].split(" — ")[0])}</b><span>+ {len(x[5])}곳 · {E(x[4][:40])}…</span></a>')
     _ggidx = '<nav class="ggc">' + "".join(f'<a href="#c-{k}">{E(t)} <small>{sum(1 for x in _GG.SCENES if _GG.cat(x[0]) == k)}</small></a>' for k, t, d in _GG.CATS) + '</nav>'
     for k, t, d in _GG.CATS:
