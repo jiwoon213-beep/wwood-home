@@ -38,8 +38,8 @@ $id = date('ymdHis') . substr(md5(uniqid(mt_rand(), true)), 0, 8);
 imagejpeg($im, "$DIR/$id.jpg", 88); imagedestroy($im); // 다시 저장해서 위치정보(EXIF) 제거
 $meta = isset($_POST['meta']) ? $_POST['meta'] : '{}';
 if (strlen($meta) > 20000) $meta = '{}';
-$title = isset($_POST['title']) ? strip_tags($_POST['title']) : ''; $title = function_exists('mb_substr') ? mb_substr($title, 0, 60, 'UTF-8') : substr($title, 0, 180);
-$m = json_decode($meta, true); if (!is_array($m)) $m = array();
+$title = isset($_POST['title']) ? strip_tags(stripslashes($_POST['title'])) : ''; $title = function_exists('mb_substr') ? mb_substr($title, 0, 60, 'UTF-8') : substr($title, 0, 180);
+$m = json_decode($meta, true); if (!is_array($m)) $m = json_decode(stripslashes($meta), true); if (!is_array($m)) $m = array();
 $m['title'] = $title; $m['t'] = $now;
 file_put_contents("$DIR/$id.json", json_encode($m));
 $R[] = array(md5($ip), $now); $s = ''; foreach ($R as $p) $s .= $p[0] . ' ' . $p[1] . "\n"; file_put_contents($lg, $s);
