@@ -441,6 +441,7 @@ _CMAP = {s: k for k, v in _CM.items() for s in v.split()}
 
 def cat(slug):
     if slug in _CMAP: return _CMAP[slug]
+    if slug in VCAT: return VCAT[slug]
     _t = next((x[1] for x in SCENES if x[0] == slug), "")
     if any(w in _t for w in ("외벽", "사이딩", "외장")): return "ext"
     if slug.startswith("cafe-"): return "cafe"
@@ -487,3 +488,27 @@ SCENES += [
    (49, 10, "흰 웨인스코팅 벽", "wall", "벽에 몰딩으로 사각 틀을 짜고 흰색으로 칠한 웨인스코팅 벽입니다.", "/qna/wainscoting-sigong.html", "웨인스코팅 시공", [("/bigyo/wainscoting-vs-tempa.html", "웨인스코팅 vs 템바보드"), ("/qna/wainscoting-paint.html", "웨인스코팅 칠하기")]),
    (37, 15, "창가 쉬폰 커튼", "blind", "통창 옆에 얇은 커튼을 달아 빛을 부드럽게 걸렀습니다.", "/yeongyeol/blind.html", "커튼·블라인드 시공 연결", [("/qna/door-silcheuk.html", "실측하는 법")])]),
 ]
+
+# 방문자가 사진찾기에서 올린 공간 사진(자동 인식·얼굴/번호판 자동 모자이크) — .github/scripts/wwup_pull.py 가 채움
+import json as _json, os as _os
+_VP = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "data", "gonggan_visitor.json")
+VCAT = {}
+try:
+    _VIS = _json.load(open(_VP, encoding="utf-8"))
+except Exception:
+    _VIS = []
+for _v in _VIS:
+    if not _v.get("spots"): continue
+    _cs = []
+    for _s in _v["spots"]:
+        if _s["c"] and _s["c"] not in _cs: _cs.append(_s["c"])
+    _t = (_v.get("title") or "").strip() or ("방문자 공간 사진")
+    _sl = "v-" + _v["id"]
+    VCAT[_sl] = _v.get("cat", "home")
+    _sp = []
+    for _s in _v["spots"]:
+        _lk = f'/jaryo/{_s["u"]}.html' if _s.get("u") else (_s.get("l") or "/sajin.html")
+        _rel = [(_s["l"], "비슷한 제품 보기")] if _s.get("l") and _s.get("u") else []
+        _sp.append((_s["x"], _s["y"], _s["c"] or "자재", _s["k"], f'사진 속 이 부분은 「{_s["c"]}」 쪽 자재로 자동 인식됐어요. 가장 비슷한 제품: {_s["n"]}. 실제와 다를 수 있으니 매장에서 확인해 주세요.', _lk, (_s["c"] or "자재") + " 보기", _rel + [("/sajin.html", "내 사진도 분석하기")]))
+    SCENES.append((_sl, f'{_t} — {"·".join(_cs[:3])} 자재 둘러보기 (방문자 사진)', G + _v["img"], "사진: 방문자 제공 (얼굴·번호판 자동 가림)",
+                   "방문자가 사진찾기로 올린 공간 사진입니다. 사진 속 +는 자동으로 인식한 자재 분류예요. 누르면 비슷한 자재와 기준가를 볼 수 있어요.", _sp))
