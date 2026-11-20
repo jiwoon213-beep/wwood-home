@@ -6463,6 +6463,8 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-4679	in_stock	62000 KRW	buy	same_day
 11962997655006403809	bupum-3663	in_stock	4100 KRW	buy	same_day
 11962997655006403809	bupum-2836	in_stock	46900 KRW	buy	same_day
+11962997655006403809	bupum-12107	in_stock	24500 KRW	buy	same_day
+11962997655006403809	bupum-12106	in_stock	13600 KRW	buy	same_day
 11962997655006403809	bupum-11926	in_stock	35200 KRW	buy	same_day
 11962997655006403809	bupum-11907	in_stock	13500 KRW	buy	same_day
 11962997655006403809	bupum-4937	in_stock	5700 KRW	buy	same_day
