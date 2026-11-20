@@ -206,8 +206,17 @@ def build(root, page, E, CTA):
             if r["단지코드"] in CASEMAP:
                 cs = CASEMAP[r["단지코드"]]; pl = casecard(C, cs[0], cs[1], cs[2], E) + pl
             nq = quote(f'{r["단지명"].strip()} {dong} 평면도')
+            qty = ""
+            if r["ar"]:
+                import math as _m
+                _q = []
+                for a, n in sorted(r["ar"], key=lambda x: -x[1])[:3]:
+                    try: af = float(a)
+                    except Exception: continue
+                    _q.append(f'{a}㎡(약 {af / 3.3058:.1f}평): 바닥 전체 덧방 시 합판 4×8 약 {_m.ceil(af / 2.98)}장·데코타일 약 {_m.ceil(af / 3.3058)}평 분량')
+                if _q: qty = '<p class="small">바닥 자재 어림(전용면적 기준, 실제 바닥은 이보다 조금 적고 자를 여유분은 따로): ' + E(" / ".join(_q)) + ' <a href="/calc.html">계산기</a></p>'
             cards += (f'<article class="apc" id="{E(r["단지코드"])}"><h3>{E(r["단지명"].strip())}</h3><p class="small muted">{E(meta)}</p>'
-                      f'<p>{E(age_text(r["y"]))}</p>{pl}<div class="apl">{tips}</div>'
+                      f'<p>{E(age_text(r["y"]))}</p>{pl}{qty}<div class="apl">{tips}</div>'
                       f'<p class="small"><a class="apreal" href="https://search.naver.com/search.naver?query={nq}" target="_blank" rel="noopener nofollow">이 단지 실제 평면도 보기(네이버) ↗</a></p></article>')
         more = (f'<p class="small muted">그 밖에 {len(L) - 40}개 단지: ' + ", ".join(E(r["단지명"].strip()) for r in L[40:]) + "</p>") if len(L) > 40 else ""
         near = "".join(f'<a href="/{fname(*k)}">{E(k[2])}</a>' for k in sorted(bygu.get((sd, gu), [])) if k[2] != dong)
