@@ -92,7 +92,8 @@ for line in open(f"{ROOT}/data/products.tsv", encoding="utf-8") if os.path.exist
     if r[0] == "#": MCAT[r[1]] = r[2]; continue
     if len(r) < 4 or not r[1].strip(): continue
     img = r[2].replace("@", "/common/ezs_data/product/", 1) if r[2].startswith("@") else r[2].replace("!", "/modules/shop/files/", 1) if r[2].startswith("!") else r[2]
-    PROD.append(dict(id=r[0], name=r[1].strip(), img="https://www.wwood.kr" + img, cats=[c for c in r[3].split(",") if c]))
+    _loc = f"/assets/mall/{r[0]}.webp" if os.path.exists(f"{ROOT}/assets/mall/{r[0]}.webp") else None  # 작은 사진(Actions mallthumbs.yml이 만듦)
+    PROD.append(dict(id=r[0], name=r[1].strip(), img=_loc or ("https://www.wwood.kr" + img), img0="https://www.wwood.kr" + img, cats=[c for c in r[3].split(",") if c]))
 # 홈페이지 전체 자재 분류 (쇼핑몰 대분류 코드 → 주소)
 JCAT = [("23", "gakjae", "각재·구조재", "다루끼·구조재·방부목·히노끼·탄화목·침목"), ("24", "panjae", "판재·합판", "합판·MDF·OSB·집성판·고재판재·임가공판재"),
         ("53", "jipseong", "우드슬랩·집성판", "고무나무·아카시아·멀바우·히노끼 집성판"), ("25", "deck", "데크재", "방부데크·천연데크·합성데크·탄화데크·데크철물"),
@@ -182,7 +183,7 @@ def _psp(p):  # 사진 크게 보기(라이트박스)에 넣을 규격 요약
         if v and k != 3 or (k == 3 and v and len(" / ".join(v[:4])) < 60): out.append(nm + "\t" + " / ".join(v[:4]))
     return "\n".join(out)
 def _pdata(p):
-    return f' data-big="{E(p["img"])}" data-n="{E(p["name"])}" data-sp="{E(_psp(p))}"'
+    return f' data-big="{E(p.get("img0") or p["img"])}" data-n="{E(p["name"])}" data-sp="{E(_psp(p))}"'
 def pcard(p):
     sub = MCAT.get(p["sub"] or "", "")
     _own = p.get("tops") and p.get("top") in {c for c, *_ in JCAT}  # 새 홈페이지에 상품 페이지(/p/)가 있으면 그쪽으로 연결(내부 링크 → 색인에 도움)
@@ -880,7 +881,7 @@ def build():
         page(f"jaryo/{sl}.html", f"{n} 종류 사진 {len(ps) or cnt[c]}종 — {d} | 대전 월드건축자재", f"{n} 종류를 사진으로 확인하세요: {d}. 대전 유성 월드건축자재(영진목재) 매장 취급, 즉석 재단.",
              f'<section class="wrap sec"><p class="crumb"><a href="/jaryo/">전체 자재</a> › {n}</p><h1>{n} <small class="muted">{len(ps)}종</small></h1><p class="lead">{d}. 사진을 누르면 상세 사진이 열립니다. 실물 확인·재단은 대전 매장에서 합니다.</p>{SEARCH}<div class="jall"><p class="small">{toc}</p>{secs}</div></section>{_jvs}{CTA}', "/jaryo/",
              {"@context": "https://schema.org", "@type": "ItemList", "name": f"{n} 종류", "numberOfItems": len(ps),
-              "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": p["name"], "image": p["img"]} for i, p in enumerate(ps[:100])]}, ps[0]["img"] if ps else thumb.get(c))
+              "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": p["name"], "image": p.get("img0") or p["img"]} for i, p in enumerate(ps[:100])]}, (ps[0].get("img0") or ps[0]["img"]) if ps else thumb.get(c))
 
     # 영상
     vl = "".join(f'<a class="uc" href="/video/{c}.html"><b>{n}</b><small>{d} · {sum(1 for v in V if v["cat"]==c)}편</small></a>' for c, n, d in CATS)
@@ -2351,7 +2352,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 <p>대전 유성 영진목재(월드건축자재) 3000평 매장에서 실물을 보고 고를 수 있습니다. 원하는 사이즈로 재단해 드리고 대전·세종·공주·계룡·논산·금산·옥천은 배송하고, 그 외 전국은 용달차로 보내 드립니다(운임 견적 → 입금 확인 후 출고). 가격·재고는 쇼핑몰이나 매장(042-545-2900)에서 확인하세요.</p>
 <div class="row"><a class="b r" href="https://wwood.kr/home/mall/shoplist.php?idx={p['id']}&amp;pmode=view" target="_blank" rel="noopener">쇼핑몰에서 가격 보기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화 문의</a></div>
 <p class="small"><a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장 위치</a> · <a href="/jaryo/{sl}.html">{E(cn)} 전체 보기</a></p><div class="ylv pv" data-n="{E(p['name'])}" data-c="{E(cat)}"></div></div></div>{spec}{cov}{use}</section>
-<section class="wrap sec"><h2>같은 분류 제품</h2><div class="pg hrow">{"".join(pcard2(q) for q in sim)}</div></section>{CTA}""", "/jaryo/", None, p["img"])
+<section class="wrap sec"><h2>같은 분류 제품</h2><div class="pg hrow">{"".join(pcard2(q) for q in sim)}</div></section>{CTA}""", "/jaryo/", None, p.get("img0") or p["img"])
 
     # 매장 카운터 QR 안내판이 여는 페이지(/r/) — 리뷰·채널 링크는 여기서만 바꾸면 됨(재인쇄 불필요)
     RV_NAVER = NPLACE
@@ -2505,7 +2506,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         _t = open(_f, encoding="utf-8").read()
         if "youtube.com/embed/" in _t and "<iframe" in _t:
             _t2 = _yrx.sub(_yf, _t)
-            _t2 = _t2.replace('/hqdefault.jpg" loading="lazy" decoding="async"', '/hqdefault.jpg" fetchpriority="high"', 1)  # 첫 영상 썸네일은 바로(화면 첫 그림)
+            if 'fetchpriority="high"' not in _t: _t2 = _t2.replace('/hqdefault.jpg" loading="lazy" decoding="async"', '/hqdefault.jpg" fetchpriority="high"', 1)  # 첫 영상 썸네일은 바로(화면 첫 그림)
             _fm = re.search(r'src="(https://i\.ytimg\.com/vi/[^"/]+/hqdefault\.jpg)" fetchpriority="high"', _t2)
             if _fm and 'rel="preload" as="image"' not in _t2: _t2 = _t2.replace('<meta charset="utf-8">', f'<meta charset="utf-8"><link rel="preconnect" href="https://i.ytimg.com"><link rel="preload" as="image" href="{_fm.group(1)}" fetchpriority="high">', 1)
             if _t2 != _t: open(_f, "w", encoding="utf-8").write(_t2)
