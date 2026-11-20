@@ -712,3 +712,4 @@ footer a:hover{text-decoration:underline!important}
 }
 .mli{align-items:flex-start}
 .mli li{flex-basis:230px}
+h2 a.small,.jall h2 a{text-decoration:none!important;font-size:14px;font-weight:800;color:var(--red)}
