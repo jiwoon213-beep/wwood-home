@@ -5,13 +5,31 @@ from PIL import Image, ImageDraw, ImageFont
 KEY = os.environ.get("WWUP_KEY", ""); EP = "https://wwood.kr/home/wwup.php"
 ROOT = os.getcwd(); OUT = f"{ROOT}/src/assets/gonggan"; DB = f"{ROOT}/src/data/gonggan_pending.json"; DONE = f"{ROOT}/src/data/gonggan_visitor.json"
 if not KEY: print("no key"); sys.exit(0)
-def get(q, raw=False):
-    rq = urllib.request.Request(EP + "?" + urllib.parse.urlencode(dict(q, key=KEY)), headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36", "Accept": "*/*", "Referer": "https://wwood.kr/"})
+_PW = {}
+def _browser():
+    # 이지스 '자동등록방지 보안절차'(사람 확인) 화면 → 진짜 브라우저(Chromium)로 통과 후 같은 쿠키로 요청
+    if "ctx" not in _PW:
+        from playwright.sync_api import sync_playwright
+        pw = sync_playwright().start(); br = pw.chromium.launch()
+        ctx = br.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36", locale="ko-KR")
+        pg = ctx.new_page(); pg.goto("https://wwood.kr/home/mall/", wait_until="networkidle", timeout=60000); pg.wait_for_timeout(8000)
+        _PW.update(pw=pw, br=br, ctx=ctx, pg=pg)
+    return _PW
+def _fetch(url):
+    if "ctx" in _PW:
+        r = _PW["ctx"].request.get(url, timeout=60000, headers={"Referer": "https://www.wwood.co.kr/"}); return r.body(), r.status
+    rq = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36", "Accept": "*/*", "Referer": "https://www.wwood.co.kr/"})
     try:
-        with urllib.request.urlopen(rq, timeout=60) as r:
-            b = r.read(); st = r.status
-    except urllib.error.HTTPError as e:
-        b = e.read(); st = e.code
+        with urllib.request.urlopen(rq, timeout=60) as r: return r.read(), r.status
+    except urllib.error.HTTPError as e: return e.read(), e.code
+def _human(b): return b"\xeb\xb3\xb4\xec\x95\x88\xec\xa0\x88\xec\xb0\xa8" in b or b"prove that you are human" in b
+def get(q, raw=False):
+    url = EP + "?" + urllib.parse.urlencode(dict(q, key=KEY))
+    b, st = _fetch(url)
+    for _ in range(3):
+        if not _human(b): break
+        B = _browser(); B["pg"].goto(url, wait_until="networkidle", timeout=60000); B["pg"].wait_for_timeout(8000)
+        b, st = _fetch(url)
     if raw: return b
     try: return json.loads(b.decode("utf-8", "replace"))
     except Exception:
