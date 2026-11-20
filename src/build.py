@@ -616,7 +616,7 @@ addEventListener("online",fl);addEventListener("pagehide",function(){{busy=0;fl(
 def vcard(v, big=False):
     return f"""<a class="vc{' big' if big else ''}{' sh' if v['type']=='S' else ''}" href="{vpage(v)}"{'' if v['id'] in VD else ' target="_blank" rel="noopener"'} data-yt="{v['id']}">
 <span class="th"><img loading="lazy" decoding="async" width="480" height="360" src="https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg" alt="{E(vshort(v['title']))}"><i class="play"></i>{'<em>쇼츠</em>' if v['type']=='S' else '<em>라이브</em>' if v['type']=='V' else ''}</span>
-<b>{E(v['title'])}</b><small>조회 {views(v['n'])}</small></a>"""
+<b>{E(v['title'])}</b>{f"<small>조회 {views(v['n'])}</small>" if v['n'] else ""}</a>"""
 
 def vrank(vs, grid="vg"):
     return f'<div class="{grid}">' + "".join(vcard(v).replace('<span class="th">', f'<span class="th"><i class="rk{" r3" if i < 3 else ""}">{i + 1}</i>', 1) for i, v in enumerate(vs)) + '</div>'
@@ -2212,7 +2212,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         page(f"v/{v['id']}.html", f"{st} — {'쇼츠' if v['type'] == 'S' else '영상'}" + (f" 조회 {views(v['n'])}" if v['n'] >= 1000 else "") + " | 영진목재", vds,
              f"""<section class="wrap sec"><p class="crumb"><a href="/video/">영상</a> › <a href="/video/{v['cat']}.html">{E(cn)}</a></p><h1 class="vt1">{E(v['title'])}</h1>
 <div class="{'emb sh1' if v['type']=='S' else 'emb'}"><iframe loading="lazy" src="https://www.youtube.com/embed/{v['id']}" title="{E(st)}" allowfullscreen></iframe></div>
-<p class="small muted">조회 {views(v['n'])}{' · 쇼츠' if v['type']=='S' else ''} · <a href="{vurl(v)}" target="_blank" rel="noopener">유튜브에서 보기</a></p>
+<p class="small muted">{f"조회 {views(v['n'])} · " if v['n'] else ""}{'쇼츠 · ' if v['type']=='S' else ''}<a href="{vurl(v)}" target="_blank" rel="noopener">유튜브에서 보기</a></p>
 <div class="vdesc">{vbody(d, v['id'])}</div>
 {f'<p>👉 영상에 나온 자재: {ml}</p>' if ml else ''}{_mkln}<p>👉 <a href="/calc.html">필요한 양 계산하기</a> · <a href="/visit.html">매장에서 재단해 가기</a></p></section>
 {_vx}{f'<section class="wrap sec"><h2>비슷한 영상</h2>{vsplit(rel, "h3")}</section>' if rel else ''}{CTA}""", f"/video/", ld, f"https://i.ytimg.com/vi/{v['id']}/hqdefault.jpg")
