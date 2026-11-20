@@ -211,6 +211,16 @@ WWC("hjsave");if(b){b.textContent="저장됨 ✓ 현장함 보기 ›";b.onclick
       if(el.children.length<2||el.scrollWidth<=el.clientWidth+20)continue;
       if(el.children[0].getBoundingClientRect().width<90)continue;
       el.__sar=1;
+      /* PC: 카드가 오른쪽에서 반쯤 잘리지 않게 — 한 줄에 딱 맞는 개수로 폭을 맞추고, 2줄 안에 다 들어가면 줄바꿈으로 펼침 */
+      var gap=parseFloat(cs.columnGap)||parseFloat(cs.gap)||0,cw0=el.children[0].getBoundingClientRect().width,n=el.children.length;
+      var per=Math.max(1,Math.round((el.clientWidth+gap)/(cw0+gap)));
+      var basis='calc((100% - '+((per-1)*gap)+'px) / '+per+')';
+      if(cs.display.indexOf('grid')>-1){el.style.gridAutoColumns=basis}
+      else{
+        for(var k=0;k<n;k++){var c=el.children[k];c.style.flex='0 0 '+basis;c.style.maxWidth='none';c.style.minWidth='0';c.style.width='auto'}
+        if(n<=per*2){el.style.flexWrap='wrap';el.style.overflowX='visible';el.style.rowGap=(gap||12)+'px';continue}
+      }
+      if(el.scrollWidth<=el.clientWidth+4)continue;
       var w=document.createElement('div');w.className='sarw';
       el.parentNode.insertBefore(w,el);w.appendChild(el);
       (function(el,w){
@@ -218,7 +228,7 @@ WWC("hjsave");if(b){b.textContent="저장됨 ✓ 현장함 보기 ›";b.onclick
         l.type=r.type='button';l.className='sarb l';r.className='sarb r';l.innerHTML='&#8249;';r.innerHTML='&#8250;';
         l.setAttribute('aria-label','이전');r.setAttribute('aria-label','다음');
         function upd(){l.hidden=el.scrollLeft<5;r.hidden=el.scrollLeft+el.clientWidth>=el.scrollWidth-5}
-        function go(d){el.scrollBy({left:d*el.clientWidth*.85,behavior:'smooth'})}
+        function go(d){var g=parseFloat(getComputedStyle(el).columnGap)||0;el.scrollBy({left:d*(el.clientWidth+g),behavior:'smooth'})}
         l.onclick=function(){go(-1)};r.onclick=function(){go(1)};
         el.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);
         w.appendChild(l);w.appendChild(r);upd();
