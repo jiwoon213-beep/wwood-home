@@ -715,3 +715,4 @@ footer a:hover{text-decoration:underline!important}
 h2 a.small,.jall h2 a{text-decoration:none!important;font-size:14px;font-weight:800;color:var(--red)}
 
 @media(min-width:900px) and (hover:hover){.chips,.jchips,#cchips,.gchip,.plc{flex-wrap:wrap!important;overflow-x:visible!important}}
+@media(min-width:900px) and (hover:hover){.hsl{max-width:none}}
