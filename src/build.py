@@ -2084,7 +2084,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         if _xs:
             _ggidx += f'<h2 id="c-{k}" class="ggh">{E(t)} <small>{len(_xs)}곳</small></h2><p class="small muted">{E(d)}</p><div class="pl hs gg">{"".join(_ggcard(x) for x in _xs)}</div><p class="hsh">옆으로 밀어서 더 보기 ›</p>'
     page("gonggan/index.html", "공간 사진 둘러보기 — 사진 속 자재·시공법 바로 찾기 | 영진목재", "거실·현관·방 사진 속 +를 누르면 어떤 자재인지, 어떻게 시공하는지, 어디서 사는지 바로 볼 수 있어요. 중문·도어·마루·아트월·우드월·수납장.",
-         f'''<section class="wrap sec"><p class="crumb"><a href="/trend/">인테리어 트렌드</a> › 공간 사진 둘러보기</p><h1>공간 사진 둘러보기 <small>{len(_GG.SCENES)}곳</small></h1><p class="lead">사진 속 <b>+</b>를 누르면 그 자재가 무엇인지, 어떻게 시공하는지 나오고 제품 페이지로 바로 넘어갑니다.</p>
+         f'''<section class="wrap sec"><p class="crumb"><a href="/trend/">인테리어 트렌드</a> › 공간 사진 둘러보기</p><h1>공간 사진 둘러보기 <small>{len(_GG.SCENES)}곳</small></h1><p class="lead">사진 속 <b>+</b>를 누르면 그 자재가 무엇인지, 어떻게 시공하는지 나오고 제품 페이지로 바로 넘어갑니다.</p><a class="sjgo" href="/sajin.html?m=gonggan">📷 <b>내 공간 사진 찍어서 자재 알아보기·올리기</b><small>거실·방·가게 사진을 찍으면 쓰인 자재를 모아 보여 주고, 이곳 공간 사진에 올릴 수 있어요</small></a>
 {_ggidx}</section>{CTA}''', "/trend/")
 
     # 하는 법 Q&A (실제 유튜브 검색어 기준, src/qna_data.py) — /qna/
