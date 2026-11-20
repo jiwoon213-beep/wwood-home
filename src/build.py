@@ -2093,11 +2093,13 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         vs = top(lambda v, kw=kw: re.search(kw, v["title"]) is not None, 6)
         ml = " · ".join(f'<a href="/jajae/{m}.html">{matname2[m]} 용도·기준가</a>' for m in mats if m in matname2)
         oth = [x for x in _QNA if x[0] != slug and (set(x[6]) & set(mats))][:6]
+        _hd = "단점" if "단점" in q else "확인할 것" if "살 때" in q else "차이 정리" if " vs " in q else "고르는 법" if ("어떤 나무" in q or "어떤 자재" in q or "어떤 판" in q) else "순서"
         ld = [{"@context": "https://schema.org", "@type": "HowTo", "name": q, "description": a, "step": [{"@type": "HowToStep", "position": i + 1, "text": t} for i, t in enumerate(steps)]},
               {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q.split(" — ")[0] + "?", "acceptedAnswer": {"@type": "Answer", "text": a}}]}]
+        if _hd != "순서": ld = ld[1:]
         page(f"qna/{slug}.html", q + " | 영진목재", a[:150],
              f"""<section class="wrap sec"><p class="crumb"><a href="/qna/">하는 법 Q&amp;A</a> › {E(q.split(" — ")[0])}</p><h1>{E(q)}</h1><p class="lead">{E(a)}</p>
-<h2>순서</h2><ol class="gtip">{"".join(f"<li>{E(t)}</li>" for t in steps)}</ol>
+<h2>{_hd}</h2><ol class="gtip">{"".join(f"<li>{E(t)}</li>" for t in steps)}</ol>
 {('<h2>주의할 점</h2><ul class="gtip">' + "".join(f"<li>{E(w)}</li>" for w in warn) + '</ul>') if warn else ''}
 <div class="qk">{"".join(f'<a href="{h}">{E(t)}</a>' for h, t in links)}</div><p>{ml}</p>
 <p class="small muted">일반적인 방법을 정리한 것으로 제품·현장 상태에 따라 다를 수 있습니다. 자재 고르기는 매장(042-545-2900)에서 도와 드립니다.</p></section>
