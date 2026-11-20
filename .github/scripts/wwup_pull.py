@@ -33,7 +33,7 @@ def get(q, raw=False):
     if raw: return b
     try: return json.loads(b.decode("utf-8", "replace"))
     except Exception:
-        t = re.sub(r"<style.*?</style>|<script.*?</script>|<[^>]+>", " ", b.decode("utf-8", "replace"), flags=re.S); print("서버 응답이 JSON 아님:", st, re.sub(r"\s+", " ", t)[:500].replace(KEY, "***")); sys.exit(1)
+        t = re.sub(r"<style.*?</style>|<script.*?</script>|<[^>]+>", " ", b.decode("utf-8", "replace"), flags=re.S); print("서버 응답이 JSON 아님(이지스 해외 접속 보안 화면이면 예외 처리 대기 — 다음에 다시 시도):", st, re.sub(r"\s+", " ", t)[:500].replace(KEY, "***")); sys.exit(0 if "prove that you are human" in t else 1)
 ids = get({"list": 1}).get("ids", [])
 db = json.load(open(DB, encoding="utf-8")) if os.path.exists(DB) else []
 have = {x["id"] for x in db} | ({x["id"] for x in json.load(open(DONE, encoding="utf-8"))} if os.path.exists(DONE) else set())
