@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
-      - run: pip install -q opencv-python-headless pillow numpy playwright && python -m playwright install --with-deps chromium >/dev/null && sudo apt-get install -y -q fonts-nanum fonts-noto-cjk >/dev/null
+      - run: pip install -q opencv-python-headless pillow numpy && sudo apt-get install -y -q fonts-nanum fonts-noto-cjk >/dev/null
       - run: curl -sL -o /tmp/yunet.onnx https://github.com/opencv/opencv_zoo/raw/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx
       - name: pull
         env: { WWUP_KEY: '${{ secrets.WWUP_KEY }}' }
