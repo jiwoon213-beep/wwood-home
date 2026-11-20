@@ -18,10 +18,9 @@ jobs:
       - name: pull
         env: { WWUP_KEY: '${{ secrets.WWUP_KEY }}' }
         run: python3 .github/scripts/wwup_pull.py
-      - name: build & commit (새 사진 있을 때만)
+      - name: commit (검토 대기 목록 — 자재 표시는 Claude 예약 작업이 사진을 보고 직접 달아서 공개)
         run: |
-          git diff --quiet -- src/data/gonggan_visitor.json && exit 0
-          cd src && python3 build.py https://www.wwood.co.kr && cp -r out/. .. && rm -rf out && cd ..
-          test -f CNAME && test -f .nojekyll
           git config user.name "wwood-build-bot"; git config user.email "actions@users.noreply.github.com"
-          git add -A && git commit -m "방문자 공간 사진 추가(얼굴·번호판 자동 모자이크)" && git pull --rebase -X theirs && git push
+          git add src/data/gonggan_pending.json src/assets/gonggan/v-*.jpg 2>/dev/null || true
+          git diff --cached --quiet && exit 0
+          git commit -m "방문자 공간 사진 받음(얼굴·번호판 자동 모자이크, 자재 표시 대기)" && git pull --rebase -X theirs && git push

@@ -3,7 +3,7 @@ import json, os, re, sys, urllib.request, urllib.parse, time
 import cv2, numpy as np
 from PIL import Image, ImageDraw, ImageFont
 KEY = os.environ.get("WWUP_KEY", ""); EP = "https://wwood.kr/home/wwup.php"
-ROOT = os.getcwd(); OUT = f"{ROOT}/src/assets/gonggan"; DB = f"{ROOT}/src/data/gonggan_visitor.json"
+ROOT = os.getcwd(); OUT = f"{ROOT}/src/assets/gonggan"; DB = f"{ROOT}/src/data/gonggan_pending.json"; DONE = f"{ROOT}/src/data/gonggan_visitor.json"
 if not KEY: print("no key"); sys.exit(0)
 def get(q, raw=False):
     with urllib.request.urlopen(EP + "?" + urllib.parse.urlencode(dict(q, key=KEY)), timeout=60) as r:
@@ -11,7 +11,7 @@ def get(q, raw=False):
     return b if raw else json.loads(b.decode("utf-8"))
 ids = get({"list": 1}).get("ids", [])
 db = json.load(open(DB, encoding="utf-8")) if os.path.exists(DB) else []
-have = {x["id"] for x in db}
+have = {x["id"] for x in db} | ({x["id"] for x in json.load(open(DONE, encoding="utf-8"))} if os.path.exists(DONE) else set())
 face = cv2.FaceDetectorYN.create("/tmp/yunet.onnx", "", (320, 320), 0.6, 0.3, 5000)
 plate = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_russian_plate_number.xml")
 def pix(img, x, y, w, h):

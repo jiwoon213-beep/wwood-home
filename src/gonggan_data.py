@@ -525,6 +525,11 @@ try:
 except Exception:
     _VIS = []
 for _v in _VIS:
+    if _v.get("S"):  # Claude가 사진을 보고 직접 단 자재 표시(공간 사진 기존 방식)
+        _sl = "v-" + _v["id"]; VCAT[_sl] = _v.get("cat", "home")
+        SCENES.append((_sl, _v["title"], G + _v["img"], "사진: " + ((_v.get("who") or "방문자") + "님 제공"), _v.get("desc", ""),
+                       [(a[0], a[1], a[2], a[3], a[4], a[5], a[6], [tuple(r) for r in a[7]]) for a in _v["S"]]))
+        continue
     if not _v.get("spots") and _v.get("how"):
         _h0 = _v["how"][0]
         _v["spots"] = [{"x": 50, "y": 50, "c": "만들기" if "/mandeul/" in _h0["l"] else "시공법", "n": _h0["n"].split(" — ")[0], "l": _h0["l"], "u": "", "k": "furniture" if "/mandeul/" in _h0["l"] else "wall"}]
