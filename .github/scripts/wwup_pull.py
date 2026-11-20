@@ -64,7 +64,12 @@ for i in ids:
         ks = [x["k"] for x in sp]; cat = next((CATMAP[k] for k in ks if k in CATMAP), "home")
         how = [{"n": str(h.get("n", ""))[:80], "l": str(h.get("l", ""))} for h in (meta.get("how") or [])[:2] if re.match(r"^/(mandeul|sigongbeop)/[a-z0-9-]+\.html$", str(h.get("l", "")))]
         who = re.sub(r"[<>\"'&]", "", str(meta.get("who", "")))[:16].strip()
-        db.append({"who": who, "how": how, "id": i, "img": fn, "title": str(meta.get("title", ""))[:60], "t": int(meta.get("t", time.time())), "spots": sp, "cat": cat, "faces": nf, "plates": len(P)})
+        pl = meta.get("plan") or None
+        if isinstance(pl, dict) and pl.get("k") in ("mandeul", "sigong") and re.match(r"^[a-z]{3,6}$", str(pl.get("t", ""))):
+            pl = {"k": pl["k"], "t": pl["t"], **{a: max(0, min(20000, int(float(pl.get(a) or 0)))) for a in ("w", "d", "h", "s")}}
+        else:
+            pl = None
+        db.append({"plan": pl, "who": who, "how": how, "id": i, "img": fn, "title": str(meta.get("title", ""))[:60], "t": int(meta.get("t", time.time())), "spots": sp, "cat": cat, "faces": nf, "plates": len(P)})
         new += 1
         get({"id": i, "del": 1})  # 서버 원본(모자이크 전) 삭제
     except Exception as e:
