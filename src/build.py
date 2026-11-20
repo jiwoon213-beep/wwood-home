@@ -2127,7 +2127,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         vs = top(lambda v, kw=kw: re.search(kw, v["title"]) is not None, 6)
         ml = " · ".join(f'<a href="/jajae/{m}.html">{matname2[m]} 용도·기준가</a>' for m in mats if m in matname2)
         oth = [x for x in _QNA if x[0] != slug and (set(x[6]) & set(mats))][:6]
-        _hd = "단점" if "단점" in q else "확인할 것" if "살 때" in q else "차이 정리" if " vs " in q else "고르는 법" if ("어떤 나무" in q or "어떤 자재" in q or "어떤 판" in q) else "순서"
+        _hd = "단점" if "단점" in q else "사는 법" if ("파는 곳" in q or "구매" in q) else "확인할 것" if "살 때" in q else "차이 정리" if " vs " in q else "고르는 법" if ("어떤 나무" in q or "어떤 자재" in q or "어떤 판" in q) else "순서"
         ld = [{"@context": "https://schema.org", "@type": "HowTo", "name": q, "description": a, "step": [{"@type": "HowToStep", "position": i + 1, "text": t} for i, t in enumerate(steps)]},
               {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q.split(" — ")[0] + "?", "acceptedAnswer": {"@type": "Answer", "text": a}}]}]
         if _hd != "순서": ld = ld[1:]
