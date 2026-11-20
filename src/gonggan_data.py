@@ -516,6 +516,58 @@ SCENES += [
    (50, 93, "밝은 바닥 타일", "tile", "밝은 베이지 타일로 바닥을 마감해 짙은 벽과 대비를 줬습니다.", "/jajae/tile.html", "타일 자재 보기", [("/qna/tile-primer.html", "타일 프라이머")])]),
 ]
 
+
+# 2026-11-20 사장님 제공 사진 — 상가 앞 데크·검정 나무 난간
+SCENES += [
+ ("cafe-flower-deck", "가게 앞 데크와 검정 나무 난간 — 상가 테라스 자재 둘러보기", G + "cafe-flower-deck.jpg", "사진: 영진종합목재 제공",
+  "인도와 맞닿은 가게 앞에 나무 데크를 깔고, 검정 스테인을 칠한 나무 난간으로 화분 자리를 둘러싼 모습입니다. 옆 가게까지 이어진 데크 위에 원목 테이블과 초록 울타리도 보입니다.",
+  [(62, 62, "검정 나무 난간", "stair", "각재로 기둥·손스침·살을 짜고 검정 스테인으로 칠한 낮은 난간입니다. 화분 자리를 인도와 나눠 줍니다.", "/sigongbeop/deck-nangan.html", "데크 난간 시공", [("/qna/gyedan-nangan-busok.html", "난간 부속"), ("/qna/nangan-heundeullim.html", "난간 흔들림 잡기")]),
+   (64, 53, "회색 데크 바닥", "deck", "가게 앞 바닥 전체에 깐 나무 데크입니다. 오래되며 회색빛이 돌았습니다.", "/mandeul/deck.html", "데크 만들기", [("/qna/bangbu-hoesaek.html", "방부목이 회색이 될 때"), ("/qna/deck-oil-vs-paint.html", "데크 오일 vs 페인트"), ("/gagyeok/deck-gagyeok.html", "데크 가격 가이드")]),
+   (30, 94, "데크 앞 마감판", "deck", "데크 끝 옆면을 판재로 막아 장선이 보이지 않게 마감했습니다.", "/mandeul/deck.html", "데크 만들기", [("/qna/deck-nopi.html", "데크 높이")]),
+   (65, 39, "원목 테이블", "furniture", "데크 위에 둔 야외용 원목 테이블입니다.", "/mandeul/yaoeteibeul.html", "야외 테이블 만들기", [("/qna/siktak-nopi.html", "테이블 높이")]),
+   (84, 37, "초록 나무 울타리", "stair", "데크 가장자리에 세운 초록색 나무 울타리입니다.", "/mandeul/ultari.html", "울타리 만들기", [("/qna/ultari-gidung.html", "울타리 기둥 세우기"), ("/qna/bangbu-ultari.html", "방부목 울타리")]),
+   (54, 47, "나무 입간판", "furniture", "가게 이름을 새긴 A자 나무 입간판입니다.", "/qna/namu-ganpan.html", "나무 간판 만들기", [])]),
+ ("cafe-black-railing", "검정 스테인 나무 난간 가까이 보기 — 손스침 모서리와 난간 살", G + "cafe-black-railing.jpg", "사진: 영진종합목재 제공",
+  "가게 앞 데크 난간을 가까이에서 본 모습입니다. 손스침 모서리를 비스듬히 맞추고 각재 살을 일정한 간격으로 세운 뒤 검정 스테인으로 칠했습니다.",
+  [(34, 57, "손스침 모서리 맞춤", "stair", "꺾이는 모서리에서 손스침 두 개를 비스듬히(45도) 잘라 맞췄습니다.", "/qna/miter-molding.html", "45도 맞춤 자르기", [("/sigongbeop/deck-nangan.html", "데크 난간 시공")]),
+   (65, 59, "난간 살(각재)", "stair", "같은 간격으로 세운 각재 살입니다. 위아래 가로대에 피스로 고정합니다.", "/sigongbeop/deck-nangan.html", "데크 난간 시공", [("/qna/gyedan-nangan-busok.html", "난간 부속"), ("/gagyeok/gakjae-gagyeok.html", "각재 가격")]),
+   (78, 50, "검정 스테인 데크", "deck", "데크 바닥도 난간과 같은 짙은 색 스테인으로 칠했습니다.", "/qna/oilstain-color.html", "오일스테인 색 고르기", [("/qna/deck-oil-vs-paint.html", "데크 오일 vs 페인트"), ("/sigongbeop/oilstain.html", "오일스테인 칠하는 법")]),
+   (25, 86, "데크 테두리 마감판", "deck", "데크 끝을 판재로 덮어 옆면을 깔끔하게 마감했습니다.", "/mandeul/deck.html", "데크 만들기", [("/qna/bangbu-cheongso.html", "방부목 청소")]),
+   (68, 27, "나무 입간판", "furniture", "가게 앞에 세운 A자 나무 입간판입니다.", "/qna/namu-ganpan.html", "나무 간판 만들기", []),
+   (88, 22, "원목 테이블", "furniture", "데크 위 야외 테이블입니다.", "/mandeul/yaoeteibeul.html", "야외 테이블 만들기", [])]),
+]
+
+
+# 2026-11-20 사장님 제공 사진 — 카페 실내(OSB 벽·마대 벽·우드 패널 벽)
+SCENES += [
+ ("cafe-coffeesack-wall", "커피 마대 벽과 기하학 프레임 — 카페 벽 꾸미기 자재 둘러보기", G + "cafe-coffeesack-wall.jpg", "사진: 영진종합목재 제공",
+  "커피 생두 마대를 벽에 붙이고 그 위에 금색 기하학 무늬 프레임을 덧댄 카페 벽입니다. 위쪽은 파란 띠와 노란 천장으로 칠하고 레일 조명을 달았습니다.",
+  [(30, 78, "커피 마대(삼베) 벽", "wall", "삼베 마대를 판 위에 붙여 거친 질감을 낸 벽입니다.", "/qna/artwall-mandeulgi.html", "아트월 만들기", []),
+   (56, 64, "기하학 무늬 프레임", "wall", "가는 각재나 금속 띠를 비스듬히 엇갈려 붙여 무늬를 낸 프레임입니다.", "/qna/artwall-mandeulgi.html", "아트월 만들기", [("/bigyo/darugi-types.html", "다루끼(가는 각재) 종류")]),
+   (40, 36, "파란 칠 띠벽", "paint", "벽 위쪽을 한 가지 색으로 칠해 포인트를 줬습니다.", "/qna/self-paint-junbimul.html", "셀프 페인트 준비물", []),
+   (25, 15, "레일 조명", "ceiling", "천장에 레일을 달고 스포트 조명을 끼운 방식입니다.", "/qna/seokgo-cheonjang-jomyeong.html", "천장 조명 자리", [])]),
+ ("cafe-osb-shelf-wall", "OSB 벽과 계단식 선반 — 카페 벽 전체를 OSB로 마감", G + "cafe-osb-shelf-wall.jpg", "사진: 영진종합목재 제공",
+  "벽 전체를 OSB 판으로 덮고, 같은 OSB로 상자 모양 선반과 벽 속 수납 칸을 만든 카페 벽입니다. 앞에는 여러 색으로 칠한 원목 테이블이 놓여 있습니다.",
+  [(90, 40, "OSB 벽 마감", "woodwall", "나무 조각을 눌러 만든 OSB 판을 그대로 벽 마감재로 썼습니다.", "/qna/osb-magam.html", "OSB 마감", [("/gagyeok/osb-gagyeok.html", "OSB 가격"), ("/qna/osb-paint.html", "OSB 칠하기")]),
+   (40, 46, "OSB 상자 선반", "shelf", "OSB를 상자 모양으로 짜서 벽에 붙인 선반입니다.", "/qna/floating-shelf.html", "무지주 선반", [("/qna/osb-hapan.html", "OSB와 합판 차이")]),
+   (32, 72, "벽 속 수납 칸", "shelf", "벽을 앞으로 덧대고 일부를 비워 액자·소품을 놓는 칸을 만들었습니다.", "/mandeul/byeokseonban.html", "벽선반 만들기", []),
+   (76, 70, "색 스테인 원목 테이블", "furniture", "판마다 다른 색 스테인을 칠한 원목 상판 테이블입니다.", "/mandeul/teibeul.html", "원목 테이블 만들기", [("/qna/bultumyeong-stain.html", "불투명 스테인")])]),
+ ("cafe-osb-hidden-door", "OSB 벽 속 숨은 문 — 벽과 같은 판으로 만든 히든 도어", G + "cafe-osb-hidden-door.jpg", "사진: 영진종합목재 제공",
+  "OSB 벽과 같은 판으로 문짝을 만들어 문이 벽처럼 보이게 한 카페 구석입니다. 옆에는 OSB 코너 선반과 원목 사이드 테이블이 있습니다.",
+  [(68, 55, "OSB 히든 도어", "door", "벽과 같은 OSB 판으로 문짝을 만들어 문틀이 거의 보이지 않습니다.", "/bigyo/hidden-vs-normal-door.html", "히든 도어 vs 일반 문", [("/qna/hidden-door-danjeom.html", "히든 도어 단점")]),
+   (64, 21, "경첩", "hardware", "문짝 옆에 단 경첩입니다. 문 무게에 맞게 개수를 정합니다.", "/bigyo/gyeongcheop-types.html", "경첩 종류·가격", []),
+   (36, 40, "OSB 코너 선반", "shelf", "모서리를 따라 OSB 선반을 둘러 붙였습니다.", "/qna/floating-shelf.html", "무지주 선반", []),
+   (50, 82, "OSB 벽", "woodwall", "벽과 기둥을 OSB로 감싸 같은 질감으로 맞췄습니다.", "/qna/osb-magam.html", "OSB 마감", [("/gagyeok/osb-gagyeok.html", "OSB 가격")]),
+   (14, 86, "원목 사이드 테이블", "furniture", "물·컵을 두는 작은 원목 테이블입니다.", "/mandeul/saideu.html", "사이드 테이블 만들기", [])]),
+ ("cafe-woodpanel-wall", "나뭇결 벽 패널과 우드 천장 — 카페 좌석 벽 자재 둘러보기", G + "cafe-woodpanel-wall.jpg", "사진: 영진종합목재 제공",
+  "밝은 나뭇결 패널을 세로로 붙인 벽에 액자를 걸고, 천장도 나무 무늬로 마감한 카페 좌석입니다.",
+  [(25, 45, "나뭇결 벽 패널", "woodwall", "밝은 나뭇결 패널을 세로로 엇갈려 붙였습니다.", "/qna/wallpanel-vs-tempa.html", "월패널 vs 템바보드", [("/qna/wainscoting-sigong.html", "벽 패널 시공")]),
+   (35, 7, "나무 무늬 천장", "ceiling", "천장도 나무 무늬 판으로 덮어 벽과 어울리게 했습니다.", "/qna/ruba-vs-hapan-cheonjang.html", "루바 vs 합판 천장", []),
+   (62, 18, "펜던트 조명", "ceiling", "천장에 단 철제 펜던트 조명입니다.", "/qna/seokgo-cheonjang-jomyeong.html", "천장 조명 자리", []),
+   (58, 42, "액자 걸기", "hardware", "패널 벽에 액자 여러 개를 모아 걸었습니다.", "/qna/byeok-pis.html", "벽에 피스 박기", []),
+   (65, 86, "색 스테인 원목 테이블", "furniture", "여러 색 줄무늬로 칠한 원목 테이블입니다.", "/mandeul/teibeul.html", "원목 테이블 만들기", [])]),
+]
+
 # 방문자가 사진찾기에서 올린 공간 사진(자동 인식·얼굴/번호판 자동 모자이크) — .github/scripts/wwup_pull.py 가 채움
 import json as _json, os as _os
 _VP = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "data", "gonggan_visitor.json")
