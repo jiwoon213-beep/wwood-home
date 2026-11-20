@@ -2665,7 +2665,7 @@ EV.forEach(function(s){var t=document.createElement("tr");t.innerHTML="<td>"+s[1
         for _rx, _pgs in _ttmap:
             _its = [d for d in _tti if re.search(_rx, d["title"])]
             if not _its: continue
-            _cards = "".join('<a class="ttm" href="/tteori/' + d["id"] + '.html">' + (('<img loading="lazy" src="/assets/tteori/' + d["photos"][0] + '" alt="">') if d["photos"] else '') + '<b>' + E(d["title"]) + '</b><span>' + ((_ttm.won(d["price"]) + ("/" + E(d["unit"]) if d["unit"] else "")) if d["price"] else "매장 문의") + '</span></a>' for d in _its[:6])
+            _cards = "".join('<a class="ttm" href="/tteori/' + d["id"] + '.html">' + (('<img loading="lazy" width="300" height="300" src="' + (("/assets/t/tteori/" + os.path.splitext(d["photos"][0])[0] + ".webp") if os.path.exists(ROOT + "/assets/t/tteori/" + os.path.splitext(d["photos"][0])[0] + ".webp") else ("/assets/tteori/" + d["photos"][0])) + '" alt="' + E(d["title"]) + '">') if d["photos"] else '') + '<b>' + E(d["title"]) + '</b><span>' + ((_ttm.won(d["price"]) + ("/" + E(d["unit"]) if d["unit"] else "")) if d["price"] else "매장 문의") + '</span></a>' for d in _its[:6])
             _box = ('<section class="wrap sec ttbx"><h2 class="tth">🏷 떨이몰 <small>수량 한정 재고 정리 · 옆으로 넘겨 보세요 ›</small></h2><div class="ttmr">' + _cards + '<a class="ttm ttall" href="/tteori/"><b>떨이몰 전체 보기 ›</b></a></div></section>')
             for _k in _pgs:
                 _f = os.path.join(OUT, _k + ".html")
