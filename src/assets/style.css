@@ -686,3 +686,29 @@ dl.abf{margin:14px 0}dl.abf dt{font-weight:800;font-size:16.5px;margin-top:16px}
 .apcase *{text-decoration:none!important}
 .apsv svg a,.apsv svg a *{text-decoration:none!important;border:0!important;box-shadow:none!important}.apsv svg a::after,.apsv svg a::before{display:none!important;content:none!important}
 .sjgo{display:flex;align-items:center;gap:14px;margin:14px 0;padding:14px 16px;border-radius:18px;background:#fff;border:1.5px solid #1D1B18;color:var(--ink,#1D1B18)!important;text-decoration:none!important;box-shadow:0 4px 14px rgba(29,27,24,.08)}.sjgo i{flex:none;width:48px;height:48px;border-radius:14px;background:#1D1B18;color:#fff;display:flex;align-items:center;justify-content:center}.sjgo span{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.sjgo b{font-size:16.5px;line-height:1.3}.sjgo small{font-size:13.5px;color:#6b645a;line-height:1.4}.sjgo u{flex:none;text-decoration:none;font-size:26px;color:#b9b1a5}.sjgo:active{transform:scale(.99)}
+/* 2026-11-20 전체 디자인 정리 — 링크 밑줄·카드 비율·간격 통일 */
+main a:not([class]){text-decoration:none;font-weight:700;color:var(--ink)}
+main :is(p,li,td,dd,figcaption)>a:not([class]){text-decoration:underline;text-decoration-color:rgba(200,40,30,.28);text-decoration-thickness:1.5px;text-underline-offset:3px}
+main :is(p,li,td,dd,figcaption)>a:not([class]):hover{color:var(--red);text-decoration-color:var(--red)}
+.crumb a{text-decoration:none!important;color:var(--mut)!important;font-weight:600!important}
+.crumb a:hover{color:var(--red)!important}
+.mgl li:has(>a:only-child){padding:0;transition:border-color .15s}
+.mgl li:has(>a:only-child):hover{border-color:var(--red)}
+.mgl li>a:only-child{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 16px;text-decoration:none!important;color:var(--ink)}
+.mgl li>a:only-child::after{content:"›";color:#b9b2a8;font-weight:800;font-size:18px;line-height:1}
+.pc>.newb{position:static!important;display:inline-flex!important;align-self:flex-start;width:auto;margin:0 0 4px}
+.pc,.uc,.mc,.gi,.pd{border-radius:14px}
+.b{border-radius:12px}
+footer a{text-decoration:none!important}
+footer a:hover{text-decoration:underline!important}
+@media(max-width:600px){
+ .wrap{padding:0 16px}.sec{padding:30px 16px}
+ h1{font-size:28px;line-height:1.3;letter-spacing:-.6px;word-break:keep-all}
+ h2{font-size:21px;line-height:1.35;letter-spacing:-.3px;word-break:keep-all}
+ h3{font-size:17px;word-break:keep-all}
+ .lead{font-size:16px;line-height:1.75}
+ main p,main li{word-break:keep-all}
+ .b{min-height:46px;font-size:15.5px;padding:0 16px}
+}
+.mli{align-items:flex-start}
+.mli li{flex-basis:230px}
