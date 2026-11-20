@@ -498,6 +498,9 @@ try:
 except Exception:
     _VIS = []
 for _v in _VIS:
+    if not _v.get("spots") and _v.get("how"):
+        _h0 = _v["how"][0]
+        _v["spots"] = [{"x": 50, "y": 50, "c": "만들기" if "/mandeul/" in _h0["l"] else "시공법", "n": _h0["n"].split(" — ")[0], "l": _h0["l"], "u": "", "k": "furniture" if "/mandeul/" in _h0["l"] else "wall"}]
     if not _v.get("spots"): continue
     _cs = []
     for _s in _v["spots"]:
