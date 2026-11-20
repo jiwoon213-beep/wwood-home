@@ -568,6 +568,30 @@ SCENES += [
    (65, 86, "색 스테인 원목 테이블", "furniture", "여러 색 줄무늬로 칠한 원목 테이블입니다.", "/mandeul/teibeul.html", "원목 테이블 만들기", [])]),
 ]
 
+
+SCENES += [
+ ("cafe-yellow-molding-ceiling", "노란 몰딩 박스 벽과 파란 보 — 카페 천장·벽 색 포인트", G + "cafe-yellow-molding-ceiling.jpg", "사진: 영진종합목재 제공",
+  "천장 아래 벽을 몰딩으로 네모 칸을 나눠 노랗게 칠하고, 천장 보는 파랗게 칠해 색을 대비시킨 카페입니다. 레일 조명과 나무 블라인드가 보입니다.",
+  [(35, 33, "몰딩 박스 벽(웨인스코팅)", "molding", "얇은 몰딩으로 벽에 네모 칸을 만든 뒤 벽과 같은 색으로 칠했습니다.", "/qna/wainscoting-sigong.html", "몰딩 박스 벽 만들기", [("/qna/wainscoting-paint.html", "몰딩 박스 칠하기"), ("/gagyeok/molding-gagyeok.html", "몰딩 가격")]),
+   (47, 25, "파란 칠 보 감싸기", "paint", "천장 보를 판으로 감싸고 진한 파랑으로 칠해 포인트를 줬습니다.", "/qna/self-paint-junbimul.html", "셀프 페인트 준비물", []),
+   (70, 22, "레일 조명", "ceiling", "천장에 레일을 달고 스포트 조명을 원하는 곳에 끼웠습니다.", "/qna/seokgo-cheonjang-jomyeong.html", "천장 조명 자리", []),
+   (24, 40, "나무 블라인드", "blind", "창 위쪽에 단 나무(우드) 블라인드입니다.", "/yeongyeol/blind.html", "블라인드 시공 연결", []),
+   (32, 70, "흰색 바깥 천장판", "ceiling", "창 밖 차양 아래를 흰색 긴 판으로 덮어 마감했습니다.", "/qna/pvc-sopit.html", "PVC 소핏", [])]),
+ ("cafe-green-counter", "초록 칠 카운터와 원목 상판 — 몰딩 박스로 꾸민 곡선 카운터", G + "cafe-green-counter.jpg", "사진: 영진종합목재 제공",
+  "둥글게 휜 카운터 앞면에 몰딩으로 네모 칸을 내고 초록으로 칠한 뒤, 위에는 옹이가 보이는 원목 상판을 얹은 모습입니다.",
+  [(62, 60, "몰딩 박스 카운터 앞면", "molding", "카운터 앞면에 몰딩으로 칸을 나누고 같은 초록으로 칠했습니다.", "/qna/wainscoting-sigong.html", "몰딩 박스 만들기", [("/qna/wainscoting-paint.html", "몰딩 박스 칠하기")]),
+   (55, 22, "원목 카운터 상판", "jipseong", "옹이와 결이 살아 있는 두꺼운 원목 판을 상판으로 얹었습니다.", "/qna/sangpan-goreugi.html", "상판 고르기", [("/gagyeok/jipseong-gagyeok.html", "집성판 가격"), ("/qna/danish-oil.html", "대니쉬 오일")]),
+   (55, 82, "곡선 걸레받이", "molding", "휜 카운터 아래를 따라 걸레받이를 둘렀습니다.", "/gagyeok/molding-gagyeok.html", "몰딩·걸레받이 가격", []),
+   (40, 11, "원목 선반", "shelf", "카운터 안쪽에 기계를 올려 두는 원목 선반입니다.", "/mandeul/byeokseonban.html", "선반 만들기", [])]),
+ ("cafe-curve-ceiling", "곡선 천장 단과 레일 조명 — 노란 카페 천장 자재 둘러보기", G + "cafe-curve-ceiling.jpg", "사진: 영진종합목재 제공",
+  "천장 단 끝을 물결처럼 곡선으로 만들고 노랗게 칠한 카페입니다. 왼쪽은 OSB 벽과 선반, 아래에는 메뉴판이 걸려 있습니다.",
+  [(35, 30, "곡선 천장 단", "ceiling", "각재로 곡선 틀을 짜고 얇은 판을 휘어 붙인 뒤 칠한 천장 단입니다.", "/sigongbeop/seokgo-cheonjang.html", "석고보드 천장", [("/qna/ojingeo-hapan.html", "휘는 합판(오징어합판)")]),
+   (52, 38, "레일 조명", "ceiling", "곡선 단 아래로 레일을 길게 달고 스포트 조명을 끼웠습니다.", "/qna/seokgo-cheonjang-jomyeong.html", "천장 조명 자리", []),
+   (10, 62, "OSB 선반", "shelf", "OSB로 만든 벽 선반입니다.", "/qna/floating-shelf.html", "무지주 선반", []),
+   (20, 80, "OSB 벽", "woodwall", "벽을 OSB 판으로 마감했습니다.", "/qna/osb-magam.html", "OSB 마감", [("/gagyeok/osb-gagyeok.html", "OSB 가격")]),
+   (72, 50, "노란 칠 벽", "paint", "벽과 천장을 같은 노랑으로 칠해 넓어 보이게 했습니다.", "/qna/self-paint-junbimul.html", "셀프 페인트 준비물", [])]),
+]
+
 # 방문자가 사진찾기에서 올린 공간 사진(자동 인식·얼굴/번호판 자동 모자이크) — .github/scripts/wwup_pull.py 가 채움
 import json as _json, os as _os
 _VP = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "data", "gonggan_visitor.json")
