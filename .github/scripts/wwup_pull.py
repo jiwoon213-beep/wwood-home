@@ -15,7 +15,7 @@ def get(q, raw=False):
     if raw: return b
     try: return json.loads(b.decode("utf-8", "replace"))
     except Exception:
-        print("서버 응답이 JSON 아님:", st, b[:300].decode("utf-8", "replace").replace(KEY, "***")); sys.exit(1)
+        t = re.sub(r"<style.*?</style>|<script.*?</script>|<[^>]+>", " ", b.decode("utf-8", "replace"), flags=re.S); print("서버 응답이 JSON 아님:", st, re.sub(r"\s+", " ", t)[:500].replace(KEY, "***")); sys.exit(1)
 ids = get({"list": 1}).get("ids", [])
 db = json.load(open(DB, encoding="utf-8")) if os.path.exists(DB) else []
 have = {x["id"] for x in db} | ({x["id"] for x in json.load(open(DONE, encoding="utf-8"))} if os.path.exists(DONE) else set())
