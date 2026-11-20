@@ -595,7 +595,7 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
 <main>{body}{_SHR if path not in ("offline.html", "404.html") else ""}</main>
 <footer><div class="wrap">월드건축자재 · 영진종합목재(영진목재) · 상호 영진우드 · <a href="/daejeon.html">대전 목재</a> · <a href="/sejong.html">세종 목재</a> · <a href="/calc.html">자재 계산기</a> · <a href="/cut.html">합판 재단 미리보기</a> · <a href="/mokgongso.html">목재 재단(목공소)</a> · <a href="/jaedan-baesong.html">재단 후 전국 배송</a> · <a href="/sajin.html">사진으로 제품 찾기</a> · <a href="/doumi.html">셀프 인테리어 도우미</a> · <a href="/widget.html">계산기 퍼가기</a> · <a href="/apt/">아파트별 자재</a> · <a href="/mandeul/">DIY 만들기</a> · <a href="/sigongbeop/">인테리어 자재 시공법</a> · <a href="/baesong.html">전국 배송</a> · <a href="/jeonguk/">배송 지역</a> · <a href="/jajae/">자재 백과</a> · <a href="/bigyo/">자재·인테리어 비교</a> · <a href="/qna/">하는 법 Q&amp;A</a> · <a href="/issue/">이슈·시즌 자재</a> · <a href="/gyugyeok.html">규격표</a> · <a href="/bangbu-gyugyeok.html">방부목 규격</a> · <a href="/deck-pis.html">데크 피스</a> · <a href="/island-size.html">아일랜드 식탁 사이즈</a> · <a href="/muge.html">자재 무게 계산</a> · <a href="/seokgo-pis.html">석고보드 피스</a> · <a href="/pis-gilee.html">피스 길이</a> · <a href="/gagyeok/">자재 가격 가이드</a> · <a href="/cheolmul/">목재 철물</a> · <a href="/taka/">타카·타카핀</a> · <a href="/yerim/">예림 중문·도어</a> · <a href="/younglim/">영림 도어·중문·필름</a> · <a href="/shenu/">쉐누 도어·몰딩</a> · <a href="/bupum/">철물·공구·부속</a> · <a href="/bondex/">본덱스 스테인·페인트</a> · <a href="/nichiha/">니치하 세라믹 사이딩</a> · <a href="/geonjae/">목조·외장·내장 건축자재</a> · <a href="/suip/">수입 목조주택 자재·창호</a> · <a href="/local/">지역별 시공</a> · <a href="/faq.html">자주 묻는 질문</a> · <a href="/about.html">영진종합목재 한눈에</a> · <a href="/yongeo.html">현장 용어</a> · <a href="/jeonche.html">전체 페이지</a> · <a href="/privacy.html">개인정보처리방침</a> | {ADDR} | {TEL} | <a href="mailto:{EMAIL}">{EMAIL}</a> | {HOURS}<br>
 시공: 월드아키텍쳐 | 대표 김지운 | 사업자등록번호 281-05-03197 | {LIC}<br>사이트의 매장·상품·시공 사진은 영진종합목재가 직접 촬영한 저작물로(제조사 제품 사진 제외) 무단 복제·사용을 금합니다.<br>
-유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/hit/wwood-co-kr/";
+유튜브 <a href="{YT}">@월드건축자재DIY</a> · <a href="{YT2}">@월드도어</a> · 도매회원 쇼핑몰 <a href="{DOME}">wwood.kr</a> · 표시 가격은 부가세 별도 소매 기준가이며 결제·재단은 매장에서 합니다.</div></footer><script>addEventListener("load",function(){{setTimeout(function(){{(function(){{try{{var k=new Date(Date.now()+9*3600e3).toISOString().slice(0,10).replace(/-/g,""),b="https://abacus.jasoncameron.dev/hit/wwood-co-kr/";
 function rd(x){{var v=null;try{{v=localStorage.getItem(x)}}catch(e){{}}if(v===null){{var m=document.cookie.match(new RegExp("(?:^|; )"+x+"=([^;]*)"));v=m?m[1]:null}}return v}}
 function wr(x,v){{try{{localStorage.setItem(x,v)}}catch(e){{}}try{{document.cookie=x+"="+v+"; max-age=34560000; path=/; SameSite=Lax"}}catch(e){{}}}}
 function lq(){{try{{return JSON.parse(localStorage.getItem("wwq")||"[]")}}catch(e){{return []}}}}function sq(q){{try{{localStorage.setItem("wwq",JSON.stringify(q.slice(-40)))}}catch(e){{}}}}
@@ -604,7 +604,7 @@ window.WWH=function(x){{var q=lq();q.push(x);sq(q);fl()}};
 var bot=navigator.webdriver||/bot|crawl|spider|slurp|lighthouse|headless|preview/i.test(navigator.userAgent);
 if(!bot&&rd("vcd")!==k){{wr("vcd",k);var rf=document.referrer||"",src=/youtube|youtu\\.be/.test(rf)?"yt":/naver/.test(rf)?"naver":/google/.test(rf)?"google":/daum|kakao/.test(rf)?"daum":/bing/.test(rf)?"bing":/daangn|karrot/.test(rf)?"daangn":/wwood\\.kr/.test(rf)?"wwoodkr":rf&&rf.indexOf(location.host)<0?"etc":"direct";
 WWH("d"+k);WWH("total");WWH("src-"+src);WWH("src-"+src+"-d"+k)}}else fl();
-addEventListener("online",fl);addEventListener("pagehide",function(){{busy=0;fl()}})}}catch(e){{}}}})();</script>
+addEventListener("online",fl);addEventListener("pagehide",function(){{busy=0;fl()}})}}catch(e){{}}}})()}},800)}});</script>
 <div class="mbar"><a class="b g" href="/visit.html">매장 길찾기</a><a class="b d" href="tel:{TEL.replace('-','')}">전화</a></div>
 <script src="/assets/site.js?v={ASSET_V}" defer></script></body></html>"""
     if PREFIX: doc = doc.replace('href="/', f'href="{PREFIX}/').replace('src="/', f'src="{PREFIX}/')
@@ -2507,7 +2507,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
             _t2 = _yrx.sub(_yf, _t)
             _t2 = _t2.replace('/hqdefault.jpg" loading="lazy" decoding="async"', '/hqdefault.jpg" fetchpriority="high"', 1)  # 첫 영상 썸네일은 바로(화면 첫 그림)
             _fm = re.search(r'src="(https://i\.ytimg\.com/vi/[^"/]+/hqdefault\.jpg)" fetchpriority="high"', _t2)
-            if _fm and 'rel="preload" as="image"' not in _t2: _t2 = _t2.replace("</head>", f'<link rel="preload" as="image" href="{_fm.group(1)}" fetchpriority="high"></head>', 1)
+            if _fm and 'rel="preload" as="image"' not in _t2: _t2 = _t2.replace('<meta charset="utf-8">', f'<meta charset="utf-8"><link rel="preconnect" href="https://i.ytimg.com"><link rel="preload" as="image" href="{_fm.group(1)}" fetchpriority="high">', 1)
             if _t2 != _t: open(_f, "w", encoding="utf-8").write(_t2)
     # NEW 표시 — 7일 안에 새로 올라온 DIY 만들기·시공법·유튜브 영상/쇼츠·소식 글 카드
     _nd = datetime.date.today(); _NEWD = 7
@@ -2827,6 +2827,10 @@ EV.forEach(function(s){var t=document.createElement("tr");t.innerHTML="<td>"+s[1
         _t = _t.replace(f"<title>{_k}</title>", f"<title>{_new}</title>", 1).replace(f'content="{_k}"', f'content="{_new}"')
         _t = re.sub(r'(<meta name="description" content=")([^"]*)"', lambda m: m.group(1) + m.group(2).rstrip(". ") + f". 품번 {_id}." + '"', _t, count=1) if "/p/" in _f else _t
         open(_f, "w", encoding="utf-8").write(_t)
+    # 첫 화면 속도: 홈은 style.css를 문서 안에 넣어 렌더링 차단 요청 1개를 없앰
+    _ix = f"{OUT}/index.html"; _ih = open(_ix, encoding="utf-8").read()
+    _ih = re.sub(r'<link rel="stylesheet" href="/assets/style\.css\?v=[^"]*">', lambda m: "<style>" + open(f"{OUT}/assets/style.css", encoding="utf-8").read() + "</style>", _ih, count=1)
+    open(_ix, "w", encoding="utf-8").write(_ih)
     print(len(SITEMAP), "pages →", OUT)
 
 import hashlib
