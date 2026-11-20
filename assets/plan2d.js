@@ -66,5 +66,44 @@ function steps(p){var t=T[p.t],th=MT[t.m][1],W=p.w,D=p.d,H=p.h,n=p.s||0,iw=W-2*t
  fhap:["기존 바닥의 들뜬 곳과 먼지를 정리하고 수평을 확인합니다.","합판을 이음이 한 줄로 몰리지 않게 엇갈려 깝니다.","본드와 피스(또는 타카)로 고정하고 벽 쪽은 조금 띄웁니다.","이음 단차를 사포로 다듬고 바닥재를 시공합니다."],
  deck:["바닥을 다지고 기초(주춧돌·블록)를 수평으로 놓습니다.","장선을 400 간격으로 놓고 수평을 맞춰 고정합니다.","데크재를 틈을 일정하게 띄워 깔고 장선마다 스테인리스 피스 2개씩 박습니다.","이음은 장선 위에서 엇갈리게 하고, 끝을 정리한 뒤 오일스테인으로 마감합니다."]};
  S.book=S.cab;S.bench=S.table;return(S[p.t]||[]).filter(function(x){return x})}
-window.PL2={steps:steps,T:T,MT:MT,guess:guess,dims:dims,parts:parts,svg:svg,table:table};
+function model(p){var t=T[p.t],th=MT[t.m][1],W=p.w,D=p.d||0,H=p.h||0,n=p.s||0,iw=W-2*th,B=[],C=[],i,j,A=function(g,x,y,z,w,d,h){B.push({g:g,b:[x,y,z,w,d,h]})};
+ if(p.t=="cab"||p.t=="book"){A(0,0,0,0,th,D,H);A(0,W-th,0,0,th,D,H);A(1,th,0,0,iw,D,th);A(1,th,0,H-th,iw,D,th);for(i=1;i<=n;i++)A(2,th,6,th+(H-2*th)*i/(n+1)-th/2,iw,D-10,th);A(n?3:2,0,-6,0,W,6,H);
+  C=["옆판 2장("+D+"×"+H+")을 세웁니다.","천판·지판("+iw+"×"+D+")을 끼워 본드·피스로 고정합니다."];if(n)C.push("선반 "+n+"장("+iw+"×"+(D-10)+")을 같은 간격으로 고정합니다.");C.push("직각을 맞추고 뒷판("+W+"×"+H+")을 뒤에 고정합니다.")}
+ else if(p.t=="shelf"){n=n||1;var bk=Math.min(150,H/4);A(-1,-100,-20,0,W+200,20,H+60);for(i=0;i<n;i++){var z=n==1?H/2:bk+(H-th-bk)*i/(n-1);A(0,W*.15,0,z-bk,20,D*.8,bk);A(0,W*.85-20,0,z-bk,20,D*.8,bk);A(1,0,0,z,W,D,th)}
+  C=["벽에 수평을 보고 까치발 "+(n*2)+"개를 고정합니다.","까치발 위에 선반판("+W+"×"+D+") "+n+"장을 올려 고정합니다."]}
+ else if(p.t=="table"||p.t=="bench"){var l=p.t=="table"?60:45,lh=H-th;[[0,0],[W-l,0],[0,D-l],[W-l,D-l]].forEach(function(q){A(0,q[0],q[1],0,l,l,lh)});A(1,l,l/2-10,lh-80,W-2*l,20,80);A(1,l,D-l/2-10,lh-80,W-2*l,20,80);A(1,l/2-10,l,lh-80,20,D-2*l,80);A(1,W-l/2-10,l,lh-80,20,D-2*l,80);A(2,0,0,lh,W,D,th);
+  C=["다리 4개("+l+"각 "+lh+")를 준비해 자리를 잡습니다.","다리 사이에 띠장을 대고 사각 틀을 짭니다.","틀 위에 상판("+W+"×"+D+")을 올려 아래에서 피스로 고정합니다."]}
+ else if(p.t=="pyeong"){var hl=H-25-89;A(0,0,0,hl,W,38,89);A(0,0,D-38,hl,W,38,89);var nj=Math.max(3,Math.ceil(W/450)+1);for(i=0;i<nj;i++)A(0,(W-38)*i/(nj-1),38,hl,38,D-76,89);var lx=W>1500?[0,(W-89)/2,W-89]:[0,W-89];lx.forEach(function(x){A(1,x,0,0,89,89,hl);A(1,x,D-89,0,89,89,hl)});var bn=Math.ceil(D/150);for(i=0;i<bn;i++)A(2,0,i*D/bn+4,H-25,W,D/bn-8,25);
+  C=["멍에 2개 사이에 장선을 대고 바닥틀을 짭니다.","기둥(89×89)을 세워 바닥틀에 고정하고 수평을 맞춥니다.","윗판(폭 140) "+bn+"장을 틈을 띄워 깔고 피스로 고정합니다."]}
+ else if(p.t=="box"){A(0,0,0,0,W,th,H);A(0,0,D-th,0,W,th,H);A(0,0,th,0,th,D-2*th,H);A(0,W-th,th,0,th,D-2*th,H);A(1,th,th,th,W-2*th,D-2*th,th);
+  C=["앞뒤판("+W+"×"+H+") 사이에 옆판을 끼워 사각 틀을 만듭니다.","틀 안쪽에 바닥판("+(W-2*th)+"×"+(D-2*th)+")을 고정합니다."]}
+ else if(t.sh&&t.ha){var a=t.sh[0],b=t.sh[1];A(-1,0,-100,0,W,100,H);for(i=0;i<=W;i+=455)A(0,Math.min(i,W-38),0,0,38,38,H);for(i=0;i<W;i+=a)for(j=0;j<H;j+=b)A(1,i+2,38,j+2,Math.min(a,W-i)-4,th,Math.min(b,H-j)-4);
+  C=["벽에 하지 각재를 455 간격으로 세워 고정합니다.",MT[t.m][0]+" 원판("+a+"×"+b+")을 각재 위에서 이음이 생기게 붙입니다."]}
+ else if(t.sh){var a2=t.sh[0],b2=t.sh[1];A(-1,-60,-60,-40,W+120,D+120,40);for(j=0;j<D;j+=a2)for(i=-(j/a2%2)*b2/2;i<W;i+=b2){var x0=Math.max(0,i),x1=Math.min(W,i+b2);if(x1>x0)A(0,x0+2,j+2,0,x1-x0-4,Math.min(a2,D-j)-4,th)}
+  C=["합판을 이음이 한 줄로 몰리지 않게 엇갈려 깔고 고정합니다."]}
+ else if(t.bd){var nj2=Math.ceil(W/400)+1;for(i=0;i<nj2;i++)A(0,Math.min(i*400,W-38),0,0,38,D,89);var bw=145,row=0;for(j=0;j<D;j+=bw,row++){var off=(row%2)*t.bd[1]/2;for(i=-off;i<W;i+=t.bd[1]){var a3=Math.max(0,i),b3=Math.min(W,i+t.bd[1]);if(b3>a3)A(1,a3,j,89,b3-a3-3,Math.min(140,D-j),25)}}
+  C=["장선(2×4)을 400 간격으로 놓고 수평을 맞춥니다.","데크재를 틈을 일정하게 띄워 깔고 장선마다 피스로 고정합니다."]}
+ return{B:B,C:C}}
+function iso(p,lock){var M=model(p),B=M.B,C=M.C,ng=C.length,co=Math.cos(Math.PI/6),si=.5,pr=function(x,y,z){return[(x-y)*co,(x+y)*si-z]};
+ var mn=[1e9,1e9],mx=[-1e9,-1e9];B.forEach(function(o){var b=o.b;for(var a=0;a<8;a++){var q=pr(b[0]+(a&1?b[3]:0),b[1]+(a&2?b[4]:0),b[2]+(a&4?b[5]:0));mn[0]=Math.min(mn[0],q[0]);mn[1]=Math.min(mn[1],q[1]);mx[0]=Math.max(mx[0],q[0]);mx[1]=Math.max(mx[1],q[1])}});
+ var PW=360,PH=250,k=Math.min((PW-40)/(mx[0]-mn[0]||1),(PH-40)/(mx[1]-mn[1]||1)),ox=(PW-(mx[0]-mn[0])*k)/2-mn[0]*k,oy=(PH-(mx[1]-mn[1])*k)/2-mn[1]*k;
+ var S=(function(L){var n=L.length,e=1,ins=[],out=[],i,j,R=[],key=function(o){var a=o.b;return a[0]+a[3]/2+a[1]+a[4]/2+a[2]+a[5]/2};
+ /* a가 b보다 먼저(뒤쪽) 그려져야 하면 true: 한 축에서 완전히 떨어져 있고 a가 보는 쪽 반대편 */
+ var bef=function(a,b){return a[0]+a[3]<=b[0]+e||a[1]+a[4]<=b[1]+e||a[2]+a[5]<=b[2]+e};
+ for(i=0;i<n;i++){ins.push(0);out.push([])}
+ for(i=0;i<n;i++)for(j=0;j<n;j++)if(i!=j){var A=L[i].b,Bb=L[j].b;if(bef(A,Bb)&&!bef(Bb,A)){out[i].push(j);ins[j]++}}
+ var q=[];for(i=0;i<n;i++)if(!ins[i])q.push(i);var done={};
+ while(R.length<n){if(!q.length){var m=-1;for(i=0;i<n;i++)if(!done[i]&&(m<0||key(L[i])<key(L[m])))m=i;q.push(m)}
+  q.sort(function(a,b){return key(L[a])-key(L[b])});var c=q.shift();if(done[c])continue;done[c]=1;R.push(L[c]);out[c].forEach(function(j){if(--ins[j]==0&&!done[j])q.push(j)})}
+ return R})(B);
+ function pt(x,y,z){var q=pr(x,y,z);return(q[0]*k+ox).toFixed(1)+","+(q[1]*k+oy).toFixed(1)}
+ function face(c,f){return'<polygon points="'+c.join(" ")+'" fill="'+f[0]+'" stroke="'+f[1]+'" stroke-width="'+f[2]+'" stroke-linejoin="round"/>'}
+ function panel(st){var o="";S.forEach(function(it){if(it.g>st&&st<ng)return;var b=it.b,x=b[0],y=b[1],z=b[2],w=b[3],d=b[4],h=b[5],cur=it.g==st,ctx=it.g<0;
+  var top=cur?"#f08a52":ctx?"#d9d6d0":"#e6cfa6",fr=cur?"#e0703a":ctx?"#c9c5be":"#d4b98c",rt=cur?"#c95e2c":ctx?"#b9b4ac":"#bfa276",sk=cur?["#b3261e",1.6]:["#6b5a46",.6];
+  o+=face([pt(x,y+d,z),pt(x+w,y+d,z),pt(x+w,y+d,z+h),pt(x,y+d,z+h)],[fr,sk[0],sk[1]])+face([pt(x+w,y,z),pt(x+w,y+d,z),pt(x+w,y+d,z+h),pt(x+w,y,z+h)],[rt,sk[0],sk[1]])+face([pt(x,y,z+h),pt(x+w,y,z+h),pt(x+w,y+d,z+h),pt(x,y+d,z+h)],[top,sk[0],sk[1]])});return o}
+ var E=function(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})};
+ var h='<div class="pl2iso">';for(var st=0;st<=ng;st++){var cap=st<ng?C[st]:"완성! 흔들림을 확인하고 모서리를 사포로 다듬은 뒤 오일·스테인으로 마감합니다.";if(lock)cap=cap.replace(/\d+(×\d+)+|\d{3,5}/g,"●●●");
+  h+='<figure><svg viewBox="0 0 '+PW+' '+PH+'" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="13" fill="#c0392b"/><text x="20" y="25" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">'+(st+1)+'</text>'+panel(st)+'</svg><figcaption>'+E(cap)+'</figcaption></figure>'}
+ return h+'</div><p class="pl2isoc">빨간색이 그 단계에서 새로 붙이는 부재예요.</p>'}
+window.PL2={iso:iso,model:model,steps:steps,T:T,MT:MT,guess:guess,dims:dims,parts:parts,svg:svg,table:table};
 })();
