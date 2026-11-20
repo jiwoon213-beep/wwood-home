@@ -685,3 +685,4 @@ dl.abf{margin:14px 0}dl.abf dt{font-weight:800;font-size:16.5px;margin-top:16px}
 .apcase small{color:#f0c896;font-weight:800;font-size:12.5px}.apcase b{font-size:16px;line-height:1.35;color:#fff}.apcase em{font-style:normal;font-size:13px;color:#d9cfbf}
 .apcase *{text-decoration:none!important}
 .apsv svg a,.apsv svg a *{text-decoration:none!important;border:0!important;box-shadow:none!important}.apsv svg a::after,.apsv svg a::before{display:none!important;content:none!important}
+.sjgo{display:flex;flex-direction:column;gap:2px;margin:12px 0;padding:14px 16px;border-radius:16px;background:#1D1B18;color:#fff!important;text-decoration:none!important}.sjgo b{font-size:17px}.sjgo small{color:#e8e1d4}

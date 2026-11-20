@@ -23,6 +23,6 @@ Q = np.clip(np.round(Y * 127), -127, 127).astype(np.int8)
 os.makedirs(out, exist_ok=True)
 np.concatenate([mu.astype(np.float32), W.ravel()]).astype(np.float16).tofile(f"{out}/proj.bin")
 Q.tofile(f"{out}/items.bin")
-it = [{k: x[k] for k in ("n", "i", "s", "c", "l", "d", "u") if x.get(k)} for _, x in rows]
+it = [{k: x[k] for k in ("n", "i", "s", "c", "l", "d", "u", "t") if x.get(k)} for _, x in rows]
 json.dump({"p": P, "dim": D, "d": it}, open(f"{out}/items.json", "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
 print("packed", len(rows), "items")

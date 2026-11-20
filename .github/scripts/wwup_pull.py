@@ -62,7 +62,8 @@ for i in ids:
             sp.append({"x": round(float(s.get("x", 50)), 1), "y": round(float(s.get("y", 50)), 1), "c": lab, "n": nm,
                        "l": str(s.get("l", ""))[:300], "u": re.sub(r"[^a-z0-9-]", "", str(s.get("u", "")))[:40], "k": KEYOF(lab + nm)})
         ks = [x["k"] for x in sp]; cat = next((CATMAP[k] for k in ks if k in CATMAP), "home")
-        db.append({"id": i, "img": fn, "title": str(meta.get("title", ""))[:60], "t": int(meta.get("t", time.time())), "spots": sp, "cat": cat, "faces": nf, "plates": len(P)})
+        how = [{"n": str(h.get("n", ""))[:80], "l": str(h.get("l", ""))} for h in (meta.get("how") or [])[:2] if re.match(r"^/(mandeul|sigongbeop)/[a-z0-9-]+\.html$", str(h.get("l", "")))]
+        db.append({"how": how, "id": i, "img": fn, "title": str(meta.get("title", ""))[:60], "t": int(meta.get("t", time.time())), "spots": sp, "cat": cat, "faces": nf, "plates": len(P)})
         new += 1
         get({"id": i, "del": 1})  # 서버 원본(모자이크 전) 삭제
     except Exception as e:
