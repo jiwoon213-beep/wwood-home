@@ -30,9 +30,9 @@ function cropR(img,cx,cy,z){var c=document.createElement("canvas");c.width=c.hei
 function spots(im,u){var D=I.dim,N=Q.length/D,G=[.2,.5,.8],best={},k,i,j;
  for(var a=0;a<3;a++)for(var b=0;b<3;b++){var r=cropR(im,G[a],G[b],.42),y=proj(emb(r.c)),bi=-1,bs=-9;
   for(i=0;i<N;i++){var s=0,o=i*D;for(j=0;j<D;j++)s+=y[j]*Q[o+j];if(s>bs){bs=s;bi=i}}
-  var p=I.d[bi],c=p.c||p.s||"자재";if(!best[c]||best[c].s<bs)best[c]={s:bs,p:p,x:r.x,y:r.y}}
+  if(bs/127<.55)continue;var p=I.d[bi];if(p.t)continue;var c=p.c||p.s||"자재";if(!best[c]||best[c].s<bs)best[c]={s:bs,p:p,x:r.x,y:r.y}}
  var L=Object.keys(best).map(function(c){best[c].c=c;return best[c]}).sort(function(a,b){return b.s-a.s}).slice(0,6);
- if(!L.length)return;var h='<div class="sjsp"><img src="'+u+'" alt="찍은 사진 분석">';
+ var w0=document.getElementById("sjsa");if(!L.length){w0.innerHTML='<h2>사진 속 자재 분석</h2><p class="small">사진에서 우리 매장 자재를 뚜렷하게 찾지 못했어요. 벽·바닥·문·가구처럼 <b>자재가 크게 보이게</b> 다시 찍어 주세요.</p>';w0.style.display="";return}var h='<div class="sjsp"><img src="'+u+'" alt="찍은 사진 분석">';
  L.forEach(function(d,n){h+='<button type="button" class="sjdot" style="left:'+(d.x*100).toFixed(1)+'%;top:'+(d.y*100).toFixed(1)+'%" data-n="'+n+'">+</button>'});
  h+='</div><div class="sjcards">'+L.map(function(d,n){var l=href(d.p),ext=!d.p.l;return'<div class="sjcd" id="sjcd'+n+'"><small>'+esc(d.c)+'</small><b>'+esc(d.p.n)+'</b><a href="'+esc(l)+'"'+(ext?' target="_blank" rel="noopener"':"")+'>비슷한 제품 보기 ›</a>'+(d.p.u?'<a href="/jaryo/'+esc(d.p.u)+'.html">'+esc(d.c)+' 기준가 ›</a>':'')+'</div>'}).join("")+'</div><p class="small muted">사진을 9칸으로 나눠 칸마다 가장 비슷한 자재 분류를 찾아 표시했어요. 실제와 다를 수 있으니 매장에서 확인해 주세요.</p>';
  var w=document.getElementById("sjsa");w.innerHTML='<h2>사진 속 자재 분석</h2>'+h;w.style.display="";
@@ -54,11 +54,11 @@ function run(f){if(!f)return;var u=URL.createObjectURL(f);document.getElementByI
   var ys=[proj(emb(crop(im,1))),proj(emb(crop(im,.7))),proj(emb(crop(im,.45)))],D=I.dim,N=Q.length/D,S=new Float32Array(N),i,j,t;
   for(i=0;i<N;i++){var b=0;for(t=0;t<3;t++){var s=0,o=i*D,y=ys[t];for(j=0;j<D;j++)s+=y[j]*Q[o+j];if(s>b)b=s}S[i]=b}
   var ix=[];for(i=0;i<N;i++)ix.push(i);ix.sort(function(a,b){return S[b]-S[a]});var seen={},out=[];
-  var MO=(location.search.match(/[?&]m=(mandeul|sigong)/)||[])[1],HW=[];for(i=0;i<ix.length&&HW.length<3;i++){var q=I.d[ix[i]];if(q.t&&(!MO||q.t==(MO=="mandeul"?"m":"g"))&&!seen["h"+q.l]){seen["h"+q.l]=1;HW.push(q)}}window.__sjHW=HW;
+  var MO=(location.search.match(/[?&]m=(mandeul|sigong)/)||[])[1],HW=[];for(i=0;i<ix.length&&HW.length<3;i++){var q=I.d[ix[i]];if(q.t&&S[ix[i]]/127>=.58&&(!MO||q.t==(MO=="mandeul"?"m":"g"))&&!seen["h"+q.l]){seen["h"+q.l]=1;HW.push(q)}}window.__sjHW=HW;
   for(i=0;i<ix.length&&out.length<24;i++){var p=I.d[ix[i]],k=p.n;if(p.t||seen[k])continue;seen[k]=1;out.push(p)}
-  var hw=document.getElementById("sjhw");if(HW.length){hw.innerHTML="<h2>"+(MO=="sigong"?"이렇게 시공해요 — 비슷한 시공법":MO=="mandeul"?"이렇게 만들어요 — 비슷한 만들기":"이렇게 만들거나 시공해요")+"</h2><p class=\"small muted\">사진과 가장 비슷한 만들기·시공법이에요. 들어가면 도면(재단 크기)·만드는 순서·필요한 자재가 있고, 자재를 누르면 우리 매장 제품으로 바로 갑니다.</p>"+HW.map(function(p){return'<a class="sjhwc" href="'+esc(p.l)+'"><img loading="lazy" src="'+esc(img(p))+'" alt=""><span><small>'+esc(p.s)+'</small><b>'+esc(p.n)+'</b><em>도면·만드는 법·자재 보기 ›</em></span></a>'}).join("");hw.style.display=""}
+  var hw=document.getElementById("sjhw");if(HW.length){hw.innerHTML="<h2>"+(MO=="sigong"?"이렇게 시공해요 — 비슷한 시공법":MO=="mandeul"?"이렇게 만들어요 — 비슷한 만들기":"이렇게 만들거나 시공해요")+"</h2><p class=\"small muted\">사진과 가장 비슷한 만들기·시공법이에요. 들어가면 도면(재단 크기)·만드는 순서·필요한 자재가 있고, 자재를 누르면 우리 매장 제품으로 바로 갑니다.</p>"+HW.map(function(p){return'<a class="sjhwc" href="'+esc(p.l)+'"><img loading="lazy" src="'+esc(img(p))+'" alt=""><span><small>'+esc(p.s)+'</small><b>'+esc(p.n)+'</b><em>도면·만드는 법·자재 보기 ›</em></span></a>'}).join("");hw.style.display=""}else if(MO){hw.innerHTML="<h2>"+(MO=="sigong"?"비슷한 시공법":"비슷한 만들기")+"</h2><p class=\"small\">사진과 확실히 비슷한 "+(MO=="sigong"?"시공법":"만들기")+"을 못 찾았어요. 만들 물건이나 시공할 곳이 크게 보이게 다시 찍어 주시거나 <a href=\"/"+(MO=="sigong"?"sigongbeop":"mandeul")+"/\">전체 목록</a>에서 골라 주세요.</p>";hw.style.display=""}
   document.getElementById("sjr").innerHTML=out.map(function(p,n){var l=href(p),ext=!p.l;return'<a class="pd'+(n?"":" top")+'" href="'+esc(l)+'"'+(ext?' target="_blank" rel="noopener"':"")+'><span class="pi"><img loading="lazy" referrerpolicy="no-referrer" src="'+esc(img(p))+'" alt="'+esc(p.n)+'"></span><span><b>'+(n?"":"가장 비슷한 제품 · ")+esc(p.n)+'</b><small>'+esc(p.s||p.c||"")+'</small></span></a>'}).join("");
-  document.getElementById("sjh").style.display="";document.getElementById("sjnote").style.display="";say("");try{spots(im,u)}catch(e){}document.getElementById("sjh").scrollIntoView({behavior:"smooth"});
+  if(S[ix[0]]/127<.5)document.getElementById("sjh").textContent="비슷한 제품 (확실하지 않아요 — 제품을 크게 다시 찍어 보세요)";document.getElementById("sjh").style.display="";document.getElementById("sjnote").style.display="";say("");try{spots(im,u)}catch(e){}document.getElementById("sjh").scrollIntoView({behavior:"smooth"});
  },30)};im.src=u}).catch(function(){say("준비 중이에요. 잠시 뒤 다시 해 주세요.")})}
 try{var ss=sessionStorage.getItem("sjimg");if(ss){sessionStorage.removeItem("sjimg");fetch(ss).then(function(r){return r.blob()}).then(run)}}catch(e){}
 var vd=document.getElementById("sjvid"),vw=document.getElementById("sjv"),SM=null;
