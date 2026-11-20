@@ -63,7 +63,8 @@ for i in ids:
                        "l": str(s.get("l", ""))[:300], "u": re.sub(r"[^a-z0-9-]", "", str(s.get("u", "")))[:40], "k": KEYOF(lab + nm)})
         ks = [x["k"] for x in sp]; cat = next((CATMAP[k] for k in ks if k in CATMAP), "home")
         how = [{"n": str(h.get("n", ""))[:80], "l": str(h.get("l", ""))} for h in (meta.get("how") or [])[:2] if re.match(r"^/(mandeul|sigongbeop)/[a-z0-9-]+\.html$", str(h.get("l", "")))]
-        db.append({"how": how, "id": i, "img": fn, "title": str(meta.get("title", ""))[:60], "t": int(meta.get("t", time.time())), "spots": sp, "cat": cat, "faces": nf, "plates": len(P)})
+        who = re.sub(r"[<>\"'&]", "", str(meta.get("who", "")))[:16].strip()
+        db.append({"who": who, "how": how, "id": i, "img": fn, "title": str(meta.get("title", ""))[:60], "t": int(meta.get("t", time.time())), "spots": sp, "cat": cat, "faces": nf, "plates": len(P)})
         new += 1
         get({"id": i, "del": 1})  # 서버 원본(모자이크 전) 삭제
     except Exception as e:
