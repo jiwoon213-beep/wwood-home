@@ -1,7 +1,7 @@
 :root{--ink:#1D1B18;--red:#C62A1F;--bg:#F6F3EE;--line:#E4DED4;--mut:#5E574E;--card:#fff;--green:#03C75A}
 *{box-sizing:border-box}
 img[height]{height:auto}
-body{margin:0;font-family:"Noto Sans KR",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;padding-bottom:64px}
+body{margin:0;font-family:"Noto Sans KR","Noto Sans CJK KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;padding-bottom:64px}
 a{color:var(--red)}a:hover{color:#8E1C14}
 img{max-width:100%;display:block}
 .wrap{max-width:1200px;margin:0 auto;padding:0 20px}
