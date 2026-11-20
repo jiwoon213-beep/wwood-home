@@ -489,6 +489,34 @@ SCENES += [
    (37, 15, "창가 쉬폰 커튼", "blind", "통창 옆에 얇은 커튼을 달아 빛을 부드럽게 걸렀습니다.", "/yeongyeol/blind.html", "커튼·블라인드 시공 연결", [("/qna/door-silcheuk.html", "실측하는 법")])]),
 ]
 
+SCENES += [
+ ("tempa-veneer-bedroom", "무늬목 템바보드 침실 — 침대 뒤 세로 홈 벽과 간접조명 자재 둘러보기", YL + "4615dcb2-c2fc-4160-acbe-e2a996f77020.jpg", "사진: 영림",
+  "침대 뒤 벽 위쪽을 나뭇결 세로 홈 템바보드로 길게 덮고, 천장 쪽에서 간접조명을 비춘 차분한 침실입니다. 사진 속 +를 누르면 자재와 시공 순서를 볼 수 있어요.",
+  [(50, 35, "무늬목 템바보드", "woodwall", "침대 뒤 벽 위쪽을 촘촘한 세로 홈 무늬목 판넬로 덮었습니다. 위에서 비추는 조명에 홈 그림자가 살아납니다.", "/younglim/p/3043.html", "제품 보기", [("/qna/tempa-board-vs-ruba.html", "템바보드 vs 템바루바"), ("/sigongbeop/tempa-byeok.html", "템바보드 벽 시공법")]),
+   (50, 17, "템바보드 위 간접조명", "ceiling", "판넬 위쪽 천장 틈에 조명을 숨겨 벽을 위에서 아래로 비췄습니다.", "/qna/tempa-jomyeong.html", "템바보드 조명 넣기", [("/qna/seokgo-cheonjang-jomyeong.html", "천장 조명 달기")]),
+   (50, 70, "낮은 침대 프레임", "furniture", "바닥에 가깝게 놓인 낮은 침대 프레임으로 벽 판넬이 넓어 보이게 했습니다.", "/mandeul/chimdae.html", "침대 만들기", [("/qna/tempa-headboard.html", "침대 헤드 벽 꾸미기"), ("/qna/floating-bed.html", "플로팅 침대")]),
+   (88, 55, "협탁(사이드 테이블)", "furniture", "침대 옆에 둔 작은 원형 상판 협탁입니다.", "/mandeul/saideu.html", "사이드 테이블 만들기", [("/gagyeok/jipseong-gagyeok.html", "집성목 가격")])]),
+ ("arch-angle-board-living", "아치앵글보드 거실 — 창가 아치 판넬 벽과 바닥 자재 둘러보기", YL + "453e2e09-fa38-414b-8d37-e42433df13e3.jpg", "사진: 영림",
+  "창 아래 벽을 아치 모양 홈이 이어진 분홍색 판넬로 감싸고, 초록 소파와 둥근 러그를 둔 거실입니다. 사진 속 +를 누르면 자재와 시공 순서를 볼 수 있어요.",
+  [(18, 68, "아치앵글보드", "wall", "창 아래와 옆 벽을 아치 모양 홈이 줄지어 들어간 판넬로 덮어 포인트를 줬습니다.", "/younglim/p/1896.html", "제품 보기", [("/qna/arch-mun.html", "아치 디자인 알아보기"), ("/younglim/wall.html", "영림 월 전체")]),
+   (40, 92, "회색 바닥 타일", "tile", "짙은 회색 큰 타일로 바닥을 마감해 분홍 벽과 대비를 줬습니다.", "/jajae/tile.html", "타일 자재 보기", [("/qna/tile-primer.html", "타일 프라이머"), ("/qna/tile-jareugi.html", "타일 자르기")]),
+   (63, 78, "원형 사이드 테이블", "furniture", "소파 옆에 둔 붉은 기둥 원형 사이드 테이블입니다.", "/mandeul/saideu.html", "사이드 테이블 만들기", [("/mandeul/teibeul.html", "테이블 만들기")]),
+   (30, 4, "천장 매립 조명", "ceiling", "천장에 작은 매립등과 환기구를 넣어 천장을 깔끔하게 정리했습니다.", "/qna/seokgo-cheonjang-jomyeong.html", "천장 조명 달기", [("/sigongbeop/index.html", "자재 시공법")])]),
+ ("tagong-arch-sliding-room", "타공 슬라이딩 도어 — 아치 창 낸 원목 미닫이 문과 다이닝 자재 둘러보기", YL + "0e20c6fa-047b-4a18-851e-0cad1d0da937.jpg", "사진: 영림",
+  "나뭇결 문짝 가운데를 아치 모양으로 뚫어 유리를 넣은 슬라이딩 도어로 침실과 식탁 공간을 나눈 집입니다. 사진 속 +를 누르면 자재와 시공 순서를 볼 수 있어요.",
+  [(54, 52, "타공 슬라이딩 도어", "door", "나뭇결 문짝에 아치 모양 창을 낸 미닫이 문입니다. 닫아도 안쪽 방이 비쳐 답답하지 않습니다.", "/younglim/p/2674.html", "제품 보기", [("/qna/arch-mun.html", "아치 문 알아보기"), ("/younglim/door-tagong.html", "영림 타공 도어")]),
+   (60, 15, "천장 슬라이딩 레일", "door", "문 위 천장에 레일을 달아 문을 매달아 여닫습니다. 바닥 레일이 없어 깔끔합니다.", "/qna/sliding-hanger-door.html", "행거 슬라이딩 도어", [("/bigyo/pocket-vs-sliding-door.html", "포켓 vs 슬라이딩 도어")]),
+   (11, 75, "원목 의자와 식탁", "furniture", "곡선 등받이 원목 의자와 원목 식탁을 문 옆에 두었습니다.", "/mandeul/teibeul.html", "테이블 만들기", [("/qna/uija-heundeullim.html", "의자 흔들림 잡기"), ("/mandeul/seutul.html", "스툴 만들기")]),
+   (14, 35, "벽 조명", "wall", "흰 벽에 납작한 벽등을 달아 은은하게 비췄습니다.", "/qna/geosil-byeok.html", "거실 벽 꾸미기", [("/qna/byeok-pis.html", "벽에 피스 박기")])]),
+ ("mirror-hidden-sliding-dressroom", "미러히든슬라이딩 도어 — 드레스룸 입구 거울 문과 우드 벽 자재 둘러보기", YL + "ecb5351c-0aef-48e6-a48f-352815da60dd.png", "사진: 영림",
+  "나뭇결 벽 안쪽으로 숨어 미끄러지는 거울 문을 달아 드레스룸 입구를 만든 공간입니다. 사진 속 +를 누르면 자재와 시공 순서를 볼 수 있어요.",
+  [(56, 52, "미러히든슬라이딩 도어", "door", "문짝 한 면이 거울인 슬라이딩 도어입니다. 벽 안쪽으로 숨듯 열려 문틀이 드러나지 않습니다.", "/younglim/p/3232.html", "제품 보기", [("/qna/hidden-door-danjeom.html", "히든도어 단점"), ("/qna/geoul-dalgi.html", "거울 달기")]),
+   (82, 36, "나뭇결 우드 벽", "woodwall", "드레스룸 입구 주변 벽을 짙은 나뭇결 판넬로 감싸 문이 벽처럼 보이게 했습니다.", "/younglim/wall.html", "월판넬 보기", [("/qna/wallpanel-vs-tempa.html", "월판넬 vs 템바보드"), ("/sigongbeop/tempa-byeok.html", "벽 판넬 시공법")]),
+   (52, 40, "드레스룸 옷장", "cabinet", "문 안쪽에 조명을 넣은 행거·선반 옷장이 보입니다.", "/qna/dressroom.html", "드레스룸 만들기", [("/mandeul/haenggeo.html", "행거 만들기")]),
+   (88, 80, "데이베드", "furniture", "창가에 둔 낮은 데이베드로 쉬는 자리를 만들었습니다.", "/mandeul/pyeongsang.html", "평상 만들기", [("/mandeul/benchi.html", "벤치 만들기")]),
+   (50, 93, "밝은 바닥 타일", "tile", "밝은 베이지 타일로 바닥을 마감해 짙은 벽과 대비를 줬습니다.", "/jajae/tile.html", "타일 자재 보기", [("/qna/tile-primer.html", "타일 프라이머")])]),
+]
+
 # 방문자가 사진찾기에서 올린 공간 사진(자동 인식·얼굴/번호판 자동 모자이크) — .github/scripts/wwup_pull.py 가 채움
 import json as _json, os as _os
 _VP = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "data", "gonggan_visitor.json")
