@@ -25,9 +25,9 @@ if (!empty($_POST['website'])) out(array('ok' => 1)); // 스팸 봇 함정
 if (empty($_POST['agree'])) out(array('ok' => 0, 'e' => 'agree'));
 // 같은 IP 1시간 6장까지
 $ip = $_SERVER['REMOTE_ADDR']; $lg = $DIR . '/.rate'; $now = time(); $R = array();
-if (is_file($lg)) { foreach (file($lg) as $ln) { $p = explode(' ', trim($ln)); if (count($p) == 2 && $now - intval($p[1]) < 3600) $R[] = $p; } }
+if (is_file($lg)) { foreach (file($lg) as $ln) { $p = explode(' ', trim($ln)); if (count($p) == 2 && $now - intval($p[1]) < 86400) $R[] = $p; } }
 $c = 0; foreach ($R as $p) if ($p[0] === md5($ip)) $c++;
-if ($c >= 6) out(array('ok' => 0, 'e' => 'rate'));
+if ($c >= 3) out(array('ok' => 0, 'e' => 'rate'));
 if (!isset($_FILES['photo']) || $_FILES['photo']['error'] != 0) out(array('ok' => 0, 'e' => 'file'));
 if ($_FILES['photo']['size'] > 4000000) out(array('ok' => 0, 'e' => 'size'));
 $info = @getimagesize($_FILES['photo']['tmp_name']);
