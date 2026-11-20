@@ -1,14 +1,21 @@
 # 방문자가 올린 공간 사진 가져오기 → 얼굴·번호판 자동 모자이크 → 1200px·워터마크 → src/data/gonggan_visitor.json 에 추가 → 서버 원본 삭제
-import json, os, re, sys, urllib.request, urllib.parse, time
+import json, os, re, sys, urllib.request, urllib.error, urllib.parse, time
 import cv2, numpy as np
 from PIL import Image, ImageDraw, ImageFont
 KEY = os.environ.get("WWUP_KEY", ""); EP = "https://wwood.kr/home/wwup.php"
 ROOT = os.getcwd(); OUT = f"{ROOT}/src/assets/gonggan"; DB = f"{ROOT}/src/data/gonggan_pending.json"; DONE = f"{ROOT}/src/data/gonggan_visitor.json"
 if not KEY: print("no key"); sys.exit(0)
 def get(q, raw=False):
-    with urllib.request.urlopen(EP + "?" + urllib.parse.urlencode(dict(q, key=KEY)), timeout=60) as r:
-        b = r.read()
-    return b if raw else json.loads(b.decode("utf-8"))
+    rq = urllib.request.Request(EP + "?" + urllib.parse.urlencode(dict(q, key=KEY)), headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36", "Accept": "*/*", "Referer": "https://wwood.kr/"})
+    try:
+        with urllib.request.urlopen(rq, timeout=60) as r:
+            b = r.read(); st = r.status
+    except urllib.error.HTTPError as e:
+        b = e.read(); st = e.code
+    if raw: return b
+    try: return json.loads(b.decode("utf-8", "replace"))
+    except Exception:
+        print("서버 응답이 JSON 아님:", st, b[:300].decode("utf-8", "replace").replace(KEY, "***")); sys.exit(1)
 ids = get({"list": 1}).get("ids", [])
 db = json.load(open(DB, encoding="utf-8")) if os.path.exists(DB) else []
 have = {x["id"] for x in db} | ({x["id"] for x in json.load(open(DONE, encoding="utf-8"))} if os.path.exists(DONE) else set())
