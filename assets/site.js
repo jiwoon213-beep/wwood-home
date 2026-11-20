@@ -215,10 +215,10 @@ WWC("hjsave");if(b){b.textContent="저장됨 ✓ 현장함 보기 ›";b.onclick
       var gap=parseFloat(cs.columnGap)||parseFloat(cs.gap)||0,cw0=el.children[0].getBoundingClientRect().width,n=el.children.length;
       var per=Math.max(1,Math.round((el.clientWidth+gap)/(cw0+gap)));
       var basis='calc((100% - '+((per-1)*gap)+'px) / '+per+')';
-      if(cs.display.indexOf('grid')>-1){el.style.gridAutoColumns=basis}
+      if(cs.display.indexOf('grid')>-1){el.style.setProperty('grid-auto-columns',basis,'important')}
       else{
-        for(var k=0;k<n;k++){var c=el.children[k];c.style.flex='0 0 '+basis;c.style.maxWidth='none';c.style.minWidth='0';c.style.width='auto'}
-        if(n<=per*2){el.style.flexWrap='wrap';el.style.overflowX='visible';el.style.rowGap=(gap||12)+'px';continue}
+        for(var k=0;k<n;k++){var c=el.children[k];c.style.setProperty('flex','0 0 '+basis,'important');c.style.setProperty('max-width','none','important');c.style.setProperty('min-width','0','important');c.style.setProperty('width','auto','important')}
+        if(n<=per*2){el.style.setProperty('flex-wrap','wrap','important');el.style.setProperty('overflow-x','visible','important');el.style.rowGap=(gap||12)+'px';continue}
       }
       if(el.scrollWidth<=el.clientWidth+4)continue;
       var w=document.createElement('div');w.className='sarw';
