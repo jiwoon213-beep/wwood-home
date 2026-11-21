@@ -592,6 +592,29 @@ SCENES += [
    (72, 50, "노란 칠 벽", "paint", "벽과 천장을 같은 노랑으로 칠해 넓어 보이게 했습니다.", "/qna/self-paint-junbimul.html", "셀프 페인트 준비물", [])]),
 ]
 
+SCENES += [
+ ("marble-artwall-ceiling", "대리석 무늬 아트월과 나무 등박스 — 거실 TV 벽·천장 둘러보기", YL + "9c2d2d1c-b073-4be9-8568-7a1a8e4c4536.jpg", "사진: 영림",
+  "TV 벽 가운데에 흰 대리석 무늬 아트월을 세우고, 양옆과 천장 등박스 테두리를 나뭇결로 맞춘 거실입니다.",
+  [(50, 55, "이미지 아트월&등박스", "wall", "흰 대리석 무늬 판을 TV 벽 가운데에 붙이고 양옆을 나뭇결 기둥으로 마감한 아트월입니다.", "/younglim/p/1600.html", "제품 보기", [("/younglim/wall.html", "영림 월판넬 전체"), ("/qna/byeokgeori-tv.html", "벽걸이 TV 달기")]),
+   (30, 11, "나뭇결 등박스 천장", "ceiling", "천장 가운데를 단으로 나누고 테두리를 아트월과 같은 나뭇결로 감쌌습니다.", "/sigongbeop/seokgo-cheonjang.html", "천장 시공법", [("/younglim/p/1600.html", "아트월&등박스 제품")]),
+   (19, 55, "나뭇결 기둥 판넬", "wall", "아트월 양옆을 세로로 긴 나뭇결 판넬로 덮어 액자처럼 보이게 했습니다.", "/younglim/wall.html", "월판넬 보기", []),
+   (50, 83, "흰색 낮은 TV장", "furniture", "아트월 아래에 낮고 긴 흰색 TV장을 두었습니다.", "/mandeul/geosiljang.html", "거실장 만들기", [("/qna/tv-stand.html", "TV 받침장")])]),
+ ("maroon-black-maru-room", "짙은 갈색 마루와 흰 방문 — 차분한 거실 바닥 둘러보기", YL + "d9677b8e-c353-43ca-838d-42fcb4a59b52.jpg", "사진: 영림",
+  "짙은 색 마루를 깔고 벽과 방문은 흰색으로 맞춰 바닥이 돋보이게 한 공간입니다.",
+  [(65, 75, "마롱 블랙", "maru", "결이 보이는 짙은 갈색 마루입니다. 흰 벽·문과 대비돼 공간이 차분해 보입니다.", "/younglim/p/1683.html", "제품 보기", [("/younglim/maru.html", "영림 마루 전체"), ("/qna/badakjae-goreugi.html", "바닥재 고르는 법"), ("/bigyo/floor-types.html", "바닥재 종류 비교")]),
+   (88, 22, "흰색 방문", "door", "벽과 같은 흰색 방문으로 문이 벽에 묻혀 보이게 했습니다.", "/bigyo/door-types.html", "방문 종류 비교", [("/qna/bangmun-gyoche-self.html", "방문 셀프 교체"), ("/qna/bangmun-size.html", "방문 크기")])]),
+ ("olive-brown-maru-living", "올리브 브라운 마루와 나뭇결 방문 — 거실 바닥·문 둘러보기", YL + "8a3f7880-592d-4d7b-a9f7-4a1d7dd76b88.jpg", "사진: 영림",
+  "나뭇결이 뚜렷한 중간 톤 마루에 검은 낮은 수납장과 나뭇결 방문을 맞춘 거실입니다.",
+  [(55, 70, "올리브 브라운", "maru", "결과 색 차이가 자연스럽게 보이는 중간 톤 갈색 마루입니다.", "/younglim/p/1687.html", "제품 보기", [("/younglim/maru.html", "영림 마루 전체"), ("/bigyo/floor-types.html", "바닥재 종류 비교")]),
+   (30, 25, "검은 낮은 수납장", "furniture", "벽을 따라 낮고 긴 검은 수납장을 두었습니다.", "/mandeul/geosiljang.html", "거실장 만들기", []),
+   (65, 14, "나뭇결 방문", "door", "마루와 비슷한 톤의 나뭇결 방문입니다.", "/bigyo/door-types.html", "방문 종류 비교", [("/qna/bangmun-gyoche-self.html", "방문 셀프 교체")])]),
+ ("slim-3door-gosi-jungmun", "초슬림 3연동 고시형 중문 — 흰 중문과 노란 수납장 공간", YL + "b0c68375-bee4-4d1a-8519-b1facc143019.jpg", "사진: 영림",
+  "얇은 흰 프레임에 창살(고시) 무늬 유리를 넣은 3연동 중문을 단 공간입니다. 옆에 노란 문 수납장을 두어 색 포인트를 줬습니다.",
+  [(40, 45, "초슬림 3연동 고시형", "jungmun", "얇은 흰 프레임 3짝이 함께 밀리는 연동 중문으로, 유리에 가로·세로 창살 무늬가 있습니다.", "/younglim/p/1752.html", "제품 보기", [("/younglim/jungmun-slim.html", "영림 슬림 중문"), ("/bigyo/3yeondong-vs-one-sliding.html", "3연동 vs 원슬라이딩"), ("/qna/jungmun-silcheuk.html", "중문 실측")]),
+   (87, 72, "노란 문 수납장", "cabinet", "다리가 달린 낮은 수납장으로, 노란 문이 흰 벽·중문과 대비됩니다.", "/qna/sunapjang-mun-jejak.html", "수납장 문 만들기", []),
+   (40, 93, "밝은 회색 바닥", "tile", "중문 앞 바닥을 밝은 회색 톤으로 맞췄습니다.", "/bigyo/floor-types.html", "바닥재 종류 비교", [])]),
+]
+
 # 방문자가 사진찾기에서 올린 공간 사진(자동 인식·얼굴/번호판 자동 모자이크) — .github/scripts/wwup_pull.py 가 채움
 import json as _json, os as _os
 _VP = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "data", "gonggan_visitor.json")
