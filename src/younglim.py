@@ -60,12 +60,12 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
                 sec += f'<a class="yri" href="#" data-big="{im}" data-n="{E(n)}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{im}" alt="영림 {E(n)}"><span>{E(n)}</span></a>'
             sec += '</div>'
         fq = [(f"영림 {nm} 어디서 보고 주문하나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 상담·주문할 수 있습니다. {HOURS}. 크기를 재 오시면 맞는 규격을 찾아 드리고, 대전·세종은 설치 시공(월드아키텍쳐)도 상담합니다.")]
-        body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/younglim/">영림 도어·중문·마감재</a> › {E(nm)}</p><h1>영림 {E(nm)}</h1><p class="glead">{E(lead)} 총 {len(its)}가지.</p>{nav(slug)}{sec}'
+        body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/younglim/">영림 도어·중문·마감재</a> › {E(nm)}</p><h1>영림 {E(nm)}</h1><p class="glead">{E(lead)} 총 {len(its)}가지.</p>' + ('<p class="glead"><a class="b r" href="/younglim/jungmun-all.html">영림 중문 디자인 전체(슬라이딩·양개·3연동·폴딩) 보기 ›</a></p>' if slug == 'jungmun-system' else '') + f'{nav(slug)}{sec}'
                 f'<p class="gs">영림(YOUNGLIM) 제품입니다. 사진을 누르면 크게 볼 수 있습니다. 색상·규격·가격·납기는 매장에 문의해 주세요.</p>'
                 f'<h2 class="gt">고를 때 알아둘 것</h2><ul class="gtip">{"".join(f"<li>{E(t)}</li>" for t in tips)}</ul>'
                 f'<div class="glk"><a href="/trend/">인테리어 트렌드</a><a href="/yerim/">예림 중문·도어</a><a href="/sigong.html">설치 시공 맡기기</a><a href="/visit.html">매장 길찾기</a></div></section>'
                 f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>{CTA}' + LB)
-        page(f"younglim/{slug}.html", f"영림 {nm} {len(its)}종 — 모던·내추럴·클래식 디자인 사진 | 대전 영진목재",
+        page(f"younglim/{slug}.html", (f"영림 중문 레일·자동·연동 시스템과 프레임 {len(its)}종 — 중문 부속 사진 | 대전 영진목재" if slug == "jungmun-system" else f"영림 {nm} {len(its)}종 — 모던·내추럴·클래식 디자인 사진 | 대전 영진목재"),
              f"영림 {nm} {len(its)}가지 사진. {lead} 대전 유성 영진종합목재 매장 상담·주문, 대전·세종 시공.", body, "/jaryo/", None, IMG(its[0][6]))
         out.append((slug, nm, lead, len(its), IMG(its[0][6])))
     # 영림 중문 종류 총정리(허브) — '영림 중문' 검색용
@@ -82,7 +82,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
                ("우리 집 현관에는 어떤 중문이 맞나요?", "현관 폭이 좁으면 문이 겹쳐 열리는 3연동 슬림·원슬라이딩, 넓으면 양개 중문이 잘 어울립니다. 신발장 위치와 현관 바닥 턱 높이에 따라 달라지니 현관 가로·세로·높이를 재 오시면 맞는 제품을 골라 드립니다."),
                ("영림 중문 가격은 얼마인가요?", "중문은 크기·유리·프레임 색에 따라 가격이 크게 달라 매장에서 견적을 드립니다. 현관 치수와 원하는 디자인 사진을 가져오시면 바로 비교해 드립니다."),
                ("영림 중문 설치도 해 주나요?", f"대전·세종은 설치 시공까지 상담해 드립니다. {ADDR} 영진종합목재(월드건축자재) 매장, {HOURS}.")]
-        page("younglim/jungmun-all.html", f"영림 중문 종류 총정리 — 슬라이딩·양개·3연동 슬림·폴딩 {jtot}종 사진 | 대전 영진목재",
+        page("younglim/jungmun-all.html", f"영림 중문(영림도어 중문) 종류 총정리 — 슬라이딩·양개·3연동·폴딩 {jtot}종 사진 | 대전 영진목재",
              f"영림 중문 {jtot}가지를 종류별 사진으로: 슬라이딩·원슬라이딩, 양개 중문, 3연동 슬림 알루미늄, 폴딩도어. 현관 폭에 맞는 중문 고르는 법과 대전 유성 영진종합목재 매장 상담·설치.",
              f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/younglim/">영림 도어·중문·마감재</a> › 영림 중문 전체</p><h1>영림 중문 종류 총정리</h1>'
              f'<p class="glead">영림(YOUNGLIM) 현관 중문 {jtot}가지를 종류별로 모았습니다. 현관이 좁으면 3연동 슬림·원슬라이딩, 넓으면 양개 중문이 잘 어울립니다. 사진을 누르면 종류별 전체 목록으로 갑니다.</p>{nav("")}{jsec}'

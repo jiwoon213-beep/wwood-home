@@ -9,15 +9,15 @@ table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;ove
 <p><small>같은 사람이 하루에 여러 번 들어와도 1번으로 셉니다. 경로 집계는 2026-11-11 오후부터 시작했어요.</small></p>
 <script>
 var b="https://abacus.jasoncameron.dev/get/wwood-co-kr/",S=[["yt","유튜브"],["naver","네이버"],["google","구글"],["daum","다음·카카오"],["bing","빙"],["daangn","당근"],["wwoodkr","쇼핑몰(wwood.kr)"],["etc","다른 사이트"],["direct","주소 입력·즐겨찾기"]];
-var fail=0,Q=[],act=0;function pump(){while(act<6&&Q.length){act++;Q.shift()()}}
+var fail=0,Q=[],act=0;function pump(){while(act<3&&Q.length){act++;Q.shift()()}}
 var C={};try{C=JSON.parse(localStorage.getItem("wws")||"{}")}catch(e){}function sv(){try{localStorage.setItem("wws",JSON.stringify(C))}catch(e){}}
-function g1(k,n){return fetch(b+k,{cache:"no-store"}).then(function(r){if(r.status==404)return {value:0};if(!r.ok)throw r.status;return r.json()}).then(function(j){var v=j.value||0;if(C[k]==null||v>=C[k]){C[k]=v;sv()}return C[k]}).catch(function(e){if(n<2)return new Promise(function(ok){setTimeout(ok,1200*(n+1))}).then(function(){return g1(k,n+1)});fail++;return C[k]!=null?C[k]:0})}
-function g(k){return new Promise(function(ok){Q.push(function(){g1(k,0).then(function(v){act--;pump();ok(v)})});pump()})}
+function g1(k,n){return fetch(b+k,{cache:"no-store"}).then(function(r){if(r.status==404)return {value:0};if(!r.ok)throw r.status;return r.json()}).then(function(j){var v=j.value||0;if(C[k]==null||v>=C[k]){C[k]=v;sv()}return C[k]}).catch(function(e){if(n<3)return new Promise(function(ok){setTimeout(ok,1500*(n+1))}).then(function(){return g1(k,n+1)});fail++;return C[k]!=null?C[k]:null})}
+function g(k,t){t=t||0;return new Promise(function(ok){Q.push(function(){g1(k,0).then(function(v){act--;pump();if(v==null&&t<4){setTimeout(function(){g(k,t+1).then(ok)},3000*(t+1))}else ok(v==null?"?":v)})});pump()})}
 setInterval(function(){if(fail){var p=document.getElementById("note");p.style.display="block"}},3000);
 function day(i){return new Date(Date.now()+9*3600e3-i*864e5).toISOString().slice(0,10).replace(/-/g,"")}
 var k=day(0);g("d"+k).then(function(v){td.textContent=v.toLocaleString()});g("total").then(function(v){tt.textContent=v.toLocaleString()});
 var mx=1,RW=[];S.forEach(function(s,i){var t=document.createElement("tr");t.innerHTML="<td>"+s[1]+"</td><td>…</td><td>…<span class=bar></span></td>";document.getElementById("src").appendChild(t);RW[i]=t;
- g("src-"+s[0]+"-d"+k).then(function(v){t.children[1].textContent=v.toLocaleString()});g("src-"+s[0]).then(function(v){t.dataset.v=v;mx=Math.max(mx,+v||0);t.children[2].firstChild.textContent=(+v).toLocaleString();RW.forEach(function(r){if(r.dataset.v!=null)r.querySelector(".bar").style.width=Math.round((+r.dataset.v||0)/mx*60)+"px"})})});
+ g("src-"+s[0]+"-d"+k).then(function(v){t.children[1].textContent=v.toLocaleString()});g("src-"+s[0]).then(function(v){t.dataset.v=v;mx=Math.max(mx,+v||0);t.children[2].firstChild.textContent=v.toLocaleString();RW.forEach(function(r){if(r.dataset.v!=null)r.querySelector(".bar").style.width=Math.round((+r.dataset.v||0)/mx*60)+"px"})})});
 var EV=[["appinstall","앱 설치(홈 화면 추가)"],["appguide","아이폰 홈 화면 안내 본 횟수"],["appopen","앱으로 들어온 사람(하루 1번)"],["hjsave","내 현장함 저장"],["order","미리 재단 주문서 보냄"],["share","공유 버튼 누름"]];
 EV.forEach(function(s){var t=document.createElement("tr");t.innerHTML="<td>"+s[1]+"</td><td>…</td><td>…</td>";document.getElementById("ev").appendChild(t);g("ev-"+s[0]+"-d"+k).then(function(v){t.children[1].textContent=v.toLocaleString()});g("ev-"+s[0]).then(function(v){t.children[2].textContent=v.toLocaleString()})});
 [0,1,2,3,4,5,6].forEach(function(i){var d=day(i),t=document.createElement("tr");t.innerHTML="<td>"+d.slice(4,6)+"/"+d.slice(6)+(i?"":" (오늘)")+"</td><td>…</td>";document.getElementById("days").appendChild(t);g("d"+d).then(function(v){t.children[1].textContent=v.toLocaleString()})});
