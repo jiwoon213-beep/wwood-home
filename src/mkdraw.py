@@ -564,6 +564,14 @@ m += [B(-8, y, _rz2(y + 100) + 102, 3616, 100, 7, "shingle" if (i // 2) % 2 == 0
 _n3 = len(m)
 m += [B(-8, -50, _rz2(50) + 102, 3616, 100, 9, "shingle2"), B(-12, -75, _rz2(50) + 92, 3624, 25, 60, "metal")]
 SGM["shingle-jibung"] = ("아스팔트 슁글 외쪽 지붕 3.6×2.4m (OSB·방수시트·슁글)", m, f"0:{_n1}|{_n1}:{_n2}|{_n2}:{_n3}|{_n3}:{len(m)}")
+DPX, DPY = [0, 1170, 2340, 3511], [0, 1156, 2311]
+m = [B(x - 55, y - 55, 0, 200, 200, 150, "conc") for y in DPY for x in DPX]
+m += [B(x - 5, y - 5, 150, 99, 99, 6, "metal") for y in DPY for x in DPX]
+m += [B(x, y, 156, 89, 89, 164, "bangbu") for y in DPY for x in DPX]
+m += [B(0, y + 25, 320, 3600, 38, 140, "bangbu") for y in DPY]
+m += [B(i * 395, 0, 460, 38, 2400, 140, "bangbu") for i in range(10)]
+m += [B(0, i * 123, 600, 3600, 120 if i < 19 else 63, 20, "bangbu") for i in range(20)]
+SGM["bangbu-deck"] = ("방부목 데크 3.6×2.4m · 높이 약 0.62m", m, "0:36|36:39|39:49|49:69")
 m = [B(x, y, 0, 45, 45, 1500, "spruce") for x, y in [(0, 0), (755, 0), (0, 255), (755, 255)]]
 m += [B(45, 0, z, 710, 45, 45, "spruce") for z in (100, 460, 820, 1180, 1455)] + [B(45, 255, z, 710, 45, 45, "spruce") for z in (100, 460, 820, 1180, 1455)]
 m += [B(45, 0, z + 45, 710, 300, 18, "misong") for z in (100, 460, 820, 1180)]
