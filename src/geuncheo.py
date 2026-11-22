@@ -30,10 +30,10 @@ def gen(page, E, CTA, faqslide, TEL):
 <p class="lead gcl">전국 어느 현장이든 <b>114에 물을 필요 없이</b> 버튼 한 번으로 근처 업체와 전화번호를 찾습니다.</p>
 <div class="gcw"><label class="gcla">① 위치 — 비워 두면 내 위치로</label>
 <div class="gcin"><input id="gcp" type="text" placeholder="동네 이름 (예: 청주 오송읍)" autocomplete="off"><button type="button" id="gcme" class="gcme">📍 내 위치로 찾기</button></div>
-<p class="gcs" id="gcst">비워 두면 <b>내 위치(GPS) 근처</b>로 찾아요. 다른 현장을 찾을 땐 동네 이름을 적으세요.</p>
+<p class="zqs" id="gcst">비워 두면 <b>내 위치(GPS) 근처</b>로 찾아요. 다른 현장을 찾을 땐 동네 이름을 적으세요.</p>
 <label class="gcla">② 찾을 곳 누르기</label>
 <div class="gcg">{btns}</div>
-<div id="gcr" class="gcr" hidden></div></div>
+<div id="gcr" class="zqr" hidden></div></div>
 <p class="small muted">업체 정보는 각 지도 앱에 등록된 내용입니다. 영업 여부·가격은 전화로 확인하세요.</p><p><a class="b o" href="/geuncheo/">📋 전국 지역별 인력사무소·건설폐기물 처리업체 목록(영업 중만, 매일 갱신)</a></p>
 <div class="gcad"><b>🪵 목재·합판·석고·단열재·데크는 영진종합목재</b><span>원하는 크기로 재단해서 전국 현장까지 용달 배송 · 대전 유성대로 44</span><a class="b r" href="tel:{TEL.replace('-', '')}">📞 {TEL} 전화</a><a class="b o" href="/jaedan-baesong.html">재단·전국 배송 보기</a></div>
 <h2>이럴 때 쓰세요</h2>
@@ -41,10 +41,10 @@ def gen(page, E, CTA, faqslide, TEL):
 <h2>자주 묻는 질문</h2>{faqslide(fq)}</section>
 <style>.gcl{{font-size:19px}}.gcw{{background:#fff;border:2px solid #e4ded4;border-radius:18px;padding:16px;margin:14px 0}}.gcla{{display:block;font-size:19px;font-weight:900;margin:6px 0 8px}}
 .gcin{{display:flex;gap:8px;flex-wrap:wrap}}.gcin input{{flex:1 1 220px;font-size:20px;padding:14px;border:2px solid #d8d0c4;border-radius:12px}}.gcme{{font-size:18px;font-weight:800;padding:14px 16px;border-radius:12px;border:0;background:#1D1B18;color:#fff}}
-.gcs{{font-size:15px;color:#5e574e;margin:8px 0 14px}}.gcg{{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}}
+.zqs{{font-size:15px;color:#5e574e;margin:8px 0 14px}}.gcg{{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}}
 .gcb{{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:16px;border-radius:14px;border:2px solid #e4ded4;background:#f6f3ee;cursor:pointer}}.gcb b{{font-size:22px}}.gcb span{{font-size:14px;color:#5e574e}}.gcb.on{{border-color:#c62a1f;background:#fff3f2}}
-.gcr{{margin-top:14px;background:#1D1B18;color:#fff;border-radius:14px;padding:16px}}.gcr h3{{margin:0 0 10px;font-size:20px}}.gcr a{{display:block;text-align:center;font-size:20px;font-weight:900;padding:16px;border-radius:12px;margin:8px 0;text-decoration:none}}
-.gcr .nv{{background:#03C75A;color:#fff}}.gcr .kk{{background:#FEE500;color:#191919}}.gcr .gg{{background:#fff;color:#1D1B18}}.gcr small{{display:block;color:#ddd;margin-top:6px}}
+.zqr{{display:block!important;margin-top:14px;background:#1D1B18;color:#fff;border-radius:14px;padding:16px}}.zqr h3{{color:#fff;line-height:1.4;margin:0 0 10px;font-size:20px}}.zqr>a{{display:block;width:100%;box-sizing:border-box;text-align:center;font-size:20px;font-weight:900;padding:16px;border-radius:12px;margin:8px 0;text-decoration:none}}
+.zqr .nv{{background:#03C75A;color:#fff}}.zqr .kk{{background:#FEE500;color:#191919}}.zqr .gg{{background:#fff;color:#1D1B18}}.zqr small{{display:block;color:#ddd;margin-top:6px}}
 .gcn{{margin-top:12px;background:#2a2622;border-radius:12px;padding:12px}}.gcni{{background:#fff;color:#1D1B18;border-radius:10px;padding:10px;margin:8px 0}}.gcni span{{display:block;font-size:14px;color:#5e574e;margin:4px 0}}.gcni a{{display:inline-block!important;font-size:16px!important;padding:10px 12px!important;margin:4px 6px 0 0!important}}.gcc{{background:#c62a1f;color:#fff}}.gcm{{background:#03C75A;color:#fff}}.gcad{{display:flex;flex-direction:column;gap:8px;background:#fff8e6;border:2px solid #f0c040;border-radius:16px;padding:16px;margin:16px 0}}.gcad b{{font-size:19px}}</style>
 <script>(function(){{var P=document.getElementById("gcp"),S=document.getElementById("gcst"),R=document.getElementById("gcr"),L=null,cur=null;
 try{{P.value=localStorage.getItem("gcp")||""}}catch(e){{}}
