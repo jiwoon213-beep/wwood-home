@@ -615,6 +615,32 @@ SCENES += [
    (40, 93, "밝은 회색 바닥", "tile", "중문 앞 바닥을 밝은 회색 톤으로 맞췄습니다.", "/bigyo/floor-types.html", "바닥재 종류 비교", [])]),
 ]
 
+SCENES += [
+ ("travertine-wall-bedroom", "석재 무늬 월판넬 침실 — 침대 뒤 벽과 협탁 둘러보기", YL + "e91d79ed-0703-4b58-a691-9e6f08e7a454.png", "사진: 영림",
+  "침대 뒤 벽 전체를 가로결 석재 무늬 판넬로 덮고, 옆에 작은 원목 협탁을 둔 침실입니다. 벽 너머로 나무 바닥 복도가 이어집니다.",
+  [(35, 20, "콜로세오 브라운", "wall", "가로 줄무늬가 있는 베이지·갈색 석재 무늬 판넬로 침대 뒤 벽을 통째로 감쌌습니다.", "/younglim/p/2428.html", "제품 보기", [("/younglim/wall.html", "영림 월판넬 전체"), ("/qna/wallpanel-vs-tempa.html", "월패널 vs 템바보드")]),
+   (56, 85, "원목 협탁", "furniture", "서랍 두 칸이 달린 밝은 나무 협탁입니다.", "/mandeul/saideu.html", "사이드 테이블 만들기", [("/mandeul/chimdae.html", "침대 만들기")]),
+   (10, 58, "침대 헤드 쪽", "furniture", "벽에 붙여 놓은 침대로, 머리 쪽을 짙은 색으로 맞췄습니다.", "/mandeul/headboard.html", "헤드보드 만들기", [("/qna/chimdae-size.html", "침대 크기")]),
+   (80, 68, "나무 바닥 복도", "maru", "벽 너머 복도는 나뭇결 마루로 깔았습니다.", "/younglim/maru.html", "마루 보기", [("/qna/badakjae-goreugi.html", "바닥재 고르는 법")])]),
+ ("matte-stone-wall-living", "무광 석재 무늬 벽 거실 — 소파 뒤 벽 둘러보기", YL + "89232f8e-f4c4-4d1b-a4a9-ca2cd475e9fb.png", "사진: 영림",
+  "소파 뒤 벽을 밝은 회색 무광 석재 무늬 판넬로 마감한 거실입니다. 바닥에는 흰 러그를 깔았습니다.",
+  [(55, 18, "무광 마테라", "wall", "반사가 적은 무광 표면의 밝은 회색 석재 무늬 판넬입니다.", "/younglim/p/2421.html", "제품 보기", [("/younglim/wall.html", "영림 월판넬 전체"), ("/qna/injo-daeriseok.html", "인조 대리석")]),
+   (68, 58, "패브릭 소파", "furniture", "벽에 붙여 놓은 갈색 줄무늬 천 소파입니다.", "/younglim/wall.html", "소파 뒤 벽 자재", [("/qna/artwall-mandeulgi.html", "아트월 만들기")]),
+   (4, 77, "밝은 바닥", "maru", "러그 밖으로 보이는 밝은 톤 바닥입니다.", "/younglim/maru.html", "마루 보기", [("/bigyo/floor-types.html", "바닥재 종류 비교")])]),
+ ("junbulyeon-wallpanel-study", "나뭇결 준불연 월판넬 서재 — 책상 뒤 나무 벽 둘러보기", YL + "2599ae65-9680-451c-904e-807b5483a719.jpg", "사진: 영림",
+  "벽을 세로 나뭇결 판넬로 덮고 원목 책상을 놓은 서재입니다. 흰 기둥과 회색 바닥이 나무색을 받쳐 줍니다.",
+  [(75, 30, "준불연 월판넬", "woodwall", "세로로 긴 밝은 나뭇결 판넬을 벽 전체에 이어 붙였습니다.", "/younglim/p/3444.html", "제품 보기", [("/qna/junbulyeon-tteut.html", "준불연 뜻"), ("/younglim/wall.html", "영림 월판넬 전체")]),
+   (10, 62, "원목 책상", "furniture", "두꺼운 나무 상판에 서랍이 달린 책상입니다.", "/mandeul/teibeul.html", "원목 테이블 만들기", [("/qna/chaeksang-nopi.html", "책상 높이")]),
+   (42, 30, "흰 기둥 벽", "paint", "판넬 사이 기둥은 흰색으로 마감해 나무 벽과 나눴습니다.", "/qna/self-paint-junbimul.html", "셀프 페인트 준비물", []),
+   (45, 92, "회색 바닥", "tile", "콘크리트 느낌의 회색 바닥입니다.", "/bigyo/floor-types.html", "바닥재 종류 비교", [("/qna/porcelain-tile.html", "포세린 타일")])]),
+ ("infiniwall-cabinet-office", "흰 인피니월과 나무 낮은 수납장 — 사무 공간 벽 둘러보기", YL + "f950a221-8e30-43e2-a723-2e00f2ac272e.jpg", "사진: 영림",
+  "벽을 흰 결무늬 판넬로 덮고, 그 앞에 나무 문 낮은 수납장을 길게 짜 넣은 사무 공간입니다.",
+  [(50, 25, "인피니월 IW", "wall", "잔잔한 결무늬가 있는 흰 판넬로 벽 전체를 이음 없이 보이게 마감했습니다.", "/younglim/p/3267.html", "제품 보기", [("/younglim/wall.html", "영림 월판넬 전체"), ("/qna/wallpanel-vs-tempa.html", "월패널 vs 템바보드")]),
+   (25, 75, "나무 문 낮은 수납장", "cabinet", "벽을 따라 길게 짠 낮은 수납장으로, 나뭇결 문짝을 달았습니다.", "/qna/hapan-sunapjang.html", "합판 수납장", [("/qna/sunapjang-mun-jejak.html", "수납장 문 만들기")]),
+   (30, 59, "수납장 위 상판", "shelf", "수납장 위를 선반처럼 써서 책·소품을 올렸습니다.", "/mandeul/byeokseonban.html", "선반 만들기", []),
+   (30, 97, "밝은 바닥", "tile", "밝은 색 바닥으로 벽·수납장과 톤을 맞췄습니다.", "/bigyo/floor-types.html", "바닥재 종류 비교", [])]),
+]
+
 # 방문자가 사진찾기에서 올린 공간 사진(자동 인식·얼굴/번호판 자동 모자이크) — .github/scripts/wwup_pull.py 가 채움
 import json as _json, os as _os
 _VP = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "data", "gonggan_visitor.json")
