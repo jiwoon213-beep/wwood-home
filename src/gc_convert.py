@@ -45,6 +45,8 @@ def main(src, dst):
         w = ad.split()
         if len(w) < 2 or not nm: continue
         sd = SIDO.get(w[0], w[0]); sg = w[1]
+        if sd == "세종특별자치시": sg = "세종시"  # 세종은 시군구 없이 바로 읍면동·도로명
+        elif not re.search(r"[시군구]$", sg): continue
         if sg.endswith("시") and len(w) > 2 and w[2].endswith("구"): sg = sg + " " + w[2]
         la = lo = ""
         try:
