@@ -199,6 +199,7 @@ def _steps(steps):
     return '<ol class="sstp">' + "".join(f'<li><i>{k + 1}</i><p>{_hl(x)}</p></li>' for k, x in enumerate(steps)) + '</ol>'
 
 
+def LK(t): return re.sub(r"\((/[A-Za-z0-9_/.\-#=%]+)\)", r'(<a href="\1">바로 보기</a>)', E(t))
 def faqslide(items):
     _lk = lambda t: re.sub(r"\((/[A-Za-z0-9_/.\-#=%]+)\)", r'(<a href="\1">바로 보기</a>)', E(t))
     return '<div class="fqs">' + "".join(f'<div class="fq"><b>Q. {E(q)}</b><p>{_lk(a)}</p></div>' for q, a in items) + '</div>' + ('<p class="small muted fqh">옆으로 밀어서 더 보기 ›</p>' if len(items) > 1 else "")
@@ -1147,7 +1148,7 @@ def build():
 <div class="gs" style="border:1px solid #e6e0d4;border-radius:16px;padding:16px">{_blk}</div>
 <p class="small muted">매장에서 실제로 파는 제품 기준입니다. 원하는 크기로 바로 재단해 드립니다.</p>
 <h2>같이 보면 좋은 페이지</h2><div class="olk">{"".join(f'<a href="{h}">{E(n)}</a>' for h, n in _ln)}<a href="/gyugyeok.html">전체 규격표</a></div>
-<h2>자주 묻는 질문</h2>{"".join(f'<details class="faq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q, a in _fq)}</section>{CTA}""", "",
+<h2>자주 묻는 질문</h2>{"".join(f'<details class="faq"><summary>{E(q)}</summary><p>{LK(a)}</p></details>' for q, a in _fq)}</section>{CTA}""", "",
              {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in _fq]})
     _gyb = '<p class="small">자재별로 따로 보기: ' + " · ".join(f'<a href="/gyugyeok/{a}.html">{E(b)}</a>' for a, b in _gyl) + ' · <a href="/bangbu-gyugyeok.html">방부목 규격</a></p>' + _gyb
     page("gyugyeok.html", "합판·MDF·석고보드·구조재 규격표 — 두께·크기 한눈에 | 영진목재", "합판 두께, MDF 규격, 석고보드 크기, 구조재 2x4 실제 치수, 방부목·각재·다루끼 규격을 한 표로 정리했습니다. 대전 영진목재 매장 취급 제품 기준.",
@@ -2187,7 +2188,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 <h2>정리하면</h2><p>{E(c["concl"])}</p>{"".join(f'<h2>{E(h)}</h2>' + (("<" + k + ">" + "".join(f"<li>{x}</li>" for x in L) + "</" + k + ">") if k in ("ul", "ol") else "".join(f"<p>{x}</p>" for x in L)) for h, k, L in c.get("secs", []))}<p><a class="b o" href="/jaryo/?q={c['q']}">매장 취급 제품 사진 보기</a> <a class="b o" href="/calc.html">자재 계산기</a></p><p>{ml}</p>
 <p class="small muted">일반적인 특징을 정리한 것으로 제품·등급에 따라 다를 수 있습니다. 매장에서 실물을 비교해 보세요.</p></section>
 <section class="wrap sec"><h2>관련 영상</h2>{vsplit(vs, "h3")}</section>
-<section class="wrap sec"><h2>자주 묻는 질문</h2>{"".join(f'<details class="cfq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q, a in _cfq(c))}</section>
+<section class="wrap sec"><h2>자주 묻는 질문</h2>{"".join(f'<details class="cfq"><summary>{E(q)}</summary><p>{LK(a)}</p></details>' for q, a in _cfq(c))}</section>
 <section class="wrap sec"><h2>다른 자재 비교</h2>{cmpnav(c["slug"])}</section>{mallbox(c["mats"])}{CTA}""", "/jajae/",
              {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in _cfq(c)]})
     page("bigyo/index.html", "자재 비교 — 합판·사이딩·단열재·바닥재·도어·루바 종류별 차이 | 영진목재", "헷갈리는 건축 자재를 종류별로 비교했습니다. 합판 vs OSB vs MDF, 세라믹·메탈·비닐 사이딩, 단열재, 바닥재, 실내 도어, 루바, 집성판, 각재, 방음·흡음재.",
@@ -2423,7 +2424,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
 {f'<h2>현장에서 이렇게 써요</h2><p>{E(t[5])}</p>' if len(t) > 5 and t[5] else ''}
 <p class="small muted">목수·인테리어 현장에서 오래 써 온 말이라 견적서·상담에서 자주 나옵니다. 뜻을 알면 자재 주문과 업체 상담이 쉬워집니다.</p>
 {('<h2>같이 보면 좋은 페이지</h2><div class="olk">' + "".join(f'<a href="{h}">{E(n)}</a>' for h, n in links) + '</div>') if links else ''}
-<h2>자주 묻는 질문</h2>{"".join(f'<details class="faq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q, a in fq)}
+<h2>자주 묻는 질문</h2>{"".join(f'<details class="faq"><summary>{E(q)}</summary><p>{LK(a)}</p></details>' for q, a in fq)}
 <h2>{E(g)} — 다른 용어</h2><div class="olk">{sib}</div><p><a class="b o" href="/yongeo.html">현장 용어 사전 전체 ({len(terms)}개) ›</a></p></section>
 {f'<section class="wrap sec"><h2>"{E(key)}" 나오는 영상</h2>{vsplit(rv, "h3")}</section>' if rv else ''}{CTA}""", "/jajae/", ld)
         page("yongeo.html", "건축 현장 용어 사전 — 다루끼·덴조·가베·오사마리·하바끼 뜻 | 영진목재", "목수·인테리어 현장에서 쓰는 일본어 잔재 용어와 자재 용어의 뜻을 정리했습니다. 다루끼, 덴조, 가베, 오사마리, 하바끼, 나라시, 메지 등.",
