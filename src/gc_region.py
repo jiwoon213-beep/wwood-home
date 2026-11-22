@@ -16,13 +16,16 @@ def rom(s):
 SD = {"서울특별시": "seoul", "부산광역시": "busan", "대구광역시": "daegu", "인천광역시": "incheon", "전남광주통합특별시": "jeonnam-gwangju", "대전광역시": "daejeon", "울산광역시": "ulsan", "세종특별자치시": "sejong", "경기도": "gyeonggi", "강원특별자치도": "gangwon", "충청북도": "chungbuk", "충청남도": "chungnam", "전북특별자치도": "jeonbuk", "경상북도": "gyeongbuk", "경상남도": "gyeongnam", "제주특별자치도": "jeju"}
 SDS = {"서울특별시": "서울", "부산광역시": "부산", "대구광역시": "대구", "인천광역시": "인천", "전남광주통합특별시": "광주·전남", "대전광역시": "대전", "울산광역시": "울산", "세종특별자치시": "세종", "경기도": "경기", "강원특별자치도": "강원", "충청북도": "충북", "충청남도": "충남", "전북특별자치도": "전북", "경상북도": "경북", "경상남도": "경남", "제주특별자치도": "제주"}
 MAPQ = [("철물점", "철물점"), ("장비 임대", "중장비 임대"), ("공구 렌탈", "공구 렌탈"), ("용달·화물", "용달 화물"), ("건재상", "건재상"), ("전기 자재", "전기자재"), ("설비 자재", "설비자재"), ("기사식당", "기사식당")]
+# 인력사무소는 건설·일용직 위주만: 이름에 인력·용역·건설 등이 있고 간병·가사·해외 알선 등은 제외
+INC = re.compile(r"인력|용역|건설|인부|노무|일용|잡부|공사|대기소|일꾼|근로")
+EXC = re.compile(r"간병|요양|가사|파출|산후|베이비|돌봄|헬퍼|해외|외국|글로벌|국제|global|recruit|병원|의료|간호|유학|모델|연예|캐스팅|웨딩|호텔|선원|헤드헌|서치|에이치알|\bhr\b|다문화|파견|아웃소싱|컨설팅|이민|비자", re.I)
 def load(root):
     p = f"{root}/data/geuncheo.tsv"
     if not os.path.exists(p): return []
     R = []
     for ln in open(p, encoding="utf-8"):
         c = ln.rstrip("\n").split("\t")
-        if len(c) >= 9 and c[0] in SD: R.append(c)
+        if len(c) >= 9 and c[0] in SD and (c[2] != "J" or (INC.search(c[3]) and not EXC.search(c[3]))): R.append(c)
     return R
 def slug(sd, sg): return SD[sd] + "-" + rom(sg.replace(" ", ""))
 def gen(page, E, CTA, faqslide, TEL, ROOT, OUT, SITEMAP_ADD=None):
@@ -47,12 +50,12 @@ def gen(page, E, CTA, faqslide, TEL, ROOT, OUT, SITEMAP_ADD=None):
         mapb = "".join(f'<a href="https://map.naver.com/p/search/{q(name + " " + mq_)}" target="_blank" rel="noopener">{E(n)}</a>' for n, mq_ in MAPQ)
         body = (f'<section class="wrap sec"><p class="crumb"><a href="/">홈</a> › <a href="/geuncheo.html">현장 근처 찾기</a> › <a href="/geuncheo/">지역별</a> › {E(name)}</p>'
                 f'<h1>{E(name)} 인력사무소·건설폐기물 처리업체 — 영업 중 {len(J) + len(W)}곳</h1>'
-                f'<p class="lead">{E(name)}에 등록된 <b>영업 중</b> 인력사무소(유료직업소개소) {len(J)}곳과 건설폐기물 처리업체 {len(W)}곳입니다. 폐업한 곳은 빼고 매일 갱신합니다(기준일 {mt}).</p>'
+                f'<p class="lead">{E(name)}에 등록된 <b>영업 중</b> 건설·일용직 인력사무소 {len(J)}곳과 건설폐기물 처리업체 {len(W)}곳입니다. 폐업한 곳은 빼고 매일 갱신합니다(기준일 {mt}).</p>'
                 f'<div class="gct"><a href="#j">👷 인력사무소 {len(J)}</a><a href="#w">🚛 폐기물 처리 {len(W)}</a><a href="/geuncheo.html">📍 내 위치로 찾기</a></div>'
                 f'<h2>{E(name)} 철물점·장비·용달 바로 찾기</h2><div class="gcq">{mapb}</div>'
                 + (f'<h2 id="j">{E(name)} 인력사무소 {len(J)}곳</h2><ul class="gcl2">' + "".join(card(c) for c in J) + '</ul>' if J else '')
                 + (f'<h2 id="w">{E(name)} 건설폐기물 처리업체 {len(W)}곳</h2><p class="small muted">수집운반업은 폐기물을 실어 가는 곳, 중간처분업은 파쇄·선별 등 처리하는 곳입니다.</p><ul class="gcl2">' + "".join(card(c) for c in W) + '</ul>' if W else '')
-                + f'<p class="small muted">출처: 행정안전부 지방행정 인허가데이터(공공데이터포털) — 영업 상태가 ‘영업/정상’인 곳만. 전화번호가 없는 곳은 ‘지도·전화번호’를 누르면 지도에서 확인할 수 있어요. 방문 전 전화로 영업 여부를 확인하세요.</p>'
+                + f'<p class="small muted">출처: 행정안전부 지방행정 인허가데이터(공공데이터포털) — 영업 상태가 ‘영업/정상’인 곳만. 인력사무소는 이름에 인력·용역·건설 등이 들어간 곳만 추렸고 간병·가사·해외 알선 소개소는 뺐습니다. 전화번호가 없는 곳은 ‘지도·전화번호’를 누르면 지도에서 확인할 수 있어요. 방문 전 전화로 영업 여부를 확인하세요.</p>'
                 + (f'<h2>{E(SDS[sd])} 다른 지역</h2><div class="gcq">' + "".join(f'<a href="/geuncheo/{slug(*x)}.html">{E(x[1])}</a>' for x in sorted(nb)) + '</div>' if nb else '')
                 + f'<div class="gcad"><b>🪵 {E(name)} 현장 목재·합판·석고보드는 영진종합목재</b><span>원하는 크기로 재단해 용달로 현장까지 · 대전 유성대로 44</span><a class="b r" href="tel:{TEL.replace("-", "")}">📞 {TEL}</a></div></section>'
                 + '<style>.gct,.gcq{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.gct a,.gcq a{padding:12px 14px;border-radius:12px;background:#f6f3ee;border:1px solid #e4ded4;font-weight:800;font-size:17px;text-decoration:none;color:#1D1B18}.gcl2{list-style:none;padding:0;display:grid;gap:8px}.gcl2 li{background:#fff;border:1px solid #e4ded4;border-radius:12px;padding:12px}.gcl2 b{font-size:18px}.gcl2 small{color:#c62a1f;font-weight:700}.gcl2 span{display:block;color:#5e574e;font-size:15px;margin:4px 0}.gcl2 div{display:flex;gap:8px;flex-wrap:wrap}.gcc,.gcm{padding:10px 12px;border-radius:10px;font-weight:800;text-decoration:none}.gcc{background:#c62a1f;color:#fff}.gcm{background:#03C75A;color:#fff}.gcad{display:flex;flex-direction:column;gap:8px;background:#fff8e6;border:2px solid #f0c040;border-radius:16px;padding:16px;margin:16px 0}</style>' + CTA)
