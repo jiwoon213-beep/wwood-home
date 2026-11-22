@@ -1881,6 +1881,7 @@ def build():
     import specpg as _spg; _spg.gen(page, P, E, CTA, faqslide, TEL); _spg.gen2(page, P, E, CTA, faqslide, TEL); _spg.gen3(page, P, E, CTA, faqslide, TEL); _spg.gen4(page, P, E, CTA, faqslide, TEL)
     import muge as _mg; _mg.gen(page, E, CTA, faqslide, TEL)
     import geuncheo as _gc; _gc.gen(page, E, CTA, faqslide, TEL)
+    import gc_region as _gcr; _gcr.gen(page, E, CTA, faqslide, TEL, ROOT, OUT)
     import mokgongso as _mgs; _mgs.gen(page, E, CTA, faqslide, TEL, ADDR, HOURS)
     import unit as _un; _un.gen(page, E, CTA, faqslide, TEL)
     # 가격 가이드·자재 백과 → 평수별 예시 링크(같은 자재끼리)
