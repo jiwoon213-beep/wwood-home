@@ -40,6 +40,16 @@ def card(r, alt_pre=""):
     return nm, IMG(r[6])
 
 
+
+# 페이지별 추가 FAQ — 구글 검색어(영림 중문·영림도어·멤브레인·타공 도어 등, 2026-11-22)
+XFQ = {
+    "jungmun": [("영림 슬라이딩 도어는 어떤 종류가 있나요?", "벽 쪽으로 밀어 여는 원슬라이딩, 레일을 숨긴 히든 슬라이딩, 거울을 붙인 미러 히든 슬라이딩, 손잡이 없이 누르는 히든 푸시 슬라이딩 등이 있습니다(/qna/hidden-sliding-door.html).")],
+    "jungmun-slim": [("슬림 중문은 일반 중문과 무엇이 다른가요?", "프레임(알루미늄 테두리)이 얇아 유리 면이 넓게 보여 현관이 넓고 밝아 보입니다. 유리 종류는 '중문 유리 옵션'(/younglim/jungmun-glass.html)에서 볼 수 있습니다.")],
+    "door-membrane": [("멤브레인 도어는 어떤 문인가요?", "MDF 판을 성형한 뒤 필름을 진공 압착한 문으로 몰딩·무늬 디자인이 다양합니다. ABS 도어와의 차이는 '실내 도어 비교'(/bigyo/door-types.html)에 있습니다.")],
+    "door-tagong": [("타공 도어는 무엇인가요?", "문짝에 유리·장식 구멍(타공)을 낸 디자인 문입니다. 빛이 들어와 복도·드레스룸 문에 많이 쓰며, 유리 종류는 사틴·모루 등으로 고릅니다(/qna/satin-yuri.html).")],
+    "door-hardware": [("영림 도어 손잡이는 문짝과 따로 고르나요?", "네, 문짝 디자인과 색에 맞춰 손잡이·경첩·도어스토퍼를 따로 고릅니다. 기존 문 손잡이 교체는 '방문 손잡이 교체'를 참고하세요(/qna/mun-cylinder.html).")],
+}
+
 def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
     rows = load(ROOT)
     if not rows: return []
@@ -60,6 +70,7 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
                 sec += f'<a class="yri" href="#" data-big="{im}" data-n="{E(n)}"><img loading="lazy" decoding="async" referrerpolicy="no-referrer" width="300" height="300" src="{im}" alt="영림 {E(n)}"><span>{E(n)}</span></a>'
             sec += '</div>'
         fq = [(f"영림 {nm} 어디서 보고 주문하나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 상담·주문할 수 있습니다. {HOURS}. 크기를 재 오시면 맞는 규격을 찾아 드리고, 대전·세종은 설치 시공(월드아키텍쳐)도 상담합니다.")]
+        fq += XFQ.get(slug, [])
         body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/younglim/">영림 도어·중문·마감재</a> › {E(nm)}</p><h1>영림 {E(nm)}</h1><p class="glead">{E(lead)} 총 {len(its)}가지.</p>' + ('<p class="glead"><a class="b r" href="/younglim/jungmun-all.html">영림 중문 디자인 전체(슬라이딩·양개·3연동·폴딩) 보기 ›</a></p>' if slug == 'jungmun-system' else '') + f'{nav(slug)}{sec}'
                 f'<p class="gs">영림(YOUNGLIM) 제품입니다. 사진을 누르면 크게 볼 수 있습니다. 색상·규격·가격·납기는 매장에 문의해 주세요.</p>'
                 f'<h2 class="gt">고를 때 알아둘 것</h2><ul class="gtip">{"".join(f"<li>{E(t)}</li>" for t in tips)}</ul>'
