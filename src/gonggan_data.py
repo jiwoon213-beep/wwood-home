@@ -641,6 +641,37 @@ SCENES += [
    (30, 97, "밝은 바닥", "tile", "밝은 색 바닥으로 벽·수납장과 톤을 맞췄습니다.", "/bigyo/floor-types.html", "바닥재 종류 비교", [])]),
 ]
 
+SCENES += [
+ ("open-ganssal-partition-living", "오픈 간살 파티션 거실 — 나무 간살 칸막이와 창가 단 둘러보기", YL + "80e0344f-4238-4c20-8d8b-486712e7bf9e.jpg", "사진: 영림",
+  "짙은 나무 간살 파티션으로 거실을 살짝 나누고, 뒤로 둥근 나무 벽장과 창가 단을 둔 공간입니다. 창에는 얇은 천 블라인드를 내렸습니다.",
+  [(29, 50, "오픈 간살 파티션", "woodwall", "짙은 나무 세로 간살을 세워 공간을 막지 않고 살짝 나눈 칸막이입니다.", "/younglim/p/3573.html", "제품 보기", [("/qna/gansal-partition.html", "간살 파티션"), ("/qna/partition-seolchi.html", "파티션 설치")]),
+   (39, 38, "둥근 나무 벽장", "shelf", "벽을 둥글게 파고 안쪽을 나무로 덮어 선반처럼 쓴 자리입니다.", "/qna/floating-shelf.html", "벽 선반", [("/qna/arch-mun.html", "아치 모양 만들기"), ("/mandeul/byeokseonban.html", "벽선반 만들기")]),
+   (45, 73, "나무 다리 벤치", "furniture", "창가에 둔 낮고 긴 벤치로, 두꺼운 나무 다리를 달았습니다.", "/mandeul/benchi.html", "벤치 만들기", [("/qna/bench-nopi.html", "벤치 높이"), ("/qna/bench-sangpan.html", "벤치 상판")]),
+   (62, 30, "천 블라인드", "blind", "창 전체를 얇은 흰 천 블라인드로 가려 빛을 부드럽게 들였습니다.", "/yeongyeol/blind.html", "블라인드 시공", [("/qna/seokgo-blind.html", "석고 천장 블라인드")]),
+   (15, 96, "짙은 나무 바닥", "maru", "단 아래 거실 바닥은 짙은 나뭇결 마루입니다.", "/younglim/maru.html", "마루 보기", [("/qna/badakjae-goreugi.html", "바닥재 고르는 법")])]),
+ ("slit-folding-door-dining", "슬릿 도어 주방 — 알루미늄 폴딩 도어와 식탁 둘러보기", YL + "6de20e76-0088-4d13-be2c-d8ce18103503.jpg", "사진: 영림",
+  "식탁 옆 공간 입구에 가는 알루미늄 테 폴딩 도어를 단 주방입니다. 왼쪽 창에는 가로 블라인드를 달았습니다.",
+  [(43, 50, "슬릿 도어 (AL)", "door", "가는 알루미늄 테에 반투명 유리를 끼운 접이식 문으로, 열면 문짝이 한쪽으로 겹쳐 접힙니다.", "/younglim/p/3568.html", "제품 보기", [("/qna/sliding-vs-folding.html", "슬라이딩 vs 폴딩"), ("/younglim/jungmun-folding.html", "영림 폴딩 전체")]),
+   (8, 40, "가로 블라인드", "blind", "창 높이 전체를 덮는 가는 가로살 블라인드입니다.", "/yeongyeol/blind.html", "블라인드 시공", [("/qna/seokgo-blind.html", "석고 천장 블라인드")]),
+   (85, 66, "흰 식탁", "furniture", "둥근 모서리 흰 상판에 가는 다리를 단 식탁입니다.", "/mandeul/teibeul.html", "테이블 만들기", [("/qna/siktak-nopi.html", "식탁 높이"), ("/qna/siktak-sangpan.html", "식탁 상판")]),
+   (70, 35, "회색 벽", "paint", "벽 전체를 밝은 회색 한 톤으로 칠해 문과 가구를 돋보이게 했습니다.", "/qna/self-paint-junbimul.html", "셀프 페인트 준비물", [("/bigyo/dobae-vs-paint-wall.html", "도배 vs 페인트")]),
+   (35, 95, "밝은 회색 바닥", "tile", "벽과 비슷한 밝은 회색 큰 타일 바닥입니다.", "/bigyo/floor-types.html", "바닥재 종류 비교", [("/qna/porcelain-tile.html", "포세린 타일")])]),
+ ("slim-edge-glass-door-study", "글라스 중문 슬림 엣지 — 침실과 서재 사이 유리문 둘러보기", YL + "c9517b3a-dd9c-43d0-bdba-b04debe1d724.jpg", "사진: 영림",
+  "벽 속에 가는 테 유리문을 달아 침실과 서재를 나눈 공간입니다. 서재 벽은 석재 무늬, 바닥은 큰 타일입니다.",
+  [(40, 30, "글라스 중문ㅣ슬림 엣지 글라스 도어", "jungmun", "테가 아주 가는 유리문이라 닫아도 너머 침실이 보입니다.", "/younglim/p/3565.html", "제품 보기", [("/qna/jungmun-yuri.html", "중문 유리"), ("/qna/pocket-door.html", "포켓 도어"), ("/younglim/jungmun-glass.html", "영림 글라스 중문 전체")]),
+   (85, 22, "석재 무늬 벽", "wall", "서재 벽 전체를 밝은 회색 석재 무늬로 마감했습니다.", "/younglim/wall.html", "월판넬 보기", [("/qna/injo-daeriseok.html", "인조 대리석"), ("/jaryo/stone.html", "석재 자재")]),
+   (88, 55, "나무 책상", "furniture", "짙은 나무 상판에 가는 검은 다리를 단 책상입니다.", "/mandeul/teibeul.html", "원목 테이블 만들기", [("/qna/chaeksang-nopi.html", "책상 높이"), ("/qna/computer-chaeksang.html", "컴퓨터 책상")]),
+   (12, 86, "석재 낮은 선반", "shelf", "벽을 따라 길게 놓은 돌 느낌 낮은 선반으로, 소품과 조명을 올렸습니다.", "/qna/floating-shelf.html", "벽 선반", [("/mandeul/byeokseonban.html", "벽선반 만들기")]),
+   (55, 93, "큰 타일 바닥", "tile", "갈색이 도는 회색 큰 타일을 깔았습니다.", "/jajae/tile.html", "타일 자재", [("/qna/porcelain-tile.html", "포세린 타일"), ("/qna/tile-primer.html", "타일 프라이머")])]),
+ ("square-garden-blue-wall", "스퀘어가든 3연동 중문 — 파란 벽과 몰딩 벽 거실 둘러보기", YL + "d590ba4e-a55f-4e29-b0f4-6a0ced9c24bf.jpg", "사진: 영림",
+  "짙은 파란 벽에 연회색 테 3연동 중문을 달고, 옆 거실 벽은 흰 몰딩으로 칸을 나눈 공간입니다.",
+  [(35, 50, "스퀘어가든", "jungmun", "연회색 테에 격자 무늬 유리를 끼운 3짝 미닫이 중문입니다.", "/younglim/p/1672.html", "제품 보기", [("/qna/3yeondong-self.html", "3연동 중문"), ("/bigyo/3yeondong-vs-one-sliding.html", "3연동 vs 원슬라이딩"), ("/younglim/jungmun.html", "영림 중문 전체")]),
+   (66, 15, "파란 칠 벽", "paint", "중문 둘레 벽을 짙은 파란색으로 칠해 문 테가 또렷해 보입니다.", "/qna/self-paint-junbimul.html", "셀프 페인트 준비물", [("/qna/paint-sigong-sunseo.html", "페인트 칠 순서")]),
+   (88, 30, "몰딩 칸 벽", "wall", "흰 벽에 몰딩으로 네모 칸을 나눈 웨인스코팅 벽입니다.", "/qna/wainscoting-sigong.html", "웨인스코팅 시공", [("/jajae/molding.html", "몰딩 자재"), ("/qna/wainscoting-paint.html", "웨인스코팅 칠")]),
+   (92, 66, "흰 소파", "furniture", "몰딩 벽 앞에 놓은 흰 가죽 소파입니다.", "/younglim/wall.html", "소파 뒤 벽 자재", [("/qna/artwall-mandeulgi.html", "아트월 만들기")]),
+   (50, 88, "밝은 바닥", "maru", "밝은 회색 나뭇결 바닥입니다.", "/younglim/maru.html", "마루 보기", [("/bigyo/floor-types.html", "바닥재 종류 비교")])]),
+]
+
 # 방문자가 사진찾기에서 올린 공간 사진(자동 인식·얼굴/번호판 자동 모자이크) — .github/scripts/wwup_pull.py 가 채움
 import json as _json, os as _os
 _VP = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "data", "gonggan_visitor.json")
