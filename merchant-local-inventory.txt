@@ -16,9 +16,9 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bondex-539	in_stock	624000 KRW	buy	same_day
 11962997655006403809	bondex-542	in_stock	647400 KRW	buy	same_day
 11962997655006403809	bondex-614	in_stock	128700 KRW	buy	same_day
-11962997655006403809	bondex-615	in_stock	76700 KRW	buy	same_day
-11962997655006403809	bondex-621	in_stock	162500 KRW	buy	same_day
 11962997655006403809	bondex-622	in_stock	572000 KRW	buy	same_day
+11962997655006403809	bondex-621	in_stock	162500 KRW	buy	same_day
+11962997655006403809	bondex-615	in_stock	76700 KRW	buy	same_day
 11962997655006403809	bondex-613	in_stock	507000 KRW	buy	same_day
 11962997655006403809	bondex-617	in_stock	193700 KRW	buy	same_day
 11962997655006403809	bondex-618	in_stock	102700 KRW	buy	same_day
@@ -1043,7 +1043,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-8067	in_stock	3500 KRW	buy	same_day
 11962997655006403809	bupum-8066	in_stock	7200 KRW	buy	same_day
 11962997655006403809	bupum-8064	in_stock	2900 KRW	buy	same_day
-11962997655006403809	bupum-8063	in_stock	2500 KRW	buy	same_day
+11962997655006403809	bupum-8063	in_stock	2600 KRW	buy	same_day
 11962997655006403809	bupum-6781	in_stock	2600 KRW	buy	same_day
 11962997655006403809	bupum-4836	in_stock	2500 KRW	buy	same_day
 11962997655006403809	bupum-4835	in_stock	2400 KRW	buy	same_day
