@@ -211,6 +211,29 @@ SGXFQ = {
  "molding-georebatgi": [("걸레받이 규격은요?", "높이·두께별 기준가는 '몰딩 가격'(/gagyeok/molding-gagyeok.html)에 정리했습니다."), ("마이너스 걸레받이도 되나요?", "벽 시공 단계에서 정하면 가능합니다(/sigongbeop/minus-molding-sigong.html).")],
  "jungmun": [("3연동 중문 셀프 시공 되나요?", "실측과 수평 맞추기가 핵심이라 처음이면 어렵습니다(/qna/3yeondong-self.html)."), ("영림 중문 종류는 어디서 보나요?", "영림 중문 전체 사진은 /younglim/jungmun-all.html 에서 볼 수 있습니다.")],
 }
+
+def _autofq(key, have, n=3):
+    """자재 페이지 자동 FAQ — 그 자재의 최신 하는 법 Q&A 답 첫 문장 + 링크(새 글이 허브에서 바로 링크되게)."""
+    try:
+        from qna_data import QNA as _Q
+    except Exception:
+        return []
+    hv = {q for q, a in have}
+    out = []
+    for q in reversed(_Q):
+        if len(q) > 6 and key in (q[6] or []):
+            t = q[1].split(" — ")[0].strip()
+            if not t.endswith("?"):
+                if re.search(r"(법|하기|바르기|시공|교체|보수|만들기|제거|설치|고르기|자르기|붙이기|칠하기|빼기|막기|고치기)$", t): t += ", 어떻게 하나요?"
+                elif re.search(r"(차이|종류|규격|두께|사이즈|크기|뜻|가격|무게|길이|간격)$", t): t += "는?" if (ord(t[-1]) - 0xAC00) % 28 == 0 else "은?"
+                elif "\uac00" <= t[-1] <= "\ud7a3": t += ("란 무엇인가요?" if (ord(t[-1]) - 0xAC00) % 28 == 0 else "이란 무엇인가요?")
+                else: t += "?"
+            if t in hv or not t: continue
+            a = re.split(r"(?<=[다요])\. ", q[2])[0].rstrip(".") + "."
+            if len(a) > 170: a = a[:168].rsplit(" ", 1)[0] + "…"
+            out.append((t, a + f" (/qna/{q[0]}.html)"))
+            if len(out) >= n: break
+    return out
 def faqslide(items):
     _lk = lambda t: re.sub(r"\((/[A-Za-z0-9_/.\-#=%]+)\)", r'(<a href="\1">바로 보기</a>)', E(t))
     return '<div class="fqs">' + "".join(f'<div class="fq"><b>Q. {E(q)}</b><p>{_lk(a)}</p></div>' for q, a in items) + '</div>' + ('<p class="small muted fqh">옆으로 밀어서 더 보기 ›</p>' if len(items) > 1 else "")
@@ -897,7 +920,7 @@ def build():
         import gagyeok as _g0
         cmpln += _g0.links(_g0.BYMAT.get(m["slug"], []))
         if m["slug"] in ("hardware", "bangbu", "hapdeck", "gujo"): cmpln += '<div class="qk qk2"><b>🔩 목재 철물</b><a href="/cheolmul/janseon.html">장선걸이</a><a href="/cheolmul/gidungbatchim.html">기둥받침</a><a href="/cheolmul/juchudol.html">주춧돌</a><a href="/cheolmul/mokjo.html">목조주택 철물</a><a href="/cheolmul/">전체 철물</a></div>'
-        mf = MFAQ.get(m["slug"], []) + [(f"{m['name']} 지방(전국)으로도 배송되나요?", f"네, 전국 어디든 용달차로 보내 드립니다. 품목·수량·도착지를 알려 주시면 사무실에서 용달 운임 견적을 드리고, 입금 확인 후 바로 출고합니다. 대전·세종·공주·계룡·논산·금산·옥천은 직접 배송·현장 납품합니다. 문의 {TEL}")]
+        mf = MFAQ.get(m["slug"], []) + _autofq(m["slug"], MFAQ.get(m["slug"], [])) + [(f"{m['name']} 지방(전국)으로도 배송되나요?", f"네, 전국 어디든 용달차로 보내 드립니다. 품목·수량·도착지를 알려 주시면 사무실에서 용달 운임 견적을 드리고, 입금 확인 후 바로 출고합니다. 대전·세종·공주·계룡·논산·금산·옥천은 직접 배송·현장 납품합니다. 문의 {TEL}")]
         _seen = {re.sub(r"[^가-힣A-Za-z0-9]|은|는|을|를", "", q) for q, a in mf}
         faq = [x for x in faq if re.sub(r"[^가-힣A-Za-z0-9]|은|는|을|를", "", x["name"]) not in _seen] + [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in mf]
         faqsec = (f'<section class="wrap sec"><h2>{m["name"]} 자주 묻는 질문</h2>' + faqslide(mf) + '</section>') if mf else ""
@@ -2190,6 +2213,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
             if r[0] in ("물", "물 흡수", "관리", "시공", "작업"):
                 out.append((f"{_jo(a, '과', '와')} {b}, {_jo(r[0], '은', '는')} 어떻게 다른가요?", f"{_jo(a, '은', '는')} {r[1]}, {_jo(b, '은', '는')} {r[2]}.")); break
         out += [tuple(x) for x in c.get("faq", [])]
+        out += _autofq((c.get("mats") or [""])[0], out, 2)
         out.append(("매장에서 실물을 볼 수 있나요?", "대전 유성구 영진종합목재(월드건축자재) 매장에서 실물을 비교해 보실 수 있고, 원하는 크기로 재단해 전국 배송도 합니다. 전화 문의 후 방문하시면 편합니다."))
         return out
     for c in CMP:
