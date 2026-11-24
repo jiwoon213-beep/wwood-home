@@ -62,6 +62,25 @@ def gen(page, E, CTA, faqslide, TEL, ROOT, OUT, SITEMAP_ADD=None):
         fq = [(f"{name} 인력사무소는 어디 있나요?", f"{name}에 등록된 영업 중 유료직업소개소는 {len(J)}곳입니다. 이 페이지에서 주소와 전화번호(등록된 경우)를 볼 수 있습니다."),
               (f"{name} 건설폐기물은 어디에 맡기나요?", f"{name}에 등록된 영업 중 건설폐기물 처리업체는 {len(W)}곳입니다. 수집운반업체는 현장에서 폐기물을 실어 가고, 중간처분업체는 파쇄·선별 처리합니다.")]
         body = body.replace('<div class="gcad">', f'<h2>자주 묻는 질문</h2>{faqslide(fq)}<div class="gcad">', 1)
+        # 종류별 단독 페이지(검색어 '○○구 인력사무소', '○○구 건설폐기물' 직접 대응)
+        CSS = body[body.find('<style>'):body.find('</style>') + 8]
+        for kk, LL, suf, ttl, dsc, h in (("J", J, "inryeok", f"{name} 인력사무소 {len(J)}곳 — 건설 일용직·용역 전화번호(영업 중) | 영진목재",
+                                          f"{name} 영업 중 인력사무소(건설·일용직·용역) {len(J)}곳 주소·전화번호. 폐업한 곳은 빼고 매일 갱신. 현장 근처 철물점·장비 임대도 바로 찾기.", f"{name} 인력사무소"),
+                                         ("W", W, "pyegimul", f"{name} 건설폐기물 처리업체 {len(W)}곳 — 폐기물 수거·처리 전화번호 | 영진목재",
+                                          f"{name} 영업 중 건설폐기물 수집운반·처리업체 {len(W)}곳 주소·전화번호. 폐업한 곳은 빼고 매일 갱신. 인테리어 철거 폐기물 맡길 곳 찾기.", f"{name} 건설폐기물 처리업체")):
+            if not LL: continue
+            other = (f'<a href="/geuncheo/{sl}-pyegimul.html">🚛 {E(name)} 건설폐기물 처리업체 {len(W)}곳 ›</a>' if kk == "J" and W else (f'<a href="/geuncheo/{sl}-inryeok.html">👷 {E(name)} 인력사무소 {len(J)}곳 ›</a>' if kk == "W" and J else ""))
+            sb = (f'<section class="wrap sec"><p class="crumb"><a href="/">홈</a> › <a href="/geuncheo.html">현장 근처 찾기</a> › <a href="/geuncheo/{sl}.html">{E(name)}</a> › {E(h.split(" ", 2)[-1])}</p>'
+                  f'<h1>{E(h)} — 영업 중 {len(LL)}곳</h1><p class="lead">{E(name)}에 등록된 <b>영업 중</b> {E(h.split(" ", 2)[-1])} {len(LL)}곳의 주소와 전화번호입니다. 폐업·휴업한 곳은 빼고 매일 갱신합니다(기준일 {mt}).</p>'
+                  f'<div class="gct">{other}<a href="/geuncheo.html">📍 내 위치로 찾기</a><a href="/geuncheo/{sl}.html">{E(name)} 전체 보기</a></div>'
+                  + ('<p class="small muted">수집운반업은 폐기물을 실어 가는 곳, 중간처분업은 파쇄·선별 등 처리하는 곳입니다.</p>' if kk == "W" else '')
+                  + '<ul class="gcl2">' + "".join(card(c) for c in LL) + '</ul>'
+                  + f'<h2>{E(name)} 철물점·장비·용달 바로 찾기</h2><div class="gcq">{mapb}</div>'
+                  + (f'<h2>{E(SDS[sd])} 다른 지역 {E(h.split(" ", 2)[-1])}</h2><div class="gcq">' + "".join(f'<a href="/geuncheo/{slug(*x)}-{suf}.html">{E(x[1])}</a>' for x in sorted(nb) if any(c[2] == kk for c in G[x])) + '</div>' if nb else '')
+                  + f'<h2>자주 묻는 질문</h2>{faqslide([fq[0] if kk == "J" else fq[1], ("영업 중인지 어떻게 확인하나요?", "행정안전부 인허가데이터에서 영업 상태가 영업/정상인 곳만 보여 주고 매일 갱신합니다. 방문 전 전화로 한 번 더 확인하세요.")])}'
+                  + f'<div class="gcad"><b>🪵 {E(name)} 현장 목재·합판·석고보드는 영진종합목재</b><span>원하는 크기로 재단해 용달로 현장까지 · 대전 유성대로 44</span><a class="b r" href="tel:{TEL.replace("-", "")}">📞 {TEL}</a></div></section>' + CSS + CTA)
+            page(f"geuncheo/{sl}-{suf}.html", ttl, dsc, sb)
+        body = body.replace(f'<a href="#j">👷 인력사무소 {len(J)}</a>', f'<a href="/geuncheo/{sl}-inryeok.html">👷 인력사무소 {len(J)}</a>' if J else '', 1).replace(f'<a href="#w">🚛 폐기물 처리 {len(W)}</a>', f'<a href="/geuncheo/{sl}-pyegimul.html">🚛 폐기물 처리 {len(W)}</a>' if W else '', 1)
         page(f"geuncheo/{sl}.html", f"{name} 인력사무소·건설폐기물 처리업체 {len(J) + len(W)}곳 — 전화·주소(영업 중) | 영진목재",
              f"{name} 영업 중 인력사무소 {len(J)}곳, 건설폐기물 처리업체 {len(W)}곳 주소·전화번호. 철물점·장비 임대·용달도 바로 찾기. 매일 갱신.", body)
     # 지역 목록
