@@ -173,10 +173,11 @@ XLINK = {"oilstain": [("/bondex/stain.html", "본덱스 스테인·바니쉬 제
          "tempa-board": [("/younglim/wall.html", "영림 월판넬"), ("/trend/japandi.html", "간살·재팬디 인테리어")]}
 
 
-def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ=None, MP=None):
+def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ=None, MP=None, AFQ=None):
     pages = []
     def won(x): return f"{int(round(x, -2)):,}원"
     for slug, nm, js, sg, specs, lead, unitdesc, loss, exs, faq in GG:
+        if AFQ and js: faq = list(faq) + AFQ(js, faq, 2)
         rows = []
         for rx, unit, area in specs:
             hit = next((p for p in P if re.search(rx, p["name"])), None)

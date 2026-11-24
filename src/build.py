@@ -1920,7 +1920,7 @@ def build():
     MKMAT_HTML = {ms: f'<section class="wrap sec"><h2>이 자재로 만들 수 있는 것</h2><p class="small muted">재단 크기·수량과 만드는 순서, 만들기 영상까지 정리했습니다. 매장에서 그 크기대로 잘라 드려요.</p><div class="mg m2">'
                   + "".join(f'<a class="mc" href="/mandeul/{x[0]}.html"><b>{E(x[1])}</b><small>{E(x[3][:40])}…</small></a>' for x in xs[:12]) + '</div></section>' for ms, xs in _mkmat.items()}
     import gagyeok as _gg
-    GGLIST = _gg.gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ, mat_photos)
+    GGLIST = _gg.gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ, mat_photos, _autofq)
     import gyeonjeok as _gj
     _gj.gen(page, P, E, CTA, faqslide, TEL)
     _gj.gen2(page, E, CTA, faqslide, TEL)
