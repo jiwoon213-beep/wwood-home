@@ -200,6 +200,17 @@ def _steps(steps):
 
 
 def LK(t): return re.sub(r"\((/[A-Za-z0-9_/.\-#=%]+)\)", r'(<a href="\1">바로 보기</a>)', E(t))
+SGXFQ = {
+ "metal-siding": [("메탈사이딩 하지 간격은요?", "제품 설명서의 하지(각관·목재) 간격을 따르고, 피스는 하지에 정확히 박힙니다. 관련 부자재는 '메탈사이딩 부자재'(/qna/metal-siding-bujajae.html)에 정리했습니다."), ("메탈사이딩과 세라믹사이딩 중 무엇이 좋나요?", "가볍고 시공이 빠른 건 메탈, 무겁지만 질감·내구성이 좋은 건 세라믹입니다(/bigyo/siding-types.html).")],
+ "decotile": [("데코타일 두께는 몇 mm를 쓰나요?", "주거용은 보통 2~3T를 많이 씁니다. 고르는 법은 '데코타일 두께'(/qna/decotile-duggae.html)에 있습니다."), ("기존 바닥 위에 덧방해도 되나요?", "바닥이 평평하고 들뜬 곳이 없으면 덧방할 수 있습니다. 장판 위는 들뜨기 쉬워 장판을 걷고 시공합니다.")],
+ "minus-molding-sigong": [("마이너스 몰딩은 무엇인가요?", "벽과 천장·바닥 사이를 홈으로 남겨 몰딩이 안 보이게 마감하는 방식입니다(/qna/minus-molding.html)."), ("마이너스 몰딩 단점은요?", "석고보드 시공 단계에서 정해야 하고 시공이 까다롭습니다(/qna/minus-molding-danjeom.html).")],
+ "oilstain": [("오일스테인 건조시간은요?", "제품·온도에 따라 다르며 통에 적힌 시간을 따릅니다(/qna/oilstain-geonjo.html)."), ("오일스테인 색상은 어떻게 고르나요?", "목재 색이 비치는 반투명이라 작은 자투리에 먼저 칠해 봅니다(/qna/oilstain-color.html).")],
+ "gangmaru": [("강마루와 강화마루는 무엇이 다른가요?", "강마루는 본드로 붙이고, 강화마루는 끼워서 띄워 깝니다(/qna/kanghwa-vs-kangmaru.html)."), ("강마루 물걸레 청소해도 되나요?", "물을 꽉 짠 걸레로 닦고 물기가 남지 않게 합니다(/qna/kangmaru-cheongso.html).")],
+ "seokgo-byeok": [("석고보드 9.5mm와 12.5mm 중 벽에는 무엇을 쓰나요?", "벽은 단단한 12.5mm를 많이 씁니다(/bigyo/seokgo-95-vs-125.html)."), ("석고보드 가벽 만들기 자재는요?", "각재·석고보드·피스·퍼티가 기본입니다. 가벽 자재 계산기(/gabyeok-gyesan.html)로 수량을 계산해 보세요.")],
+ "siding-oebyeok": [("사이딩 종류는 어떤 게 있나요?", "세라믹·메탈·비닐·시멘트·목재 사이딩이 있습니다(/bigyo/siding-types.html).")],
+ "molding-georebatgi": [("걸레받이 규격은요?", "높이·두께별 기준가는 '몰딩 가격'(/gagyeok/molding-gagyeok.html)에 정리했습니다."), ("마이너스 걸레받이도 되나요?", "벽 시공 단계에서 정하면 가능합니다(/sigongbeop/minus-molding-sigong.html).")],
+ "jungmun": [("3연동 중문 셀프 시공 되나요?", "실측과 수평 맞추기가 핵심이라 처음이면 어렵습니다(/qna/3yeondong-self.html)."), ("영림 중문 종류는 어디서 보나요?", "영림 중문 전체 사진은 /younglim/jungmun-all.html 에서 볼 수 있습니다.")],
+}
 def faqslide(items):
     _lk = lambda t: re.sub(r"\((/[A-Za-z0-9_/.\-#=%]+)\)", r'(<a href="\1">바로 보기</a>)', E(t))
     return '<div class="fqs">' + "".join(f'<div class="fq"><b>Q. {E(q)}</b><p>{_lk(a)}</p></div>' for q, a in items) + '</div>' + ('<p class="small muted fqh">옆으로 밀어서 더 보기 ›</p>' if len(items) > 1 else "")
@@ -2017,6 +2028,7 @@ def build():
         _sq.append((f"{nm}에 어떤 자재가 필요한가요?", ", ".join(a for a, b, c in rows) + "가 필요합니다. 규격과 예시 수량은 위 표에 있습니다."))
         _sq.append((f"{nm} 시공도 맡길 수 있나요?", "네. 월드아키텍쳐(실내건축공사업 등록)가 대전·세종에서 직접 시공합니다. 전화 042-545-2900으로 문의하세요."))
         _sq.append(("자재를 원하는 크기로 잘라 주나요?", f"네. 대전 {ADDR} 매장에서 원하는 크기로 재단해 드리고, 전국 용달 배송도 됩니다."))
+        _sq += [tuple(x) for x in SGXFQ.get(slug, [])]
         ALLFAQ.append(("자재 시공법", _sq[:3], f"/sigongbeop/{slug}.html", nm))
         body = body.replace("<!--SGFAQ-->", f'<section class="wrap sec"><h2>{E(nm)} 자주 묻는 질문</h2>' + faqslide(_sq) + '</section>')
         ld = [{"@context": "https://schema.org", "@type": "HowTo", "name": title.split(" — ")[0], "description": lead,
