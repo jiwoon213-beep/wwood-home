@@ -20,7 +20,8 @@ ids = get({"list": 1}).get("ids", [])
 db = json.load(open(DB, encoding="utf-8")) if os.path.exists(DB) else []
 have = {x["id"] for x in db} | ({x["id"] for x in json.load(open(DONE, encoding="utf-8"))} if os.path.exists(DONE) else set())
 face = cv2.FaceDetectorYN.create("/tmp/yunet.onnx", "", (320, 320), 0.6, 0.3, 5000)
-plate = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_russian_plate_number.xml")
+try: plate = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_russian_plate_number.xml")
+except Exception as _e: plate = None; print("번호판 검출기 없음(OpenCV 버전):", _e)
 def pix(img, x, y, w, h):
     H, W = img.shape[:2]; m = int(max(w, h) * .25)
     x0, y0, x1, y1 = max(0, x - m), max(0, y - m), min(W, x + w + m), min(H, y + h + m)
@@ -53,7 +54,7 @@ for i in ids:
             for f in (F if F is not None else []):
                 x, y, w, h = [int(v / s) for v in f[:4]]; pix(img, x, y, w, h); nf += 1
         g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        P = plate.detectMultiScale(g, 1.08, 4, minSize=(40, 12))
+        P = plate.detectMultiScale(g, 1.08, 4, minSize=(40, 12)) if plate is not None else []
         for (x, y, w, h) in P: pix(img, x, y, w, h)
         pil = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
         if max(pil.size) > 1200: pil.thumbnail((1200, 1200))
