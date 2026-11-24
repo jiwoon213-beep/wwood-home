@@ -2052,6 +2052,7 @@ def build():
         _sq.append((f"{nm} 시공도 맡길 수 있나요?", "네. 월드아키텍쳐(실내건축공사업 등록)가 대전·세종에서 직접 시공합니다. 전화 042-545-2900으로 문의하세요."))
         _sq.append(("자재를 원하는 크기로 잘라 주나요?", f"네. 대전 {ADDR} 매장에서 원하는 크기로 재단해 드리고, 전국 용달 배송도 됩니다."))
         _sq += [tuple(x) for x in SGXFQ.get(slug, [])]
+        if ms: _sq += _autofq(ms if isinstance(ms, str) else ms[0], _sq, 2)
         ALLFAQ.append(("자재 시공법", _sq[:3], f"/sigongbeop/{slug}.html", nm))
         body = body.replace("<!--SGFAQ-->", f'<section class="wrap sec"><h2>{E(nm)} 자주 묻는 질문</h2>' + faqslide(_sq) + '</section>')
         ld = [{"@context": "https://schema.org", "@type": "HowTo", "name": title.split(" — ")[0], "description": lead,
@@ -2455,6 +2456,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
                 if t[3] in _GG: links.append((f"/gagyeok/{_GG[t[3]]}.html", f"{mn.get(t[3], '')} 가격 가이드".strip()))
                 links += _XL.get(t[4], [])
                 fq = [(f"{t[0]} 뜻이 뭔가요?", f"{t[1]}. {t[2]}"), *([(f"{t[0]}{_eun} 현장에서 어떻게 쓰나요?", t[5])] if len(t) > 5 and t[5] else []), (f"{t[0]}{_eun} 표준어로 뭐라고 하나요?", f"표준어·우리말로는 '{t[1]}'(이)라고 합니다. 현장·지역에 따라 조금 다르게 쓰기도 합니다.")]
+                if len(t) > 3 and t[3]: fq += _autofq(t[3], fq, 2)
                 ld = {"@context": "https://schema.org", "@graph": [{"@type": "DefinedTerm", "name": t[0], "description": f"{t[1]}. {t[2]}", "inDefinedTermSet": "https://www.wwood.co.kr/yongeo.html"},
                       {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}]}
                 page(f"yongeo/{t[4]}.html", f"{t[0]} 뜻 — {t[1]} | 현장 용어 · 영진목재", f"{t[0]} 뜻: {t[1]}. {t[2]}"[:150],
