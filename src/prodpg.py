@@ -1,3 +1,4 @@
+import re
 # -*- coding: utf-8 -*-
 """제조사 제품별 상세 페이지 — 영림·예림·쉐누·본덱스·건축자재(samik)·수입 자재(homewood)
 /{dir}/p/{id}.html + 제품 목록 /{dir}/p/index.html. 가격은 본덱스만(판매가×1.3, 부가세 포함, '~'), 나머지 매장 문의.
@@ -71,7 +72,11 @@ def _vendor(page, E, CTA, faqslide, HOURS, d, label, home, items, VID=None):
         ld = [_ld(it["title"], it["img"], use, it.get("brand"), it["cat"], it.get("price")),
               {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}]
         sd = " · ".join(f"{a} {b}" for a, b in it["spec"][:2])
-        page(f"{d}/p/{it['id']}.html", (f"{it['title']} 가격 {it['price']:,}원~ · 규격 | 대전 영진목재" if it.get("price") else f"{it['title']} — 사진·규격·구매 | 대전 영진목재"),
+        _tt = re.sub(r"\s+", " ", it["title"].replace("｜", "·")).strip(" ·")
+        _tt = re.sub(r"^(\S+) \1(?=\S)", r"\1 ", _tt); _tt = re.sub(r"^(\S+) (\1)", r"\2", _tt)
+        _ct = re.sub(r"\s+", " ", it["cat"]).strip()
+        if _ct and _ct.split()[0] not in _tt and len(_tt) + len(_ct) < 44: _tt = f"{_tt} {_ct}"
+        page(f"{d}/p/{it['id']}.html", (f"{_tt} 가격 {it['price']:,}원~ · 규격 | 대전 영진목재" if it.get("price") else f"{_tt} — 사진·규격·구매 | 대전 영진목재"),
              (itro[:150] if len(itro) > 60 else f"{it['title']}: {use[:60]}. {sd[:50]} 대전 영진종합목재 상담·전국 배송.").replace("  ", " "), body, "/jaryo/", ld, it["img"] if it["img"].startswith("http") or it["img"].startswith("/") else None)
     lst = "".join(f'<h2 class="gt">{E(c)} <small>{len(xs)}가지</small></h2><ul class="mgl">' + "".join(f'<li><a href="/{d}/p/{x["id"]}.html">{E(x["title"])}</a></li>' for x in xs) + '</ul>' for c, xs in bycat.items())
     page(f"{d}/p/index.html", f"{label} 제품별 목록 {len(items)}가지 | 대전 영진목재", f"{label} {len(items)}가지 제품별 사진·규격 페이지 목록. 대전 영진종합목재 상담·전국 배송.",
