@@ -682,7 +682,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-4783	in_stock	16600 KRW	buy	same_day
 11962997655006403809	bupum-4701	in_stock	4100 KRW	buy	same_day
 11962997655006403809	bupum-4690	in_stock	7700 KRW	buy	same_day
-11962997655006403809	bupum-4664	in_stock	8000 KRW	buy	same_day
+11962997655006403809	bupum-4664	in_stock	8700 KRW	buy	same_day
 11962997655006403809	bupum-4586	in_stock	7300 KRW	buy	same_day
 11962997655006403809	bupum-4464	in_stock	3700 KRW	buy	same_day
 11962997655006403809	bupum-4343	in_stock	7900 KRW	buy	same_day
@@ -1070,7 +1070,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-102	in_stock	700 KRW	buy	same_day
 11962997655006403809	bupum-8057	in_stock	32800 KRW	buy	same_day
 11962997655006403809	bupum-8056	in_stock	30800 KRW	buy	same_day
-11962997655006403809	bupum-8055	in_stock	21500 KRW	buy	same_day
+11962997655006403809	bupum-8055	in_stock	23100 KRW	buy	same_day
 11962997655006403809	bupum-8054	in_stock	28600 KRW	buy	same_day
 11962997655006403809	bupum-8053	in_stock	28600 KRW	buy	same_day
 11962997655006403809	bupum-8052	in_stock	21500 KRW	buy	same_day
@@ -1185,12 +1185,12 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-5343	in_stock	5100 KRW	buy	same_day
 11962997655006403809	bupum-1188	in_stock	7300 KRW	buy	same_day
 11962997655006403809	bupum-9612	in_stock	5600 KRW	buy	same_day
-11962997655006403809	bupum-8076	in_stock	15400 KRW	buy	same_day
+11962997655006403809	bupum-8076	in_stock	17500 KRW	buy	same_day
 11962997655006403809	bupum-8075	in_stock	9000 KRW	buy	same_day
 11962997655006403809	bupum-8074	in_stock	8900 KRW	buy	same_day
 11962997655006403809	bupum-8048	in_stock	4500 KRW	buy	same_day
 11962997655006403809	bupum-8047	in_stock	4500 KRW	buy	same_day
-11962997655006403809	bupum-8046	in_stock	4100 KRW	buy	same_day
+11962997655006403809	bupum-8046	in_stock	4200 KRW	buy	same_day
 11962997655006403809	bupum-2567	in_stock	3500 KRW	buy	same_day
 11962997655006403809	bupum-8085	in_stock	5500 KRW	buy	same_day
 11962997655006403809	bupum-8084	in_stock	4800 KRW	buy	same_day
@@ -1433,14 +1433,14 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-8124	in_stock	5900 KRW	buy	same_day
 11962997655006403809	bupum-8122	in_stock	26400 KRW	buy	same_day
 11962997655006403809	bupum-8120	in_stock	22600 KRW	buy	same_day
-11962997655006403809	bupum-8116	in_stock	12400 KRW	buy	same_day
+11962997655006403809	bupum-8116	in_stock	7700 KRW	buy	same_day
 11962997655006403809	bupum-6768	in_stock	18900 KRW	buy	same_day
 11962997655006403809	bupum-6710	in_stock	5200 KRW	buy	same_day
 11962997655006403809	bupum-5370	in_stock	55600 KRW	buy	same_day
 11962997655006403809	bupum-5272	in_stock	4800 KRW	buy	same_day
 11962997655006403809	bupum-5258	in_stock	4500 KRW	buy	same_day
 11962997655006403809	bupum-4784	in_stock	4300 KRW	buy	same_day
-11962997655006403809	bupum-4161	in_stock	13600 KRW	buy	same_day
+11962997655006403809	bupum-4161	in_stock	8900 KRW	buy	same_day
 11962997655006403809	bupum-3299	in_stock	19600 KRW	buy	same_day
 11962997655006403809	bupum-3125	in_stock	500 KRW	buy	same_day
 11962997655006403809	bupum-2167	in_stock	16600 KRW	buy	same_day
@@ -1736,7 +1736,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-8407	in_stock	1600 KRW	buy	same_day
 11962997655006403809	bupum-8405	in_stock	3800 KRW	buy	same_day
 11962997655006403809	bupum-8404	in_stock	1300 KRW	buy	same_day
-11962997655006403809	bupum-8403	in_stock	3300 KRW	buy	same_day
+11962997655006403809	bupum-8403	in_stock	3500 KRW	buy	same_day
 11962997655006403809	bupum-8401	in_stock	3300 KRW	buy	same_day
 11962997655006403809	bupum-8400	in_stock	7500 KRW	buy	same_day
 11962997655006403809	bupum-8165	in_stock	2400 KRW	buy	same_day
@@ -1782,7 +1782,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-2808	in_stock	17300 KRW	buy	same_day
 11962997655006403809	bupum-2673	in_stock	2100 KRW	buy	same_day
 11962997655006403809	bupum-2672	in_stock	2100 KRW	buy	same_day
-11962997655006403809	bupum-2533	in_stock	128600 KRW	buy	same_day
+11962997655006403809	bupum-2533	in_stock	187400 KRW	buy	same_day
 11962997655006403809	bupum-2045	in_stock	12500 KRW	buy	same_day
 11962997655006403809	bupum-897	in_stock	53900 KRW	buy	same_day
 11962997655006403809	bupum-334	in_stock	11100 KRW	buy	same_day
@@ -1820,11 +1820,11 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-4704	in_stock	162800 KRW	buy	same_day
 11962997655006403809	bupum-6766	in_stock	63200 KRW	buy	same_day
 11962997655006403809	bupum-6764	in_stock	92200 KRW	buy	same_day
-11962997655006403809	bupum-6763	in_stock	86300 KRW	buy	same_day
+11962997655006403809	bupum-6763	in_stock	92700 KRW	buy	same_day
 11962997655006403809	bupum-2329	in_stock	3300 KRW	buy	same_day
 11962997655006403809	bupum-12091	in_stock	16000 KRW	buy	same_day
 11962997655006403809	bupum-9410	in_stock	7700 KRW	buy	same_day
-11962997655006403809	bupum-8115	in_stock	7300 KRW	buy	same_day
+11962997655006403809	bupum-8115	in_stock	4200 KRW	buy	same_day
 11962997655006403809	bupum-6799	in_stock	88100 KRW	buy	same_day
 11962997655006403809	bupum-6797	in_stock	49200 KRW	buy	same_day
 11962997655006403809	bupum-6795	in_stock	66100 KRW	buy	same_day
@@ -1875,7 +1875,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-2046	in_stock	300 KRW	buy	same_day
 11962997655006403809	bupum-2025	in_stock	700 KRW	buy	same_day
 11962997655006403809	bupum-2024	in_stock	900 KRW	buy	same_day
-11962997655006403809	bupum-1907	in_stock	3400 KRW	buy	same_day
+11962997655006403809	bupum-1907	in_stock	3700 KRW	buy	same_day
 11962997655006403809	bupum-1552	in_stock	900 KRW	buy	same_day
 11962997655006403809	bupum-1114	in_stock	200 KRW	buy	same_day
 11962997655006403809	bupum-11823	in_stock	4100 KRW	buy	same_day
@@ -2697,7 +2697,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-8347	in_stock	1500 KRW	buy	same_day
 11962997655006403809	bupum-8346	in_stock	7200 KRW	buy	same_day
 11962997655006403809	bupum-8345	in_stock	4800 KRW	buy	same_day
-11962997655006403809	bupum-8344	in_stock	17300 KRW	buy	same_day
+11962997655006403809	bupum-8344	in_stock	17500 KRW	buy	same_day
 11962997655006403809	bupum-8343	in_stock	3800 KRW	buy	same_day
 11962997655006403809	bupum-8342	in_stock	14200 KRW	buy	same_day
 11962997655006403809	bupum-8340	in_stock	11200 KRW	buy	same_day
@@ -2818,7 +2818,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-8463	in_stock	2000 KRW	buy	same_day
 11962997655006403809	bupum-8462	in_stock	9100 KRW	buy	same_day
 11962997655006403809	bupum-8461	in_stock	6100 KRW	buy	same_day
-11962997655006403809	bupum-8460	in_stock	86300 KRW	buy	same_day
+11962997655006403809	bupum-8460	in_stock	118800 KRW	buy	same_day
 11962997655006403809	bupum-8459	in_stock	2800 KRW	buy	same_day
 11962997655006403809	bupum-8458	in_stock	7500 KRW	buy	same_day
 11962997655006403809	bupum-8457	in_stock	18700 KRW	buy	same_day
@@ -2840,7 +2840,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-8441	in_stock	1300 KRW	buy	same_day
 11962997655006403809	bupum-8440	in_stock	7700 KRW	buy	same_day
 11962997655006403809	bupum-8439	in_stock	1100 KRW	buy	same_day
-11962997655006403809	bupum-8436	in_stock	3800 KRW	buy	same_day
+11962997655006403809	bupum-8436	in_stock	6800 KRW	buy	same_day
 11962997655006403809	bupum-8435	in_stock	4500 KRW	buy	same_day
 11962997655006403809	bupum-8434	in_stock	3500 KRW	buy	same_day
 11962997655006403809	bupum-8433	in_stock	3200 KRW	buy	same_day
@@ -2922,12 +2922,12 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-7544	in_stock	29700 KRW	buy	same_day
 11962997655006403809	bupum-7543	in_stock	31700 KRW	buy	same_day
 11962997655006403809	bupum-7542	in_stock	27600 KRW	buy	same_day
-11962997655006403809	bupum-7541	in_stock	26600 KRW	buy	same_day
+11962997655006403809	bupum-7541	in_stock	27300 KRW	buy	same_day
 11962997655006403809	bupum-7540	in_stock	19400 KRW	buy	same_day
 11962997655006403809	bupum-7539	in_stock	21000 KRW	buy	same_day
 11962997655006403809	bupum-7538	in_stock	28300 KRW	buy	same_day
 11962997655006403809	bupum-7537	in_stock	31700 KRW	buy	same_day
-11962997655006403809	bupum-3296	in_stock	21300 KRW	buy	same_day
+11962997655006403809	bupum-3296	in_stock	21900 KRW	buy	same_day
 11962997655006403809	bupum-7535	in_stock	18500 KRW	buy	same_day
 11962997655006403809	bupum-7534	in_stock	17000 KRW	buy	same_day
 11962997655006403809	bupum-7533	in_stock	17000 KRW	buy	same_day
@@ -3010,7 +3010,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-7845	in_stock	8000 KRW	buy	same_day
 11962997655006403809	bupum-6899	in_stock	6900 KRW	buy	same_day
 11962997655006403809	bupum-7821	in_stock	5600 KRW	buy	same_day
-11962997655006403809	bupum-5683	in_stock	4400 KRW	buy	same_day
+11962997655006403809	bupum-5683	in_stock	4700 KRW	buy	same_day
 11962997655006403809	bupum-2868	in_stock	31700 KRW	buy	same_day
 11962997655006403809	bupum-9279	in_stock	31800 KRW	buy	same_day
 11962997655006403809	bupum-7844	in_stock	9300 KRW	buy	same_day
@@ -3048,7 +3048,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-7759	in_stock	92700 KRW	buy	same_day
 11962997655006403809	bupum-5450	in_stock	4800 KRW	buy	same_day
 11962997655006403809	bupum-5449	in_stock	11400 KRW	buy	same_day
-11962997655006403809	bupum-4520	in_stock	40400 KRW	buy	same_day
+11962997655006403809	bupum-4520	in_stock	85200 KRW	buy	same_day
 11962997655006403809	bupum-4360	in_stock	23100 KRW	buy	same_day
 11962997655006403809	bupum-3609	in_stock	11100 KRW	buy	same_day
 11962997655006403809	bupum-3286	in_stock	11000 KRW	buy	same_day
@@ -3075,7 +3075,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-9724	in_stock	6600 KRW	buy	same_day
 11962997655006403809	bupum-9723	in_stock	9000 KRW	buy	same_day
 11962997655006403809	bupum-9722	in_stock	3800 KRW	buy	same_day
-11962997655006403809	bupum-9721	in_stock	10500 KRW	buy	same_day
+11962997655006403809	bupum-9721	in_stock	12600 KRW	buy	same_day
 11962997655006403809	bupum-9720	in_stock	7700 KRW	buy	same_day
 11962997655006403809	bupum-9719	in_stock	3700 KRW	buy	same_day
 11962997655006403809	bupum-9718	in_stock	4500 KRW	buy	same_day
@@ -3388,7 +3388,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-415	in_stock	77000 KRW	buy	same_day
 11962997655006403809	bupum-400	in_stock	13900 KRW	buy	same_day
 11962997655006403809	bupum-393	in_stock	15300 KRW	buy	same_day
-11962997655006403809	bupum-392	in_stock	5800 KRW	buy	same_day
+11962997655006403809	bupum-392	in_stock	6300 KRW	buy	same_day
 11962997655006403809	bupum-388	in_stock	1700 KRW	buy	same_day
 11962997655006403809	bupum-386	in_stock	1400 KRW	buy	same_day
 11962997655006403809	bupum-385	in_stock	11400 KRW	buy	same_day
@@ -3426,7 +3426,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-304	in_stock	2400 KRW	buy	same_day
 11962997655006403809	bupum-301	in_stock	22900 KRW	buy	same_day
 11962997655006403809	bupum-300	in_stock	8200 KRW	buy	same_day
-11962997655006403809	bupum-299	in_stock	14700 KRW	buy	same_day
+11962997655006403809	bupum-299	in_stock	15900 KRW	buy	same_day
 11962997655006403809	bupum-296	in_stock	300 KRW	buy	same_day
 11962997655006403809	bupum-295	in_stock	4500 KRW	buy	same_day
 11962997655006403809	bupum-291	in_stock	14200 KRW	buy	same_day
@@ -3529,7 +3529,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-18	in_stock	47800 KRW	buy	same_day
 11962997655006403809	bupum-17	in_stock	49000 KRW	buy	same_day
 11962997655006403809	bupum-14	in_stock	5900 KRW	buy	same_day
-11962997655006403809	bupum-12	in_stock	1200 KRW	buy	same_day
+11962997655006403809	bupum-12	in_stock	1300 KRW	buy	same_day
 11962997655006403809	bupum-7579	in_stock	7000 KRW	buy	same_day
 11962997655006403809	bupum-7578	in_stock	3200 KRW	buy	same_day
 11962997655006403809	bupum-7577	in_stock	7000 KRW	buy	same_day
@@ -3974,7 +3974,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-9533	in_stock	21000 KRW	buy	same_day
 11962997655006403809	bupum-8791	in_stock	1700 KRW	buy	same_day
 11962997655006403809	bupum-7020	in_stock	64300 KRW	buy	same_day
-11962997655006403809	bupum-7019	in_stock	44600 KRW	buy	same_day
+11962997655006403809	bupum-7019	in_stock	64300 KRW	buy	same_day
 11962997655006403809	bupum-7018	in_stock	77000 KRW	buy	same_day
 11962997655006403809	bupum-6130	in_stock	8900 KRW	buy	same_day
 11962997655006403809	bupum-4851	in_stock	1000 KRW	buy	same_day
@@ -4988,7 +4988,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-1619	in_stock	73300 KRW	buy	same_day
 11962997655006403809	bupum-1579	in_stock	86000 KRW	buy	same_day
 11962997655006403809	bupum-1573	in_stock	384500 KRW	buy	same_day
-11962997655006403809	bupum-1509	in_stock	152600 KRW	buy	same_day
+11962997655006403809	bupum-1509	in_stock	167800 KRW	buy	same_day
 11962997655006403809	bupum-1507	in_stock	208600 KRW	buy	same_day
 11962997655006403809	bupum-1482	in_stock	356800 KRW	buy	same_day
 11962997655006403809	bupum-1480	in_stock	476900 KRW	buy	same_day
@@ -5067,7 +5067,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-11942	in_stock	26100 KRW	buy	same_day
 11962997655006403809	bupum-11941	in_stock	27800 KRW	buy	same_day
 11962997655006403809	bupum-11940	in_stock	10400 KRW	buy	same_day
-11962997655006403809	bupum-11938	in_stock	61100 KRW	buy	same_day
+11962997655006403809	bupum-11938	in_stock	67500 KRW	buy	same_day
 11962997655006403809	bupum-11906	in_stock	7300 KRW	buy	same_day
 11962997655006403809	bupum-11902	in_stock	51300 KRW	buy	same_day
 11962997655006403809	bupum-11898	in_stock	16000 KRW	buy	same_day
@@ -5088,7 +5088,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-11814	in_stock	119500 KRW	buy	same_day
 11962997655006403809	bupum-11809	in_stock	3100 KRW	buy	same_day
 11962997655006403809	bupum-11808	in_stock	300 KRW	buy	same_day
-11962997655006403809	bupum-11807	in_stock	20300 KRW	buy	same_day
+11962997655006403809	bupum-11807	in_stock	26200 KRW	buy	same_day
 11962997655006403809	bupum-11803	in_stock	5600 KRW	buy	same_day
 11962997655006403809	bupum-11802	in_stock	28000 KRW	buy	same_day
 11962997655006403809	bupum-11801	in_stock	22400 KRW	buy	same_day
@@ -5527,7 +5527,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-7661	in_stock	4100 KRW	buy	same_day
 11962997655006403809	bupum-7657	in_stock	5100 KRW	buy	same_day
 11962997655006403809	bupum-7650	in_stock	5200 KRW	buy	same_day
-11962997655006403809	bupum-7649	in_stock	2600 KRW	buy	same_day
+11962997655006403809	bupum-7649	in_stock	2400 KRW	buy	same_day
 11962997655006403809	bupum-5052	in_stock	8200 KRW	buy	same_day
 11962997655006403809	bupum-4924	in_stock	5800 KRW	buy	same_day
 11962997655006403809	bupum-4919	in_stock	4700 KRW	buy	same_day
@@ -5541,7 +5541,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-3430	in_stock	35500 KRW	buy	same_day
 11962997655006403809	bupum-3429	in_stock	18200 KRW	buy	same_day
 11962997655006403809	bupum-2694	in_stock	2100 KRW	buy	same_day
-11962997655006403809	bupum-2520	in_stock	9700 KRW	buy	same_day
+11962997655006403809	bupum-2520	in_stock	8300 KRW	buy	same_day
 11962997655006403809	bupum-2476	in_stock	1300 KRW	buy	same_day
 11962997655006403809	bupum-2465	in_stock	2000 KRW	buy	same_day
 11962997655006403809	bupum-2384	in_stock	10500 KRW	buy	same_day
@@ -5814,9 +5814,9 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-2325	in_stock	9100 KRW	buy	same_day
 11962997655006403809	bupum-2220	in_stock	13500 KRW	buy	same_day
 11962997655006403809	bupum-2219	in_stock	5600 KRW	buy	same_day
-11962997655006403809	bupum-2217	in_stock	7700 KRW	buy	same_day
+11962997655006403809	bupum-2217	in_stock	8200 KRW	buy	same_day
 11962997655006403809	bupum-2216	in_stock	10300 KRW	buy	same_day
-11962997655006403809	bupum-2215	in_stock	9000 KRW	buy	same_day
+11962997655006403809	bupum-2215	in_stock	8600 KRW	buy	same_day
 11962997655006403809	bupum-2214	in_stock	12400 KRW	buy	same_day
 11962997655006403809	bupum-2213	in_stock	12600 KRW	buy	same_day
 11962997655006403809	bupum-2212	in_stock	5600 KRW	buy	same_day
@@ -5942,7 +5942,7 @@ store_code	id	availability	price	pickup_method	pickup_sla
 11962997655006403809	bupum-7518	in_stock	3400 KRW	buy	same_day
 11962997655006403809	bupum-7517	in_stock	5400 KRW	buy	same_day
 11962997655006403809	bupum-7516	in_stock	6300 KRW	buy	same_day
-11962997655006403809	bupum-7515	in_stock	4200 KRW	buy	same_day
+11962997655006403809	bupum-7515	in_stock	4900 KRW	buy	same_day
 11962997655006403809	bupum-7514	in_stock	4500 KRW	buy	same_day
 11962997655006403809	bupum-7513	in_stock	6900 KRW	buy	same_day
 11962997655006403809	bupum-7511	in_stock	8900 KRW	buy	same_day
