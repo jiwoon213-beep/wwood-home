@@ -173,11 +173,22 @@ XLINK = {"oilstain": [("/bondex/stain.html", "본덱스 스테인·바니쉬 제
          "tempa-board": [("/younglim/wall.html", "영림 월판넬"), ("/trend/japandi.html", "간살·재팬디 인테리어")]}
 
 
+GXFQ = {
+ "seokgo-gagyeok": [("석고보드 1장 가격은 얼마인가요?", "종류(일반·방수·방화)와 두께마다 다릅니다. 이 페이지 위쪽 표에 매장 기준가를 정리했습니다(부가세 별도)."), ("석고보드 시공 가격(인건비)도 알 수 있나요?", "인건비는 현장 크기·천장 높이·마감에 따라 달라 견적으로 안내합니다. 전화 042-545-2900으로 문의하세요."), ("석고보드는 몇 장부터 살 수 있나요?", "한 장부터 살 수 있습니다.")],
+ "danyeol-gagyeok": [("아이소핑크 가격은 두께별로 다른가요?", "네, 두께가 두꺼울수록 값이 올라갑니다. 두께별 기준가는 위 표에 있습니다."), ("단열재 1평에 몇 장 필요한가요?", "900×1800mm 판 한 장은 약 1.62㎡(약 0.49평)라, 1평에 약 2장 남짓 듭니다. 재단 손실을 생각해 넉넉히 잡습니다.")],
+ "hapan-gagyeok": [("합판 한 장 가격은 얼마인가요?", "두께·종류(일반·내수·코팅)마다 다릅니다. 위 표에 매장 기준가를 정리했습니다(부가세 별도)."), ("합판 재단비는 따로 있나요?", "재단은 매장에서 해 드리며, 재단 수량이 많거나 복잡하면 미리 문의해 주세요.")],
+ "tempa-board": [("템바보드 한 장 크기는?", "제품마다 다르니 위 표의 규격을 확인하세요. 벽 넓이를 알려 주시면 필요한 장수를 계산해 드립니다."), ("템바보드 시공은 셀프로 되나요?", "본드와 실타카로 붙이는 방식이라 셀프도 많이 합니다. 순서는 /sigongbeop/tempa-byeok.html 에 정리했습니다.")],
+ "hinoki-ruba": [("히노끼 루바 1평에 몇 개 필요한가요?", "루바 폭·길이에 따라 다릅니다. 위 계산 예시를 참고하고, 천장 크기를 알려 주시면 계산해 드립니다."), ("히노끼와 편백은 같은 나무인가요?", "네, 같은 나무입니다(/yongeo/hinoki.html).")],
+ "door-gagyeok": [("방문 교체 비용은 문짝만 바꾸면 얼마인가요?", "문짝·문틀·손잡이 구성과 시공 여부에 따라 달라 견적으로 안내합니다. 문 크기를 재서 알려 주시면 빠릅니다."), ("ABS 도어와 일반 도어 가격 차이는?", "ABS 도어가 물에 강한 만큼 값이 높은 편입니다. 제품별로 매장에서 안내합니다.")],
+ "deck-gagyeok": [("데크 1평 자재비는 얼마나 드나요?", "데크재 종류와 기초·장선 구성에 따라 크게 달라집니다. 데크 크기를 알려 주시면 자재 목록과 기준가로 계산해 드립니다.")],
+}
+
 def gen(page, P, E, CTA, prod_ld, faqslide, BASE, ADDR, HOURS, TEL, ALLFAQ=None, MP=None, AFQ=None):
     pages = []
     def won(x): return f"{int(round(x, -2)):,}원"
     for slug, nm, js, sg, specs, lead, unitdesc, loss, exs, faq in GG:
         if AFQ and js: faq = list(faq) + AFQ(js, faq, 2)
+        faq = list(faq) + [x for x in GXFQ.get(slug, []) if x[0] not in {q for q, _ in faq}]
         rows = []
         for rx, unit, area in specs:
             hit = next((p for p in P if re.search(rx, p["name"])), None)
