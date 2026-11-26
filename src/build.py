@@ -2164,12 +2164,16 @@ def build():
         page(f"{_dir}/{_pid}.html", f"{_nm} — 방문자 사진으로 그린 도면·재단 목록 | 영진목재", f"{_nm}: {_who}님이 올린 사진을 보고 그린 도면(정면·측면), 재단 목록, 필요한 자재와 기준가 링크. PDF로 저장할 수 있어요.", _bd, "/" + _dir + "/", img=_img or None)
         _VPH[_v["k"]] += f'<a class="mc" href="/{_dir}/{_pid}.html">' + (f'<img loading="lazy" src="{E(_img)}" alt="" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;margin-bottom:6px">' if _img else "") + f'<b>{E(_nm)}</b><small>{E(_who)}님 · 도면·재단 목록</small></a>'
     # 이케아·다이소 스타일 따라 만들기 — data/style_diy.json (우리 디자인·치수, 해당 회사와 무관)
+    try:
+        import subprocess; subprocess.run(["python3", ROOT + "/style_img.py"], timeout=600, capture_output=True)
+    except Exception: pass
     _SDY = json.load(open(ROOT + "/data/style_diy.json", encoding="utf-8")) if os.path.exists(ROOT + "/data/style_diy.json") else []
     _SDH = ""; _SDB = {}
+    _simg = lambda v: (f'<img class="pimg" style="aspect-ratio:4/3" src="/assets/style/{v["slug"]}.jpg" alt="{E(v["brand"])} {E(v["ref"].split("(")[0].strip())} 스타일 {E(v["name"])} 완성 그림" width="800" height="600" loading="eager">' if os.path.exists(f'{ROOT}/assets/style/{v["slug"]}.jpg') else '')
     for _v in _SDY:
         _pid = "s-" + _v["slug"]; _nm = _v["name"]; _rf = f'{_v["brand"]} {_v["ref"]}'; _rfs = f'{_v["brand"]} {_v["ref"].split("(")[0].strip()}'
         _fq = [tuple(x) for x in _v.get("faq", [])] + [(f"{_rfs} 같은 가구, 자재는 어디서 사나요?", f"{ADDR} 영진종합목재 매장에서 도면의 재단 목록대로 잘라 드립니다. 도면 PDF를 저장해 오시거나 화면을 보여 주세요. 전국 배송도 됩니다.")]
-        _bd = (f'<section class="wrap sec"><p class="crumb"><a href="/mandeul/">DIY 만들기</a> › <a href="/mandeul/style.html">이케아·다이소 스타일 따라 만들기</a></p><h1>{E(_rfs)} 스타일 {E(_nm)} 직접 만들기</h1><p class="lead">{E(_v["lead"])}</p><p><b>우리 도면의 다른 점</b> — {E(_v["diff"])}</p>'
+        _bd = (f'<section class="wrap sec"><p class="crumb"><a href="/mandeul/">DIY 만들기</a> › <a href="/mandeul/style.html">이케아·다이소 스타일 따라 만들기</a></p><h1>{E(_rfs)} 스타일 {E(_nm)} 직접 만들기</h1>{_simg(_v)}<p class="lead">{E(_v["lead"])}</p><p><b>우리 도면의 다른 점</b> — {E(_v["diff"])}</p>'
                '<p class="small muted">이 페이지는 비슷한 쓰임새의 가구를 원목으로 직접 만드는 영진종합목재의 도면입니다. ' + E(_v["brand"]) + ' 제품이 아니며 해당 회사와 관계가 없습니다. 디자인과 치수는 우리가 새로 정했습니다.</p>'
                + '<div class="pl2" id="pl2"><h2>2D 도면 (정면·측면)</h2><div class="pl2in"><label>가로<input type="number" id="plw"></label><label id="pld0">깊이<input type="number" id="pld"></label><label id="plh0">높이<input type="number" id="plh"></label><label id="pls0">선반<input type="number" id="pls"></label><span>mm</span></div><p class="small muted">치수를 바꾸면 도면과 재단 목록이 바로 바뀝니다.</p><div class="pl2d" id="pl2svg"></div><h3>재단 목록 · 필요한 자재</h3><div id="pl2tb"></div><div class="pl2b"><button type="button" class="pl2pdf" id="pl2pdf">도면 PDF로 저장</button></div></div>'
                + '<h2>만드는 방법</h2><ol class="pl2st" id="pl2st"></ol><h2>만드는 순서 (그림 설명서)</h2><div id="pl2iso"></div>'
@@ -2179,8 +2183,8 @@ def build():
                + '<script src="/assets/plan2d.js"></script><script>(function(){var P=PL2,p=' + json.dumps(_v["plan"]) + ',g=function(i){return document.getElementById(i)};function draw(){var t=P.T[p.t];g("pls0").style.display=t.s?"":"none";g("plw").value=p.w;g("pld").value=p.d;g("plh").value=p.h;g("pls").value=p.s||0;g("pl2svg").innerHTML=P.svg(p);g("pl2tb").innerHTML=P.table(p);g("pl2st").innerHTML=P.steps(p).map(function(x){return"<li>"+x+"</li>"}).join("");g("pl2iso").innerHTML=P.iso(p,0)}["plw","pld","plh","pls"].forEach(function(i){g(i).onchange=function(){p[{plw:"w",pld:"d",plh:"h",pls:"s"}[i]]=Math.max(i=="pls"?0:50,Math.min(20000,Math.round(+g(i).value||0)));draw()}});g("pl2pdf").onclick=function(){document.body.classList.add("pl2print");print();setTimeout(function(){document.body.classList.remove("pl2print")},500)};draw()})()</script>'
                + '<style>' + _PL2CSS + '</style>' + CTA)
         page(f"mandeul/{_pid}.html", f"{_rfs} 스타일 {_nm} 만들기 — 2D 도면·재단 목록 무료 | 영진목재", f"{_rf} 같은 {_nm}을 원목으로 직접 만드는 2D 도면. 치수를 바꾸면 도면·재단 목록이 바로 바뀌고 PDF로 저장. 대전 매장 재단·전국 배송.", _bd, "/mandeul/",
-             [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub(r"\s*\(/[^)]+\)", "", a_)}} for q, a_ in _fq]}])
-        _SDB.setdefault(_v["brand"], []).append(f'<a class="mc" href="/mandeul/{_pid}.html"><b>{E(_rfs)} 스타일 {E(_nm)}</b><small>{_v["plan"]["w"]}×{_v["plan"]["d"]}×{_v["plan"]["h"]}mm · 2D 도면·재단 목록</small></a>')
+             [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub(r"\s*\(/[^)]+\)", "", a_)}} for q, a_ in _fq]}], f'/assets/style/{_v["slug"]}.jpg' if os.path.exists(f'{ROOT}/assets/style/{_v["slug"]}.jpg') else None)
+        _SDB.setdefault(_v["brand"], []).append(f'<a class="mc" href="/mandeul/{_pid}.html">' + (f'<img src="/assets/style/{_v["slug"]}.jpg" alt="" width="800" height="600" loading="lazy" style="width:100%;height:auto;border-radius:10px;margin-bottom:8px">' if os.path.exists(f'{ROOT}/assets/style/{_v["slug"]}.jpg') else '') + f'<b>{E(_rfs)} 스타일 {E(_nm)}</b><small>{_v["plan"]["w"]}×{_v["plan"]["d"]}×{_v["plan"]["h"]}mm · 2D 도면·재단 목록</small></a>')
     _BSL = {"이케아": "ikea", "다이소": "daiso", "무인양품": "muji", "인아트": "inart", "일룸": "iloom", "한샘": "hanssem", "현대리바트": "livart", "까사미아": "casamia", "데스커": "desker", "에몬스": "emons", "장인가구": "jangin"}
     for _b, _c in _SDB.items():
         _bs = _BSL.get(_b) or re.sub(r"[^a-z0-9]", "", _SDY[[x["brand"] for x in _SDY].index(_b)]["slug"].split("-")[0])
