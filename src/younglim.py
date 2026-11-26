@@ -1,6 +1,6 @@
 # 영림(YOUNGLIM) 도어·중문·몰딩/월/마루·인테리어 필름 — /younglim/ (회사 허락, 사진은 영림 S3 링크)
 # 데이터 src/data/younglim.tsv: 목록코드|실제분류|pi_index|품번|이름|스타일코드|이미지파일 (.github/scripts/fetch_younglim.py 가 매일 갱신)
-import os
+import os, re
 from yerim import LB
 
 IMG = lambda f: "https://s3.ap-northeast-2.amazonaws.com/younglim-bucket/" + f
@@ -42,6 +42,16 @@ def card(r, alt_pre=""):
 
 
 # 페이지별 추가 FAQ — 구글 검색어(영림 중문·영림도어·멤브레인·타공 도어 등, 2026-11-22)
+XFQ2 = {
+ "film": [("영림 인테리어 필름 색상은 어떻게 고르나요?", "같은 색이라도 화면과 실물이 달라 보입니다. 매장에서 실물 샘플을 보고, 붙일 곳(문·몰딩·싱크대)의 조명 아래에서 비교해 고르는 것이 좋습니다."), ("영림 필름 품번(예: PW974·PS102)으로 찾을 수 있나요?", "네. 제품 사진 아래 품번이 적혀 있고, 품번을 알려 주시면 매장에서 같은 제품을 찾아 드립니다. 영림 216처럼 숫자로 부르는 색도 품번으로 확인합니다."), ("인테리어 필름 셀프 시공 순서는?", "기존 면 세척 → 샌딩·퍼티 → 프라이머 → 필름 붙이기 → 모서리 정리 순서입니다. 자세한 순서는 /qna/ 의 필름 시공 글을 참고하세요.")],
+ "jungmun-system": [("영림 중문 종류는 어떻게 나뉘나요?", "슬라이딩(원슬라이딩), 양개, 3연동 슬림, 폴딩 등으로 나뉩니다. 전체 디자인은 /younglim/jungmun-all.html 에서 종류별로 볼 수 있습니다."), ("영림 중문 가격은 얼마인가요?", "크기·유리·프레임 색에 따라 달라 매장에서 견적을 드립니다. 현관 가로·세로·높이를 재 오시면 빠릅니다."), ("자동 중문은 전기 공사가 필요한가요?", "자동 중문은 전원이 필요하니 설치 위치 근처 전기 배선을 미리 확인합니다.")],
+ "door-abs": [("ABS 도어는 욕실에만 쓰나요?", "물에 강해 욕실 문에 많이 쓰지만 방문에도 씁니다."), ("ABS 도어와 멤브레인 도어 차이는?", "멤브레인은 MDF에 필름을 씌운 문, ABS는 겉을 ABS 수지로 감싸 물·습기에 더 강합니다(/qna/abs-door-ran.html).")],
+ "door-apel": [("영림 도어 사이즈는 어떻게 재나요?", "문틀 안쪽 폭과 높이를 위·가운데·아래 여러 곳 재서 가장 작은 값을 기준으로 알려 주시면 맞는 규격을 찾아 드립니다.")],
+ "jungmun-yanggae": [("양개 중문은 현관 폭이 얼마나 되어야 하나요?", "문 두 짝이 양쪽으로 열리므로 현관 폭이 넉넉한 곳에 어울립니다. 정확한 가능 여부는 현관 치수를 재서 매장에서 확인합니다.")],
+ "wall": [("영림 월패널은 어떻게 붙이나요?", "제품마다 전용 부자재와 붙이는 방식이 다르니, 벽 바탕 상태(석고보드·콘크리트)를 알려 주시면 맞는 방법을 안내해 드립니다.")],
+ "molding": [("영림 몰딩 종류는?", "천장몰딩, 걸레받이, 문선, 평몰딩 등이 있습니다. 차이는 /bigyo/molding-types.html 에 정리했습니다.")],
+ "maru": [("강마루와 강화마루 차이는?", "강마루는 바닥에 본드로 붙이고, 강화마루는 끼워 맞춰 띄워 깝니다(/bigyo/kangmaru-vs-kanghwa.html).")],
+}
 XFQ = {
     "jungmun": [("영림 슬라이딩 도어는 어떤 종류가 있나요?", "벽 쪽으로 밀어 여는 원슬라이딩, 레일을 숨긴 히든 슬라이딩, 거울을 붙인 미러 히든 슬라이딩, 손잡이 없이 누르는 히든 푸시 슬라이딩 등이 있습니다(/qna/hidden-sliding-door.html).")],
     "jungmun-slim": [("슬림 중문은 일반 중문과 무엇이 다른가요?", "프레임(알루미늄 테두리)이 얇아 유리 면이 넓게 보여 현관이 넓고 밝아 보입니다. 유리 종류는 '중문 유리 옵션'(/younglim/jungmun-glass.html)에서 볼 수 있습니다.")],
@@ -71,13 +81,14 @@ def gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT, ALLFAQ=None):
             sec += '</div>'
         fq = [(f"영림 {nm} 어디서 보고 주문하나요?", f"{ADDR} 영진종합목재(월드건축자재) 매장에서 상담·주문할 수 있습니다. {HOURS}. 크기를 재 오시면 맞는 규격을 찾아 드리고, 대전·세종은 설치 시공(월드아키텍쳐)도 상담합니다.")]
         fq += XFQ.get(slug, [])
+        fq += [x for x in XFQ2.get(slug, []) if x[0] not in {q for q, _ in fq}]
         body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/jaryo/">전체 자재</a> › <a href="/younglim/">영림 도어·중문·마감재</a> › {E(nm)}</p><h1>영림 {E(nm)}</h1><p class="glead">{E(lead)} 총 {len(its)}가지.</p>' + ('<p class="glead"><a class="b r" href="/younglim/jungmun-all.html">영림 중문 디자인 전체(슬라이딩·양개·3연동·폴딩) 보기 ›</a></p>' if slug == 'jungmun-system' else '') + f'{nav(slug)}{sec}'
                 f'<p class="gs">영림(YOUNGLIM) 제품입니다. 사진을 누르면 크게 볼 수 있습니다. 색상·규격·가격·납기는 매장에 문의해 주세요.</p>'
                 f'<h2 class="gt">고를 때 알아둘 것</h2><ul class="gtip">{"".join(f"<li>{E(t)}</li>" for t in tips)}</ul>'
                 f'<div class="glk"><a href="/trend/">인테리어 트렌드</a><a href="/yerim/">예림 중문·도어</a><a href="/sigong.html">설치 시공 맡기기</a><a href="/visit.html">매장 길찾기</a></div></section>'
                 f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>{CTA}' + LB)
         page(f"younglim/{slug}.html", (f"영림 중문 레일·자동·연동 시스템과 프레임 {len(its)}종 — 중문 부속 사진 | 대전 영진목재" if slug == "jungmun-system" else f"영림 {nm} {len(its)}종 — 모던·내추럴·클래식 디자인 사진 | 대전 영진목재"),
-             f"영림 {nm} {len(its)}가지 사진. {lead} 대전 유성 영진종합목재 매장 상담·주문, 대전·세종 시공.", body, "/jaryo/", None, IMG(its[0][6]))
+             f"영림 {nm} {len(its)}가지 사진. {lead} 대전 유성 영진종합목재 매장 상담·주문, 대전·세종 시공.", body, "/jaryo/", {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub(r"<[^>]+>", "", a)}} for q, a in fq]}, IMG(its[0][6]))
         out.append((slug, nm, lead, len(its), IMG(its[0][6])))
     # 영림 중문 종류 총정리(허브) — '영림 중문' 검색용
     JM = [p for p in PAGES if p[0].startswith("jungmun") and p[0] not in ("jungmun-glass", "jungmun-system")]
