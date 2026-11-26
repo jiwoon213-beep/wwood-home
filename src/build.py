@@ -2169,6 +2169,16 @@ def build():
     except Exception: pass
     _SDY = json.load(open(ROOT + "/data/style_diy.json", encoding="utf-8")) if os.path.exists(ROOT + "/data/style_diy.json") else []
     _SDH = ""; _SDB = {}
+    _KW2MK = [("책장|북", ["chaekjang", "cube", "mdfseonbanjang"]), ("신발", ["sinbaljang", "hyeongwanbench"]), ("벽선반|선반", ["byeokseonban", "sadariseonban", "deskseonban"]), ("양념", ["yangnyeomseonban"]), ("모니터|노트북", ["monitor", "deskseonban"]), ("책상", ["aichaeksang", "deskseonban"]), ("식탁|테이블", ["teibeul", "jwatak", "aillaendeu"]), ("좌탁|소파", ["jwatak", "saideu"]), ("사이드", ["saideu", "jwatak"]), ("벤치", ["benchi", "hyeongwanbench"]), ("스툴|의자|발판", ["seutul", "balpan"]), ("침대|평상", ["chimdae", "pyeongsang", "headboard"]), ("행거|옷", ["haenggeo"]), ("화분", ["hwabundae", "silnaehwa"]), ("정리함|상자|박스|트레이", ["sagwabox", "cheongsoham", "ttukkeongsunap"]), ("장난감", ["jangnangam"]), ("TV|거실장", ["geosiljang"]), ("화장대", ["hwajangdae"]), ("우산", ["usangoji"]), ("수납장|서랍|사이드보드|콘솔", ["mdfseonbanjang", "geosiljang", "ttukkeongsunap"])]
+    _MKNM = {x[0]: x[1] for x in MK}
+    def _rel_mk(v):
+        t = v["name"] + " " + v["ref"]
+        sl = []
+        for k, ls in _KW2MK:
+            if re.search(k, t): sl += [x for x in ls if x not in sl and os.path.exists(f"{ROOT}/../mandeul/{x}.html")]
+        sl = sl[:4]
+        if not sl: return ""
+        return '<h2>비슷한 DIY 만들기 (그림 설명서)</h2><div class="olk">' + "".join(f'<a href="/mandeul/{x}.html">{E(_MKNM.get(x, x))} 만들기</a>' for x in sl) + '</div>'
     _simg = lambda v: (f'<img class="pimg" style="aspect-ratio:4/3" src="/assets/style/{v["slug"]}.jpg" alt="{E(v["brand"])} {E(v["ref"].split("(")[0].strip())} 스타일 {E(v["name"])} 완성 그림" width="800" height="600" loading="eager">' if os.path.exists(f'{ROOT}/assets/style/{v["slug"]}.jpg') else '')
     for _v in _SDY:
         _pid = "s-" + _v["slug"]; _nm = _v["name"]; _rf = f'{_v["brand"]} {_v["ref"]}'; _rfs = f'{_v["brand"]} {_v["ref"].split("(")[0].strip()}'
@@ -2178,6 +2188,7 @@ def build():
                + '<div class="pl2" id="pl2"><h2>2D 도면 (정면·측면)</h2><div class="pl2in"><label>가로<input type="number" id="plw"></label><label id="pld0">깊이<input type="number" id="pld"></label><label id="plh0">높이<input type="number" id="plh"></label><label id="pls0">선반<input type="number" id="pls"></label><span>mm</span></div><p class="small muted">치수를 바꾸면 도면과 재단 목록이 바로 바뀝니다.</p><div class="pl2d" id="pl2svg"></div><h3>재단 목록 · 필요한 자재</h3><div id="pl2tb"></div><div class="pl2b"><button type="button" class="pl2pdf" id="pl2pdf">도면 PDF로 저장</button></div></div>'
                + '<h2>만드는 방법</h2><ol class="pl2st" id="pl2st"></ol><h2>만드는 순서 (그림 설명서)</h2><div id="pl2iso"></div>'
                + f'<h2>자주 묻는 질문</h2>{faqslide(_fq)}'
+               + _rel_mk(_v)
                + '<h2>다른 스타일 따라 만들기</h2><div class="olk">' + "".join(f'<a href="/mandeul/s-{x["slug"]}.html">{E(x["brand"])} {E(x["ref"].split("(")[0].strip())} 스타일 {E(x["name"])}</a>' for x in _SDY if x is not _v) + '</div>'
                + f'<p><a class="sjgo" href="/sajin.html?m=mandeul"><span><b>갖고 싶은 가구 사진으로 도면 받기</b><small>사진을 찍으면 비슷한 도면·재단 목록이 나와요</small></span><u aria-hidden="true">›</u></a></p></section>'
                + '<script src="/assets/plan2d.js"></script><script>(function(){var P=PL2,p=' + json.dumps(_v["plan"]) + ',g=function(i){return document.getElementById(i)};function draw(){var t=P.T[p.t];g("pls0").style.display=t.s?"":"none";g("plw").value=p.w;g("pld").value=p.d;g("plh").value=p.h;g("pls").value=p.s||0;g("pl2svg").innerHTML=P.svg(p);g("pl2tb").innerHTML=P.table(p);g("pl2st").innerHTML=P.steps(p).map(function(x){return"<li>"+x+"</li>"}).join("");g("pl2iso").innerHTML=P.iso(p,0)}["plw","pld","plh","pls"].forEach(function(i){g(i).onchange=function(){p[{plw:"w",pld:"d",plh:"h",pls:"s"}[i]]=Math.max(i=="pls"?0:50,Math.min(20000,Math.round(+g(i).value||0)));draw()}});g("pl2pdf").onclick=function(){document.body.classList.add("pl2print");print();setTimeout(function(){document.body.classList.remove("pl2print")},500)};draw()})()</script>'
