@@ -693,15 +693,18 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
     body = _yglink(path, body)
     body = _thumbs(body)
     _mk = {"seokgo": "gypsum", "danyeol": "insul"}
-    if re.match(r"(jajae|gyugyeok|sigongbeop|mandeul)/(?!index|v-)", path):
+    if re.match(r"(jajae|gyugyeok|sigongbeop|mandeul)/(?!index|v-)|(younglim|yerim|shenu|bupum|taka|geonjae|suip|bondex|nichiha|knauf)/p/", path):
         if re.match(r"(jajae|gyugyeok)/", path):
             _k = _mk.get(path.split("/")[1][:-5], path.split("/")[1][:-5])
             _qs = [x for x in sorted(__import__("qna_data").QNA, key=lambda x: len(x[6]) if len(x) > 6 and isinstance(x[6], list) else 9) if len(x) > 6 and isinstance(x[6], list) and _k in x[6] and f'/qna/{x[0]}.html' not in body][:12]
         else:
             _h1 = re.sub(r"<[^>]+>", "", (re.search(r"<h1[^>]*>(.*?)</h1>", body, re.S) or re.match(r"(.*)", title)).group(1))
-            _tk = [w for w in re.findall(r"[가-힣A-Za-z0-9]{2,}", _h1) if w not in ("만들기", "시공", "방법", "셀프", "하는", "순서", "DIY", "자재", "직접", "교체", "설치", "시공법", "준비물", "가격")]
+            _tk = [w for w in re.findall(r"[가-힣A-Za-z0-9]{2,}", _h1) if w not in ("만들기", "시공", "방법", "셀프", "하는", "순서", "DIY", "자재", "직접", "교체", "설치", "시공법", "준비물", "가격", "영림", "예림", "쉐누", "크나우프", "본덱스", "니치하", "제일타카", "사진", "규격", "구매", "대전", "영진목재", "옵션", "제품", "화이트", "블랙", "그레이", "오크", "월넛") and not re.fullmatch(r"[A-Za-z]*\d[\w-]*", w)]
             _sc = [(sum(w in x[1].split(" — ")[0] for w in _tk), x) for x in __import__("qna_data").QNA if f'/qna/{x[0]}.html' not in body]
             _qs = [x for n, x in sorted(_sc, key=lambda t: -t[0]) if n > 0][:8]
+            if len(_qs) < 3 and not re.match(r"(bupum|taka|geonjae|suip|bondex)/p/", path):
+                _gm = (_guessmats(re.sub(r"<[^>]+>", " ", body)) or [""])[0]
+                if _gm: _qs += [x for x in __import__("qna_data").QNA if len(x) > 6 and isinstance(x[6], list) and _gm in x[6] and x not in _qs and f'/qna/{x[0]}.html' not in body][:8 - len(_qs)]
         if len(_qs) >= 3:
             _qb = '<section class="wrap sec"><h2>자주 찾는 하는 법·Q&amp;A</h2><div class="olk">' + "".join(f'<a href="/qna/{x[0]}.html">{E(x[1].split(" — ")[0])}</a>' for x in _qs) + '</div></section>'
             body = body.replace('<section class="cta">', _qb + '<section class="cta">', 1) if '<section class="cta">' in body else body + _qb
