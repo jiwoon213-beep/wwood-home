@@ -4,6 +4,7 @@
 
 CATS = [  # 키, 버튼 글자, 검색어, 작은 설명
     ("cheolmul", "철물점", "철물점", "피스·앙카·실리콘·공구"),
+    ("daiso", "다이소", "다이소", "실리콘·테이프·소포장 나사"),
     ("inryeok", "인력사무소", "인력사무소", "일용직·잡부·조공"),
     ("jangbi", "장비 임대", "중장비 임대", "포크레인·스카이·지게차"),
     ("rental", "공구 렌탈", "공구 렌탈", "브레이커·코어·발전기"),
@@ -34,7 +35,7 @@ def gen(page, E, CTA, faqslide, TEL):
 <label class="gcla">② 찾을 곳 누르기</label>
 <div class="gcg">{btns}</div>
 <div id="gcr" class="zqr" hidden></div></div>
-<p class="small muted">업체 정보는 각 지도 앱에 등록된 내용입니다. 영업 여부·가격은 전화로 확인하세요.</p><p><a class="b o" href="/geuncheo/">📋 전국 지역별 인력사무소·건설폐기물 처리업체 목록(영업 중만, 매일 갱신)</a></p>
+<p class="small muted">업체 정보는 각 지도 앱에 등록된 내용입니다. 영업 여부·가격은 전화로 확인하세요.</p><p><a class="b o" href="/geuncheo/daiso.html">🧰 다이소에서 파는 철물·실리콘·공구 목록과 근처 다이소</a></p><p><a class="b o" href="/geuncheo/">📋 전국 지역별 인력사무소·건설폐기물 처리업체 목록(영업 중만, 매일 갱신)</a></p>
 <div class="gcad"><b>🪵 목재·합판·석고·단열재·데크는 영진종합목재</b><span>원하는 크기로 재단해서 전국 현장까지 용달 배송 · 대전 유성대로 44</span><a class="b r" href="tel:{TEL.replace('-', '')}">📞 {TEL} 전화</a><a class="b o" href="/jaedan-baesong.html">재단·전국 배송 보기</a></div>
 <h2>이럴 때 쓰세요</h2>
 <ul class="gtip"><li>외지 현장에서 피스·실리콘이 떨어졌을 때 — <b>철물점</b></li><li>내일 잡부·조공이 한 명 더 필요할 때 — <b>인력사무소</b></li><li>포크레인·스카이·지게차가 필요할 때 — <b>장비 임대</b></li><li>철거 후 폐기물을 치워야 할 때 — <b>폐기물 처리</b></li><li>자재를 다른 현장으로 옮길 때 — <b>용달·화물</b></li><li>점심 먹을 곳 — <b>기사식당</b></li></ul>
