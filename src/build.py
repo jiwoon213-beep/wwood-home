@@ -2169,7 +2169,7 @@ def build():
     except Exception: pass
     _SDY = json.load(open(ROOT + "/data/style_diy.json", encoding="utf-8")) if os.path.exists(ROOT + "/data/style_diy.json") else []
     _SDH = ""; _SDB = {}
-    _KW2MK = [("책장|북", ["chaekjang", "cube", "mdfseonbanjang"]), ("신발", ["sinbaljang", "hyeongwanbench"]), ("벽선반|선반", ["byeokseonban", "sadariseonban", "deskseonban"]), ("양념", ["yangnyeomseonban"]), ("모니터|노트북", ["monitor", "deskseonban"]), ("책상", ["aichaeksang", "deskseonban"]), ("식탁|테이블", ["teibeul", "jwatak", "aillaendeu"]), ("좌탁|소파", ["jwatak", "saideu"]), ("사이드", ["saideu", "jwatak"]), ("벤치", ["benchi", "hyeongwanbench"]), ("스툴|의자|발판", ["seutul", "balpan"]), ("침대|평상", ["chimdae", "pyeongsang", "headboard"]), ("행거|옷", ["haenggeo"]), ("화분", ["hwabundae", "silnaehwa"]), ("정리함|상자|박스|트레이", ["sagwabox", "cheongsoham", "ttukkeongsunap"]), ("장난감", ["jangnangam"]), ("TV|거실장", ["geosiljang"]), ("화장대", ["hwajangdae"]), ("우산", ["usangoji"]), ("수납장|서랍|사이드보드|콘솔", ["mdfseonbanjang", "geosiljang", "ttukkeongsunap"])]
+    _KW2MK = [("큐브|책장", ["chaekjang", "cube", "mdfseonbanjang"]), ("신발", ["sinbaljang", "hyeongwanbench"]), ("벽선반|선반", ["byeokseonban", "sadariseonban", "deskseonban"]), ("양념", ["yangnyeomseonban"]), ("모니터|노트북", ["monitor", "deskseonban"]), ("책상", ["aichaeksang", "deskseonban"]), ("식탁|테이블", ["teibeul", "jwatak", "aillaendeu"]), ("좌탁|소파", ["jwatak", "saideu"]), ("사이드", ["saideu", "jwatak"]), ("벤치", ["benchi", "hyeongwanbench"]), ("스툴|의자|발판", ["seutul", "balpan"]), ("침대|평상", ["chimdae", "pyeongsang", "headboard"]), ("행거|옷", ["haenggeo"]), ("화분", ["hwabundae", "silnaehwa"]), ("정리함|상자|박스|트레이", ["sagwabox", "cheongsoham", "ttukkeongsunap"]), ("장난감", ["jangnangam"]), ("TV|거실장", ["geosiljang"]), ("화장대", ["hwajangdae"]), ("우산", ["usangoji"]), ("수납장|서랍|사이드보드|콘솔", ["mdfseonbanjang", "geosiljang", "ttukkeongsunap"])]
     _MKNM = {x[0]: x[1] for x in MK}
     def _rel_mk(v):
         t = v["name"] + " " + v["ref"]
@@ -2205,6 +2205,23 @@ def build():
              f'<section class="wrap sec"><p class="crumb"><a href="/mandeul/">DIY 만들기</a> › <a href="/mandeul/style.html">스타일 따라 만들기</a> › {E(_b)}</p><h1>{E(_b)} 스타일 가구 직접 만들기 — 도면 {len(_c)}가지</h1><p class="lead">{E(_b)}의 {E("·".join(_rfl[:5]))} 같은 가구와 쓰임새가 비슷한 가구를 원목으로 직접 만드는 2D 도면입니다. 치수를 바꾸면 도면과 재단 목록이 바로 바뀌고, 영진종합목재 매장에서 그대로 잘라 드립니다.</p><p class="small muted">{E(_b)} 제품이 아니며 해당 회사와 관계가 없습니다. 디자인과 치수는 영진종합목재가 새로 정했습니다.</p><div class="mg m2">' + "".join(_c) + '</div><h2>다른 브랜드 스타일</h2><div class="olk">' + "".join(f'<a href="/mandeul/style-{_BSL.get(b2, "")}.html">{E(b2)} 스타일 {len(c2)}개</a>' for b2, c2 in _SDB.items() if b2 != _b and _BSL.get(b2)) + '</div></section>' + CTA, "/mandeul/style.html")
     _SDH = "".join(f'<h2 id="b-{_i}" style="margin-top:20px"><a href="/mandeul/style-{_BSL.get(_b, "")}.html">{E(_b)} 스타일 따라 만들기</a> <small class="muted">{len(_c)}개</small></h2><div class="mg m2">' + "".join(_c) + '</div>' for _i, (_b, _c) in enumerate(_SDB.items()))
     _SDN = '<div class="olk">' + "".join(f'<a href="/mandeul/style.html#b-{_i}">{E(_b)} 스타일 {len(_c)}개</a>' for _i, (_b, _c) in enumerate(_SDB.items())) + '</div>'
+    # 기존 만들기 페이지에 '브랜드 스타일로 비슷한 것' 거꾸로 연결
+    _rev = {}
+    for _v in _SDY:
+        _t = _v["name"] + " " + _v["ref"]
+        for _k, _ls in _KW2MK:
+            if re.search(_k, _t):
+                for _x in _ls: _rev.setdefault(_x, []).append(_v)
+    for _x, _vs in _rev.items():
+        _fp = os.path.join(OUT, "mandeul", _x + ".html")
+        if not os.path.exists(_fp): continue
+        _h = open(_fp, encoding="utf-8").read()
+        if "브랜드 스타일로 비슷한 것" in _h: continue
+        _seen = set(); _vs2 = [v for v in _vs if not (v["slug"] in _seen or _seen.add(v["slug"]))][:8]
+        _box = '<section class="wrap sec"><h2>브랜드 스타일로 비슷한 것</h2><div class="olk">' + "".join(f'<a href="/mandeul/s-{v["slug"]}.html">{E(v["brand"])} {E(v["ref"].split("(")[0].strip())} 스타일 {E(v["name"])}</a>' for v in _vs2) + '</div></section>'
+        _i = _h.find('<section class="cta">')
+        if _i < 0: _i = _h.find('</main>')
+        if _i > 0: open(_fp, "w", encoding="utf-8").write(_h[:_i] + _box + _h[_i:])
     if _SDY:
         page("mandeul/style.html", "이케아·다이소·무인양품·국내 브랜드 스타일 가구 직접 만들기 — 2D 도면·재단 목록 무료 | 영진목재", "이케아 칼락스·이바르·베크벰·라크, 다이소 벽선반·모니터 받침대, 무인양품 유닛 선반, 인아트·일룸·한샘 같은 국내 가구 쓰임새의 가구를 원목으로 직접 만드는 2D 도면 모음. 치수를 바꾸면 재단 목록이 바로 나옵니다.",
              '<section class="wrap sec"><p class="crumb"><a href="/mandeul/">DIY 만들기</a> › 이케아·다이소 스타일 따라 만들기</p><h1>이케아·다이소·무인양품·국내 브랜드 스타일 가구 직접 만들기</h1><p class="lead">자주 찾는 이케아·다이소·무인양품·국내 브랜드 가구와 쓰임새가 비슷한 가구를 원목으로 직접 만드는 2D 도면입니다. 치수를 집에 맞게 바꾸면 도면과 재단 목록이 바로 바뀌고, 매장에서 그대로 잘라 드립니다.</p><p class="small muted">해당 회사 제품이 아니며 회사와 관계가 없습니다. 디자인과 치수는 영진종합목재가 새로 정했습니다.</p>' + _SDN + _SDH + '</section>' + CTA, "/mandeul/")
