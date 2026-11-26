@@ -683,6 +683,7 @@ def _yglink(path, body):
     for c in _cr: out = out.replace("\x00CRUMB\x00", c, 1)
     return out
 
+_QLEAD = None
 def page(path, title, desc, body, active="", jsonld=None, img=None):
     if 'card mallbox' not in body and re.match(r"(jajae|mandeul|sigongbeop|gagyeok|gonggan)/(?!index)", path) or path in ("calc.html", "cut.html", "price.html"):
         _mm = [path.split("/")[1][:-5]] if path.startswith("jajae/") else (["hapan", "gujo", "hapdeck"] if path in ("calc.html", "cut.html", "price.html") else _guessmats(re.sub(r"<[^>]+>", " ", body)))
@@ -746,6 +747,13 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
         for add in (" 대전 유성 3000평 매장, 즉석 재단·전국 용달 배송.", " 대전 유성 매장·전국 배송.", " 대전 영진목재."):
             if len(desc) + len(add) <= 80: desc = desc.rstrip() + add; break
     canon = BASE + ("/" + path if path != "index.html" else "/").replace("index.html", "")
+    global _QLEAD
+    if path.startswith("news/"):
+        if "_QLEAD" not in globals() or _QLEAD is None:
+            _QLEAD = {re.sub(r"\s", "", x[1].split(" — ")[0].split("|")[0]): f"/qna/{x[0]}.html" for x in __import__("qna_data").QNA}
+            _QLEAD.update({"방부목데크시공방법": "/sigongbeop/bangbu-deck.html", "텃밭상자만들기": "/mandeul/tutbat.html"})
+        _ld0 = re.sub(r"\s", "", re.split(r" — | \| ", title)[0])
+        if _ld0 in _QLEAD: canon = BASE + _QLEAD[_ld0]
     PGMETA[path] = (title.split(" | ")[0], desc, img)
     nav = "".join(f'<a href="{h}"{" class=on" if active==h else ""}><svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{NAVI.get(h, "")}</svg><span>{t}</span></a>' for h, t in NAV)
     lds = jsonld if isinstance(jsonld, list) else ([jsonld] if jsonld else [])
