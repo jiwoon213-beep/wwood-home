@@ -187,7 +187,7 @@ SCENES += [
    (31, 22, "폴딩도어", "door", "접어서 활짝 여는 폴딩도어로 실내와 테라스를 이었습니다.", "/yeongyeol/folding.html", "폴딩도어 시공 연결", [("/younglim/jungmun-folding.html", "폴딩도어 제품")])]),
  ("cafe-deck-ramp", "합성데크 경사로 — 가게 입구 턱 없애기 자재 둘러보기", G + "cafe-ramp.jpg", "사진: 영진종합목재 제공",
   "테라스와 인도 사이 높이 차이를 합성데크 경사로로 이어 휠체어·유모차도 다니기 쉽게 했습니다.",
-  [(50, 62, "합성데크 경사로", "maru", "홈이 파인 합성데크를 비스듬히 깔아 미끄럼을 줄였습니다.", "/qna/hapdeck-jongryu.html", "합성데크 종류", [("/qna/hapdeck-sigong-sunseo.html", "합성데크 시공 순서"), ("/qna/deck-clip-vs-pis.html", "클립 vs 피스")]),
+  [(50, 62, "합성데크 경사로", "maru", "홈이 파인 합성데크를 비스듬히 깔아 미끄럼을 줄였습니다.", "/qna/hapdeck-jongryu.html", "합성데크 종류", [("/sigongbeop/hapdeck-sigong.html", "합성데크 시공 순서"), ("/qna/deck-clip-vs-pis.html", "클립 vs 피스")]),
    (62, 25, "데크 단 끝 마감", "maru", "데크 끝을 판으로 덮어 단면이 보이지 않게 정리했습니다.", "/sigongbeop/hapdeck-sigong.html", "합성데크 시공법", []),
    (40, 15, "나무 데크 상판", "maru", "윗단은 나무 데크를 갈색으로 칠해 마감했습니다.", "/qna/deck-bosu.html", "데크 보수", [("/qna/bultumyeong-stain.html", "스테인 고르기")])]),
  ("cafe-brick-exterior", "파벽돌 외벽 건물 — 상가 외관 자재 둘러보기", G + "cafe-brick.jpg", "사진: 영진종합목재 제공",
