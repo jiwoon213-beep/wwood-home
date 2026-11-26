@@ -2163,7 +2163,7 @@ def build():
         _VPH[_v["k"]] += f'<a class="mc" href="/{_dir}/{_pid}.html">' + (f'<img loading="lazy" src="{E(_img)}" alt="" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;margin-bottom:6px">' if _img else "") + f'<b>{E(_nm)}</b><small>{E(_who)}님 · 도면·재단 목록</small></a>'
     # 이케아·다이소 스타일 따라 만들기 — data/style_diy.json (우리 디자인·치수, 해당 회사와 무관)
     _SDY = json.load(open(ROOT + "/data/style_diy.json", encoding="utf-8")) if os.path.exists(ROOT + "/data/style_diy.json") else []
-    _SDH = ""
+    _SDH = ""; _SDB = {}
     for _v in _SDY:
         _pid = "s-" + _v["slug"]; _nm = _v["name"]; _rf = f'{_v["brand"]} {_v["ref"]}'; _rfs = f'{_v["brand"]} {_v["ref"].split("(")[0].strip()}'
         _fq = [tuple(x) for x in _v.get("faq", [])] + [(f"{_rfs} 같은 가구, 자재는 어디서 사나요?", f"{ADDR} 영진종합목재 매장에서 도면의 재단 목록대로 잘라 드립니다. 도면 PDF를 저장해 오시거나 화면을 보여 주세요. 전국 배송도 됩니다.")]
@@ -2178,11 +2178,13 @@ def build():
                + '<style>' + _PL2CSS + '</style>' + CTA)
         page(f"mandeul/{_pid}.html", f"{_rfs} 스타일 {_nm} 만들기 — 2D 도면·재단 목록 무료 | 영진목재", f"{_rf} 같은 {_nm}을 원목으로 직접 만드는 2D 도면. 치수를 바꾸면 도면·재단 목록이 바로 바뀌고 PDF로 저장. 대전 매장 재단·전국 배송.", _bd, "/mandeul/",
              [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub(r"\s*\(/[^)]+\)", "", a_)}} for q, a_ in _fq]}])
-        _SDH += f'<a class="mc" href="/mandeul/{_pid}.html"><b>{E(_rfs)} 스타일 {E(_nm)}</b><small>{_v["plan"]["w"]}×{_v["plan"]["d"]}×{_v["plan"]["h"]}mm · 2D 도면·재단 목록</small></a>'
+        _SDB.setdefault(_v["brand"], []).append(f'<a class="mc" href="/mandeul/{_pid}.html"><b>{E(_rfs)} 스타일 {E(_nm)}</b><small>{_v["plan"]["w"]}×{_v["plan"]["d"]}×{_v["plan"]["h"]}mm · 2D 도면·재단 목록</small></a>')
+    _SDH = "".join(f'<h2 id="b-{_i}" style="margin-top:20px">{E(_b)} 스타일 따라 만들기 <small class="muted">{len(_c)}개</small></h2><div class="mg m2">' + "".join(_c) + '</div>' for _i, (_b, _c) in enumerate(_SDB.items()))
+    _SDN = '<div class="olk">' + "".join(f'<a href="/mandeul/style.html#b-{_i}">{E(_b)} 스타일 {len(_c)}개</a>' for _i, (_b, _c) in enumerate(_SDB.items())) + '</div>'
     if _SDY:
         page("mandeul/style.html", "이케아·다이소·무인양품 스타일 가구 직접 만들기 — 2D 도면·재단 목록 무료 | 영진목재", "이케아 칼락스·이바르·베크벰·라크, 다이소 벽선반·모니터 받침대, 무인양품 유닛 선반 같은 쓰임새의 가구를 원목으로 직접 만드는 2D 도면 모음. 치수를 바꾸면 재단 목록이 바로 나옵니다.",
-             '<section class="wrap sec"><p class="crumb"><a href="/mandeul/">DIY 만들기</a> › 이케아·다이소 스타일 따라 만들기</p><h1>이케아·다이소·무인양품 스타일 가구 직접 만들기</h1><p class="lead">자주 찾는 이케아·다이소·무인양품 가구와 쓰임새가 비슷한 가구를 원목으로 직접 만드는 2D 도면입니다. 치수를 집에 맞게 바꾸면 도면과 재단 목록이 바로 바뀌고, 매장에서 그대로 잘라 드립니다.</p><p class="small muted">해당 회사 제품이 아니며 회사와 관계가 없습니다. 디자인과 치수는 영진종합목재가 새로 정했습니다.</p><div class="mg m2">' + _SDH + '</div></section>' + CTA, "/mandeul/")
-        _VPH["mandeul"] = '<h2 style="margin-top:22px">이케아·다이소 스타일 따라 만들기</h2><div class="mg m2">' + _SDH + '</div><p><a href="/mandeul/style.html">스타일 따라 만들기 전체 ›</a></p>' + ("<!--VP-->" + _VPH["mandeul"] if _VPH["mandeul"] else "")
+             '<section class="wrap sec"><p class="crumb"><a href="/mandeul/">DIY 만들기</a> › 이케아·다이소 스타일 따라 만들기</p><h1>이케아·다이소·무인양품 스타일 가구 직접 만들기</h1><p class="lead">자주 찾는 이케아·다이소·무인양품 가구와 쓰임새가 비슷한 가구를 원목으로 직접 만드는 2D 도면입니다. 치수를 집에 맞게 바꾸면 도면과 재단 목록이 바로 바뀌고, 매장에서 그대로 잘라 드립니다.</p><p class="small muted">해당 회사 제품이 아니며 회사와 관계가 없습니다. 디자인과 치수는 영진종합목재가 새로 정했습니다.</p>' + _SDN + _SDH + '</section>' + CTA, "/mandeul/")
+        _VPH["mandeul"] = "".join(f'<h2 style="margin-top:22px">{E(_b)} 스타일 따라 만들기 <small class="muted">{len(_c)}개</small></h2><div class="mg m2">' + "".join(_c[:4]) + f'</div><p><a href="/mandeul/style.html#b-{_i}">{E(_b)} 스타일 {len(_c)}개 전체 보기 ›</a></p>' for _i, (_b, _c) in enumerate(_SDB.items())) + ("<!--VP-->" + _VPH["mandeul"] if _VPH["mandeul"] else "")
     for _k in _VPH:
         if _VPH[_k] and _k != "mandeul": _VPH[_k] = '<h2 style="margin-top:22px">방문자가 올린 도면</h2><div class="mg m2">' + _VPH[_k] + '</div>'
     if "<!--VP-->" in _VPH["mandeul"]:
