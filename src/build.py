@@ -1825,6 +1825,15 @@ def build():
        ("뒷판", "MDF", r"6mm", [(450, 1200, 1)], "MDF 6mm · 450×1200 1장")],
       ["옆판 2장(300×1200) 사이에 아래판과 위판(414×300)을 끼워 목공본드와 피스로 고정해 상자를 만듭니다.", "선반 2장(414×300)을 바닥에서 약 800mm·1000mm 높이에 고정합니다(아래 칸은 밀대·빗자루용으로 높게 둡니다).", "뒷판 MDF(450×1200)를 뒤쪽에 대고 타카나 짧은 피스로 붙여 흔들림을 잡습니다.", "옆판 안쪽에 후크를 달아 걸레·솔을 걸고, 높이가 있으니 벽에 넘어짐 방지 철물로 고정합니다."],
       ["미송 집성판 18T", "MDF 6mm", "목공 피스·목공본드", "후크", "넘어짐 방지 철물"]),
+     ("ttukkeongsunap", "뚜껑 수납함", "뚜껑 수납함 만들기 자재 — 합판 12mm 500×350×300 경첩 뚜껑 상자", "거실·베란다·창고에 두는 폭 500, 깊이 350, 높이 약 310mm 뚜껑 수납함입니다. 합판 12mm 한 장으로 앞뒤판·옆판·바닥·뚜껑이 모두 나오고, 뚜껑은 경첩 2개로 답니다. 위에 걸터앉는 용도로는 쓰지 마세요.",
+      [("앞뒤판·옆판·바닥·뚜껑", "합판", r"4\*8 @12mm\(내수/A급\)", [(500, 288, 2), (326, 288, 2), (500, 350, 2)], "합판 12mm · 앞뒤판 500×288 2장, 옆판 326×288 2장(350 - 12×2), 바닥·뚜껑 500×350 2장")],
+      ["바닥판(500×350) 위에 앞판·뒷판(500×288)을 세우고 목공본드와 짧은 피스로 고정합니다.", "앞뒤판 사이에 옆판 2장(326×288)을 끼워 넣고 모서리마다 피스를 박아 상자를 완성합니다.", "뚜껑(500×350)을 뒷판 위에 맞추고 경첩 2개를 양쪽 끝에서 약 80mm 안쪽에 답니다.", "모서리를 사포로 둥글게 다듬고, 앞쪽에 손잡이를 달거나 손 들어갈 홈을 파서 마감합니다."],
+      ["합판 12mm(내수)", "목공 피스·목공본드", "경첩 2개", "손잡이", "사포"]),
+     ("seukeuraecheo", "고양이 스크래쳐", "고양이 스크래쳐 만들기 자재 — 90각 기둥 노끈 원목 스크래쳐 450×450×640", "고양이가 발톱을 가는 높이 약 640mm 기둥형 스크래쳐입니다. 스프러스 90각 기둥에 노끈(사이잘 로프)을 감고, 미송 집성판 18T로 넓은 받침과 위 발판을 붙입니다. 방부목은 고양이가 핥을 수 있어 쓰지 않습니다.",
+      [("받침·위 발판", "집성판", r"미송.*18T", [(450, 450, 1), (300, 300, 1)], "미송 집성판 18T · 받침 450×450 1장, 위 발판 300×300 1장"),
+       ("기둥", "각재·다루끼", r"90각", [(600, 0, 1)], "스프러스 90각(90×90) · 600mm 1개")],
+      ["받침판(450×450) 가운데에 기둥(90×90×600)을 세우고 받침 아래에서 긴 피스 4개와 목공본드로 단단히 고정합니다.", "기둥 아래에서 위로 노끈을 촘촘히 감고, 시작과 끝은 타카나 본드로 고정합니다.", "위 발판(300×300)을 기둥 위에 올려 위에서 피스 2~4개로 고정합니다.", "모서리를 사포로 둥글게 다듬고, 흔들리면 받침판을 더 넓게 하거나 벽 쪽에 붙여 둡니다."],
+      ["미송 집성판 18T", "스프러스 90각", "노끈(사이잘 로프)", "긴 목공 피스·목공본드", "타카", "사포"]),
     ]
     _PRICE = {}
     for _r in csv.DictReader(open(ROOT + "/data/prices.csv", encoding="utf-8")):
@@ -1865,7 +1874,7 @@ def build():
            "gaejip": r"강아지집|개집", "hwabundae": r"화분", "aichaeksang": r"책상", "geosiljang": r"티비다이|TV 수납|거실장", "seutul": r"스툴|의자",
            "nopeuntutbat": r"텃밭|화분만들기|방부목 화분", "haenggeo": r"행거|옷장", "yaoeteibeul": r"테이블", "jangjak": r"장작", "gongguborad": r"공구통|타공판|공구 수납|수납장",
            "cube": r"나무박스|박스만들기|수납박스|정리함",
-           "sadariseonban": r"사다리 선반|사다리", "aillaendeu": r"아일랜드", "balpan": r"발판|스텝", "bunrisugeo": r"분리수거", "kaetower": r"캣타워|고양이", "jangnangam": r"장난감|수납함", "jwatak": r"좌탁|밥상", "renjidae": r"렌지대|전자레인지", "sunappyeongsang": r"평상(?!형)", "hwajangdae": r"화장대", "sangbujang": r"상부장", "silwoegi": r"실외기 ?(커버|가림)", "deckgyedan": r"DIY 계단|계단 만들", "kaempingbox": r"나무박스|캠핑 ?박스", "sinkmunjjak": r"싱크대 ?문짝", "headboard": r"침대프레임만들기|명품 침대 만드는", "silnaehwa": r"슬리퍼|실내화", "hwabunonsil": r"온실", "gangajigyedan": r"강아지 계단", "yangnyeomseonban": r"양념통", "mdfseonbanjang": r"4단 선반|선반 만들 때|MDF 가구", "teureongkeu": r"차박|정리함", "deskseonban": r"데스크|선반 만들 때", "minichanggo": r"창고", "gongutong": r"공구통|적재함", "maegeojinraek": r"매거진랙|잡지꽂이", "patisyeon": r"파티션", "gyedanpan": r"계단판|원목 계단", "ipganpan": r"간판", "sagwabox": r"사과박스", "usangoji": r"우산꽂이", "hyujitong": r"휴지통|쓰레기통", "dansang": r"단상", "cheongsoham": r"청소함"}
+           "sadariseonban": r"사다리 선반|사다리", "aillaendeu": r"아일랜드", "balpan": r"발판|스텝", "bunrisugeo": r"분리수거", "kaetower": r"캣타워|고양이", "jangnangam": r"장난감|수납함", "jwatak": r"좌탁|밥상", "renjidae": r"렌지대|전자레인지", "sunappyeongsang": r"평상(?!형)", "hwajangdae": r"화장대", "sangbujang": r"상부장", "silwoegi": r"실외기 ?(커버|가림)", "deckgyedan": r"DIY 계단|계단 만들", "kaempingbox": r"나무박스|캠핑 ?박스", "sinkmunjjak": r"싱크대 ?문짝", "headboard": r"침대프레임만들기|명품 침대 만드는", "silnaehwa": r"슬리퍼|실내화", "hwabunonsil": r"온실", "gangajigyedan": r"강아지 계단", "yangnyeomseonban": r"양념통", "mdfseonbanjang": r"4단 선반|선반 만들 때|MDF 가구", "teureongkeu": r"차박|정리함", "deskseonban": r"데스크|선반 만들 때", "minichanggo": r"창고", "gongutong": r"공구통|적재함", "maegeojinraek": r"매거진랙|잡지꽂이", "patisyeon": r"파티션", "gyedanpan": r"계단판|원목 계단", "ipganpan": r"간판", "sagwabox": r"사과박스", "usangoji": r"우산꽂이", "hyujitong": r"휴지통|쓰레기통", "dansang": r"단상", "cheongsoham": r"청소함", "ttukkeongsunap": r"뚜껑 수납함|경첩 수납함", "seukeuraecheo": r"스크래쳐|스크래처"}
     def mkvids(slug, nm):
         rx = MKV.get(slug) or re.escape(re.sub(r"^(원목|목재|야외|작은)\s*", "", nm).split()[0])
         hit = [v for v in V if re.search(rx, v["title"])]
