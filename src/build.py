@@ -690,6 +690,13 @@ def page(path, title, desc, body, active="", jsonld=None, img=None):
         if _mb: body = body.replace('<section class="cta">', _mb + '<section class="cta">', 1) if '<section class="cta">' in body else body + _mb
     body = _yglink(path, body)
     body = _thumbs(body)
+    _mk = {"seokgo": "gypsum", "danyeol": "insul"}
+    if re.match(r"(jajae|gyugyeok)/(?!index)", path):
+        _k = _mk.get(path.split("/")[1][:-5], path.split("/")[1][:-5])
+        _qs = [x for x in sorted(__import__("qna_data").QNA, key=lambda x: len(x[6]) if len(x) > 6 and isinstance(x[6], list) else 9) if len(x) > 6 and isinstance(x[6], list) and _k in x[6] and f'/qna/{x[0]}.html' not in body][:12]
+        if len(_qs) >= 3:
+            _qb = '<section class="wrap sec"><h2>자주 찾는 하는 법·Q&amp;A</h2><div class="olk">' + "".join(f'<a href="/qna/{x[0]}.html">{E(x[1].split(" — ")[0])}</a>' for x in _qs) + '</div></section>'
+            body = body.replace('<section class="cta">', _qb + '<section class="cta">', 1) if '<section class="cta">' in body else body + _qb
     _nr = _newrel(path, body)
     if _nr: body = body.replace('<section class="cta">', _nr + '<section class="cta">', 1) if '<section class="cta">' in body else body + _nr
     if path not in _SW_SKIP and "<table" in body and "/p/" not in path: body = _tbl_cards(body)
