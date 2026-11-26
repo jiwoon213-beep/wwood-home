@@ -2499,6 +2499,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
                "hukki": [("/qna/oilstain-spray.html", "오일스테인 스프레이건 칠하기")], "ppaengkki": [("/bigyo/water-vs-oil-paint.html", "수성 vs 유성 페인트")],
                "giri": [("/qna/anka-ppaegi.html", "앙카 빼는 법"), ("/cheolmul/bolt.html", "앙카볼트·구조 피스")], "gada": [("/gyugyeok/hapan.html", "합판 규격표")]}
         _pos = {t[4]: (g, j) for g, ts in YG for j, t in enumerate(ts)}
+        _YM = json.load(open(f"{ROOT}/data/yongeo_more.json", encoding="utf-8")) if os.path.exists(f"{ROOT}/data/yongeo_more.json") else {}
         for g, ts in YG:
             for t in ts:
                 if not t[4]: continue
@@ -2512,13 +2513,15 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
                 links += _XL.get(t[4], [])
                 _alt = re.split(r"[(·,]", t[1])[0].strip(); _ks = [k for k in (key, _alt) if 2 <= len(k) <= 8 and " " not in k]; links += [(f"/qna/{x[0]}.html", x[1].split(" — ")[0]) for x in sorted(__import__("qna_data").QNA, key=lambda x: key not in x[1]) if any(k in x[1].split(" — ")[0] for k in _ks) and f"/qna/{x[0]}.html" not in [h for h, _ in links]][:6]
                 fq = [(f"{t[0]} 뜻이 뭔가요?", f"{t[1]}. {t[2]}"), *([(f"{t[0]}{_eun} 현장에서 어떻게 쓰나요?", t[5])] if len(t) > 5 and t[5] else []), (f"{t[0]}{_eun} 표준어로 뭐라고 하나요?", f"표준어·우리말로는 '{t[1]}'(이)라고 합니다. 현장·지역에 따라 조금 다르게 쓰기도 합니다.")]
+                _ym = _YM.get(t[4], {}); fq = fq[:1] + [tuple(x) for x in _ym.get("fq", [])] + [x for x in fq[1:] if not ("표준어" in x[0] and any("표준어" in y[0] for y in _ym.get("fq", [])))]
                 if len(t) > 3 and t[3]: fq += _autofq(t[3], fq, 2)
                 ld = {"@context": "https://schema.org", "@graph": [{"@type": "DefinedTerm", "name": t[0], "description": f"{t[1]}. {t[2]}", "inDefinedTermSet": "https://www.wwood.co.kr/yongeo.html"},
                       {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}]}
                 page(f"yongeo/{t[4]}.html", f"{t[0]} 뜻 — {t[1]} | 현장 용어 · 영진목재", f"{t[0]} 뜻: {t[1]}. {t[2]}"[:150],
                      f"""<section class="wrap sec"><p class="crumb"><a href="/yongeo.html">현장 용어 사전</a> › {E(g)}</p><h1>{E(t[0])} 뜻</h1>
 <p class="lead"><b>{E(t[0])}</b> = <b>{E(t[1])}</b></p><p>{E(t[2])}</p>
-{f'<h2>현장에서 이렇게 써요</h2><p>{E(t[5])}</p>' if len(t) > 5 and t[5] else ''}
+{f'<h2>현장에서 이렇게 써요</h2><p>{E(t[5])}</p>' if len(t) > 5 and t[5] else ''}{"".join(f'<p>{E(x)}</p>' for x in _ym.get("ex", []))}
+{f'<h2>{E(t[0])}{_eun} 어디서 온 말인가요?</h2><p>{E(_ym["yu"])}</p>' if _ym.get("yu") else ''}{f'<h2>{E(t[0])}, 알아 두면 좋은 점</h2><p>{LK(_ym["mo"])}</p>' if _ym.get("mo") else ''}
 <p class="small muted">목수·인테리어 현장에서 오래 써 온 말이라 견적서·상담에서 자주 나옵니다. 뜻을 알면 자재 주문과 업체 상담이 쉬워집니다.</p>
 {('<h2>같이 보면 좋은 페이지</h2><div class="olk">' + "".join(f'<a href="{h}">{E(n)}</a>' for h, n in links) + '</div>') if links else ''}
 <h2>자주 묻는 질문</h2>{"".join(f'<details class="faq"><summary>{E(q)}</summary><p>{LK(a)}</p></details>' for q, a in fq)}
