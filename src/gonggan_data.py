@@ -802,7 +802,7 @@ SCENES += [
  ("tempa-board-curved-hall", "템바보드 곡면 벽 — 둥글게 휘어진 나무 벽과 펜던트 조명 둘러보기", YL + "239a285b-550d-4a2f-a647-cb38e630f87a.jpg", "사진: 영림",
   "벽 모서리를 둥글게 돌아가며 세로 홈 나무 판을 붙이고, 옆 흰 벽 앞에 금색 펜던트 조명을 단 넓은 공간입니다.",
   [(30, 45, "템바보드", "woodwall", "밝은 나뭇결 세로 홈 판을 휘어진 벽을 따라 이어 붙였습니다.", "/younglim/p/1619.html", "제품 보기", [("/younglim/wall.html", "영림 월판넬 전체"), ("/qna/tempa-corner.html", "템바 모서리 마감"), ("/qna/tempa-size.html", "템바보드 규격")]),
-   (80, 24, "펜던트 조명", "ceiling", "천장에서 늘어뜨린 금색 가지 모양 조명입니다.", "/qna/jomyeong-baechi.html", "조명 배치", [("/qna/line-jomyeong.html", "라인 조명")]),
+   (80, 32, "펜던트 조명", "ceiling", "천장에서 늘어뜨린 금색 가지 모양 조명입니다.", "/qna/jomyeong-baechi.html", "조명 배치", [("/qna/line-jomyeong.html", "라인 조명")]),
    (85, 55, "흰 벽", "wall", "나무 벽 옆을 밝은 흰 벽으로 두어 나뭇결이 돋보입니다.", "/younglim/wall.html", "월판넬 보기", [("/qna/wallpanel-vs-tempa.html", "월판넬 vs 템바보드")]),
    (50, 93, "밝은 바닥", "tile", "벽 아래까지 이어지는 밝은 회색 바닥입니다.", "/bigyo/floor-types.html", "바닥재 종류 비교", [])]),
  ("tempa-ruba-marble-niche", "템바루바 벽 — 나무 루바와 대리석 벽, 벽장 선반 둘러보기", YL + "08ea33a0-0017-4043-bbae-cf6bb7e1e709.jpg", "사진: 영림",
