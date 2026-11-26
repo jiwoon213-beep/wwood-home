@@ -17,6 +17,10 @@ GROUPS = [  # 이름, 다이소 소분류들, 우리 쪽 안내(링크, 글)
 ]
 
 
+SLUG = ['silicone', 'jeopchakje', 'tape', 'nasa-mot', 'gongu', 'sapo-paint', 'taka-gluegun', 'munpungji', 'jeongi', 'sheetji', 'hook']
+STITLE = ['다이소 실리콘·실란트 종류와 가격 — 실리콘건·제거 스크래퍼까지', '다이소 접착제 종류 — 순간접착제·에폭시·벽지 보수 접착제', '다이소 테이프 종류 — 마스킹·청면·알루미늄·방수 테이프', '다이소 나사못·못·경첩·장석 — 길이별 소포장 정리', '다이소 공구 — 드라이버·펜치·망치·톱·줄자 가격', '다이소 사포·페인트·바니쉬·젯소 — 가구 리폼 재료', '다이소 타카·글루건 — 손 타카 심·글루건 심', '다이소 문풍지·방충망 — 종류와 가격', '다이소 멀티탭·케이블타이·전선 정리·LED 전구', '다이소 시트지 — 리폼 시트지·주방 시트지·밀대', '다이소 도어스토퍼·후크 — 문·벽 소품']
+
+
 def gen(page, E, CTA, faqslide, ROOT):
     p = os.path.join(ROOT, "data", "daiso_items.tsv")
     if not os.path.exists(p): return
@@ -25,7 +29,7 @@ def gen(page, E, CTA, faqslide, ROOT):
     for i, (gn, subs, (lk, lkn), note) in enumerate(GROUPS):
         its = [r for r in rows if r[4] in subs]
         if not its: continue
-        tot += len(its); toc.append(f'<a href="#g{i}">{E(gn)} {len(its)}</a>')
+        tot += len(its); toc.append(f'<a href="/geuncheo/daiso-{SLUG[i]}.html">{E(gn)} {len(its)}</a>')
         sec += (f'<h2 id="g{i}">다이소 {E(gn)} <small class="muted">{len(its)}가지</small></h2><p>{E(note)} <a href="{lk}">{E(lkn)} ›</a></p>'
                 '<div class="tw"><table class="rt"><thead><tr><th>다이소 품목</th><th>다이소 판매가</th></tr></thead><tbody>'
                 + "".join(f'<tr><th>{E(r[1])}</th><td data-l="판매가">{int(r[2]):,}원</td></tr>' for r in sorted(its, key=lambda r: (int(r[2]), r[1])))
@@ -46,3 +50,23 @@ def gen(page, E, CTA, faqslide, ROOT):
     page("geuncheo/daiso.html", f"다이소 철물·실리콘·공구 {tot}가지 — 파는 품목·가격, 내 위치 근처 다이소 찾기 | 영진목재",
          f"다이소에서 파는 실리콘·실란트·피스·못·경첩·테이프·공구·문풍지·방충망·시트지 {tot}가지를 가격과 함께 정리. 버튼 한 번으로 내 위치 근처 다이소 찾기.", body, "/geuncheo.html",
          [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}])
+
+    _js = body[body.find('<style>.dsw'):body.find('</script>') + 9]
+    for i, (gn, subs, (lk, lkn), note) in enumerate(GROUPS):
+        its = [r for r in rows if r[4] in subs]
+        if not its: continue
+        lo = min(int(r[2]) for r in its)
+        tb = ('<div class="tw"><table class="rt"><thead><tr><th>다이소 품목</th><th>다이소 판매가</th></tr></thead><tbody>'
+              + "".join(f'<tr><th>{E(r[1])}</th><td data-l="판매가">{int(r[2]):,}원</td></tr>' for r in sorted(its, key=lambda r: (int(r[2]), r[1]))) + '</tbody></table></div>')
+        ofq = [(f"다이소 {gn}는 얼마인가요?", f"{DATE} 다이소몰 기준 {lo:,}원부터 있으며, 품목별 가격은 위 표에 있습니다. 매장마다 재고·가격이 다를 수 있습니다."),
+               (f"다이소 {gn}로 충분할까요?", note),
+               ("근처 다이소는 어떻게 찾나요?", "위의 '내 위치 근처 다이소 찾기' 버튼을 누르면 지도 앱에서 가까운 다이소가 바로 나옵니다.")]
+        ob = (f'<section class="wrap sec"><p class="crumb"><a href="/geuncheo.html">현장 근처 찾기</a> › <a href="/geuncheo/daiso.html">다이소 철물·실리콘</a> › {E(gn)}</p><h1>{E(STITLE[i].split(" — ")[0])}</h1>'
+              f'<p class="lead">다이소에서 파는 {E(gn)} {len(its)}가지를 가격과 함께 정리했습니다({lo:,}원부터). {E(note)}</p>'
+              '<div class="dsw"><button type="button" id="dsme" class="dsme">📍 내 위치 근처 다이소 찾기</button><div id="dsr" hidden></div></div>'
+              + tb + f'<p><a class="b o" href="{lk}">{E(lkn)} ›</a></p>'
+              f'<p class="small muted">품목·가격은 다이소몰 공개 정보({DATE} 조사)이며 매장마다 다를 수 있습니다. 다이소와 관계없는 안내 페이지입니다.</p>'
+              f'<h2>자주 묻는 질문</h2>{faqslide(ofq)}<h2>다른 다이소 품목</h2><div class="olk">' + "".join(f'<a href="/geuncheo/daiso-{SLUG[k]}.html">다이소 {E(g[0])}</a>' for k, g in enumerate(GROUPS) if k != i) + '</div>'
+              '<div class="gcad" style="margin-top:18px"><b>🪵 목재·합판·석고보드·단열재·데크재는 영진종합목재</b><span>원하는 크기로 재단해 전국 현장까지 배송 · 대전 유성대로 44</span></div></section>' + _js + CTA)
+        page(f"geuncheo/daiso-{SLUG[i]}.html", f"{STITLE[i]} | 영진목재", f"다이소 {gn} {len(its)}가지 가격({lo:,}원부터, {DATE} 기준)과 쓰임. 내 위치 근처 다이소 바로 찾기.", ob, "/geuncheo/daiso.html",
+             [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in ofq]}])
