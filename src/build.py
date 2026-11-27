@@ -1875,6 +1875,15 @@ def build():
        ("기둥", "각재·다루끼", r"90각", [(600, 0, 1)], "스프러스 90각(90×90) · 600mm 1개")],
       ["받침판(450×450) 가운데에 기둥(90×90×600)을 세우고 받침 아래에서 긴 피스 4개와 목공본드로 단단히 고정합니다.", "기둥 아래에서 위로 노끈을 촘촘히 감고, 시작과 끝은 타카나 본드로 고정합니다.", "위 발판(300×300)을 기둥 위에 올려 위에서 피스 2~4개로 고정합니다.", "모서리를 사포로 둥글게 다듬고, 흔들리면 받침판을 더 넓게 하거나 벽 쪽에 붙여 둡니다."],
       ["미송 집성판 18T", "스프러스 90각", "노끈(사이잘 로프)", "긴 목공 피스·목공본드", "타카", "사포"]),
+     ("changgaseonban", "창가 선반", "창가 선반 만들기 자재 — 다루끼 목상 + MDF 15mm 1200×265 창 아래 선반", "거실·방 창문 아래 벽에 붙이는 폭 1200, 깊이 약 265mm 창가 선반입니다. 다루끼(30×30)로 사다리 모양 목상 틀을 짜서 벽과 ㄱ자 선반 받침 철물에 고정하고, MDF 15mm로 앞판과 상판을 덮습니다. 작은 화분·액자·소품을 올리는 용도로, 무거운 물건이나 걸터앉는 용도로는 쓰지 마세요.",
+      [("벽 목상·앞 목상·가로대", "각재·다루끼", r"1.0\*1.0\*12자", [(1200, 0, 2), (190, 0, 5)], "다루끼(30×30) · 벽 목상·앞 목상 1200mm 2개, 가로대 190mm 5개(250 - 30×2, 약 290mm 간격)"),
+       ("상판·앞판", "MDF", r"^MDF 4\*8 @15mm", [(1200, 265, 1), (1200, 30, 1)], "MDF 15mm · 상판 1200×265 1장(앞판 두께 15mm까지 덮음), 앞판 1200×30 1장")],
+      ["창 아래 벽에 수평계로 선을 긋고, 벽 목상(1200)을 칼블럭·피스로 고정한 뒤 그 밑에 ㄱ자 선반 받침 철물 3개를 양 끝과 가운데에 답니다.", "앞 목상(1200)과 가로대 5개(190)를 벽 목상에 이어 사다리 모양 틀을 짜고, 받침 철물 위에 피스로 고정합니다.", "틀 앞면에 앞판 MDF(1200×30)를 목공본드와 실타카로 붙입니다.", "상판 MDF(1200×265)를 틀 위에 덮고 고정한 뒤, 창틀·벽과 닿는 틈은 실리콘으로 메우고 필름이나 페인트로 마감합니다."],
+      ["다루끼(30×30)", "MDF 15mm", "ㄱ자 선반 받침 철물 3개", "칼블럭·목공 피스", "목공본드·실타카", "수평계", "실리콘", "인테리어 필름 또는 페인트"]),
+     ("chaekbogwan", "원목 책 보관함", "책 보관함 만들기 자재 — 미송 집성판 18T 400×300×250 바닥용 그림책 꽂이", "거실·아이방 바닥에 두는 폭 400, 깊이 300, 높이 250mm 원목 책 보관함입니다. 가운데 칸막이로 앞뒤 2줄로 나눠, 앞쪽(앞판 높이 120mm)에는 얇은 그림책을, 뒤쪽에는 큰 책을 표지가 보이게 세워 꽂습니다. 미송 집성판 18T 한 가지로 만듭니다.",
+      [("옆판·앞뒤판·바닥·칸막이", "집성판", r"미송.*18T", [(300, 250, 2), (364, 250, 1), (364, 120, 1), (364, 264, 1), (364, 200, 1)], "미송 집성판 18T · 옆판 300×250 2장, 뒷판 364×250 1장(400 - 18×2), 앞판 364×120 1장, 바닥판 364×264 1장(300 - 18×2), 칸막이 364×200 1장")],
+      ["바닥판(364×264) 양옆에 옆판 2장(300×250)을 세워 목공본드와 피스로 고정합니다.", "뒷판(364×250)과 앞판(364×120)을 옆판 사이 앞뒤에 끼워 바닥판·옆판에 피스로 박습니다.", "칸막이(364×200)를 깊이 가운데(앞에서 약 150mm)에 세워 바닥판 위에 놓고 옆판 바깥에서 피스로 고정합니다.", "모서리와 위쪽 끝을 사포로 둥글게 다듬고 식물성 목재 오일을 칠해 마감합니다."],
+      ["미송 집성판 18T", "목공 피스·목공본드", "사포", "식물성 목재 오일"]),
     ]
     _PRICE = {}
     for _r in csv.DictReader(open(ROOT + "/data/prices.csv", encoding="utf-8")):
@@ -1915,7 +1924,7 @@ def build():
            "gaejip": r"강아지집|개집", "hwabundae": r"화분", "aichaeksang": r"책상", "geosiljang": r"티비다이|TV 수납|거실장", "seutul": r"스툴|의자",
            "nopeuntutbat": r"텃밭|화분만들기|방부목 화분", "haenggeo": r"행거|옷장", "yaoeteibeul": r"테이블", "jangjak": r"장작", "gongguborad": r"공구통|타공판|공구 수납|수납장",
            "cube": r"나무박스|박스만들기|수납박스|정리함",
-           "sadariseonban": r"사다리 선반|사다리", "aillaendeu": r"아일랜드", "balpan": r"발판|스텝", "bunrisugeo": r"분리수거", "kaetower": r"캣타워|고양이", "jangnangam": r"장난감|수납함", "jwatak": r"좌탁|밥상", "renjidae": r"렌지대|전자레인지", "sunappyeongsang": r"평상(?!형)", "hwajangdae": r"화장대", "sangbujang": r"상부장", "silwoegi": r"실외기 ?(커버|가림)", "deckgyedan": r"DIY 계단|계단 만들", "kaempingbox": r"나무박스|캠핑 ?박스", "sinkmunjjak": r"싱크대 ?문짝", "headboard": r"침대프레임만들기|명품 침대 만드는", "silnaehwa": r"슬리퍼|실내화", "hwabunonsil": r"온실", "gangajigyedan": r"강아지 계단", "yangnyeomseonban": r"양념통", "mdfseonbanjang": r"4단 선반|선반 만들 때|MDF 가구", "teureongkeu": r"차박|정리함", "deskseonban": r"데스크|선반 만들 때", "minichanggo": r"창고", "gongutong": r"공구통|적재함", "maegeojinraek": r"매거진랙|잡지꽂이", "patisyeon": r"파티션", "gyedanpan": r"계단판|원목 계단", "ipganpan": r"간판", "sagwabox": r"사과박스", "usangoji": r"우산꽂이", "hyujitong": r"휴지통|쓰레기통", "dansang": r"단상", "cheongsoham": r"청소함", "ttukkeongsunap": r"뚜껑 수납함|경첩 수납함", "seukeuraecheo": r"스크래쳐|스크래처"}
+           "sadariseonban": r"사다리 선반|사다리", "aillaendeu": r"아일랜드", "balpan": r"발판|스텝", "bunrisugeo": r"분리수거", "kaetower": r"캣타워|고양이", "jangnangam": r"장난감|수납함", "jwatak": r"좌탁|밥상", "renjidae": r"렌지대|전자레인지", "sunappyeongsang": r"평상(?!형)", "hwajangdae": r"화장대", "sangbujang": r"상부장", "silwoegi": r"실외기 ?(커버|가림)", "deckgyedan": r"DIY 계단|계단 만들", "kaempingbox": r"나무박스|캠핑 ?박스", "sinkmunjjak": r"싱크대 ?문짝", "headboard": r"침대프레임만들기|명품 침대 만드는", "silnaehwa": r"슬리퍼|실내화", "hwabunonsil": r"온실", "gangajigyedan": r"강아지 계단", "yangnyeomseonban": r"양념통", "mdfseonbanjang": r"4단 선반|선반 만들 때|MDF 가구", "teureongkeu": r"차박|정리함", "deskseonban": r"데스크|선반 만들 때", "minichanggo": r"창고", "gongutong": r"공구통|적재함", "maegeojinraek": r"매거진랙|잡지꽂이", "patisyeon": r"파티션", "gyedanpan": r"계단판|원목 계단", "ipganpan": r"간판", "sagwabox": r"사과박스", "usangoji": r"우산꽂이", "hyujitong": r"휴지통|쓰레기통", "dansang": r"단상", "cheongsoham": r"청소함", "ttukkeongsunap": r"뚜껑 수납함|경첩 수납함", "seukeuraecheo": r"스크래쳐|스크래처", "changgaseonban": r"창가 ?선반", "chaekbogwan": r"책 ?보관함"}
     def mkvids(slug, nm):
         rx = MKV.get(slug) or re.escape(re.sub(r"^(원목|목재|야외|작은)\s*", "", nm).split()[0])
         hit = [v for v in V if re.search(rx, v["title"])]
