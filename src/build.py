@@ -2626,7 +2626,7 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
                 if len(t) > 3 and t[3]: fq += _autofq(t[3], fq, 2)
                 ld = {"@context": "https://schema.org", "@graph": [{"@type": "DefinedTerm", "name": t[0], "description": f"{t[1]}. {t[2]}", "inDefinedTermSet": "https://www.wwood.co.kr/yongeo.html"},
                       {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}]}
-                page(f"yongeo/{t[4]}.html", f"{t[0]} 뜻 — {t[1]} | 현장 용어 · 영진목재", f"{t[0]} 뜻: {t[1]}. {t[2]}"[:150],
+                page(f"yongeo/{t[4]}.html", f"{t[0]} 뜻 — {t[1]}" + (" · 어원·예문" if _ym.get("yu") else "") + " | 현장 용어 · 영진목재", (f"{t[0]} 뜻: {t[1]}. {_ym['yu']} {t[2]}" if _ym.get("yu") else f"{t[0]} 뜻: {t[1]}. {t[2]}")[:155],
                      f"""<section class="wrap sec"><p class="crumb"><a href="/yongeo.html">현장 용어 사전</a> › {E(g)}</p><h1>{E(t[0])} 뜻</h1>
 <p class="lead"><b>{E(t[0])}</b> = <b>{E(t[1])}</b></p><p>{E(t[2])}</p>
 {f'<h2>현장에서 이렇게 써요</h2><p>{E(t[5])}</p>' if len(t) > 5 and t[5] else ''}{"".join(f'<p>{E(x)}</p>' for x in _ym.get("ex", []))}
