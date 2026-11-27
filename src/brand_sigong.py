@@ -282,6 +282,15 @@ def gen(page, E, CTA, ROOT, SG, PL2CSS=""):
         page(f"sigongbeop/b-{slug}.html", f"{nm} — 직접 시공 순서·자재 | 영진목재", f"{nm}: {lead[:100]} ({co}와 관계없는 일반 시공 안내)", body, "/sigongbeop/", ld, im)
         G.append((slug, bk, nm, [], "", gs, lead, steps, tools, warn, fq))  # 목록용(제품 고르기 없음)
         _IMG[slug] = im
+    _by = {}
+    for x in GS: _by.setdefault(x[3], []).append(x)
+    for gs, xs in _by.items():
+        fp = os.path.join(ROOT, "out", "sigongbeop", gs + ".html")
+        if not os.path.exists(fp): continue
+        t = open(fp, encoding="utf-8").read()
+        sec = '<section class="wrap sec"><h2>인테리어 회사 스타일로 보기</h2><p class="small muted">같은 공사를 큰 인테리어 회사 분위기로 하는 방법입니다(해당 회사와 관계없음).</p><div class="olk">' + "".join(f'<a href="/sigongbeop/b-{x[0]}.html">{E(x[2])}</a>' for x in xs) + '<a class="ac" href="/sigongbeop/brand.html">전체 보기</a></div></section>'
+        if '<section class="cta">' in t and "인테리어 회사 스타일로 보기" not in t:
+            open(fp, "w", encoding="utf-8").write(t.replace('<section class="cta">', sec + '<section class="cta">', 1))
     return _gen0(page, E, CTA, ROOT, SG)
 
 
