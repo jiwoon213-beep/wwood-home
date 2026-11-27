@@ -2988,7 +2988,7 @@ EV.forEach(function(s){var t=document.createElement("tr");t.innerHTML="<td>"+s[1
     for x in SG:
         u = f"{BASE}/sigongbeop/{x[0]}.html"; _fs.setdefault(u, _today); _ex.append((_fs[u], x[2].split(" — ")[0], u, x[3], f"/assets/sigongbeop/{x[0]}.jpg"))
     for _pth, (_t, _d, _im) in PGMETA.items():  # 평수별 자재비·시공팀 연결·지역 시공·공정 플래너·떨이몰도 RSS에
-        if _noidx(_pth) or not re.match(r"(yesi|yeongyeol|local|tteori)/|gongjeong\.html|jaedan-bi\.html|hyeonjang\.html", _pth) or _pth.endswith("hyeonjang.html"): continue
+        if _noidx(_pth) or not re.match(r"(yesi|yeongyeol|local|tteori|yongeo|bigyo|qna)/|sigongbeop/b-|mandeul/s-|gongjeong\.html|jaedan-bi\.html|hyeonjang\.html", _pth) or _pth.endswith("hyeonjang.html"): continue
         u = BASE + "/" + _pth.replace("index.html", ""); _fs.setdefault(u, _today)
         _ex.append((_fs[u], _t, u, _d, (_im or "").replace(BASE, "") or "/assets/icon-512.png"))
     json.dump(_fs, open(_fsf, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"), sort_keys=True)
