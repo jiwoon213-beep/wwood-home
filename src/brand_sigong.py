@@ -7,7 +7,6 @@ BR = [  # key, 화면 이름, 제품 폴더, 한 줄
     ("younglim", "영림", "younglim", "중문·방문·문틀·인테리어 필름·몰딩·마루·월패널"),
     ("yerim", "예림", "yerim", "슬라이딩·폴딩·간살 중문, ABS 도어, 문틀"),
     ("shenu", "쉐누", "shenu", "도어·중문·몰딩"),
-    ("knauf", "크나우프", "knauf", "석고보드·흡음 천장재·글라스울 단열재·아쿠아패널"),
     ("bondex", "본덱스", "bondex", "오일스테인·수성 페인트·스프레이"),
     ("nichiha", "니치하", "nichiha", "세라믹 사이딩 외벽"),
     ("taka", "제일타카", "taka", "실타카·프레이밍 타카·콘크리트 타카"),
@@ -87,23 +86,6 @@ G = [
   "쉐누 몰딩을 천장·벽에 다는 일반적인 순서입니다.",
   ["길이를 재서 이음 위치를 정합니다.", "모서리를 45도로 자릅니다.", "본드와 실타카로 고정합니다.", "틈을 메워 마감합니다."],
   ["각도절단기", "실타카", "몰딩 본드", "실리콘"], [], []),
- ("kn-seokgo-byeok", "knauf", "크나우프 석고보드 벽 시공 순서", ["knauf/seokgo.html"], r"", "seokgo-byeok",
-  "크나우프 석고보드로 벽(가벽)을 만드는 일반적인 순서입니다. 하지(스터드·각재) 간격과 피스 간격을 지키면 벽이 단단해집니다.",
-  ["바닥·천장에 먹줄을 치고 런너(또는 각재)를 고정합니다.", "스터드를 약 400~450mm 간격으로 세웁니다.", "필요하면 사이에 단열·흡음재를 채웁니다.", "석고보드를 세로로 대고 석고 피스로 고정합니다(이음은 스터드 위에서).", "이음매에 테이프와 퍼티를 바르고 갈아서 칠·도배합니다."],
-  ["레이저 레벨·먹줄", "전동드릴·석고 피스", "석고 칼·줄자", "조인트 테이프·퍼티"], ["욕실·주방처럼 습한 곳은 방수(방균) 석고보드를 씁니다."],
-  [("석고보드 피스 간격은?", "가장자리와 가운데 모두 일정한 간격으로 박습니다(/seokgo-pis.html).")]),
- ("kn-cheonjang", "knauf", "크나우프 흡음 천장재 시공 순서", ["knauf/mineral.html", "knauf/heubeum.html"], r"", "heumeum-byeok",
-  "크나우프 흡음 천장재(미네랄 보드 등)를 다는 일반적인 순서입니다. 천장재는 T바에 얹는 방식과 바탕에 붙이는 방식이 있어 제품 방식을 먼저 확인합니다.",
-  ["천장 높이를 정하고 벽 둘레에 수평으로 몰딩(앵글)을 답니다.", "달대(행거)로 메인 T바를 매달아 수평을 맞춥니다.", "크로스 T바를 끼워 격자를 만듭니다.", "천장판을 격자에 얹고 조명·점검구 자리는 잘라 맞춥니다."],
-  ["레이저 레벨", "전동드릴·앙카", "달대·T바", "칼·줄자"], ["옛 천장판 철거 때는 석면 여부를 먼저 확인합니다."], []),
- ("kn-danyeol", "knauf", "크나우프 글라스울 단열재 시공 순서", ["knauf/danyeol.html"], r"", "isopink-byeok",
-  "크나우프 글라스울 단열재를 벽·천장 하지 사이에 채우는 일반적인 순서입니다. 빈틈 없이 채우는 것이 단열의 핵심입니다.",
-  ["하지(스터드·장선) 간격을 재서 단열재 폭을 맞춥니다.", "장갑·마스크·보안경을 씁니다.", "단열재를 하지 사이에 눌리지 않게 빈틈없이 채웁니다.", "필요하면 실내 쪽에 방습층을 대고 석고보드로 덮습니다."],
-  ["칼·줄자", "장갑·마스크·보안경", "방습 비닐·테이프"], ["눌러서 넣으면 두께가 줄어 단열 효과가 떨어집니다."], []),
- ("kn-aquapanel", "knauf", "크나우프 아쿠아패널 시공 순서", ["knauf/aquapanel.html"], r"", "seokgo-byeok",
-  "크나우프 아쿠아패널(시멘트 보드)을 욕실·외벽 바탕에 대는 일반적인 순서입니다. 물에 강한 바탕이라 위에 타일·미장 마감을 합니다.",
-  ["하지(스터드)를 정해진 간격으로 세웁니다.", "패널을 대고 전용 피스로 고정합니다.", "이음에 전용 테이프·접착 몰탈을 바릅니다.", "그 위에 타일·미장으로 마감합니다."],
-  ["전동드릴·전용 피스", "칼(금 긋고 꺾기)", "줄자", "이음 테이프"], ["자를 때 가루가 나니 마스크를 씁니다."], []),
  ("bd-deck-oil", "bondex", "본덱스 데크 오일스테인 칠하는 순서", ["bondex/stain.html", "bondex/oil.html"], r"", "oilstain",
   "본덱스 오일스테인·데크 오일로 방부목·데크를 칠하는 일반적인 순서입니다. 마른 날, 깨끗한 바탕에 얇게 두 번 바르는 것이 오래가는 요령입니다.",
   ["비 소식이 없는 마른 날을 고릅니다.", "먼지·곰팡이·옛 칠을 솔·사포로 벗기고 물기를 말립니다.", "잘 저어 색을 고르게 하고 자투리에 먼저 발라 색을 봅니다.", "결 방향으로 얇게 바르고 남는 것은 닦아 냅니다.", "마르면 한 번 더 바르고, 마구리(자른 면)는 꼼꼼히 먹입니다."],
@@ -199,9 +181,9 @@ def gen(page, E, CTA, ROOT, SG):
         page(f"sigongbeop/brand-{k}.html", f"{nm} 시공법 모음 — {one} | 영진목재", f"{nm} 제품({one}) 시공 순서·준비물·주의점을 한곳에. 제품 사진과 함께 보는 일반 시공 순서.",
              f'<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › <a href="/sigongbeop/brand.html">회사별 시공법</a> › {E(nm)}</p><h1>{E(nm)} 시공법 모음</h1><p class="lead">{E(nm)} {E(one)} 제품을 시공하는 일반적인 순서를 모았습니다. 제품 사진·이름은 {E(nm)} 제공 자료이며, 순서는 공식 지침이 아니니 제품 설명서를 함께 확인하세요.</p><div class="mg m2">{"".join(cards[k])}</div>{f'<p><a href="/{d}/">{E(nm)} 제품 전체 보기 ›</a></p>' if d else '<p class="small muted">해당 회사 제품·서비스가 아니며 관계없습니다. 비슷한 분위기를 우리 매장 자재로 시공하는 일반 순서입니다.</p>'}</section>{CTA}', "/sigongbeop/")
         secs += f'<h2 id="b-{k}">{E(nm)} <small class="muted">{E(one)}</small></h2><div class="mg m2">{"".join(cards[k][:4])}</div><p><a href="/sigongbeop/brand-{k}.html">{E(nm)} 시공법 전체 보기 ›</a></p>'
-    page("sigongbeop/brand.html", "회사별 자재 시공법 — 영림·예림·쉐누·크나우프·본덱스·니치하·제일타카·한샘·리바트 스타일 | 영진목재", "영림 중문·방문·필름, 예림 중문, 쉐누 도어, 크나우프 석고보드·천장재, 본덱스 오일스테인, 니치하 사이딩, 제일타카 사용 순서를 회사별로 정리했습니다.",
+    page("sigongbeop/brand.html", "회사별 자재 시공법 — 영림·예림·쉐누·본덱스·니치하·제일타카·한샘·리바트 스타일 | 영진목재", "영림 중문·방문·필름, 예림 중문, 쉐누 도어, 본덱스 오일스테인, 니치하 사이딩, 제일타카 사용 순서를 회사별로 정리했습니다.",
          f'<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › 회사별</p><h1>회사별 자재 시공법</h1><p class="lead">우리 매장에서 다루는 회사 제품별로 시공 순서·준비물·주의점을 정리했습니다. 제품 사진과 함께 보고, 같은 공정의 그림 설명서로 이어집니다.</p><div class="olk">{jump}</div>{secs}</section>{CTA}', "/sigongbeop/")
-    return f'<section class="wrap sec"><h2>회사별 시공법</h2><p>영림·예림·쉐누·크나우프·본덱스·니치하·제일타카 제품과, 한샘·리바트 스타일 인테리어를 회사별로 나눠 시공 순서를 정리했습니다.</p><div class="olk">' + "".join(f'<a href="/sigongbeop/brand-{k}.html">{E(nm)} {len(cards[k])}</a>' for k, nm, d, one in BR if cards[k]) + '<a class="ac" href="/sigongbeop/brand.html">전체 보기</a></div>' + "".join(f'<h3>{E(nm)}</h3><div class="mg m2">{"".join(cards[k][:4])}</div>' for k, nm, d, one in BR if cards[k]) + '</section>'
+    return f'<section class="wrap sec"><h2>회사별 시공법</h2><p>영림·예림·쉐누·본덱스·니치하·제일타카 제품과, 한샘·리바트 스타일 인테리어를 회사별로 나눠 시공 순서를 정리했습니다.</p><div class="olk">' + "".join(f'<a href="/sigongbeop/brand-{k}.html">{E(nm)} {len(cards[k])}</a>' for k, nm, d, one in BR if cards[k]) + '<a class="ac" href="/sigongbeop/brand.html">전체 보기</a></div>' + "".join(f'<h3>{E(nm)}</h3><div class="mg m2">{"".join(cards[k][:4])}</div>' for k, nm, d, one in BR if cards[k]) + '</section>'
 
 
 # 한샘·리바트 스타일 — 해당 회사 제품·서비스 아님(관계없음). 회사 사진·로고 안 씀, 그림은 우리 그림 설명서.
@@ -280,7 +262,7 @@ PLAN = {
  "yl-munteul": ("door", "frame", 900, 2100), "yl-wall": ("pl2", "whap", 3000, 0, 2400), "yl-maru": ("pl2", "fhap", 3600, 3000, 0),
  "yr-jungmun-sliding": ("door", "one", 1200, 2300), "yr-jungmun-folding": ("door", "fold", 1600, 2300), "yr-ganssal": ("door", "3yeon", 1400, 2300),
  "yr-door-abs": ("door", "swing", 900, 2100), "yr-door-frame": ("door", "frame", 900, 2100), "sh-door": ("door", "swing", 900, 2100), "sh-jungmun": ("door", "one", 1200, 2300),
- "kn-seokgo-byeok": ("pl2", "wgyp", 3000, 0, 2400), "kn-danyeol": ("pl2", "wgyp", 3000, 0, 2400), "kn-aquapanel": ("pl2", "wgyp", 2400, 0, 2400), "kn-cheonjang": ("pl2", "fhap", 3600, 3000, 0),
+
  "bd-deck-oil": ("pl2", "deck", 3600, 2400, 0), "nc-siding": ("pl2", "whap", 6000, 0, 3000), "tk-framing": ("pl2", "wgyp", 3000, 0, 2400), "tk-concrete": ("pl2", "wgyp", 3000, 0, 2400),
  "hs-jungmun": ("door", "one", 1200, 2300), "hs-artwall": ("pl2", "whap", 3000, 0, 2400), "lv-maru": ("pl2", "fhap", 3600, 3000, 0), "lv-dressroom": ("pl2", "wgyp", 2400, 0, 2400),
 }
