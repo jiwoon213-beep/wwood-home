@@ -2932,6 +2932,17 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
     open(f"{OUT}/404.html", "w", encoding="utf-8").write(open(f"{OUT}/index.html", encoding="utf-8").read().split("<main>")[0].replace('<link rel="canonical"', '<meta name="robots" content="noindex"><link rel="x-canonical"').replace(re.search(r"<title>.*?</title>", open(f"{OUT}/index.html", encoding="utf-8").read()).group(0), "<title>페이지를 찾을 수 없어요 | 영진목재</title>").replace(re.search(r'<meta name="description" content="[^"]*">', open(f"{OUT}/index.html", encoding="utf-8").read()).group(0), '<meta name="description" content="찾으시는 페이지가 없습니다. 영진목재 홈페이지 처음 화면이나 전체 자재에서 찾아보세요.">') + '<main><section class="wrap sec"><div id="vwait" hidden style="background:#fff8e6;border:2px solid #f0c040;border-radius:14px;padding:18px 20px;margin:0 0 22px"><h1 style="margin:0 0 8px">올려주신 사진을 확인하고 있어요</h1><p class="lead" style="margin:0">사진은 잘 받았어요. 얼굴·번호판을 가리고 자재 표시를 단 뒤 이 주소에 공개돼요(보통 반나절~하루). 조금 뒤에 다시 열어 주세요. 급하면 매장 042-545-2900.</p></div><div id="nf404"><h1>찾으시는 페이지가 없어요</h1><p class="lead">주소가 바뀌었거나 없어진 페이지입니다. 아래에서 찾아보세요.</p></div><script>if(/\/(mandeul|sigongbeop|gonggan)\/v-[0-9a-z]{10,40}\.html$/.test(location.pathname)){document.getElementById("vwait").hidden=false;var h=document.getElementById("nf404");if(h)h.hidden=true}</script><div class="row"><a class="b r" href="/">처음으로</a><a class="b o" href="/jaryo/">전체 자재</a><a class="b o" href="/cut.html">재단 미리보기</a><a class="b o" href="/price.html">기준가</a><a class="b o" href="/mandeul/">DIY 만들기</a><a class="b o" href="/sigongbeop/">자재 시공법</a><a class="b o" href="/faq.html">자주 묻는 질문</a><a class="b d" href="/visit.html">매장 안내</a></div></section></main></body></html>')
     # 사장님용 방문 통계(검색 제외, 메뉴 링크 없음)
     os.makedirs(f"{OUT}/stats", exist_ok=True)
+    try:
+        _gd = json.load(open(f"{ROOT}/data/gsc_daily.json", encoding="utf-8")); _dd = _gd["days"]
+        _ti = sum(x[2] for x in _dd); _tc = sum(x[1] for x in _dd); _mx = max(x[2] for x in _dd) or 1
+        _full = [x for x in _dd if x[2] > 0]
+        _l7 = _full[2:9] if len(_full) > 8 else _full
+        _GSCH = ('<h2 style="font-size:18px;margin-top:22px">구글 검색 노출</h2><div class="k"><div><small>최근 28일 노출</small><b>' + f"{_ti:,}" + '</b></div><div><small>최근 28일 클릭</small><b>' + f"{_tc:,}" + '</b></div></div>'
+                 + '<div class="k" style="margin-top:10px"><div><small>하루 평균 노출(최근 7일, 확정)</small><b>' + f"{round(sum(x[2] for x in _l7)/max(len(_l7),1)):,}" + '</b></div><div><small>평균 순위</small><b>' + f"{sum(x[3]*x[2] for x in _dd)/_ti:.1f}" + '위</b></div></div>'
+                 + '<table><tr><th>날짜</th><th>노출</th><th>클릭</th><th>순위</th></tr>' + "".join(f'<tr><td>{x[0][5:].replace("-", "/")}</td><td>{x[2]:,} <span class="bar" style="display:inline-block;width:{max(2, round(x[2]/_mx*80))}px;height:8px;background:#2d6a4f;border-radius:4px;vertical-align:middle"></span></td><td>{x[1]}</td><td>{x[3]}</td></tr>' for x in _dd[:14])
+                 + f'</table><p><small>노출 = 구글 검색 결과에 우리 사이트가 보인 횟수, 클릭 = 그중 눌러서 들어온 수. 구글은 2~3일 늦게 집계돼 맨 위 1~2일은 아직 덜 모인 숫자입니다. (가져온 날 {_gd["updated"]})</small></p>')
+    except Exception as _e:
+        print("gsc 노출 표 오류", _e); _GSCH = ""
     open(f"{OUT}/stats/index.html", "w", encoding="utf-8").write("""<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>방문 통계 · 영진종합목재</title><meta name="description" content="영진종합목재 홈페이지 방문 통계(사장님용).">
 <style>body{font-family:Pretendard,'Noto Sans KR',sans-serif;background:#f6f3ee;color:#1d1b18;margin:0;padding:18px;max-width:640px;margin:auto}h1{font-size:22px}.k{display:flex;gap:10px}.k div{flex:1;background:#fff;border:1px solid #e4ded4;border-radius:14px;padding:14px}.k b{display:block;font-size:30px}small{color:#5e574e}
 table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;margin-top:14px;font-size:15px}th,td{padding:10px;border-bottom:1px solid #eee;text-align:right}th:first-child,td:first-child{text-align:left}th{background:#1d1b18;color:#fff;font-weight:700}.bar{height:8px;background:#c62a1f;border-radius:4px;display:inline-block;vertical-align:middle;margin-left:6px}</style></head><body>
@@ -2966,6 +2977,7 @@ EV.forEach(function(s){var t=document.createElement("tr");t.innerHTML="<td>"+s[1
     _fsf = f"{ROOT}/data/firstseen.json"
     _fs = json.load(open(_fsf, encoding="utf-8")) if os.path.exists(_fsf) else {}
     _today = datetime.date.today().isoformat(); _ex = []
+    _sp = f"{OUT}/stats/index.html"; _st = open(_sp, encoding="utf-8").read(); open(_sp, "w", encoding="utf-8").write(_st.replace('<table id="src">', _GSCH + '<h2 style="font-size:18px;margin-top:22px">방문 경로</h2><table id="src">', 1))
     for x in MK:
         u = f"{BASE}/mandeul/{x[0]}.html"; _fs.setdefault(u, _today); _ex.append((_fs[u], x[2].split(" — ")[0] + " — DIY 만들기 자재·재단 크기", u, x[3], f"/assets/mandeul/{x[0]}.jpg"))
     for x in SG:
