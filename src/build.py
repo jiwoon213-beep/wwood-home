@@ -2941,6 +2941,11 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
                  + '<div class="k" style="margin-top:10px"><div><small>하루 평균 노출(최근 7일, 확정)</small><b>' + f"{round(sum(x[2] for x in _l7)/max(len(_l7),1)):,}" + '</b></div><div><small>평균 순위</small><b>' + f"{sum(x[3]*x[2] for x in _dd)/_ti:.1f}" + '위</b></div></div>'
                  + '<table><tr><th>날짜</th><th>노출</th><th>클릭</th><th>순위</th></tr>' + "".join(f'<tr><td>{x[0][5:].replace("-", "/")}</td><td>{x[2]:,} <span class="bar" style="display:inline-block;width:{max(2, round(x[2]/_mx*80))}px;height:8px;background:#2d6a4f;border-radius:4px;vertical-align:middle"></span></td><td>{x[1]}</td><td>{x[3]}</td></tr>' for x in _dd[:14])
                  + f'</table><p><small>노출 = 구글 검색 결과에 우리 사이트가 보인 횟수, 클릭 = 그중 눌러서 들어온 수. 구글은 2~3일 늦게 집계돼 맨 위 1~2일은 아직 덜 모인 숫자입니다. (가져온 날 {_gd["updated"]})</small></p>')
+        _bg = _gd.get("bing") or []
+        if _bg:
+            _GSCH += ('<h2 style="font-size:18px;margin-top:22px">빙(Bing) 검색 노출</h2><div class="k"><div><small>최근 ' + str(len(_bg)) + '일 노출</small><b>' + f"{sum(x[2] for x in _bg):,}" + '</b></div><div><small>클릭</small><b>' + f"{sum(x[1] for x in _bg):,}" + '</b></div></div>'
+                      + '<table><tr><th>날짜</th><th>노출</th><th>클릭</th></tr>' + "".join(f'<tr><td>{x[0][5:].replace("-", "/")}</td><td>{x[2]}</td><td>{x[1]}</td></tr>' for x in _bg[:7]) + '</table>'
+                      + '<p><small>네이버·다음은 노출 수를 밖으로 내보내는 화면이 막혀 있어 여기 못 넣었습니다(네이버는 서치어드바이저, 다음은 방문 경로 표로 확인).</small></p>')
     except Exception as _e:
         print("gsc 노출 표 오류", _e); _GSCH = ""
     open(f"{OUT}/stats/index.html", "w", encoding="utf-8").write("""<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>방문 통계 · 영진종합목재</title><meta name="description" content="영진종합목재 홈페이지 방문 통계(사장님용).">
