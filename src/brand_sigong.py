@@ -164,6 +164,10 @@ def gen(page, E, CTA, ROOT, SG):
     cards = {k: [] for k, *_ in BR}
     for slug, bk, nm, pages, rx, gs, lead, steps, tools, warn, fq in G:
         bnm, d, _ = bn[bk]
+        if d is None:
+            img = _IMG.get(slug); rp = ""
+            cards[bk].append(f'<a class="mc" href="/sigongbeop/b-{slug}.html">' + (f'<img loading="lazy" src="{img}" alt="" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;margin-bottom:6px">' if img else "") + f'<b>{E(nm)}</b><small>{E(lead[:42])}…</small></a>')
+            continue
         prods = _pick(ROOT, d, pages, rx)
         img = prods[0][2] if prods else None
         rp = ' referrerpolicy="no-referrer"' if img and img.startswith("http") else ""
@@ -172,7 +176,7 @@ def gen(page, E, CTA, ROOT, SG):
         fqa = [(f"{nm.replace(' 순서', '')}은 어떻게 하나요?", " ".join(steps[:3]))] + list(fq) + [("이 순서가 제조사 공식 시공법인가요?", f"아니요. 영진종합목재가 정리한 일반적인 시공 순서입니다. 제품마다 방법이 다를 수 있으니 {bnm} 제품의 시공 설명서를 우선 따르세요."), ("자재는 어디서 사나요?", "대전 유성 영진종합목재(월드건축자재) 매장에서 상담·주문하실 수 있고 전국 배송도 됩니다.")]
         _lk = lambda t: re.sub(r"\((/[A-Za-z0-9_/.\-#=%]+)\)", r'(<a href="\1">바로 보기</a>)', E(t))
         body = (f'<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › <a href="/sigongbeop/brand.html">회사별 시공법</a> › <a href="/sigongbeop/brand-{bk}.html">{E(bnm)}</a></p>'
-                f'<h1>{E(nm)}</h1><p class="lead">{E(lead)}</p>{hero}'
+                f'<h1>{E(nm)}</h1><p class="lead">{E(lead)}</p>{hero}' + plan_html(slug, E, _CSS[0], ROOT, gs) +
                 f'<h2>시공 순서</h2><ol>' + "".join(f"<li>{E(s)}</li>" for s in steps) + '</ol>'
                 f'<h2>준비할 자재·공구</h2><ul>' + "".join(f"<li>{E(s)}</li>" for s in tools) + '</ul>'
                 + (f'<h2>주의할 점</h2><ul>' + "".join(f"<li>{E(s)}</li>" for s in warn) + '</ul>' if warn else "")
@@ -193,8 +197,158 @@ def gen(page, E, CTA, ROOT, SG):
     for k, nm, d, one in BR:
         if not cards[k]: continue
         page(f"sigongbeop/brand-{k}.html", f"{nm} 시공법 모음 — {one} | 영진목재", f"{nm} 제품({one}) 시공 순서·준비물·주의점을 한곳에. 제품 사진과 함께 보는 일반 시공 순서.",
-             f'<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › <a href="/sigongbeop/brand.html">회사별 시공법</a> › {E(nm)}</p><h1>{E(nm)} 시공법 모음</h1><p class="lead">{E(nm)} {E(one)} 제품을 시공하는 일반적인 순서를 모았습니다. 제품 사진·이름은 {E(nm)} 제공 자료이며, 순서는 공식 지침이 아니니 제품 설명서를 함께 확인하세요.</p><div class="mg m2">{"".join(cards[k])}</div><p><a href="/{d}/">{E(nm)} 제품 전체 보기 ›</a></p></section>{CTA}', "/sigongbeop/")
+             f'<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › <a href="/sigongbeop/brand.html">회사별 시공법</a> › {E(nm)}</p><h1>{E(nm)} 시공법 모음</h1><p class="lead">{E(nm)} {E(one)} 제품을 시공하는 일반적인 순서를 모았습니다. 제품 사진·이름은 {E(nm)} 제공 자료이며, 순서는 공식 지침이 아니니 제품 설명서를 함께 확인하세요.</p><div class="mg m2">{"".join(cards[k])}</div>{f'<p><a href="/{d}/">{E(nm)} 제품 전체 보기 ›</a></p>' if d else '<p class="small muted">해당 회사 제품·서비스가 아니며 관계없습니다. 비슷한 분위기를 우리 매장 자재로 시공하는 일반 순서입니다.</p>'}</section>{CTA}', "/sigongbeop/")
         secs += f'<h2 id="b-{k}">{E(nm)} <small class="muted">{E(one)}</small></h2><div class="mg m2">{"".join(cards[k][:4])}</div><p><a href="/sigongbeop/brand-{k}.html">{E(nm)} 시공법 전체 보기 ›</a></p>'
-    page("sigongbeop/brand.html", "회사별 자재 시공법 — 영림·예림·쉐누·크나우프·본덱스·니치하·제일타카 | 영진목재", "영림 중문·방문·필름, 예림 중문, 쉐누 도어, 크나우프 석고보드·천장재, 본덱스 오일스테인, 니치하 사이딩, 제일타카 사용 순서를 회사별로 정리했습니다.",
+    page("sigongbeop/brand.html", "회사별 자재 시공법 — 영림·예림·쉐누·크나우프·본덱스·니치하·제일타카·한샘·리바트 스타일 | 영진목재", "영림 중문·방문·필름, 예림 중문, 쉐누 도어, 크나우프 석고보드·천장재, 본덱스 오일스테인, 니치하 사이딩, 제일타카 사용 순서를 회사별로 정리했습니다.",
          f'<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › 회사별</p><h1>회사별 자재 시공법</h1><p class="lead">우리 매장에서 다루는 회사 제품별로 시공 순서·준비물·주의점을 정리했습니다. 제품 사진과 함께 보고, 같은 공정의 그림 설명서로 이어집니다.</p><div class="olk">{jump}</div>{secs}</section>{CTA}', "/sigongbeop/")
-    return f'<section class="wrap sec"><h2>회사별 시공법</h2><p>영림·예림·쉐누·크나우프·본덱스·니치하·제일타카 제품을 회사별로 나눠 시공 순서를 정리했습니다.</p><div class="olk">' + "".join(f'<a href="/sigongbeop/brand-{k}.html">{E(nm)} {len(cards[k])}</a>' for k, nm, d, one in BR if cards[k]) + '<a class="ac" href="/sigongbeop/brand.html">전체 보기</a></div>' + "".join(f'<h3>{E(nm)}</h3><div class="mg m2">{"".join(cards[k][:4])}</div>' for k, nm, d, one in BR if cards[k]) + '</section>'
+    return f'<section class="wrap sec"><h2>회사별 시공법</h2><p>영림·예림·쉐누·크나우프·본덱스·니치하·제일타카 제품과, 한샘·리바트 스타일 인테리어를 회사별로 나눠 시공 순서를 정리했습니다.</p><div class="olk">' + "".join(f'<a href="/sigongbeop/brand-{k}.html">{E(nm)} {len(cards[k])}</a>' for k, nm, d, one in BR if cards[k]) + '<a class="ac" href="/sigongbeop/brand.html">전체 보기</a></div>' + "".join(f'<h3>{E(nm)}</h3><div class="mg m2">{"".join(cards[k][:4])}</div>' for k, nm, d, one in BR if cards[k]) + '</section>'
+
+
+# 한샘·리바트 스타일 — 해당 회사 제품·서비스 아님(관계없음). 회사 사진·로고 안 씀, 그림은 우리 그림 설명서.
+BR += [("hanssem", "한샘 스타일", None, "주방·붙박이장·욕실·중문·아트월 분위기를 우리 자재로"), ("livart", "리바트 스타일", None, "마루·무몰딩·커튼박스·드레스룸·문 필름 분위기를 우리 자재로")]
+GS = [  # slug, key, 이름, 우리 시공법 slug, 리드, 순서, 준비물, 주의, FAQ, 자재 링크
+ ("hs-sink-door", "hanssem", "한샘 스타일 싱크대 문짝 교체·리폼", "sinkdae-munjjak", "한샘 주방처럼 깔끔한 단색 무광 싱크대 느낌을, 몸통은 두고 문짝만 새로 달거나 필름으로 덮어 내는 방법입니다.",
+  ["문짝 크기(폭·높이·두께)와 경첩 위치를 하나씩 잽니다.", "새 문짝을 맞추거나, 기존 문짝을 떼어 필름을 붙일지 정합니다.", "필름이면 기름때를 닦고 사포·프라이머 후 붙입니다.", "경첩을 달고 문 간격을 경첩 나사로 조절합니다.", "손잡이를 바꾸거나 푸시 방식으로 정리합니다."],
+  ["줄자", "드라이버", "인테리어 필름·밀대(필름 리폼 시)", "경첩"], ["주방 기름때를 다 닦지 않으면 필름이 들뜹니다."],
+  [("싱크대 문짝만 바꿀 수 있나요?", "네. 몸통이 멀쩡하면 문짝만 맞춰 달거나 필름으로 덮을 수 있습니다(/qna/sink-munjjak-jejak.html).")], [("/younglim/film.html", "인테리어 필름"), ("/bigyo/gyeongcheop-types.html", "경첩 종류")]),
+ ("hs-butbakijang", "hanssem", "한샘 스타일 붙박이장 문 필름 리폼", "film-sigong", "오래된 붙박이장 문을 한샘 붙박이장처럼 밝은 단색·우드 톤으로 바꾸는 필름 리폼 순서입니다.",
+  ["문을 떼거나 붙인 채로 손잡이를 풉니다.", "먼지·기름을 닦고 사포로 가볍게 간 뒤 프라이머를 바릅니다.", "필름을 넉넉히 잘라 가운데서 밖으로 밀어 붙입니다.", "모서리는 드라이기로 열을 살짝 주며 감싸고 남는 부분을 자릅니다.", "손잡이를 다시 달거나 새 손잡이로 바꿉니다."],
+  ["인테리어 필름", "프라이머·붓", "밀대·커터칼", "드라이기"], ["문 가장자리(엣지)를 꼼꼼히 감싸야 오래갑니다."], [], [("/younglim/film.html", "인테리어 필름")]),
+ ("hs-yoksil", "hanssem", "한샘 스타일 욕실 리모델링 순서", "yoksil-tile", "한샘 욕실처럼 큰 타일·젠다이·수납장으로 정리된 욕실 느낌을 내는 일반 순서입니다. 방수와 배관은 전문가에게 맡기는 경우가 많습니다.",
+  ["철거할지 덧방할지 정하고 기존 타일 들뜸을 확인합니다.", "배관·전기(콘센트·환풍기)를 먼저 정리합니다.", "방수를 하고 벽·바닥 타일을 붙입니다.", "줄눈을 넣고 굳힙니다.", "천장재·수전·변기·세면대·수납장을 답니다.", "틈을 바이오 실리콘으로 마감합니다."],
+  ["타일·접착제", "줄눈제", "바이오 실리콘", "수평기"], ["방수가 잘못되면 아래층 누수로 이어집니다."],
+  [("욕실 타일 덧방 되나요?", "기존 타일이 단단히 붙어 있으면 덧방도 합니다. 들뜬 곳이 있으면 떼고 합니다.")], [("/bigyo/porcelain-vs-dogijil.html", "포세린 vs 도기질"), ("/bigyo/epoxy-vs-cement-julnun.html", "에폭시 줄눈")]),
+ ("hs-jungmun", "hanssem", "한샘 스타일 현관 중문", "jungmun", "한샘 현관처럼 슬림한 프레임과 큰 유리로 깔끔한 중문 느낌을 내는 방법입니다. 우리 매장의 영림·예림·쉐누 중문으로 맞출 수 있습니다.",
+  ["현관 폭·높이를 세 곳씩 잽니다.", "슬림 프레임·유리 종류·여는 방식을 고릅니다.", "틀을 수평으로 고정합니다.", "문짝을 달고 움직임을 조절합니다.", "틈을 마감합니다."],
+  ["줄자·수평기", "전동드릴", "앙카·실리콘"], [], [], [("/younglim/jungmun-slim.html", "영림 슬림 중문"), ("/yerim/jungmun-slim.html", "예림 슬림 중문")]),
+ ("hs-artwall", "hanssem", "한샘 스타일 거실 아트월(템바보드)", "tempa-byeok", "거실 TV 뒤를 세로 줄무늬 템바보드로 포인트 주는 방법입니다.",
+  ["벽 폭·높이를 재고 콘센트·TV 위치를 정합니다.", "벽이 고르지 않으면 각재로 하지틀을 댑니다.", "첫 장을 수직으로 세워 본드·실타카로 고정합니다.", "이어 붙이고 끝은 마감재로 덮습니다."],
+  ["템바보드", "실타카·본드", "레이저 레벨", "직소"], ["실크 벽지 위는 접착이 약합니다."], [], [("/gagyeok/tempa-board.html", "템바보드 가격")]),
+ ("lv-maru", "livart", "리바트 스타일 마루 바꾸기", "gangmaru", "리바트 집꾸미기처럼 밝은 오크 톤 마루로 바닥 분위기를 바꾸는 일반 순서입니다.",
+  ["바닥 평탄과 습기를 확인합니다.", "기존 바닥재를 걷을지 위에 덧깔지 정합니다.", "빛 방향으로 첫 줄을 정해 깝니다.", "걸레받이로 가장자리를 마감합니다."],
+  ["마루", "본드·빗살 헤라(접착식)", "고무망치", "톱"], ["바탕 습기가 많으면 들뜹니다."], [], [("/younglim/maru.html", "영림 마루"), ("/bigyo/spc-vs-kangmaru.html", "SPC vs 강마루")]),
+ ("lv-mumolding", "livart", "리바트 스타일 무몰딩·마이너스 몰딩", "minus-molding-sigong", "천장 몰딩이 안 보이는 깔끔한 무몰딩·마이너스 몰딩 느낌을 내는 방법입니다. 목공 단계에서 미리 계획해야 합니다.",
+  ["천장과 벽이 만나는 선을 곧게 잡습니다.", "마이너스 몰딩(홈 몰딩)을 대거나 석고 끝을 띄워 홈을 만듭니다.", "퍼티로 이음을 정리하고 칠·도배합니다."],
+  ["마이너스 몰딩", "석고보드", "퍼티·사포"], ["벽·천장이 곧지 않으면 선이 삐뚤어 보입니다."], [], [("/younglim/molding.html", "영림 몰딩")]),
+ ("lv-curtainbox", "livart", "리바트 스타일 커튼박스 간접조명", "keoteun-box", "커튼 레일을 천장 속에 숨기고 간접등으로 은은하게 빛나게 하는 방법입니다.",
+  ["창 위 천장 속 깊이와 커튼 레일 두 줄 폭을 정합니다.", "각재로 커튼박스 틀을 짭니다.", "석고보드로 덮고 간접등 전선 자리를 남깁니다.", "레일과 간접등을 답니다."],
+  ["각재", "석고보드", "LED 간접등", "커튼 레일"], ["전기 연결은 차단기를 내리고 합니다."], [], [("/qna/curtainbox-ganjeop.html", "커튼박스 간접조명")]),
+ ("lv-dressroom", "livart", "리바트 스타일 드레스룸 가벽·선반", "gabyeok-sigong", "작은방을 드레스룸으로 바꿀 때 가벽과 선반으로 공간을 나누는 방법입니다.",
+  ["옷 길이에 맞춰 행거 높이·선반 위치를 정합니다.", "필요하면 각재·석고보드로 가벽을 세웁니다.", "벽 바탕(각재·앙카)에 선반 브라켓과 행거를 고정합니다.", "조명과 거울을 답니다."],
+  ["각재·석고보드", "선반 브라켓·행거 봉", "앙카·피스"], ["무거운 옷 무게를 생각해 바탕에 단단히 고정합니다."], [], [("/qna/dressroom.html", "드레스룸 만들기")]),
+ ("lv-munfilm", "livart", "리바트 스타일 방문·문틀 필름", "munteul-film", "누런 방문·문틀을 화이트·그레이 톤으로 바꿔 집 전체를 밝게 만드는 필름 리폼 순서입니다.",
+  ["문과 문틀의 먼지·기름을 닦고 찍힌 곳을 메웁니다.", "사포로 갈고 프라이머를 바릅니다.", "문틀부터 필름을 붙이고 문짝을 붙입니다.", "손잡이·경첩 부위는 칼로 정리합니다."],
+  ["인테리어 필름", "프라이머", "밀대·커터칼", "드라이기"], [], [], [("/younglim/film.html", "인테리어 필름")]),
+]
+
+
+_gen0 = gen
+_CSS = [""]
+
+
+def gen(page, E, CTA, ROOT, SG, PL2CSS=""):
+    _CSS[0] = PL2CSS
+    sgn = {x[0]: x[1] for x in SG}
+    for slug, bk, nm, gs, lead, steps, tools, warn, fq, links in GS:
+        bnm = dict((k, n) for k, n, *_ in BR)[bk]; co = "한샘" if bk == "hanssem" else "현대리바트"
+        im = f"/assets/sigongbeop/{gs}.jpg" if os.path.exists(f"{ROOT}/assets/sigongbeop/{gs}.jpg") else None
+        fqa = list(fq) + [(f"{co} 제품이나 시공인가요?", f"아니요. {co}와 관계없는 페이지로, 비슷한 분위기를 영진종합목재 매장 자재로 직접 시공하는 일반 순서를 정리했습니다."), ("자재는 어디서 사나요?", "대전 유성 영진종합목재(월드건축자재) 매장에서 상담·주문하실 수 있고 전국 배송도 됩니다.")]
+        _lk = lambda t: re.sub(r"\((/[A-Za-z0-9_/.\-#=%]+)\)", r'(<a href="\1">바로 보기</a>)', E(t))
+        body = (f'<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › <a href="/sigongbeop/brand.html">회사별 시공법</a> › <a href="/sigongbeop/brand-{bk}.html">{E(bnm)}</a></p>'
+                f'<h1>{E(nm)}</h1><p class="lead">{E(lead)}</p><p class="small muted">{E(co)} 제품·서비스가 아니며 {E(co)}와 관계없습니다. 회사 사진·로고는 쓰지 않았고, 그림은 영진종합목재가 직접 그린 그림입니다.</p>'
+                + (f'<figure class="mkfig"><img src="{im}" width="1200" height="800" alt="{E(nm)} 완성 그림" style="width:100%;height:auto;border-radius:14px"><figcaption class="small muted">완성 모습 그림(영진종합목재)</figcaption></figure>' if im else "")
+                + plan_html(slug, E, _CSS[0], ROOT, gs) + '<h2>시공 순서</h2><ol>' + "".join(f"<li>{E(s)}</li>" for s in steps) + '</ol><h2>준비할 자재·공구</h2><ul>' + "".join(f"<li>{E(s)}</li>" for s in tools) + '</ul>'
+                + (f'<h2>주의할 점</h2><ul>' + "".join(f"<li>{E(s)}</li>" for s in warn) + '</ul>' if warn else "")
+                + '<h2>이 분위기에 쓰는 자재</h2><div class="olk">' + "".join(f'<a href="{h}">{E(n)}</a>' for h, n in links) + (f'<a class="ac" href="/sigongbeop/{gs}.html">{E(sgn.get(gs, "그림 설명서"))} 그림 설명서</a>' if gs in sgn else "") + '</div>'
+                + '<h2>자주 묻는 질문</h2>' + "".join(f'<details><summary>{E(q)}</summary><p>{_lk(a)}</p></details>' for q, a in fqa)
+                + f'<h2>{E(bnm)} 다른 시공법</h2><div class="olk">' + "".join(f'<a href="/sigongbeop/b-{x[0]}.html">{E(x[2])}</a>' for x in GS if x[1] == bk and x[0] != slug) + f'<a class="ac" href="/sigongbeop/brand.html">회사별 시공법 전체</a></div></section>{CTA}')
+        _st = lambda t: re.sub(r"\(/[^)]*\)", "", t)
+        ld = [{"@context": "https://schema.org", "@type": "HowTo", "name": nm, "description": lead, **({"image": "https://www.wwood.co.kr" + im} if im else {}), "step": [{"@type": "HowToStep", "position": i + 1, "text": s} for i, s in enumerate(steps)]},
+              {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": _st(a)}} for q, a in fqa]}]
+        page(f"sigongbeop/b-{slug}.html", f"{nm} — 직접 시공 순서·자재 | 영진목재", f"{nm}: {lead[:100]} ({co}와 관계없는 일반 시공 안내)", body, "/sigongbeop/", ld, im)
+        G.append((slug, bk, nm, [], "", gs, lead, steps, tools, warn, fq))  # 목록용(제품 고르기 없음)
+        _IMG[slug] = im
+    return _gen0(page, E, CTA, ROOT, SG)
+
+
+_IMG = {}
+
+
+# 2D 도면 — 벽·바닥·데크는 PL2(plan2d.js, 치수 바꾸면 재단 목록까지), 문·중문은 아래 정면도·평면도 SVG
+PLAN = {
+ "yl-jungmun-3yeondong": ("door", "3yeon", 1400, 2300), "yl-jungmun-yanggae": ("door", "yanggae", 1400, 2300), "yl-bangmun-gyoche": ("door", "swing", 900, 2100),
+ "yl-munteul": ("door", "frame", 900, 2100), "yl-wall": ("pl2", "whap", 3000, 0, 2400), "yl-maru": ("pl2", "fhap", 3600, 3000, 0),
+ "yr-jungmun-sliding": ("door", "one", 1200, 2300), "yr-jungmun-folding": ("door", "fold", 1600, 2300), "yr-ganssal": ("door", "3yeon", 1400, 2300),
+ "yr-door-abs": ("door", "swing", 900, 2100), "yr-door-frame": ("door", "frame", 900, 2100), "sh-door": ("door", "swing", 900, 2100), "sh-jungmun": ("door", "one", 1200, 2300),
+ "kn-seokgo-byeok": ("pl2", "wgyp", 3000, 0, 2400), "kn-danyeol": ("pl2", "wgyp", 3000, 0, 2400), "kn-aquapanel": ("pl2", "wgyp", 2400, 0, 2400), "kn-cheonjang": ("pl2", "fhap", 3600, 3000, 0),
+ "bd-deck-oil": ("pl2", "deck", 3600, 2400, 0), "nc-siding": ("pl2", "whap", 6000, 0, 3000), "tk-framing": ("pl2", "wgyp", 3000, 0, 2400), "tk-concrete": ("pl2", "wgyp", 3000, 0, 2400),
+ "hs-jungmun": ("door", "one", 1200, 2300), "hs-artwall": ("pl2", "whap", 3000, 0, 2400), "lv-maru": ("pl2", "fhap", 3600, 3000, 0), "lv-dressroom": ("pl2", "wgyp", 2400, 0, 2400),
+}
+
+
+def _dim(x1, y1, x2, y2, t, v=False):
+    s = f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="#c0392b" stroke-width="1.3" marker-start="url(#da)" marker-end="url(#da)"/>'
+    cx, cy = (x1 + x2) / 2, (y1 + y2) / 2
+    return s + (f'<text x="{cx - 8}" y="{cy}" transform="rotate(-90 {cx - 8} {cy})" text-anchor="middle" font-size="17" font-weight="700" fill="#c0392b">{t}</text>' if v else f'<text x="{cx}" y="{cy - 7}" text-anchor="middle" font-size="17" font-weight="700" fill="#c0392b">{t}</text>')
+
+
+def door_svg(kind, W, H):
+    """정면도(왼쪽)+평면도(오른쪽). 치수 mm."""
+    k = min(300 / W, 420 / H); w, h = W * k, H * k; x0, y0 = 60, 40
+    R = lambda x, y, a, b, f="#f3e3c6", sw=1.4: f'<rect x="{x:.1f}" y="{y:.1f}" width="{a:.1f}" height="{b:.1f}" fill="{f}" stroke="#3b3128" stroke-width="{sw}"/>'
+    s = R(x0 - 8, y0 - 8, w + 16, h + 8, "#e9e2d6")  # 문틀
+    lab = {"3yeon": "3연동 슬라이딩 중문", "one": "원슬라이딩 중문", "yanggae": "양개 중문", "fold": "폴딩(접이식) 중문", "swing": "방문(여닫이)", "frame": "문틀"}[kind]
+    if kind in ("3yeon", "one", "fold", "yanggae"):
+        s += R(x0 - 8, y0 - 18, w + 16, 10, "#b9ada0")  # 상부 레일
+    n = {"3yeon": 3, "one": 1, "yanggae": 2, "fold": 4, "swing": 1, "frame": 0}[kind]
+    if kind == "3yeon":
+        pw = w / 3 + 6
+        for i in range(3): s += R(x0 + i * (w - pw) / 2, y0, pw, h, "#fbf1df") + R(x0 + i * (w - pw) / 2 + 10, y0 + 14, pw - 20, h - 28, "#dfeaf0")
+    elif kind == "one":
+        s += R(x0, y0, w * .62, h, "#fbf1df") + R(x0 + 10, y0 + 14, w * .62 - 20, h - 28, "#dfeaf0") + f'<text x="{x0 + w * .8}" y="{y0 + h / 2}" text-anchor="middle" font-size="15" fill="#6b5f52">고정창</text>' + R(x0 + w * .62, y0, w * .38, h, "#eef3f5")
+    elif kind == "yanggae":
+        for i in range(2): s += R(x0 + i * w / 2, y0, w / 2, h, "#fbf1df") + R(x0 + i * w / 2 + 10, y0 + 14, w / 2 - 20, h - 28, "#dfeaf0")
+    elif kind == "fold":
+        for i in range(4): s += R(x0 + i * w / 4, y0, w / 4, h, "#fbf1df") + R(x0 + i * w / 4 + 7, y0 + 14, w / 4 - 14, h - 28, "#dfeaf0")
+    elif kind == "swing":
+        s += R(x0, y0, w, h, "#fbf1df") + f'<circle cx="{x0 + w - 18}" cy="{y0 + h * .48}" r="6" fill="#3b3128"/>' + "".join(f'<rect x="{x0 - 3}" y="{y0 + h * f:.1f}" width="6" height="22" fill="#3b3128"/>' for f in (.1, .5, .85))
+    elif kind == "frame":
+        s += R(x0, y0, w, h, "#f6f3ee") + f'<text x="{x0 + w / 2}" y="{y0 + h / 2}" text-anchor="middle" font-size="15" fill="#6b5f52">문틀 안쪽</text>'
+    s += _dim(x0, y0 + h + 30, x0 + w, y0 + h + 30, f"폭 {W:,}") + _dim(x0 - 32, y0, x0 - 32, y0 + h, f"높이 {H:,}", True)
+    s += f'<text x="{x0 + w / 2}" y="{y0 + h + 66}" text-anchor="middle" font-size="16" font-weight="700" fill="#3b3128">정면도 · {lab}</text>'
+    # 평면도
+    px, py, pw2 = 450, 120, 300; kk = pw2 / W; wt = 150 * kk * 1.6
+    s += R(px - 40, py, 40, wt, "#cfc6b8") + R(px + pw2, py, 40, wt, "#cfc6b8") + f'<text x="{px - 20}" y="{py - 8}" text-anchor="middle" font-size="13" fill="#6b5f52">벽</text>'
+    if kind in ("3yeon", "one", "fold"):
+        for i in range(n if kind != "fold" else 1):
+            s += R(px + i * 8, py + 6 + i * 9, pw2 * (.62 if kind == "one" else .36), 7, "#a98b5d")
+        s += f'<path d="M{px + pw2 * .5} {py + wt + 26}h-90" stroke="#2d6a4f" stroke-width="2" marker-end="url(#da2)"/><text x="{px + pw2 * .5 - 45}" y="{py + wt + 48}" text-anchor="middle" font-size="14" fill="#2d6a4f">여는 방향</text>'
+        if kind == "fold": s += "".join(f'<line x1="{px + i * 30}" y1="{py + 10 + (i % 2) * 22}" x2="{px + (i + 1) * 30}" y2="{py + 10 + ((i + 1) % 2) * 22}" stroke="#a98b5d" stroke-width="6"/>' for i in range(4))
+    elif kind == "yanggae":
+        r = pw2 / 2
+        s += f'<path d="M{px} {py + wt} l0 {r} M{px} {py + wt} m0 {r} A{r} {r} 0 0 0 {px + r} {py + wt}" fill="none" stroke="#a98b5d" stroke-width="2" stroke-dasharray="5 4"/><path d="M{px + pw2} {py + wt} l0 {r} M{px + pw2} {py + wt} m0 {r} A{r} {r} 0 0 1 {px + r} {py + wt}" fill="none" stroke="#a98b5d" stroke-width="2" stroke-dasharray="5 4"/>'
+        s += f'<line x1="{px}" y1="{py + wt}" x2="{px}" y2="{py + wt + r}" stroke="#a98b5d" stroke-width="6"/><line x1="{px + pw2}" y1="{py + wt}" x2="{px + pw2}" y2="{py + wt + r}" stroke="#a98b5d" stroke-width="6"/><text x="{px + r}" y="{py + wt + r + 24}" text-anchor="middle" font-size="13" fill="#6b5f52">문이 열리는 공간(반경 {W // 2:,})</text>'
+    elif kind == "swing":
+        r = pw2
+        s += f'<line x1="{px}" y1="{py + wt}" x2="{px}" y2="{py + wt + r}" stroke="#a98b5d" stroke-width="6"/><path d="M{px} {py + wt + r} A{r} {r} 0 0 0 {px + r} {py + wt}" fill="none" stroke="#a98b5d" stroke-width="2" stroke-dasharray="5 4"/><text x="{px + r / 2}" y="{py + wt + r + 22}" text-anchor="middle" font-size="13" fill="#6b5f52">문이 열리는 공간</text>'
+    elif kind == "frame":
+        s += R(px - 6, py - 6, 12, wt + 12, "#a98b5d") + R(px + pw2 - 6, py - 6, 12, wt + 12, "#a98b5d") + _dim(px + pw2 + 52, py, px + pw2 + 52, py + wt, "벽 두께", True) + f'<text x="{px + pw2 / 2}" y="{py + wt + 30}" text-anchor="middle" font-size="13" fill="#6b5f52">문틀 폭 = 벽 두께 + 문선 여유</text>'
+    s += _dim(px, py - 30, px + pw2, py - 30, f"{W:,}") + f'<text x="{px + pw2 / 2}" y="{y0 + h + 66}" text-anchor="middle" font-size="16" font-weight="700" fill="#3b3128">평면도(위에서 본 모습)</text>'
+    return (f'<svg viewBox="0 0 820 {int(y0 + h + 84)}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;background:#fff;border:1px solid #e6e0d4;border-radius:14px" role="img" aria-label="{lab} 2D 도면 폭 {W} 높이 {H}mm">'
+            '<defs><marker id="da" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c0392b"/></marker><marker id="da2" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2d6a4f"/></marker></defs>'
+            f'{s}</svg>')
+
+
+def plan_html(slug, E, PL2CSS, ROOT, gs):
+    p = PLAN.get(slug)
+    if p and p[0] == "door":
+        _, kind, W, H = p
+        return (f'<h2>2D 도면 (정면·평면)</h2>{door_svg(kind, W, H)}<p class="small muted">예시 치수(mm)입니다. 실제 주문은 현관·문틀을 위·가운데·아래 세 곳씩 재서 가장 작은 값으로 정합니다. 도면: 영진종합목재.</p>')
+    if p and p[0] == "pl2":
+        _, t, w, d, h = p
+        return ('<div class="pl2" id="pl2"><h2>2D 도면 · 필요한 자재 수량</h2><div class="pl2in"><label>가로<input type="number" id="plw"></label><label id="pld0">세로<input type="number" id="pld"></label><label id="plh0">높이<input type="number" id="plh"></label><span>mm</span></div><div class="pl2d" id="pl2svg"></div><h3>재단 목록 · 필요한 자재</h3><div id="pl2tb"></div><h3>순서 그림</h3><div id="pl2iso"></div><div class="pl2b"><button type="button" class="pl2pdf" id="pl2pdf">PDF로 저장</button></div></div>'
+                '<script src="/assets/plan2d.js"></script><script>(function(){var P=PL2,p=' + json.dumps({"t": t, "w": w, "d": d, "h": h}) + ',g=function(i){return document.getElementById(i)};function draw(){g("pld0").style.display=p.t.charAt(0)=="w"?"none":"";g("plh0").style.display=p.t.charAt(0)!="w"?"none":"";g("plw").value=p.w;g("pld").value=p.d;g("plh").value=p.h;g("pl2svg").innerHTML=P.svg(p);g("pl2tb").innerHTML=P.table(p);g("pl2iso").innerHTML=P.iso(p,0)}'
+                '["plw","pld","plh"].forEach(function(id){g(id).addEventListener("input",function(){var v=+this.value;if(v>0){p[{plw:"w",pld:"d",plh:"h"}[id]]=v;draw()}})});g("pl2pdf").onclick=function(){window.print()};draw()})();</script><style>' + PL2CSS + '</style>')
+    if os.path.exists(f"{ROOT}/assets/sigongbeop/{gs}-steps.jpg"):
+        return f'<h2>순서 그림 설명서</h2><img class="mkfig" loading="lazy" src="/assets/sigongbeop/{gs}-steps.jpg" alt="순서 그림 설명서" style="width:100%;height:auto;border-radius:14px;border:1px solid #e6e0d4"><p class="small muted">그림: 영진종합목재</p>'
+    return ""

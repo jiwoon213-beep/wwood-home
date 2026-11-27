@@ -2241,7 +2241,7 @@ def build():
     if "<!--VP-->" in _VPH["mandeul"]:
         _a, _b = _VPH["mandeul"].split("<!--VP-->"); _VPH["mandeul"] = _a + '<h2 style="margin-top:22px">방문자가 올린 도면</h2><div class="mg m2">' + _b + '</div>'
     try:
-        import brand_sigong as _bsgm; _BSG = _bsgm.gen(page, E, CTA, ROOT, SG)
+        import brand_sigong as _bsgm; _BSG = _bsgm.gen(page, E, CTA, ROOT, SG, _PL2CSS)
     except Exception as _e:
         print("brand_sigong 오류", _e); _BSG = ""
     page("sigongbeop/index.html", "자재 시공법 — 석고보드·루바·사이딩·몰딩·강마루·필름·문 교체 셀프 시공 | 영진목재", "석고보드 벽, 루바 천장, 외벽 사이딩, 몰딩·걸레받이, 강마루, 템바보드, 흡음판, 합성데크, 방문 교체, 필름, 오일스테인, OSB 벽 시공 방법을 자재 수량·그림 설명서·영상으로 정리했습니다.",
