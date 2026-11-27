@@ -181,9 +181,9 @@ def gen(page, E, CTA, ROOT, SG):
         page(f"sigongbeop/brand-{k}.html", f"{nm} 시공법 모음 — {one} | 영진목재", f"{nm} 제품({one}) 시공 순서·준비물·주의점을 한곳에. 제품 사진과 함께 보는 일반 시공 순서.",
              f'<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › <a href="/sigongbeop/brand.html">회사별 시공법</a> › {E(nm)}</p><h1>{E(nm)} 시공법 모음</h1><p class="lead">{E(nm)} {E(one)} 제품을 시공하는 일반적인 순서를 모았습니다. 제품 사진·이름은 {E(nm)} 제공 자료이며, 순서는 공식 지침이 아니니 제품 설명서를 함께 확인하세요.</p><div class="mg m2">{"".join(cards[k])}</div>{f'<p><a href="/{d}/">{E(nm)} 제품 전체 보기 ›</a></p>' if d else '<p class="small muted">해당 회사 제품·서비스가 아니며 관계없습니다. 비슷한 분위기를 우리 매장 자재로 시공하는 일반 순서입니다.</p>'}</section>{CTA}', "/sigongbeop/")
         secs += f'<h2 id="b-{k}">{E(nm)} <small class="muted">{E(one)}</small></h2><div class="mg m2">{"".join(cards[k][:4])}</div><p><a href="/sigongbeop/brand-{k}.html">{E(nm)} 시공법 전체 보기 ›</a></p>'
-    page("sigongbeop/brand.html", "회사별 자재 시공법 — 영림·예림·쉐누·본덱스·니치하·제일타카, 한샘·리바트·KCC·LX·현대L&C·까사미아 스타일 | 영진목재", "영림 중문·방문·필름, 예림 중문, 쉐누 도어, 본덱스 오일스테인, 니치하 사이딩, 제일타카 사용 순서를 회사별로 정리했습니다.",
-         f'<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › 회사별</p><h1>회사별 자재 시공법</h1><p class="lead">우리 매장에서 다루는 회사 제품별로 시공 순서·준비물·주의점을 정리했습니다. 제품 사진과 함께 보고, 같은 공정의 그림 설명서로 이어집니다.</p><div class="olk">{jump}</div>{secs}</section>{CTA}', "/sigongbeop/")
-    return f'<section class="wrap sec"><h2>회사별 시공법</h2><p>영림·예림·쉐누·본덱스·니치하·제일타카 제품과, 한샘·리바트·KCC·LX 지인·현대L&C·까사미아 스타일 인테리어를 회사별로 나눠 시공 순서를 정리했습니다.</p><div class="olk">' + "".join(f'<a href="/sigongbeop/brand-{k}.html">{E(nm)} {len(cards[k])}</a>' for k, nm, d, one in BR if cards[k]) + '<a class="ac" href="/sigongbeop/brand.html">전체 보기</a></div>' + "".join(f'<h3>{E(nm)}</h3><div class="mg m2">{"".join(cards[k][:4])}</div>' for k, nm, d, one in BR if cards[k]) + '</section>'
+    page("sigongbeop/brand.html", "인테리어 회사 스타일 시공법 — 한샘·리바트·KCC·LX 지인·현대L&C·까사미아 스타일 | 영진목재", "한샘·현대리바트·KCC·LX하우시스·현대L&C·까사미아 스타일 인테리어를 우리 자재로 직접 시공하는 순서·2D 도면·준비물. 해당 회사와 관계없는 일반 시공 안내입니다.",
+         f'<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › 회사별</p><h1>인테리어 회사 스타일 시공법</h1><p class="lead">한샘·리바트·KCC·LX 지인·현대L&C·까사미아 같은 큰 인테리어 회사 스타일을 우리 매장 자재로 직접 시공하는 순서와 2D 도면입니다. 해당 회사 제품·서비스가 아니며 관계없습니다.</p><div class="olk">{jump}</div>{secs}</section>{CTA}', "/sigongbeop/")
+    return f'<section class="wrap sec"><h2>회사별 시공법</h2><p>한샘·리바트·KCC·LX 지인·현대L&C·까사미아 스타일 인테리어를 우리 매장 자재로 직접 시공하는 순서입니다(해당 회사와 관계없음).</p><div class="olk">' + "".join(f'<a href="/sigongbeop/brand-{k}.html">{E(nm)} {len(cards[k])}</a>' for k, nm, d, one in BR if cards[k]) + '<a class="ac" href="/sigongbeop/brand.html">전체 보기</a></div>' + "".join(f'<h3>{E(nm)}</h3><div class="mg m2">{"".join(cards[k][:4])}</div>' for k, nm, d, one in BR if cards[k]) + '</section>'
 
 
 # 한샘·리바트 스타일 — 해당 회사 제품·서비스 아님(관계없음). 회사 사진·로고 안 씀, 그림은 우리 그림 설명서.
@@ -291,12 +291,12 @@ _IMG = {}
 # 2D 도면 — 벽·바닥·데크는 PL2(plan2d.js, 치수 바꾸면 재단 목록까지), 문·중문은 아래 정면도·평면도 SVG
 PLAN = {
  "yl-jungmun-3yeondong": ("door", "3yeon", 1400, 2300), "yl-jungmun-yanggae": ("door", "yanggae", 1400, 2300), "yl-bangmun-gyoche": ("door", "swing", 900, 2100),
- "yl-munteul": ("door", "frame", 900, 2100), "yl-wall": ("pl2", "whap", 3000, 0, 2400), "yl-maru": ("pl2", "fhap", 3600, 3000, 0),
+ "yl-munteul": ("door", "frame", 900, 2100), "yl-wall": ("pl2", "whap", 3000, 0, 2400),
  "yr-jungmun-sliding": ("door", "one", 1200, 2300), "yr-jungmun-folding": ("door", "fold", 1600, 2300), "yr-ganssal": ("door", "3yeon", 1400, 2300),
  "yr-door-abs": ("door", "swing", 900, 2100), "yr-door-frame": ("door", "frame", 900, 2100), "sh-door": ("door", "swing", 900, 2100), "sh-jungmun": ("door", "one", 1200, 2300),
 
- "bd-deck-oil": ("pl2", "deck", 3600, 2400, 0), "nc-siding": ("pl2", "whap", 6000, 0, 3000), "tk-framing": ("pl2", "wgyp", 3000, 0, 2400), "tk-concrete": ("pl2", "wgyp", 3000, 0, 2400),
- "hs-jungmun": ("door", "one", 1200, 2300), "hs-artwall": ("pl2", "whap", 3000, 0, 2400), "lv-maru": ("pl2", "fhap", 3600, 3000, 0), "lv-dressroom": ("pl2", "wgyp", 2400, 0, 2400),
+ "bd-deck-oil": ("pl2", "deck", 3600, 2400, 0), "tk-framing": ("pl2", "wgyp", 3000, 0, 2400), "tk-concrete": ("pl2", "wgyp", 3000, 0, 2400),
+ "hs-jungmun": ("door", "one", 1200, 2300), "hs-artwall": ("pl2", "whap", 3000, 0, 2400), "lv-dressroom": ("pl2", "wgyp", 2400, 0, 2400),
 }
 
 
@@ -359,13 +359,90 @@ def plan_html(slug, E, PL2CSS, ROOT, gs):
         _, kind, W, H = p
         return (f'<h2>2D 도면 (정면·평면)</h2>{door_svg(kind, W, H)}<p class="small muted">예시 치수(mm)입니다. 실제 주문은 현관·문틀을 위·가운데·아래 세 곳씩 재서 가장 작은 값으로 정합니다. 도면: 영진종합목재.</p>')
     if p and p[0] == "pl2":
-        _, t, w, d, h = p
+        t, w, d, h = p[1:5]; sh = p[5] if len(p) > 5 else 0
         return ('<div class="pl2" id="pl2"><h2>2D 도면 · 필요한 자재 수량</h2><div class="pl2in"><label>가로<input type="number" id="plw"></label><label id="pld0">세로<input type="number" id="pld"></label><label id="plh0">높이<input type="number" id="plh"></label><span>mm</span></div><div class="pl2d" id="pl2svg"></div><h3>재단 목록 · 필요한 자재</h3><div id="pl2tb"></div><h3>순서 그림</h3><div id="pl2iso"></div><div class="pl2b"><button type="button" class="pl2pdf" id="pl2pdf">PDF로 저장</button></div></div>'
-                '<script src="/assets/plan2d.js"></script><script>(function(){var P=PL2,p=' + json.dumps({"t": t, "w": w, "d": d, "h": h}) + ',g=function(i){return document.getElementById(i)};function draw(){g("pld0").style.display=p.t.charAt(0)=="w"?"none":"";g("plh0").style.display=p.t.charAt(0)!="w"?"none":"";g("plw").value=p.w;g("pld").value=p.d;g("plh").value=p.h;g("pl2svg").innerHTML=P.svg(p);g("pl2tb").innerHTML=P.table(p);g("pl2iso").innerHTML=P.iso(p,0)}'
+                '<script src="/assets/plan2d.js"></script><script>(function(){var P=PL2,p=' + json.dumps({"t": t, "w": w, "d": d, "h": h, "s": sh}) + ',g=function(i){return document.getElementById(i)};function draw(){g("pld0").style.display=p.t.charAt(0)=="w"?"none":"";g("plh0").style.display=(p.t=="fhap"||p.t=="deck")?"none":"";g("plw").value=p.w;g("pld").value=p.d;g("plh").value=p.h;g("pl2svg").innerHTML=P.svg(p);g("pl2tb").innerHTML=P.table(p);g("pl2iso").innerHTML=P.iso(p,0)}'
                 '["plw","pld","plh"].forEach(function(id){g(id).addEventListener("input",function(){var v=+this.value;if(v>0){p[{plw:"w",pld:"d",plh:"h"}[id]]=v;draw()}})});g("pl2pdf").onclick=function(){window.print()};draw()})();</script><style>' + PL2CSS + '</style>')
     if os.path.exists(f"{ROOT}/assets/sigongbeop/{gs}-steps.jpg"):
         return f'<h2>순서 그림 설명서</h2><img class="mkfig" loading="lazy" src="/assets/sigongbeop/{gs}-steps.jpg" alt="순서 그림 설명서" style="width:100%;height:auto;border-radius:14px;border:1px solid #e6e0d4"><p class="small muted">그림: 영진종합목재</p>'
     return ""
 
-PLAN.update({"kcc-maru": ("pl2", "fhap", 4200, 3600, 0), "kcc-yoksil": ("pl2", "wgyp", 2000, 0, 2300), "lx-maru": ("pl2", "fhap", 3600, 3000, 0), "lx-danyeol": ("pl2", "wgyp", 3000, 0, 2400),
-             "hl-artwall": ("pl2", "whap", 3000, 0, 2400), "hl-decotile": ("pl2", "fhap", 3600, 3000, 0), "cs-headwall": ("pl2", "whap", 2400, 0, 2400)})
+
+# 2차 추가 (2026-11-27)
+G += [
+ ("yl-handle", "younglim", "영림 문손잡이·도어락 교체 순서", ["younglim/door-hardware.html"], r"손잡이|레버|도어락|실린더", "munteul-gyoche",
+  "영림 도어 하드웨어로 방문 손잡이·실린더를 바꾸는 일반적인 순서입니다. 기존 구멍 크기와 문 두께, 백셋(문 끝에서 손잡이 중심까지)을 먼저 잽니다.",
+  ["기존 손잡이 안쪽 나사를 풀어 양쪽 손잡이와 래치를 빼냅니다.", "문 두께, 구멍 지름, 백셋 길이를 잽니다.", "치수가 맞는 새 손잡이를 고릅니다.", "래치를 먼저 넣고 양쪽 손잡이를 맞춰 나사로 조입니다.", "문틀 걸쇠(스트라이크) 위치가 맞는지 여닫아 확인합니다."],
+  ["줄자", "드라이버", "끌(걸쇠 자리 조정)"], ["욕실 문은 비상 열림 기능이 있는 제품을 고릅니다."], [("손잡이 교체 전 잴 것은?", "문 두께, 구멍 지름, 백셋 길이입니다.")]),
+ ("yl-folding", "younglim", "영림 폴딩도어·파티션 설치 순서", ["younglim/jungmun-folding.html"], r"", "jungmun",
+  "영림 폴딩도어·파티션으로 거실·베란다·방 사이를 나누는 일반적인 순서입니다. 접힌 문이 모일 쪽 공간과 상부 레일 고정이 핵심입니다.",
+  ["설치할 폭·높이를 여러 곳에서 재고 접힌 문 두께만큼 옆 공간을 확인합니다.", "천장 바탕(콘크리트·보강목)을 확인하고 상부 레일을 수평으로 고정합니다.", "문짝을 레일에 걸고 경첩으로 연결합니다.", "하부 가이드와 피벗을 맞춰 여닫기를 조절합니다."],
+  ["줄자·수평기", "전동드릴·앙카", "피스"], ["천장이 석고보드뿐이면 보강목을 먼저 댑니다."], []),
+ ("yl-slim", "younglim", "영림 슬림 알루미늄 중문 설치 순서", ["younglim/jungmun-slim.html"], r"", "jungmun",
+  "영림 슬림 알루미늄 중문처럼 얇은 프레임 중문을 다는 일반적인 순서입니다. 프레임이 얇아 수직·수평이 조금만 틀어져도 틈이 보여 정밀하게 맞춥니다.",
+  ["현관 폭·높이를 세 곳씩 잽니다.", "상부 레일·측면 틀을 수평기로 맞춰 고정합니다.", "문짝을 걸고 롤러로 높이를 조절합니다.", "가이드·스토퍼를 달고 틈을 마감합니다."],
+  ["줄자·수평기", "전동드릴", "앙카·피스", "실리콘"], [], []),
+ ("yr-classic", "yerim", "예림 클래식·여닫이 중문 설치 순서", ["yerim/jungmun-classic.html"], r"", "jungmun",
+  "예림 클래식·여닫이 중문을 다는 일반적인 순서입니다. 문이 앞으로 열리므로 열리는 반경 안에 신발장 문 등이 걸리지 않는지 먼저 봅니다.",
+  ["현관 폭·높이와 문이 열리는 쪽 공간을 잽니다.", "문틀을 세워 수직·수평을 맞추고 고정합니다.", "경첩으로 문짝을 달고 틈을 조절합니다.", "도어 클로저·자석을 달고 마감합니다."],
+  ["줄자·수평기", "전동드릴", "앙카·피스", "실리콘"], ["문 열리는 방향을 주문 전에 정합니다."], []),
+ ("yr-point", "yerim", "예림 포인트·키즈 도어 교체 순서", ["yerim/door-point.html"], r"", "munteul-gyoche",
+  "예림 포인트·라인·키즈·칠판 도어로 방문을 바꾸는 일반적인 순서입니다. 문틀 안쪽 치수와 경첩 위치를 맞춥니다.",
+  ["문틀 안쪽 폭·높이와 경첩 위치를 잽니다.", "손잡이 방향·타공을 정해 주문합니다.", "기존 문을 떼고 새 문을 경첩으로 답니다.", "틈과 걸쇠 자리를 맞춥니다."],
+  ["줄자", "전동드릴·드라이버", "경첩·피스"], ["아이 방 문은 손 끼임 방지 부품을 함께 고려합니다."], []),
+ ("sh-glassdoor", "shenu", "쉐누 글래스 도어 교체 순서", ["shenu/door-glass.html"], r"", "munteul-gyoche",
+  "쉐누 글래스 도어처럼 유리가 들어간 방문을 다는 일반적인 순서입니다. 유리 문은 무거워 경첩 개수와 문틀 고정이 중요합니다.",
+  ["문틀 안쪽 치수와 문틀 상태(흔들림)를 확인합니다.", "경첩 개수·위치를 정합니다.", "두 사람이 문을 들고 경첩을 답니다.", "틈을 조절하고 손잡이를 답니다."],
+  ["줄자", "전동드릴", "경첩·피스"], ["유리 면에 힘을 주어 들지 않습니다."], []),
+ ("sh-doorlock", "shenu", "쉐누 도어락·손잡이 다는 순서", ["shenu/hardware.html"], r"", "munteul-gyoche",
+  "쉐누 도어락·손잡이를 방문·현관에 다는 일반적인 순서입니다. 문 두께와 기존 구멍 크기를 먼저 확인합니다.",
+  ["문 두께와 기존 구멍 크기·위치를 잽니다.", "맞는 제품을 고르고 필요하면 타공 위치를 표시합니다.", "래치·본체를 넣고 양쪽을 맞춰 조입니다.", "걸쇠 위치를 맞추고 작동을 확인합니다."],
+  ["줄자", "드라이버·전동드릴", "홀쏘(새 타공 시)"], ["현관 방화문은 방화 성능을 해치지 않는 제품인지 확인합니다."], []),
+ ("bd-furniture-oil", "bondex", "본덱스 원목가구 오일 바르는 순서", ["bondex/oil.html"], r"", "oilstain",
+  "본덱스 원목가구 오일로 식탁·도마·원목 가구를 마감하는 일반적인 순서입니다. 얇게 바르고 남는 오일을 닦아 내는 것이 핵심입니다.",
+  ["사포로 결 방향으로 갈고 먼지를 닦습니다.", "천이나 붓으로 오일을 얇게 바릅니다.", "잠시 스며들게 둔 뒤 남는 오일을 깨끗한 천으로 닦아 냅니다.", "마르면 고운 사포로 살짝 갈고 한 번 더 바릅니다."],
+  ["사포(240방 안팎)", "천·붓", "장갑"], ["오일 묻은 천은 펼쳐 말려 버립니다(뭉쳐 두면 열이 날 수 있음)."], [("도마에도 바를 수 있나요?", "제품 설명에 식품 접촉 용도가 있는지 확인하고 씁니다.")]),
+ ("bd-brush", "bondex", "칠 도구(붓·롤러) 고르고 쓰는 순서", ["bondex/maco.html"], r"", "seokgo-peinteu",
+  "본덱스 이몰링의 마코 도장 도구(붓·롤러·트레이)로 칠할 때 도구를 고르고 쓰는 일반적인 순서입니다.",
+  ["칠할 면에 맞게 도구를 고릅니다(넓은 면은 롤러, 모서리는 붓).", "새 롤러는 보풀을 테이프로 한 번 떼어 냅니다.", "트레이에 칠을 덜어 롤러를 고르게 묻힙니다.", "W자로 펴 바른 뒤 한 방향으로 마무리합니다.", "수성은 물, 유성은 신나로 도구를 씻어 보관합니다."],
+  ["붓·롤러·트레이", "마스킹테이프", "물 또는 신나"], [], []),
+ ("tk-compressor", "taka", "콤프레샤 쓰고 관리하는 순서", ["taka/compressor.html"], r"", "molding-georebatgi",
+  "제일타카 콤프레샤로 에어 타카를 쓸 때 연결·압력 조절·물 빼기까지의 일반적인 순서입니다.",
+  ["평평한 곳에 두고 전원을 연결합니다.", "탱크에 압이 차면 조절기로 타카에 맞는 압력을 맞춥니다.", "에어 호스로 타카를 연결해 씁니다.", "작업 뒤 전원을 끄고 탱크 아래 물빼기 밸브로 물을 뺍니다."],
+  ["콤프레샤", "에어 호스·커플러", "에어 타카"], ["압력을 너무 높이면 핀이 너무 깊이 박히거나 자재가 깨집니다."], []),
+ ("tk-coil", "taka", "코일 타카로 파렛트·데크 틀 박는 순서", ["taka/coil.html"], r"", "hapdeck-sigong",
+  "제일타카 코일 타카로 파렛트·포장 틀이나 데크 하부 틀을 박는 일반적인 순서입니다.",
+  ["부재 두께에 맞는 코일 못 길이를 고릅니다.", "못 코일을 매거진에 넣고 공급 방향을 맞춥니다.", "부재를 맞춰 잡고 일정 간격으로 박습니다.", "깊이가 안 맞으면 압력·깊이 조절을 맞춥니다."],
+  ["코일 타카·못", "콤프레샤", "보안경·귀마개"], ["반동이 커서 두 손으로 잡습니다."], []),
+ ("nc-sealing", "nichiha", "니치하 세라믹 사이딩 줄눈 실링 보수 순서", ["nichiha/index.html"], r"", "silicone-julnun",
+  "니치하 세라믹 사이딩 이음부의 실링(코킹)이 갈라졌을 때 다시 채우는 일반적인 순서입니다.",
+  ["갈라진 옛 실링을 칼로 잘라 빼냅니다.", "이음부 먼지를 털고 마스킹테이프를 양쪽에 붙입니다.", "프라이머를 바르고 실링재를 채웁니다.", "헤라로 눌러 고르고 테이프를 바로 뗍니다."],
+  ["칼·헤라", "마스킹테이프", "프라이머·실링재", "실리콘건"], ["비 오는 날이나 젖은 상태에서는 하지 않습니다."], []),
+]
+GS += [
+ ("hs-sinbaljang", "hanssem", "한샘 스타일 현관 신발장 벽", "gabyeok-sigong", "현관 한쪽 벽을 천장까지 닿는 신발장으로 채워 깔끔하게 정리하는 방법입니다.",
+  ["벽 폭·천장 높이를 재고 신발장 칸 수를 정합니다.", "바닥·벽 수평을 확인합니다.", "몸통을 세우고 벽에 고정합니다.", "문짝을 달고 간격을 맞춥니다.", "아래를 띄우면 슬리퍼 자리가 생깁니다."],
+  ["집성판·합판", "전동드릴·피스", "경첩"], ["넘어지지 않게 벽에 꼭 고정합니다."], [], [("/qna/sinbaljang-naemsae.html", "신발장 냄새"), ("/mandeul/", "DIY 만들기")]),
+ ("lv-seojae", "livart", "리바트 스타일 서재 벽 선반", "ruba-byeok", "서재 한쪽 벽에 책장처럼 선반을 짜 넣는 방법입니다.",
+  ["벽 길이·높이와 책 무게를 생각해 선반 간격을 정합니다.", "벽 바탕(콘크리트·각재)을 확인합니다.", "세로판을 세우고 벽에 고정합니다.", "선반을 끼우고 수평을 맞춥니다."],
+  ["집성판", "앙카·피스", "수평기"], ["긴 선반은 처지지 않게 중간 받침을 둡니다."], [], [("/qna/seonban-cheojim.html", "선반 처짐")]),
+ ("kcc-cheonjang", "kcc", "KCC 스타일 거실 천장 석고 평천장", "seokgo-cheonjang", "울퉁불퉁하거나 우물천장이 있는 거실 천장을 평평한 석고 천장으로 바꾸는 순서입니다.",
+  ["천장 높이를 정하고 벽 둘레에 기준선을 긋습니다.", "각재로 천장 틀을 짭니다.", "석고보드를 피스로 붙입니다.", "이음을 퍼티로 메우고 칠·도배합니다."],
+  ["각재", "석고보드", "석고 피스", "퍼티"], ["조명·환풍기 자리를 먼저 정합니다."], [], [("/sigongbeop/seokgo-cheonjang.html", "석고보드 천장")]),
+ ("lx-hyeongwan", "lxzin", "LX 지인 스타일 현관 타일 바닥", "yoksil-tile", "현관 바닥을 큰 무광 타일로 바꿔 넓고 깔끔하게 보이게 하는 순서입니다.",
+  ["기존 바닥 상태를 보고 철거할지 덧방할지 정합니다.", "중문 레일 높이를 생각해 마감 높이를 정합니다.", "접착제로 타일을 붙이고 수평을 맞춥니다.", "줄눈을 넣습니다."],
+  ["타일·접착제", "레벨링 클립", "줄눈제"], ["물기에 미끄럽지 않은 무광·논슬립 타일을 고릅니다."], [], [("/bigyo/polishing-vs-matt-tile.html", "폴리싱 vs 무광")]),
+ ("hl-yoksil-cheonjang", "hlnc", "현대L&C 스타일 욕실 천장 바꾸기", "rubaa-cheonjang", "누렇게 변한 욕실 천장을 깨끗한 천장재로 바꾸는 순서입니다.",
+  ["환풍기·조명을 떼고 기존 천장재를 걷습니다.", "천장 틀 상태를 확인하고 보강합니다.", "새 천장재를 끼우며 붙입니다.", "점검구·환풍기·조명 자리를 따고 답니다."],
+  ["욕실 천장재", "실리콘", "칼·톱"], ["전기는 차단기를 내리고 작업합니다."], [], [("/qna/yoksil-cheonjang.html", "욕실 천장")]),
+ ("cs-ruba", "casamia", "까사미아 스타일 우드 루바 벽", "ruba-byeok", "침실·거실 한쪽 벽을 나무 루바로 감싸 따뜻한 분위기를 내는 순서입니다.",
+  ["벽에 각재 하지를 가로로 댑니다.", "첫 장을 수직으로 맞춰 실타카로 고정합니다.", "홈을 끼우며 이어 붙입니다.", "끝을 몰딩으로 마감하고 오일을 바릅니다."],
+  ["루바", "각재", "실타카", "오일"], [], [], [("/bigyo/tempa-vs-ruba.html", "템바보드 vs 루바")]),
+]
+
+PLAN.update({"lx-danyeol": ("pl2", "wgyp", 3000, 0, 2400),
+             "hl-artwall": ("pl2", "whap", 3000, 0, 2400), "cs-headwall": ("pl2", "whap", 2400, 0, 2400)})
+PLAN.update({"yl-folding": ("door", "fold", 2400, 2300), "yl-slim": ("door", "one", 1200, 2300), "yr-classic": ("door", "swing", 1100, 2300), "yr-point": ("door", "swing", 900, 2100), "sh-glassdoor": ("door", "swing", 900, 2100), "yl-handle": ("door", "swing", 900, 2100), "sh-doorlock": ("door", "swing", 900, 2100), "lv-seojae": ("pl2", "shelf", 2400, 300, 1800, 4), })
+
+# 사장님 지시(2026-11-27): 제조사(영림·예림·쉐누·본덱스·니치하·제일타카·크나우프) 시공법은 없애고 큰 인테리어 회사 스타일만 둠
+G.clear(); BR[:] = [b for b in BR if b[2] is None]
