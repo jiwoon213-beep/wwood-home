@@ -181,9 +181,9 @@ def gen(page, E, CTA, ROOT, SG):
         page(f"sigongbeop/brand-{k}.html", f"{nm} 시공법 모음 — {one} | 영진목재", f"{nm} 제품({one}) 시공 순서·준비물·주의점을 한곳에. 제품 사진과 함께 보는 일반 시공 순서.",
              f'<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › <a href="/sigongbeop/brand.html">회사별 시공법</a> › {E(nm)}</p><h1>{E(nm)} 시공법 모음</h1><p class="lead">{E(nm)} {E(one)} 제품을 시공하는 일반적인 순서를 모았습니다. 제품 사진·이름은 {E(nm)} 제공 자료이며, 순서는 공식 지침이 아니니 제품 설명서를 함께 확인하세요.</p><div class="mg m2">{"".join(cards[k])}</div>{f'<p><a href="/{d}/">{E(nm)} 제품 전체 보기 ›</a></p>' if d else '<p class="small muted">해당 회사 제품·서비스가 아니며 관계없습니다. 비슷한 분위기를 우리 매장 자재로 시공하는 일반 순서입니다.</p>'}</section>{CTA}', "/sigongbeop/")
         secs += f'<h2 id="b-{k}">{E(nm)} <small class="muted">{E(one)}</small></h2><div class="mg m2">{"".join(cards[k][:4])}</div><p><a href="/sigongbeop/brand-{k}.html">{E(nm)} 시공법 전체 보기 ›</a></p>'
-    page("sigongbeop/brand.html", "회사별 자재 시공법 — 영림·예림·쉐누·본덱스·니치하·제일타카·한샘·리바트 스타일 | 영진목재", "영림 중문·방문·필름, 예림 중문, 쉐누 도어, 본덱스 오일스테인, 니치하 사이딩, 제일타카 사용 순서를 회사별로 정리했습니다.",
+    page("sigongbeop/brand.html", "회사별 자재 시공법 — 영림·예림·쉐누·본덱스·니치하·제일타카, 한샘·리바트·KCC·LX·현대L&C·까사미아 스타일 | 영진목재", "영림 중문·방문·필름, 예림 중문, 쉐누 도어, 본덱스 오일스테인, 니치하 사이딩, 제일타카 사용 순서를 회사별로 정리했습니다.",
          f'<section class="wrap sec"><p class="crumb"><a href="/sigongbeop/">자재 시공법</a> › 회사별</p><h1>회사별 자재 시공법</h1><p class="lead">우리 매장에서 다루는 회사 제품별로 시공 순서·준비물·주의점을 정리했습니다. 제품 사진과 함께 보고, 같은 공정의 그림 설명서로 이어집니다.</p><div class="olk">{jump}</div>{secs}</section>{CTA}', "/sigongbeop/")
-    return f'<section class="wrap sec"><h2>회사별 시공법</h2><p>영림·예림·쉐누·본덱스·니치하·제일타카 제품과, 한샘·리바트 스타일 인테리어를 회사별로 나눠 시공 순서를 정리했습니다.</p><div class="olk">' + "".join(f'<a href="/sigongbeop/brand-{k}.html">{E(nm)} {len(cards[k])}</a>' for k, nm, d, one in BR if cards[k]) + '<a class="ac" href="/sigongbeop/brand.html">전체 보기</a></div>' + "".join(f'<h3>{E(nm)}</h3><div class="mg m2">{"".join(cards[k][:4])}</div>' for k, nm, d, one in BR if cards[k]) + '</section>'
+    return f'<section class="wrap sec"><h2>회사별 시공법</h2><p>영림·예림·쉐누·본덱스·니치하·제일타카 제품과, 한샘·리바트·KCC·LX 지인·현대L&C·까사미아 스타일 인테리어를 회사별로 나눠 시공 순서를 정리했습니다.</p><div class="olk">' + "".join(f'<a href="/sigongbeop/brand-{k}.html">{E(nm)} {len(cards[k])}</a>' for k, nm, d, one in BR if cards[k]) + '<a class="ac" href="/sigongbeop/brand.html">전체 보기</a></div>' + "".join(f'<h3>{E(nm)}</h3><div class="mg m2">{"".join(cards[k][:4])}</div>' for k, nm, d, one in BR if cards[k]) + '</section>'
 
 
 # 한샘·리바트 스타일 — 해당 회사 제품·서비스 아님(관계없음). 회사 사진·로고 안 씀, 그림은 우리 그림 설명서.
@@ -224,6 +224,38 @@ GS = [  # slug, key, 이름, 우리 시공법 slug, 리드, 순서, 준비물, �
 ]
 
 
+CO = {"hanssem": "한샘", "livart": "현대리바트", "kcc": "KCC", "lxzin": "LX하우시스", "hlnc": "현대L&C", "casamia": "까사미아"}
+BR += [("kcc", "KCC 스타일", None, "창호·욕실·마루 분위기를 우리 자재로"), ("lxzin", "LX 지인 스타일", None, "필름 벽·마루·단열 분위기를 우리 자재로"),
+       ("hlnc", "현대L&C 스타일", None, "주방 리폼·아트월·바닥 분위기를 우리 자재로"), ("casamia", "까사미아 스타일", None, "웨인스코팅·호텔식 벽·간접조명 분위기를 우리 자재로")]
+GS += [
+ ("kcc-changho", "kcc", "KCC 스타일 베란다 창호 교체 준비", "uretan-foam", "큰 통유리 느낌의 이중창으로 바꿀 때, 창틀 둘레 틈을 폼·실리콘으로 막고 마감하는 준비 순서입니다. 창호 자체 설치는 전문 시공이 필요합니다.",
+  ["기존 창틀 크기(폭·높이)를 여러 곳에서 재 둡니다.", "창을 떼어 낸 뒤 벽과 새 창틀 사이 틈을 확인합니다.", "새 창틀을 수평·수직으로 고정합니다.", "틈을 우레탄폼으로 절반 정도 채우고, 굳으면 잘라 냅니다.", "실내는 몰딩, 실외는 실리콘으로 마감합니다."],
+  ["줄자·수평기", "우레탄폼·폼건", "실리콘", "몰딩"], ["폼을 너무 많이 쏘면 창틀이 휠 수 있습니다."], [("창호 교체 직접 되나요?", "창 설치는 무겁고 정밀해 보통 전문 시공을 맡기고, 둘레 마감은 직접 하기도 합니다.")], [("/bigyo/system-vs-ilban-changho.html", "시스템창 vs 일반 샷시"), ("/bigyo/bokcheung-vs-samjung-yuri.html", "복층 vs 삼중유리")]),
+ ("kcc-yoksil", "kcc", "KCC 스타일 욕실 타일 덧방", "yoksil-tile", "큰 포세린 타일로 욕실을 밝게 바꾸는 덧방 순서입니다. 기존 타일이 단단할 때만 덧방합니다.",
+  ["기존 타일을 두드려 들뜬 곳이 없는지 봅니다.", "기름때를 닦고 프라이머를 바릅니다.", "접착제를 빗살 흙손으로 펴고 타일을 붙입니다.", "줄눈을 넣고 수전·액세서리를 다시 답니다."],
+  ["타일·접착제", "빗살 흙손", "레벨링 클립", "줄눈제"], ["덧방하면 벽이 두꺼워져 수전·문틀 쪽 마감을 챙깁니다."], [], [("/bigyo/porcelain-vs-dogijil.html", "포세린 vs 도기질")]),
+ ("kcc-maru", "kcc", "KCC 스타일 거실 마루", "gangmaru", "밝은 우드 톤 마루로 거실 바닥을 바꾸는 일반 순서입니다.",
+  ["바닥 평탄·습기를 확인합니다.", "빛 방향으로 첫 줄을 정합니다.", "본드를 펴고 마루를 깝니다(접착식).", "걸레받이로 마감합니다."], ["마루", "마루 본드·빗살 헤라", "고무망치"], [], [], [("/younglim/maru.html", "영림 마루")]),
+ ("lx-filmwall", "lxzin", "LX 지인 스타일 필름 벽 리폼", "film-sigong", "벽지 대신 매끈한 필름으로 벽·문을 덮어 깔끔한 느낌을 내는 순서입니다.",
+  ["벽 바탕의 요철을 퍼티로 메우고 사포로 갑니다.", "프라이머를 바르고 말립니다.", "필름을 위에서 아래로 밀대로 붙입니다.", "모서리·콘센트 둘레를 칼로 정리합니다."], ["인테리어 필름", "퍼티·사포", "프라이머", "밀대·칼"], ["바탕 요철이 그대로 비쳐 바탕 작업이 중요합니다."], [], [("/younglim/film.html", "인테리어 필름")]),
+ ("lx-maru", "lxzin", "LX 지인 스타일 강마루", "gangmaru", "고른 무늬의 강마루로 집 전체 바닥을 바꾸는 일반 순서입니다.",
+  ["기존 바닥재를 걷고 평탄을 잡습니다.", "본드를 펴고 강마루를 깝니다.", "문턱·이음은 몰딩으로 정리합니다."], ["강마루", "본드", "고무망치"], [], [], [("/bigyo/kangmaru-vs-kanghwa.html", "강마루 vs 강화마루")]),
+ ("lx-danyeol", "lxzin", "LX 지인 스타일 결로 벽 단열", "isopink-byeok", "북쪽 방 벽의 결로·곰팡이를 줄이려고 단열재와 석고보드로 벽을 보강하는 순서입니다.",
+  ["곰팡이 난 벽지를 떼고 벽을 말립니다.", "단열재를 벽에 붙이거나 각재 사이에 채웁니다.", "이음을 테이프로 막습니다.", "석고보드로 덮고 도배합니다."], ["단열재(아이소핑크 등)", "각재", "석고보드", "폼본드"], ["이음에 틈이 있으면 그 자리에 다시 결로가 생깁니다."], [], [("/bigyo/isopink-vs-eboard.html", "아이소핑크 vs 이보드")]),
+ ("hl-sink", "hlnc", "현대L&C 스타일 주방 리폼", "sinkdae-munjjak", "주방 몸통은 두고 문짝·상판 느낌을 바꿔 새 주방처럼 보이게 하는 순서입니다.",
+  ["문짝·서랍 앞판 크기를 잽니다.", "문짝을 새로 맞추거나 필름으로 덮습니다.", "손잡이·경첩을 바꿉니다.", "벽 백스플래시는 타일·판넬로 덧댑니다."], ["필름 또는 새 문짝", "경첩·손잡이", "실리콘"], [], [], [("/younglim/film.html", "인테리어 필름"), ("/bigyo/injo-vs-engineered-stone.html", "상판 비교")]),
+ ("hl-artwall", "hlnc", "현대L&C 스타일 대리석 느낌 아트월", "tempa-byeok", "TV 뒤 벽을 대리석 무늬 판넬·필름으로 포인트 주는 순서입니다.",
+  ["벽 크기와 TV·콘센트 위치를 정합니다.", "벽이 고르지 않으면 하지틀을 댑니다.", "판넬을 본드·실타카로 붙이거나 필름을 붙입니다.", "끝을 몰딩으로 마감합니다."], ["대리석 무늬 판넬 또는 필름", "실타카·본드", "레이저 레벨"], [], [], [("/younglim/wall.html", "영림 월패널")]),
+ ("hl-decotile", "hlnc", "현대L&C 스타일 데코타일 바닥", "decotile", "상가·방 바닥을 데코타일로 바꾸는 순서입니다.",
+  ["바닥을 평평하게 하고 청소합니다.", "가운데 기준선을 긋습니다.", "접착제를 펴고 기준선부터 붙입니다.", "롤러로 눌러 밀착합니다."], ["데코타일", "접착제·헤라", "칼", "롤러"], ["바탕 요철이 그대로 비칩니다."], [], [("/bigyo/jangpan-vs-decotile.html", "장판 vs 데코타일")]),
+ ("cs-wainscoting", "casamia", "까사미아 스타일 웨인스코팅 벽", "molding-georebatgi", "벽에 몰딩으로 네모 틀을 만들어 클래식하고 고급스러운 느낌을 내는 순서입니다.",
+  ["벽 폭을 칸 수로 나눠 틀 크기를 정하고 연필로 그립니다.", "몰딩을 45도로 잘라 네모 틀을 만듭니다.", "본드·실타카로 붙이고 틈을 메웁니다.", "벽과 몰딩을 같은 색으로 칠합니다."], ["평몰딩", "각도절단기", "실타카·본드", "페인트"], ["칸 간격이 고르지 않으면 어색해 보입니다."], [], [("/bigyo/wainscoting-vs-tempa.html", "웨인스코팅 vs 템바보드")]),
+ ("cs-headwall", "casamia", "까사미아 스타일 호텔식 침대 헤드 벽", "tempa-byeok", "침대 뒤 벽을 템바보드·판넬로 감싸 호텔 같은 느낌을 내는 순서입니다.",
+  ["침대 폭보다 넉넉하게 벽 마감 폭을 정합니다.", "콘센트·조명 자리를 먼저 정합니다.", "판을 붙이고 위쪽에 간접등 자리를 남깁니다.", "끝을 마감재로 덮습니다."], ["템바보드", "실타카·본드", "LED 간접등"], [], [], [("/qna/tempa-headboard.html", "템바보드 헤드보드")]),
+ ("cs-ganjeop", "casamia", "까사미아 스타일 우물천장 간접조명", "seokgo-cheonjang", "거실 천장 둘레에 숨은 조명을 넣어 은은한 분위기를 내는 순서입니다.",
+  ["천장 단 높이와 간접등 자리를 정합니다.", "각재로 단 틀을 짜고 석고보드로 덮습니다.", "턱 안쪽에 LED를 넣을 공간을 남깁니다.", "퍼티·도장 후 조명을 답니다."], ["각재", "석고보드", "LED 간접등"], ["전기는 차단기를 내리고 작업합니다."], [], [("/qna/curtainbox-ganjeop.html", "간접조명")]),
+]
+
 _gen0 = gen
 _CSS = [""]
 
@@ -232,7 +264,7 @@ def gen(page, E, CTA, ROOT, SG, PL2CSS=""):
     _CSS[0] = PL2CSS
     sgn = {x[0]: x[1] for x in SG}
     for slug, bk, nm, gs, lead, steps, tools, warn, fq, links in GS:
-        bnm = dict((k, n) for k, n, *_ in BR)[bk]; co = "한샘" if bk == "hanssem" else "현대리바트"
+        bnm = dict((k, n) for k, n, *_ in BR)[bk]; co = CO[bk]
         im = f"/assets/sigongbeop/{gs}.jpg" if os.path.exists(f"{ROOT}/assets/sigongbeop/{gs}.jpg") else None
         fqa = list(fq) + [(f"{co} 제품이나 시공인가요?", f"아니요. {co}와 관계없는 페이지로, 비슷한 분위기를 영진종합목재 매장 자재로 직접 시공하는 일반 순서를 정리했습니다."), ("자재는 어디서 사나요?", "대전 유성 영진종합목재(월드건축자재) 매장에서 상담·주문하실 수 있고 전국 배송도 됩니다.")]
         _lk = lambda t: re.sub(r"\((/[A-Za-z0-9_/.\-#=%]+)\)", r'(<a href="\1">바로 보기</a>)', E(t))
@@ -334,3 +366,6 @@ def plan_html(slug, E, PL2CSS, ROOT, gs):
     if os.path.exists(f"{ROOT}/assets/sigongbeop/{gs}-steps.jpg"):
         return f'<h2>순서 그림 설명서</h2><img class="mkfig" loading="lazy" src="/assets/sigongbeop/{gs}-steps.jpg" alt="순서 그림 설명서" style="width:100%;height:auto;border-radius:14px;border:1px solid #e6e0d4"><p class="small muted">그림: 영진종합목재</p>'
     return ""
+
+PLAN.update({"kcc-maru": ("pl2", "fhap", 4200, 3600, 0), "kcc-yoksil": ("pl2", "wgyp", 2000, 0, 2300), "lx-maru": ("pl2", "fhap", 3600, 3000, 0), "lx-danyeol": ("pl2", "wgyp", 3000, 0, 2400),
+             "hl-artwall": ("pl2", "whap", 3000, 0, 2400), "hl-decotile": ("pl2", "fhap", 3600, 3000, 0), "cs-headwall": ("pl2", "whap", 2400, 0, 2400)})
