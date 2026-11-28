@@ -116,6 +116,54 @@ BIZ = [
   ["hinoki", "gypsum", "bangbu", "hapdeck", "sound"],
   ["객실 천장·벽 루바는 편백·스프러스로 분위기를 냅니다.", "바깥 데크는 방부목·합성목 중 관리 방법을 보고 고릅니다."],
   [("/qna/pension-self-interior.html", "펜션 셀프 인테리어"), ("/gagyeok/deck-gagyeok.html", "데크 가격")]),
+ ("burger", "버거·샌드위치", "수제버거·샌드위치 전문점", "오픈 주방 카운터, 홀 테이블, 벽 포인트 마감",
+  ["mdf", "film", "tile", "gypsum"],
+  ["오픈 주방 앞 카운터는 물·기름에 강한 상판으로 마감합니다.", "벽 포인트는 타일·필름으로 브랜드 색을 맞춥니다."],
+  [("/qna/counter-jejak.html", "카운터 제작"), ("/qna/artwall-tile.html", "아트월 타일")]),
+ ("salad", "샐러드·도시락", "샐러드 전문점·도시락 매장", "작은 홀, 진열 냉장고 주변 마감, 포장 카운터",
+  ["mdf", "film", "jipseong", "gypsum"],
+  ["진열 냉장고 주변은 열기가 빠질 틈을 두고 마감합니다.", "포장 카운터는 집성판 상판으로 깔끔하게 짭니다."],
+  [("/qna/naengjangjang-size.html", "냉장고장 사이즈"), ("/qna/jipseong-sangpan-magam.html", "상판 마감")]),
+ ("noodle", "국수·라멘·마라탕", "면 요리 전문점", "바 좌석, 주방 벽 방수, 셀프 코너 선반",
+  ["jipseong", "tile", "gypsum", "film"],
+  ["바 좌석 상판은 뜨거운 그릇을 생각해 마감재를 고릅니다.", "셀프 코너 선반은 물청소가 쉬운 재질로 만듭니다."],
+  [("/qna/bar-table.html", "바 테이블"), ("/qna/bangsu-seokgo.html", "방수 석고보드")]),
+ ("icecream", "아이스크림·디저트", "아이스크림 할인점·디저트 매장", "냉동고 진열 벽, 밝은 벽·천장, 계산대",
+  ["mdf", "film", "gypsum", "hardware"],
+  ["냉동고가 많은 매장은 벽 콘센트 위치를 목공 단계에서 맞춥니다.", "밝은 색 필름·도장으로 깨끗한 느낌을 냅니다."],
+  [("/qna/consent-gumeong-ttagi.html", "콘센트 구멍 따기"), ("/qna/film-sunseo.html", "필름 시공 순서")]),
+ ("flower", "꽃집·플라워카페", "꽃집", "작업대, 물 쓰는 구역, 진열 선반, 원목 느낌 벽",
+  ["jipseong", "bangbu", "tile", "stain"],
+  ["물을 많이 쓰는 작업대는 상판 마감을 꼼꼼히 하고 바닥은 물에 강하게 합니다.", "원목 선반은 오일 마감으로 물 얼룩을 줄입니다."],
+  [("/qna/wonmok-seonban-jejak.html", "원목 선반 제작"), ("/qna/jakeopdae-nopi.html", "작업대 높이")]),
+ ("butcher", "정육점·반찬가게", "축산물 판매점·반찬 전문점", "진열 쇼케이스 주변, 작업실 칸막이, 위생 벽 마감",
+  ["tile", "gypsum", "mdf"],
+  ["작업실 벽·바닥은 물청소에 강한 타일·방수 자재로 마감합니다.", "위생 관련 시설 기준은 관할 기관 안내를 따릅니다."],
+  [("/qna/bangsu-seokgo.html", "방수 석고보드"), ("/qna/tile-sigong-juui.html", "타일 시공 주의")]),
+ ("stationery", "문구·생활용품점", "문구점·잡화점", "벽 진열 선반, 곤도라 뒤 벽, 계산대",
+  ["mdf", "gypsum", "hardware", "film"],
+  ["선반 레일을 달 벽은 바탕에 합판을 덧대 하중을 받게 합니다.", "같은 크기 선반판은 한 번에 반복 재단합니다."],
+  [("/qna/system-seonban.html", "시스템 선반"), ("/qna/seonban-bracket.html", "선반 브라켓")]),
+ ("bookcafe", "북카페·만화카페", "만화카페·도서 공간", "벽 책장, 다락형 좌석, 칸막이, 흡음",
+  ["jipseong", "hapan", "sound", "gujo"],
+  ["벽 책장은 처지지 않게 선반 두께와 받침 간격을 정합니다.", "다락형 좌석은 구조재로 튼튼하게 짜고 난간을 둡니다."],
+  [("/qna/chaekjang-size.html", "책장 사이즈"), ("/qna/nangan-nopi.html", "난간 높이")]),
+ ("photo", "셀프사진관·스튜디오", "포토부스·사진관", "부스 칸막이, 배경 벽, 조명 천장",
+  ["mdf", "gypsum", "film", "sound"],
+  ["부스 칸막이는 같은 규격으로 반복 제작해 빠르게 세웁니다.", "배경 벽은 평평하게 퍼티·도장하거나 필름으로 마감합니다."],
+  [("/qna/seokgo-putty.html", "석고 퍼티"), ("/qna/mutagong-gabyeok.html", "무타공 가벽")]),
+ ("dental", "치과·한의원", "치과의원·한의원", "진료 체어 구역, 소독실, 대기실 벽·천장, 상담실",
+  ["gypsum", "gujo", "door", "film", "sound"],
+  ["상담실·원장실은 차음 벽과 문으로 대화가 새지 않게 합니다.", "의료기관 시설 기준은 관할 기관 안내를 먼저 확인합니다."],
+  [("/qna/chaeum-seokgo.html", "차음 석고보드"), ("/qna/bangeum-mun.html", "방음 문")]),
+ ("realestate", "공인중개사·보험 사무소", "부동산·상담 사무소", "상담 테이블, 벽 게시판·선반, 칸막이",
+  ["mdf", "gypsum", "film", "jipseong"],
+  ["상담석 칸막이는 반벽·간살로 하면 답답하지 않습니다.", "유리면 시트지·간판 바탕을 함께 정리합니다."],
+  [("/qna/gansal-partition.html", "간살 파티션"), ("/qna/yurichang-sheetji.html", "유리창 시트지")]),
+ ("carwash", "세차장·카센터 대기실", "자동차 관련 매장", "고객 대기실, 사무실 칸막이, 창고 선반",
+  ["gypsum", "gujo", "hardware", "tile"],
+  ["작업장 쪽 벽은 충격·습기에 강한 자재를 씁니다.", "창고 선반은 각재·합판으로 튼튼하게 짭니다."],
+  [("/qna/changgo-seonban.html", "창고 선반"), ("/qna/samusil-kanmagi.html", "사무실 칸막이")]),
  ("church", "교회·공방·소규모 공간", "작업실·공방", "강단·단상, 벽 흡음, 작업대",
   ["jipseong", "hapan", "sound", "gujo"],
   ["단상은 각재로 틀을 짜고 합판·마루로 덮습니다.", "울림이 큰 공간은 흡음재로 소리를 정리합니다."],
@@ -126,8 +174,10 @@ PX = [("석고보드 일반 9.5T 3×6", r"석고-일반 3\*6 @ 9\.5T$"), ("방�
       ("MDF 9mm 4×8", r"MDF 4\*8 @ 9mm$"), ("MDF 18mm 4×8", r"MDF 4\*8 @18mm"), ("합판 12mm 내수 4×8", r"4\*8 @12mm\(내수/A급\)"),
       ("구조재 2×4 12자", r"Ⅱ 2\* 4\*12ft"), ("흡음보드 오크 라인 9T 1200×2400", r"흡음 오크 라인@9T\*1200\*2400")]
 
+INFO = [("/qna/maejang-banbok-jaedan.html", "여러 매장 같은 규격 재단"), ("/qna/maejang-bangyeom.html", "매장 방염 자재 확인"), ("/qna/sangga-interior-jajae-list.html", "상가 인테리어 자재 목록"), ("/qna/franchise-interior-biyong-gusung.html", "인테리어 견적 항목"), ("/qna/franchise-interior-jugi.html", "프랜차이즈 리뉴얼 주기"), ("/qna/sangga-wonsang-bokgu.html", "상가 원상복구")]
+
 JN = {"hapan": "합판", "jipseong": "집성판", "gypsum": "석고보드", "molding": "몰딩", "film": "인테리어 필름", "hinoki": "편백·루바", "mdf": "MDF", "tile": "타일",
-      "gujo": "구조재·각재", "maru": "마루", "sound": "흡음·방음재", "hardware": "철물·부속", "insul": "단열재", "door": "도어·문틀", "bangbu": "방부목", "hapdeck": "합성목 데크"}
+      "gujo": "구조재·각재", "maru": "마루", "sound": "흡음·방음재", "hardware": "철물·부속", "insul": "단열재", "door": "도어·문틀", "bangbu": "방부목", "hapdeck": "합성목 데크", "stain": "스테인·오일"}
 
 
 def gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, top, vsplit, P):
@@ -166,7 +216,7 @@ def gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, top, vsplit, P):
                 f'<h2 class="gt">공사할 때 챙길 것</h2><ul class="gtip">' + "".join(f"<li>{E(t)}</li>" for t in tips) + '<li>다중이용시설은 방염·불연 기준이 적용될 수 있으니 자재 성능을 미리 확인합니다.</li></ul>'
                 f'<h2 class="gt">자주 쓰는 자재 기준가</h2>{ptab}<p class="gs">매장 소매 기준가(부가세 별도) · 운임 별도 · 사업자는 도매회원(wwood.kr) 가입 후 회원가. <a href="/price.html">전체 기준가</a></p>'
                 f'<h2 class="gt">납품 순서</h2><ol class="gtip"><li>도면·재단표나 품목·규격·수량을 전화·메일로 보내 주세요.</li><li>자재값과 현장까지 운임을 먼저 알려 드립니다.</li><li>입금 확인 후 재단·상차해 현장으로 출고합니다.</li><li>같은 매장 규격이면 다음 현장부터 재단표를 그대로 씁니다.</li></ol>'
-                f'<h2 class="gt">관련 정보</h2><div class="qk">{ilinks}<a href="/gonggan/">공간 사진</a><a href="/sigongbeop/">자재 시공법</a><a href="/calc.html">자재 계산기</a></div></section>'
+                f'<h2 class="gt">관련 정보</h2><div class="qk">{ilinks}' + "".join(f'<a href="{u}">{E(t)}</a>' for u, t in INFO) + '<a href="/gonggan/">공간 사진</a><a href="/sigongbeop/">자재 시공법</a><a href="/calc.html">자재 계산기</a></div></section>'
                 + f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>'
                 + f'<section class="wrap sec"><p class="small">다른 업종: ' + " · ".join(f'<a href="/franchise/{b[0]}.html">{E(b[1])}</a>' for b in BIZ if b[0] != slug) + '</p>'
                 + (f'<p class="small">지역별 현장 배송: ' + " · ".join(f'<a href="/franchise/r-{r[0]}.html">{E(r[1])}</a>' for r in REG) + '</p>' if REG else "") + f'</section>{CTA}')
@@ -199,6 +249,7 @@ def gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, top, vsplit, P):
          f'<div class="row"><a class="b d" href="tel:{tel}">전화 {TEL}</a><a class="b o" href="/cut.html">재단표 만들기</a><a class="b o" href="https://wwood.kr/">도매회원 쇼핑몰</a></div>'
          f'<h2 class="gt">업종별 자재 안내</h2><div class="gig">{cards}</div>'
          + (f'<h2 class="gt">지역별 현장 배송</h2><div class="qk">' + "".join(f'<a href="/franchise/r-{r[0]}.html">{E(r[1])}</a>' for r in REG) + '</div>' if REG else "")
+         + '<h2 class="gt">업체가 자주 찾는 정보</h2><div class="qk">' + "".join(f'<a href="{u}">{E(t)}</a>' for u, t in INFO) + '</div>'
          + f'<h2 class="gt">자주 쓰는 자재 기준가</h2>{ptab}<p class="gs">매장 소매 기준가(부가세 별도) · 운임 별도 · 사업자는 도매회원 가입 후 회원가</p></section>'
          f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>{CTA}', "", ld)
     return out
