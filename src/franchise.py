@@ -301,11 +301,13 @@ def gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, top, vsplit, P):
          f'<h2 class="gt">업종별 자재 안내</h2><div class="gig">{cards}</div>'
          + (f'<h2 class="gt">지역별 현장 배송</h2><div class="qk">' + "".join(f'<a href="/franchise/r-{r[0]}.html">{E(r[1])}</a>' for r in REG) + '</div>' if REG else "")
          + '<h2 class="gt">공정별 자재</h2><div class="qk">' + "".join(f'<a href="/franchise/g-{g[0]}.html">{E(g[1])}</a>' for g in GJ) + '</div>'
+         + '<h2 class="gt">도시별 현장 배송</h2><div class="qk">' + "".join(f'<a href="/franchise/c-{c[0]}.html">{E(c[1])}</a>' for c in CITY) + '</div>'
          + '<h2 class="gt">업체가 자주 찾는 정보</h2><div class="qk">' + "".join(f'<a href="{u}">{E(t)}</a>' for u, t in INFO) + '</div>'
          + f'<h2 class="gt">자주 쓰는 자재 기준가</h2>{ptab}<p class="gs">매장 소매 기준가(부가세 별도) · 운임 별도 · 사업자는 도매회원 가입 후 회원가</p></section>'
          f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>{CTA}', "", ld)
     gen_gj(page, E, CTA, faqslide, TEL)
     gen_balju(page, E, CTA, TEL, EMAIL)
+    gen_city(page, E, CTA, faqslide, TEL, ptab)
     return out
 
 
@@ -390,3 +392,43 @@ def gen_balju(page, E, CTA, TEL, EMAIL):
     ld = {"@context": "https://schema.org", "@type": "WebApplication", "name": "인테리어 자재 발주서", "applicationCategory": "BusinessApplication", "operatingSystem": "Web", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}}
     page("franchise/balju.html", "인테리어 자재 발주서 양식 — 업체용 무료, 메일로 바로 견적 요청 | 영진목재",
          "매장·상가 인테리어 현장 자재를 줄마다 적고 메일로 보내기·인쇄. 석고보드·각재·합판·MDF·필름 견적 요청과 재단·전국 현장 배송. 업체용 무료 자재 발주서.", body, "", ld)
+
+
+# 도시별 '○○ 인테리어 자재' — 대전 매장에서 재단해 그 도시 현장으로(현지 매장인 척 하지 않음)
+CITY = [("seoul", "서울", "seoul"), ("busan", "부산", "busan-gyeongnam"), ("incheon", "인천", "incheon"), ("daegu", "대구", "daegu-gyeongbuk"),
+        ("gwangju", "광주", "gwangju-jeonnam"), ("ulsan", "울산", "busan-gyeongnam"), ("suwon", "수원", "gyeonggi-south"), ("seongnam", "성남", "gyeonggi-south"),
+        ("yongin", "용인", "gyeonggi-south"), ("hwaseong", "화성", "gyeonggi-south"), ("pyeongtaek", "평택", "gyeonggi-south"), ("goyang", "고양", "gyeonggi-north"),
+        ("paju", "파주", "gyeonggi-north"), ("gimpo", "김포", "gyeonggi-north"), ("changwon", "창원", "busan-gyeongnam"), ("gimhae", "김해", "busan-gyeongnam"),
+        ("jeonju", "전주", "jeonbuk"), ("pohang", "포항", "daegu-gyeongbuk"), ("gumi", "구미", "daegu-gyeongbuk"), ("wonju", "원주", "gangwon"),
+        ("chuncheon", "춘천", "gangwon"), ("gangneung", "강릉", "gangwon"), ("chungju", "충주", "chungbuk"), ("seosan", "서산", "chungnam"),
+        ("dangjin", "당진", "chungnam"), ("asan", "아산", "chungnam"), ("jeju", "제주", "jeju"), ("yeosu", "여수", "gwangju-jeonnam"),
+        ("suncheon", "순천", "gwangju-jeonnam"), ("gunsan", "군산", "jeonbuk")]
+
+
+def gen_city(page, E, CTA, faqslide, TEL, ptab):
+    tel = TEL.replace("-", "")
+    try:
+        import nation as _N
+        RN = {r[0]: r[1] for r in _N.REG}
+    except Exception:
+        RN = {}
+    for slug, nm, rg in CITY:
+        jeju = rg == "jeju"
+        how = "화물 배편" if jeju else "용달(화물차)"
+        fq = [(f"{nm}에 매장이 있나요?", f"매장은 대전 유성대로 44 한 곳(3000평)입니다. {nm} 현장에는 대전에서 원하는 크기로 재단해 {how}로 보내 드립니다."),
+              (f"{nm} 현장까지 운임은 얼마인가요?", "정해진 금액이 없고 거리·차량·수량에 따라 달라 주문 전에 먼저 견적을 드립니다. 품목을 한 번에 모으면 운임 부담이 줄어듭니다."),
+              ("실물을 보고 고를 수 있나요?", "대전 매장에 오시면 큰 판 실물을 보실 수 있고, 유튜브 '월드건축자재DIY'와 홈페이지 공간 사진·쇼룸 사진으로 미리 보실 수 있습니다. 필요하면 사진으로 실물 상태를 보내 드립니다."),
+              ("업체 회원가가 있나요?", "사업자등록증·명함 확인 후 도매회원(wwood.kr)으로 가입하시면 회원가로 거래합니다.")]
+        body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/franchise/">체인점 인테리어 자재</a> › 도시별 › {E(nm)}</p>'
+                f'<h1>{E(nm)} 인테리어 자재 — 대전 3000평 매장에서 재단해 {E(nm)} 현장으로</h1>'
+                f'<p class="glead">{E(nm)}에서 상가·매장·사무실 인테리어 공사를 하는 업체와 현장에, 석고보드·각재·합판·MDF·몰딩·필름·흡음재를 대전 유성 영진종합목재(월드건축자재) 3000평 매장에서 원하는 크기로 재단해 {how}로 보내 드립니다. {E(nm)} 현지 매장은 없고, 대전 한 곳에서 출고합니다.</p>'
+                f'<div class="row"><a class="b r" href="/franchise/balju.html">자재 발주서 쓰기</a><a class="b d" href="tel:{tel}">전화 {TEL}</a><a class="b o" href="/cut.html">재단표 만들기</a></div>'
+                f'<h2 class="gt">이렇게 받습니다</h2><ol class="gtip"><li>발주서나 전화로 품목·규격·수량·재단 크기·{E(nm)} 현장 주소를 알려 주세요.</li><li>자재값과 {E(nm)}까지 운임을 먼저 알려 드립니다.</li><li>입금 확인 후 재단·상차해 출고합니다.</li></ol>'
+                f'<h2 class="gt">자주 쓰는 자재 기준가</h2>{ptab}<p class="gs">매장 소매 기준가(부가세 별도) · 운임 별도</p>'
+                f'<h2 class="gt">업종별·공정별 자재</h2><div class="qk">' + "".join(f'<a href="/franchise/{b[0]}.html">{E(b[1])}</a>' for b in BIZ[:16]) + "".join(f'<a href="/franchise/g-{g[0]}.html">{E(g[1])}</a>' for g in GJ[:6]) + '</div>'
+                + (f'<p class="small"><a href="/franchise/r-{rg}.html">{E(RN.get(rg, ""))} 체인점 자재 배송</a> · <a href="/jeonguk/{rg}.html">{E(RN.get(rg, ""))} 목재 배송 안내</a></p>' if rg in RN else "") + '</section>'
+                + f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>'
+                + '<section class="wrap sec"><p class="small">다른 도시: ' + " · ".join(f'<a href="/franchise/c-{c[0]}.html">{E(c[1])}</a>' for c in CITY if c[0] != slug) + '</p></section>' + CTA)
+        ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}
+        page(f"franchise/c-{slug}.html", f"{nm} 인테리어 자재 — 석고보드·각재·합판 재단해 {nm} 현장 배송 | 대전 영진목재",
+             f"{nm} 상가·매장 인테리어 업체용 석고보드·각재·합판·MDF·몰딩·필름. 대전 3000평 매장에서 재단해 {nm} 현장까지 {how} 배송(운임 견적). {TEL}", body, "", ld)
