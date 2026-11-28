@@ -253,7 +253,7 @@ def gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, top, vsplit, P):
         ("방염·불연 자재가 필요한데 있나요?", "다중이용업소 등은 방염·불연 기준이 적용될 수 있습니다. 필요한 성능(방염 합판, 방화 석고보드 등)과 성적서가 필요한지 먼저 말씀해 주시면 해당 품목 재고와 서류를 확인해 드립니다."),
         ("매장에서 실물을 볼 수 있나요?", f"대전 유성 매장(3000평)에 합판·MDF·석고보드·몰딩·도어·필름·루바를 쌓아 두고 있습니다. 영업시간: {HOURS}."),
     ]
-    QX = {'vethospital': 'dongmul-byeongwon-interior', 'winebar': 'winebar-interior', 'realestate': 'budongsan-interior', 'petshop': 'aegyeonshop-interior', 'phone': 'phone-maejang-interior', 'optical': 'angyeongwon-interior', 'clinic': 'byeongwon-interior-jajae', 'photo': 'selfphoto-interior', 'kidscafe': 'kidscafe-interior', 'unmanned': 'musin-maejang-interior', 'academy': 'hagwon-interior-jajae', 'showroom': 'otgage-interior', 'restaurant': 'sikdang-kanmagi', 'bbq': 'gogitjip-interior', 'pub': 'suljip-interior', 'gym': 'pilates-interior-badak', 'karaoke': 'noraebang-interior', 'flower': 'kkotjip-interior', 'snack': 'bunsik-interior', 'butcher': 'jeongyuk-interior', 'dental': 'hanuiwon-interior', 'nail': 'nailshop-interior', 'office': 'shared-office-interior', 'bakery': 'bakery-interior', 'pharmacy': 'yakguk-interior', 'chicken': 'chikin-interior'}
+    QX = {'church': 'gyohoe-interior', 'vethospital': 'dongmul-byeongwon-interior', 'winebar': 'winebar-interior', 'realestate': 'budongsan-interior', 'petshop': 'aegyeonshop-interior', 'phone': 'phone-maejang-interior', 'optical': 'angyeongwon-interior', 'clinic': 'byeongwon-interior-jajae', 'photo': 'selfphoto-interior', 'kidscafe': 'kidscafe-interior', 'unmanned': 'musin-maejang-interior', 'academy': 'hagwon-interior-jajae', 'showroom': 'otgage-interior', 'restaurant': 'sikdang-kanmagi', 'bbq': 'gogitjip-interior', 'pub': 'suljip-interior', 'gym': 'pilates-interior-badak', 'karaoke': 'noraebang-interior', 'flower': 'kkotjip-interior', 'snack': 'bunsik-interior', 'butcher': 'jeongyuk-interior', 'dental': 'hanuiwon-interior', 'nail': 'nailshop-interior', 'office': 'shared-office-interior', 'bakery': 'bakery-interior', 'pharmacy': 'yakguk-interior', 'chicken': 'chikin-interior'}
     out = []
     for slug, nm, alias, work, mats, tips, links in BIZ:
         if slug in QX: links = list(links) + [(f'/qna/{QX[slug]}.html', f'{nm} 인테리어 자재·공정')]
@@ -339,7 +339,7 @@ GJ = [
  ("hwajangsil", "화장실", "매장 화장실 리모델링", ["방수층을 먼저 확인·보수합니다.", "벽은 방수 석고보드·타일, 천장은 물에 강한 자재로 마감합니다.", "문은 습기에 강한 도어로 하고 문턱 높이를 맞춥니다."],
   ["tile", "gypsum", "door"], [("/qna/yoksil-cheonjang.html", "욕실 천장"), ("/qna/hwajangsil-munteul-gyoche.html", "화장실 문틀 교체"), ("/qna/hwajangsil-bangeum.html", "화장실 방음")]),
  ("dancha", "단차·계단", "매장 입구 단차·내부 계단·단상", ["단차 높이와 쓰는 사람 동선을 확인합니다.", "구조재로 틀을 짜고 합판·마루로 덮습니다.", "모서리는 미끄럼 방지 마감과 몰딩으로 정리합니다."],
-  ["gujo", "hapan", "maru", "molding"], [("/qna/hyeongwan-dancha.html", "단차 만들기"), ("/qna/gyedan-nonseulip.html", "계단 미끄럼 방지"), ("/qna/munteok-gyeongsaro.html", "경사로"), ('/qna/maejang-badak-mulmagi.html', '출입구 물막이턱')]),
+  ["gujo", "hapan", "maru", "molding"], [("/qna/hyeongwan-dancha.html", "단차 만들기"), ("/qna/gyedan-nonseulip.html", "계단 미끄럼 방지"), ("/qna/munteok-gyeongsaro.html", "경사로"), ('/qna/maejang-badak-mulmagi.html', '출입구 물막이턱'), ('/qna/sangga-gyedan-ripom.html', '상가 계단 리폼'), ('/qna/mudae-dansang-jejak.html', '무대·단상 제작')]),
  ("facade", "쇼윈도·파사드", "매장 전면 파사드·쇼윈도", ["전면 바탕(각파이프·합판)을 단단히 잡습니다.", "외부 마감은 사이딩·방부목·외부용 패널 중 고릅니다.", "유리면 시트지·간판 위치를 함께 정합니다."],
   ["siding", "bangbu", "hardware"], [("/qna/yurichang-sheetji.html", "유리창 시트지"), ("/qna/ganpan-sigong.html", "간판 시공"), ('/qna/pasade-tteut.html', '파사드 뜻'), ('/qna/sangga-changmun-upung.html', '상가 창문 우풍')]),
  ("baekroom", "창고·백룸", "매장 창고·직원 공간", ["창고 칸막이를 각재+석고나 합판으로 세웁니다.", "선반은 하중을 보고 각재·합판으로 짭니다.", "습기 찬 창고는 환기와 바닥 띄움을 생각합니다."],
@@ -353,13 +353,13 @@ GJ = [
  ("counter", "카운터·바", "카운터·바 테이블·진열대 제작", ["카운터 몸통은 각재·합판으로 짜고 겉은 MDF·필름이나 타일로 마감합니다.", "상판은 물·열을 생각해 집성판·인조석 등으로 고릅니다.", "포스·전원 배선 구멍을 제작 단계에서 냅니다."],
   ["jipseong", "mdf", "hapan"], [("/qna/counter-jejak.html", "카운터 제작"), ("/qna/bar-table.html", "바 테이블"), ("/cut.html", "재단표 만들기"), ('/qna/cafe-bar-table-nopi.html', '카페 바테이블 높이'), ('/qna/maejang-counter-nopi.html', '매장 카운터 높이')]),
  ("byeok", "벽 마감", "필름·도장·템바보드·타일 벽", ["벽 바탕을 평평하게 퍼티하고 샌딩합니다.", "필름은 프라이머 후 붙이고, 도장은 하도·상도 순서로 칠합니다.", "템바보드·패널은 본드와 타카로 고정하고 모서리를 몰딩으로 마감합니다."],
-  ["film", "molding", "tile"], [("/qna/film-sunseo.html", "필름 시공 순서"), ("/qna/tempa-myeotjang.html", "템바보드 몇 장"), ("/qna/seokgo-putty.html", "석고 퍼티"), ('/qna/gage-byeok-kkumigi.html', '가게 벽면 꾸미기'), ('/qna/gage-byeok-hapan.html', '가게 벽 합판 작업')]),
+  ["film", "molding", "tile"], [("/qna/film-sunseo.html", "필름 시공 순서"), ("/qna/tempa-myeotjang.html", "템바보드 몇 장"), ("/qna/seokgo-putty.html", "석고 퍼티"), ('/qna/gage-byeok-kkumigi.html', '가게 벽면 꾸미기'), ('/qna/gage-byeok-hapan.html', '가게 벽 합판 작업'), ('/qna/cafe-byeok-interior.html', '카페 벽면'), ('/qna/sikdang-byeok-kkumigi.html', '식당 벽 꾸미기')]),
  ("badak", "바닥", "데코타일·타일·마루 바닥", ["기존 바닥 수평과 들뜸을 확인하고 필요하면 레벨링합니다.", "데코타일은 기준선을 잡고 본드로 붙이며, 타일은 접착제·줄눈까지 마감합니다.", "주방·물 쓰는 구역은 물에 강한 바닥재를 씁니다."],
   ["tile", "maru"], [("/qna/decotile-sijakjeom.html", "데코타일 시작점"), ("/qna/tile-jeopchakje.html", "타일 접착제"), ("/dobae-jangpan.html", "바닥재 계산기"), ('/qna/maejang-badak-bigyo.html', '매장 바닥 비교'), ('/qna/maejang-badak-sigong.html', '매장 바닥 시공'), ('/qna/maejang-badak-mulmagi.html', '매장 바닥 물 막기'), ('/qna/samusil-badakjae-jongryu.html', '사무실 바닥재'), ('/qna/sangga-badak-jangpan-vs-decotile.html', '장판 vs 데코타일')]),
  ("mun", "문·도어", "매장 출입문·방화문·실내 도어", ["문틀 크기와 열림 방향을 실측합니다.", "방화구획·피난 관련 문은 정해진 성능의 문을 씁니다.", "도어클로저·손잡이·잠금장치를 함께 맞춥니다."],
   ["door", "hardware"], [("/qna/door-silcheuk.html", "문 실측"), ("/qna/banghwamun.html", "방화문"), ("/qna/door-closer.html", "도어클로저"), ('/qna/sikdang-kanmagi-mun.html', '식당 칸막이 문'), ('/qna/sangga-munteum.html', '상가 문틈 막기')]),
  ("jubang", "주방", "매장 주방 벽·천장", ["주방 벽은 방수·불연 성능을 보고 석고보드·타일을 고릅니다.", "후드·덕트 자리와 배관 위치를 목공 전에 확정합니다.", "벽과 바닥이 만나는 곳은 실리콘으로 막아 물이 스며들지 않게 합니다."],
-  ["gypsum", "tile"], [("/qna/jubang-byeok.html", "주방 벽"), ("/qna/bangsu-seokgo.html", "방수 석고보드"), ("/qna/banghwa-seokgo.html", "방화 석고보드"), ('/qna/cafe-jubang-seonban.html', '카페 주방 선반·동선')]),
+  ["gypsum", "tile"], [("/qna/jubang-byeok.html", "주방 벽"), ("/qna/bangsu-seokgo.html", "방수 석고보드"), ("/qna/banghwa-seokgo.html", "방화 석고보드"), ('/qna/cafe-jubang-seonban.html', '카페 주방 선반·동선'), ('/qna/samusil-hyugesil.html', '휴게실·탕비실')]),
  ("ganpan", "간판·외부", "간판 바탕·외부 마감", ["간판을 달 외벽 바탕(각파이프·합판)을 단단히 고정합니다.", "외부 목재는 방부목·외부용 마감으로 비를 막습니다.", "어닝·캐노피 등 외부 구조물은 건물 관리 규정을 먼저 확인합니다."],
   ["bangbu", "hardware", "siding"], [("/qna/ganpan-sigong.html", "간판 시공"), ("/qna/oebyeok-paint.html", "외벽 페인트")]),
  ("seonban", "선반·집기", "벽 선반·진열 집기", ["벽 진열은 바탕 합판이나 각재에 브라켓을 고정합니다.", "같은 크기 선반판은 재단표로 반복 재단합니다.", "무거운 진열은 선반 두께와 받침 간격을 넉넉히 잡습니다."],
