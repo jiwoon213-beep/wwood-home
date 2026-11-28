@@ -253,7 +253,7 @@ def gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, top, vsplit, P):
         ("방염·불연 자재가 필요한데 있나요?", "다중이용업소 등은 방염·불연 기준이 적용될 수 있습니다. 필요한 성능(방염 합판, 방화 석고보드 등)과 성적서가 필요한지 먼저 말씀해 주시면 해당 품목 재고와 서류를 확인해 드립니다."),
         ("매장에서 실물을 볼 수 있나요?", f"대전 유성 매장(3000평)에 합판·MDF·석고보드·몰딩·도어·필름·루바를 쌓아 두고 있습니다. 영업시간: {HOURS}."),
     ]
-    QX = {'bbq': 'gogitjip-interior', 'pub': 'suljip-interior', 'gym': 'pilates-interior-badak', 'karaoke': 'noraebang-interior', 'flower': 'kkotjip-interior', 'snack': 'bunsik-interior', 'butcher': 'jeongyuk-interior', 'dental': 'hanuiwon-interior', 'nail': 'nailshop-interior', 'office': 'shared-office-interior', 'bakery': 'bakery-interior', 'pharmacy': 'yakguk-interior', 'chicken': 'chikin-interior'}
+    QX = {'restaurant': 'sikdang-kanmagi', 'bbq': 'gogitjip-interior', 'pub': 'suljip-interior', 'gym': 'pilates-interior-badak', 'karaoke': 'noraebang-interior', 'flower': 'kkotjip-interior', 'snack': 'bunsik-interior', 'butcher': 'jeongyuk-interior', 'dental': 'hanuiwon-interior', 'nail': 'nailshop-interior', 'office': 'shared-office-interior', 'bakery': 'bakery-interior', 'pharmacy': 'yakguk-interior', 'chicken': 'chikin-interior'}
     out = []
     for slug, nm, alias, work, mats, tips, links in BIZ:
         if slug in QX: links = list(links) + [(f'/qna/{QX[slug]}.html', f'{nm} 인테리어 자재·공정')]
@@ -339,7 +339,7 @@ GJ = [
  ("hwajangsil", "화장실", "매장 화장실 리모델링", ["방수층을 먼저 확인·보수합니다.", "벽은 방수 석고보드·타일, 천장은 물에 강한 자재로 마감합니다.", "문은 습기에 강한 도어로 하고 문턱 높이를 맞춥니다."],
   ["tile", "gypsum", "door"], [("/qna/yoksil-cheonjang.html", "욕실 천장"), ("/qna/hwajangsil-munteul-gyoche.html", "화장실 문틀 교체"), ("/qna/hwajangsil-bangeum.html", "화장실 방음")]),
  ("dancha", "단차·계단", "매장 입구 단차·내부 계단·단상", ["단차 높이와 쓰는 사람 동선을 확인합니다.", "구조재로 틀을 짜고 합판·마루로 덮습니다.", "모서리는 미끄럼 방지 마감과 몰딩으로 정리합니다."],
-  ["gujo", "hapan", "maru", "molding"], [("/qna/hyeongwan-dancha.html", "단차 만들기"), ("/qna/gyedan-nonseulip.html", "계단 미끄럼 방지"), ("/qna/munteok-gyeongsaro.html", "경사로")]),
+  ["gujo", "hapan", "maru", "molding"], [("/qna/hyeongwan-dancha.html", "단차 만들기"), ("/qna/gyedan-nonseulip.html", "계단 미끄럼 방지"), ("/qna/munteok-gyeongsaro.html", "경사로"), ('/qna/maejang-badak-mulmagi.html', '출입구 물막이턱')]),
  ("facade", "쇼윈도·파사드", "매장 전면 파사드·쇼윈도", ["전면 바탕(각파이프·합판)을 단단히 잡습니다.", "외부 마감은 사이딩·방부목·외부용 패널 중 고릅니다.", "유리면 시트지·간판 위치를 함께 정합니다."],
   ["siding", "bangbu", "hardware"], [("/qna/yurichang-sheetji.html", "유리창 시트지"), ("/qna/ganpan-sigong.html", "간판 시공")]),
  ("baekroom", "창고·백룸", "매장 창고·직원 공간", ["창고 칸막이를 각재+석고나 합판으로 세웁니다.", "선반은 하중을 보고 각재·합판으로 짭니다.", "습기 찬 창고는 환기와 바닥 띄움을 생각합니다."],
@@ -347,17 +347,17 @@ GJ = [
  ("cheolgeo", "철거", "기존 매장 인테리어 철거", ["가벽·천장·바닥재·간판을 어디까지 뜯을지 임대 계약·원상복구 조건으로 정합니다.", "철거 전 전기·설비를 차단하고 남길 배관·배선을 표시합니다.", "폐기물은 성상별로 나눠 처리 업체를 미리 잡습니다."],
   [], [("/geuncheo.html", "현장 근처 폐기물·용달 찾기"), ("/qna/sangga-wonsang-bokgu.html", "상가 원상복구")]),
  ("gabyeok", "가벽·칸막이", "목공 가벽·경량 칸막이", ["바닥·천장에 런너(또는 각재)를 고정하고 스터드를 세웁니다.", "소리를 막을 벽은 사이에 흡음재를 채웁니다.", "석고보드를 한 겹 또는 두 겹 붙이고 이음부를 퍼티로 잡습니다."],
-  ["gypsum", "gujo", "sound"], [("/gabyeok-gyesan.html", "가벽 자재 계산기"), ("/qna/sigma-stud.html", "경량 스터드"), ("/qna/seokgo-myeotjang.html", "석고보드 몇 장")]),
+  ["gypsum", "gujo", "sound"], [("/gabyeok-gyesan.html", "가벽 자재 계산기"), ("/qna/sigma-stud.html", "경량 스터드"), ("/qna/seokgo-myeotjang.html", "석고보드 몇 장"), ('/qna/samusil-gabyeok-self.html', '사무실 가벽 셀프'), ('/qna/samusil-gabyeok-vs-partition.html', '가벽 vs 파티션'), ('/qna/sikdang-kanmagi.html', '식당 칸막이')]),
  ("cheonjang", "천장", "석고 천장·루바 천장·흡음 천장", ["천장 각재(또는 경량 천장틀)로 틀을 짜고 조명·에어컨 자리를 미리 냅니다.", "석고보드·루바·흡음재 중 매장 콘셉트에 맞는 마감을 붙입니다.", "노출 천장은 기존 구조물을 정리하고 도장합니다."],
-  ["gypsum", "hinoki", "sound"], [("/qna/cheonjang-mokgong-bangbeop.html", "천장 목공 방법"), ("/sigongbeop/rubaa-cheonjang.html", "루바 천장 시공법"), ("/bigyo/heupeum-board.html", "흡음보드 비교")]),
+  ["gypsum", "hinoki", "sound"], [("/qna/cheonjang-mokgong-bangbeop.html", "천장 목공 방법"), ("/sigongbeop/rubaa-cheonjang.html", "루바 천장 시공법"), ("/bigyo/heupeum-board.html", "흡음보드 비교"), ('/qna/sangga-cheonjang-mokgong.html', '상가 천장 목공'), ('/qna/sangga-cheonjang-tex.html', '상가 천장 텍스 교체')]),
  ("counter", "카운터·바", "카운터·바 테이블·진열대 제작", ["카운터 몸통은 각재·합판으로 짜고 겉은 MDF·필름이나 타일로 마감합니다.", "상판은 물·열을 생각해 집성판·인조석 등으로 고릅니다.", "포스·전원 배선 구멍을 제작 단계에서 냅니다."],
   ["jipseong", "mdf", "hapan"], [("/qna/counter-jejak.html", "카운터 제작"), ("/qna/bar-table.html", "바 테이블"), ("/cut.html", "재단표 만들기")]),
  ("byeok", "벽 마감", "필름·도장·템바보드·타일 벽", ["벽 바탕을 평평하게 퍼티하고 샌딩합니다.", "필름은 프라이머 후 붙이고, 도장은 하도·상도 순서로 칠합니다.", "템바보드·패널은 본드와 타카로 고정하고 모서리를 몰딩으로 마감합니다."],
   ["film", "molding", "tile"], [("/qna/film-sunseo.html", "필름 시공 순서"), ("/qna/tempa-myeotjang.html", "템바보드 몇 장"), ("/qna/seokgo-putty.html", "석고 퍼티")]),
  ("badak", "바닥", "데코타일·타일·마루 바닥", ["기존 바닥 수평과 들뜸을 확인하고 필요하면 레벨링합니다.", "데코타일은 기준선을 잡고 본드로 붙이며, 타일은 접착제·줄눈까지 마감합니다.", "주방·물 쓰는 구역은 물에 강한 바닥재를 씁니다."],
-  ["tile", "maru"], [("/qna/decotile-sijakjeom.html", "데코타일 시작점"), ("/qna/tile-jeopchakje.html", "타일 접착제"), ("/dobae-jangpan.html", "바닥재 계산기")]),
+  ["tile", "maru"], [("/qna/decotile-sijakjeom.html", "데코타일 시작점"), ("/qna/tile-jeopchakje.html", "타일 접착제"), ("/dobae-jangpan.html", "바닥재 계산기"), ('/qna/maejang-badak-bigyo.html', '매장 바닥 비교'), ('/qna/maejang-badak-sigong.html', '매장 바닥 시공'), ('/qna/maejang-badak-mulmagi.html', '매장 바닥 물 막기')]),
  ("mun", "문·도어", "매장 출입문·방화문·실내 도어", ["문틀 크기와 열림 방향을 실측합니다.", "방화구획·피난 관련 문은 정해진 성능의 문을 씁니다.", "도어클로저·손잡이·잠금장치를 함께 맞춥니다."],
-  ["door", "hardware"], [("/qna/door-silcheuk.html", "문 실측"), ("/qna/banghwamun.html", "방화문"), ("/qna/door-closer.html", "도어클로저")]),
+  ["door", "hardware"], [("/qna/door-silcheuk.html", "문 실측"), ("/qna/banghwamun.html", "방화문"), ("/qna/door-closer.html", "도어클로저"), ('/qna/sikdang-kanmagi-mun.html', '식당 칸막이 문')]),
  ("jubang", "주방", "매장 주방 벽·천장", ["주방 벽은 방수·불연 성능을 보고 석고보드·타일을 고릅니다.", "후드·덕트 자리와 배관 위치를 목공 전에 확정합니다.", "벽과 바닥이 만나는 곳은 실리콘으로 막아 물이 스며들지 않게 합니다."],
   ["gypsum", "tile"], [("/qna/jubang-byeok.html", "주방 벽"), ("/qna/bangsu-seokgo.html", "방수 석고보드"), ("/qna/banghwa-seokgo.html", "방화 석고보드")]),
  ("ganpan", "간판·외부", "간판 바탕·외부 마감", ["간판을 달 외벽 바탕(각파이프·합판)을 단단히 고정합니다.", "외부 목재는 방부목·외부용 마감으로 비를 막습니다.", "어닝·캐노피 등 외부 구조물은 건물 관리 규정을 먼저 확인합니다."],
