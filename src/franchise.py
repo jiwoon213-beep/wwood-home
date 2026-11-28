@@ -249,8 +249,10 @@ def gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, top, vsplit, P):
         ("방염·불연 자재가 필요한데 있나요?", "다중이용업소 등은 방염·불연 기준이 적용될 수 있습니다. 필요한 성능(방염 합판, 방화 석고보드 등)과 성적서가 필요한지 먼저 말씀해 주시면 해당 품목 재고와 서류를 확인해 드립니다."),
         ("매장에서 실물을 볼 수 있나요?", f"대전 유성 매장(3000평)에 합판·MDF·석고보드·몰딩·도어·필름·루바를 쌓아 두고 있습니다. 영업시간: {HOURS}."),
     ]
+    QX = {'bbq': 'gogitjip-interior', 'pub': 'suljip-interior', 'gym': 'pilates-interior-badak', 'karaoke': 'noraebang-interior', 'flower': 'kkotjip-interior', 'snack': 'bunsik-interior', 'butcher': 'jeongyuk-interior', 'dental': 'hanuiwon-interior', 'nail': 'nailshop-interior', 'office': 'shared-office-interior', 'bakery': 'bakery-interior', 'pharmacy': 'yakguk-interior', 'chicken': 'chikin-interior'}
     out = []
     for slug, nm, alias, work, mats, tips, links in BIZ:
+        if slug in QX: links = list(links) + [(f'/qna/{QX[slug]}.html', f'{nm} 인테리어 자재·공정')]
         mlinks = "".join(f'<a href="/jajae/{m}.html">{E(JN.get(m, m))}</a>' for m in mats)
         ilinks = "".join(f'<a href="{u}">{E(t)}</a>' for u, t in links)
         mail = "mailto:" + EMAIL + "?subject=" + quote(f"{nm} 매장 인테리어 자재 견적 요청") + "&body=" + quote("업체명·담당자:\n현장 주소:\n품목·규격·수량:\n재단 크기(있으면):\n희망 입고일:\n")
