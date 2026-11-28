@@ -425,7 +425,7 @@ def gen_city(page, E, CTA, faqslide, TEL, ptab):
                 f'<div class="row"><a class="b r" href="/franchise/balju.html">자재 발주서 쓰기</a><a class="b d" href="tel:{tel}">전화 {TEL}</a><a class="b o" href="/cut.html">재단표 만들기</a></div>'
                 f'<h2 class="gt">이렇게 받습니다</h2><ol class="gtip"><li>발주서나 전화로 품목·규격·수량·재단 크기·{E(nm)} 현장 주소를 알려 주세요.</li><li>자재값과 {E(nm)}까지 운임을 먼저 알려 드립니다.</li><li>입금 확인 후 재단·상차해 출고합니다.</li></ol>'
                 f'<h2 class="gt">자주 쓰는 자재 기준가</h2>{ptab}<p class="gs">매장 소매 기준가(부가세 별도) · 운임 별도</p>'
-                f'<h2 class="gt">업종별·공정별 자재</h2><div class="qk">' + "".join(f'<a href="/franchise/{b[0]}.html">{E(b[1])}</a>' for b in BIZ[:16]) + "".join(f'<a href="/franchise/g-{g[0]}.html">{E(g[1])}</a>' for g in GJ[:6]) + '</div>'
+                f'<h2 class="gt">업종별·공정별 자재</h2><div class="qk">' + "".join(f'<a href="/franchise/{b[0]}.html">{E(b[1])}</a>' for b in BIZ[:16]) + "".join(f'<a href="/franchise/g-{g[0]}.html">{E(g[1])}</a>' for g in GJ[:6]) + '<a href="/qna/interior-jajae-bolsu-inneun-got.html">자재 실물 볼 수 있는 곳</a><a href="/qna/interior-jajae-hoesa.html">자재 거래처 고르기</a></div>'
                 + (f'<p class="small"><a href="/franchise/r-{rg}.html">{E(RN.get(rg, ""))} 체인점 자재 배송</a> · <a href="/jeonguk/{rg}.html">{E(RN.get(rg, ""))} 목재 배송 안내</a></p>' if rg in RN else "") + '</section>'
                 + f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>'
                 + '<section class="wrap sec"><p class="small">다른 도시: ' + " · ".join(f'<a href="/franchise/c-{c[0]}.html">{E(c[1])}</a>' for c in CITY if c[0] != slug) + '</p></section>' + CTA)
