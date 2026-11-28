@@ -224,6 +224,10 @@ PX = [("석고보드 일반 9.5T 3×6", r"석고-일반 3\*6 @ 9\.5T$"), ("방�
 
 INFO = [("/franchise/balju.html", "자재 발주서(무료 양식)"), ("/qna/maejang-banbok-jaedan.html", "여러 매장 같은 규격 재단"), ("/qna/maejang-bangyeom.html", "매장 방염 자재 확인"), ("/qna/sangga-interior-jajae-list.html", "상가 인테리어 자재 목록"), ("/qna/franchise-interior-biyong-gusung.html", "인테리어 견적 항목"), ("/qna/franchise-interior-jugi.html", "프랜차이즈 리뉴얼 주기"), ("/qna/sangga-wonsang-bokgu.html", "상가 원상복구"), ("/qna/maejang-interior-sunseo.html", "매장 인테리어 순서"), ("/qna/maejang-interior-gigan.html", "공사 기간 줄이기"), ("/qna/gage-interior-gyeonjeok-bogi.html", "견적 보는 법"), ("/qna/mokgong-jajae-ssage.html", "목공 자재 아끼기"), ("/qna/interior-jajae-showroom.html", "자재 쇼룸"), ("/qna/interior-gongjeongpyo.html", "인테리어 공정표"), ("/qna/interior-silcheuk-checklist.html", "실측 체크리스트"), ("/qna/interior-gyeonjeokseo-yangsik.html", "견적서 양식"), ("/qna/interior-gyeyakseo-teugyak.html", "계약서 특약"), ("/qna/sangga-gabyeok-jongryu.html", "상가 가벽 종류")]
 
+VRX = {"gypsum": "석고|가벽|천장", "mdf": "MDF|수납|선반", "film": "필름|시트", "jipseong": "집성|상판|테이블|카운터", "hapan": "합판", "molding": "몰딩|걸레받이",
+       "tile": "타일", "sound": "방음|흡음", "maru": "마루|데코타일", "hinoki": "루바|편백|히노끼", "gujo": "각재|구조목|다루끼|가벽", "door": "중문|방문|도어|문틀",
+       "hardware": "철물|브라켓|앙카", "insul": "단열", "bangbu": "방부|데크", "hapdeck": "합성|데크", "stain": "스테인|오일", "siding": "사이딩"}
+
 JN = {"hapan": "합판", "jipseong": "집성판", "gypsum": "석고보드", "molding": "몰딩", "film": "인테리어 필름", "hinoki": "편백·루바", "mdf": "MDF", "tile": "타일",
       "gujo": "구조재·각재", "maru": "마루", "sound": "흡음·방음재", "hardware": "철물·부속", "insul": "단열재", "door": "도어·문틀", "bangbu": "방부목", "hapdeck": "합성목 데크", "stain": "스테인·오일", "siding": "사이딩"}
 
@@ -257,6 +261,20 @@ def gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, top, vsplit, P):
         ilinks = "".join(f'<a href="{u}">{E(t)}</a>' for u, t in links)
         mail = "mailto:" + EMAIL + "?subject=" + quote(f"{nm} 매장 인테리어 자재 견적 요청") + "&body=" + quote("업체명·담당자:\n현장 주소:\n품목·규격·수량:\n재단 크기(있으면):\n희망 입고일:\n")
         fq = [(f"{nm} 인테리어에 많이 쓰는 자재는 무엇인가요?", f"{nm} 매장은 주로 {work} 공사를 합니다. 그래서 {', '.join(JN.get(m, m) for m in mats)}를 많이 씁니다.")] + common_fq
+        _rx = re.compile('|'.join(VRX[m] for m in mats if m in VRX) or '자재')
+        _vs = top(lambda v: v.get('type') != 'S' and _rx.search(v['title']), 6)
+        _grx = {"cafe": "^cafe-", "brunch": "^cafe-", "bakery": "^cafe-", "coffeetakeout": "^cafe-", "bookcafe": "^cafe-", "winebar": "^cafe-", "pub": "^cafe-", "restaurant": "^cafe-",
+                "showroom": "^store-", "stationery": "^store-", "unmanned": "^store-", "phone": "^store-", "optical": "^store-", "pharmacy": "^store-", "flower": "^store-",
+                "office": "office", "realestate": "office", "church": "^cafe-wood-stage"}.get(slug)
+        _gs = ""
+        if _grx:
+            try:
+                import gonggan_data as _GD
+                _sc = [x for x in _GD.SCENES if re.search(_grx, x[0])][:4]
+                if _sc: _gs = '<section class="wrap sec"><h2>' + E(nm) + ' 공간 사진 — 자재 눌러 보기</h2><div class="gig">' + "".join(f'<a class="gi" href="/gonggan/{x[0]}.html"><img src="{x[2]}" alt="{E(x[1])}" loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px"><small>{E(x[1].split(" — ")[0])}</small></a>' for x in _sc) + '</div></section>'
+            except Exception:
+                _gs = ""
+        _vsec = (f'<section class="wrap sec"><h2>{E(nm)} 공사에 도움 되는 시공 영상</h2>{vsplit(_vs, "h3")}</section>') if _vs else ''
         body = (f'<section class="wrap sec gg"><p class="crumb"><a href="/franchise/">체인점 인테리어 자재</a> › {E(nm)}</p>'
                 f'<h1>{E(nm)} 인테리어 자재 — 프랜차이즈·체인점 매장 공사 업체용 재단·현장 배송</h1>'
                 f'<p class="glead">{E(nm)}({E(alias)}) 매장 인테리어 공사에 들어가는 합판·MDF·석고보드·각재·몰딩·필름·루바·흡음재를 대전 유성 영진종합목재(월드건축자재) 3000평 매장에서 원하는 크기로 재단해 전국 현장으로 보내 드립니다. 같은 규격 매장을 여러 곳 하는 체인점 공사는 재단표 하나로 반복 납품하기 좋습니다.</p>'
@@ -268,6 +286,7 @@ def gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, top, vsplit, P):
                 f'<h2 class="gt">납품 순서</h2><ol class="gtip"><li>도면·재단표나 품목·규격·수량을 전화·메일로 보내 주세요.</li><li>자재값과 현장까지 운임을 먼저 알려 드립니다.</li><li>입금 확인 후 재단·상차해 현장으로 출고합니다.</li><li>같은 매장 규격이면 다음 현장부터 재단표를 그대로 씁니다.</li></ol>'
                 '<h2 class="gt">공정별 자재</h2><div class="qk">' + "".join(f'<a href="/franchise/g-{g[0]}.html">{E(g[1])}</a>' for g in GJ) + '</div>'
                 f'<h2 class="gt">관련 정보</h2><div class="qk">{ilinks}' + "".join(f'<a href="{u}">{E(t)}</a>' for u, t in INFO) + '<a href="/gonggan/">공간 사진</a><a href="/sigongbeop/">자재 시공법</a><a href="/calc.html">자재 계산기</a></div></section>'
+                + _gs + _vsec
                 + f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>'
                 + f'<section class="wrap sec"><p class="small">다른 업종: ' + " · ".join(f'<a href="/franchise/{b[0]}.html">{E(b[1])}</a>' for b in BIZ if b[0] != slug) + '</p>'
                 + (f'<p class="small">지역별 현장 배송: ' + " · ".join(f'<a href="/franchise/r-{r[0]}.html">{E(r[1])}</a>' for r in REG) + '</p>' if REG else "") + f'</section>{CTA}')
