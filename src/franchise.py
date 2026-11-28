@@ -303,7 +303,9 @@ def gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, top, vsplit, P):
                 f'<p class="glead">{E(rnm)}({E(cities)})에서 카페·음식점·학원·병원·편의점 등 체인점 매장 인테리어 공사를 하는 업체에 합판·MDF·석고보드·각재·몰딩·필름·흡음재를 대전 3000평 매장에서 재단해 {"배편" if jeju else "용달"}로 보내 드립니다.</p>'
                 f'<div class="row"><a class="b d" href="tel:{tel}">전화 {TEL}</a><a class="b o" href="/cut.html">재단표 만들기</a><a class="b o" href="/jeonguk/{rslug}.html">{E(rnm)} 배송 안내</a></div>'
                 f'<h2 class="gt">업종별 자재 안내</h2><div class="qk">' + "".join(f'<a href="/franchise/{b[0]}.html">{E(b[1])}</a>' for b in BIZ) + '</div>'
-                f'<h2 class="gt">자주 쓰는 자재 기준가</h2>{ptab}<p class="gs">소매 기준가(부가세 별도) · 운임 별도</p></section>'
+                + ('<h2 class="gt">' + E(rnm) + ' 도시별 안내</h2><div class="qk">' + "".join(f'<a href="/franchise/c-{c[0]}.html">{E(c[1])} 인테리어 자재</a>' for c in CITY if c[2] == rslug) + '</div>' if any(c[2] == rslug for c in CITY) else '')
+                + '<h2 class="gt">공정별 자재</h2><div class="qk">' + "".join(f'<a href="/franchise/g-{g[0]}.html">{E(g[1])}</a>' for g in GJ) + '</div>'
+                + f'<h2 class="gt">자주 쓰는 자재 기준가</h2>{ptab}<p class="gs">소매 기준가(부가세 별도) · 운임 별도</p></section>'
                 + f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>'
                 + f'<section class="wrap sec"><p class="small">다른 지역: ' + " · ".join(f'<a href="/franchise/r-{r[0]}.html">{E(r[1])}</a>' for r in REG if r[0] != rslug) + f'</p></section>{CTA}')
         ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}
