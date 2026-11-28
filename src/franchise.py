@@ -222,7 +222,7 @@ PX = [("석고보드 일반 9.5T 3×6", r"석고-일반 3\*6 @ 9\.5T$"), ("방�
       ("MDF 9mm 4×8", r"MDF 4\*8 @ 9mm$"), ("MDF 18mm 4×8", r"MDF 4\*8 @18mm"), ("합판 12mm 내수 4×8", r"4\*8 @12mm\(내수/A급\)"),
       ("구조재 2×4 12자", r"Ⅱ 2\* 4\*12ft"), ("흡음보드 오크 라인 9T 1200×2400", r"흡음 오크 라인@9T\*1200\*2400")]
 
-INFO = [("/qna/maejang-banbok-jaedan.html", "여러 매장 같은 규격 재단"), ("/qna/maejang-bangyeom.html", "매장 방염 자재 확인"), ("/qna/sangga-interior-jajae-list.html", "상가 인테리어 자재 목록"), ("/qna/franchise-interior-biyong-gusung.html", "인테리어 견적 항목"), ("/qna/franchise-interior-jugi.html", "프랜차이즈 리뉴얼 주기"), ("/qna/sangga-wonsang-bokgu.html", "상가 원상복구"), ("/qna/maejang-interior-sunseo.html", "매장 인테리어 순서"), ("/qna/maejang-interior-gigan.html", "공사 기간 줄이기"), ("/qna/gage-interior-gyeonjeok-bogi.html", "견적 보는 법"), ("/qna/mokgong-jajae-ssage.html", "목공 자재 아끼기"), ("/qna/interior-jajae-showroom.html", "자재 쇼룸"), ("/qna/interior-gongjeongpyo.html", "인테리어 공정표"), ("/qna/interior-silcheuk-checklist.html", "실측 체크리스트"), ("/qna/interior-gyeonjeokseo-yangsik.html", "견적서 양식"), ("/qna/interior-gyeyakseo-teugyak.html", "계약서 특약"), ("/qna/sangga-gabyeok-jongryu.html", "상가 가벽 종류")]
+INFO = [("/franchise/balju.html", "자재 발주서(무료 양식)"), ("/qna/maejang-banbok-jaedan.html", "여러 매장 같은 규격 재단"), ("/qna/maejang-bangyeom.html", "매장 방염 자재 확인"), ("/qna/sangga-interior-jajae-list.html", "상가 인테리어 자재 목록"), ("/qna/franchise-interior-biyong-gusung.html", "인테리어 견적 항목"), ("/qna/franchise-interior-jugi.html", "프랜차이즈 리뉴얼 주기"), ("/qna/sangga-wonsang-bokgu.html", "상가 원상복구"), ("/qna/maejang-interior-sunseo.html", "매장 인테리어 순서"), ("/qna/maejang-interior-gigan.html", "공사 기간 줄이기"), ("/qna/gage-interior-gyeonjeok-bogi.html", "견적 보는 법"), ("/qna/mokgong-jajae-ssage.html", "목공 자재 아끼기"), ("/qna/interior-jajae-showroom.html", "자재 쇼룸"), ("/qna/interior-gongjeongpyo.html", "인테리어 공정표"), ("/qna/interior-silcheuk-checklist.html", "실측 체크리스트"), ("/qna/interior-gyeonjeokseo-yangsik.html", "견적서 양식"), ("/qna/interior-gyeyakseo-teugyak.html", "계약서 특약"), ("/qna/sangga-gabyeok-jongryu.html", "상가 가벽 종류")]
 
 JN = {"hapan": "합판", "jipseong": "집성판", "gypsum": "석고보드", "molding": "몰딩", "film": "인테리어 필름", "hinoki": "편백·루바", "mdf": "MDF", "tile": "타일",
       "gujo": "구조재·각재", "maru": "마루", "sound": "흡음·방음재", "hardware": "철물·부속", "insul": "단열재", "door": "도어·문틀", "bangbu": "방부목", "hapdeck": "합성목 데크", "stain": "스테인·오일", "siding": "사이딩"}
@@ -305,6 +305,7 @@ def gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, top, vsplit, P):
          + f'<h2 class="gt">자주 쓰는 자재 기준가</h2>{ptab}<p class="gs">매장 소매 기준가(부가세 별도) · 운임 별도 · 사업자는 도매회원 가입 후 회원가</p></section>'
          f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>{CTA}', "", ld)
     gen_gj(page, E, CTA, faqslide, TEL)
+    gen_balju(page, E, CTA, TEL, EMAIL)
     return out
 
 
@@ -365,3 +366,27 @@ def gen_gj(page, E, CTA, faqslide, TEL):
         ld = {"@context": "https://schema.org", "@type": "HowTo", "name": f"상가·매장 {nm} 공사 순서", "step": [{"@type": "HowToStep", "text": s} for s in steps]}
         page(f"franchise/g-{slug}.html", f"상가 {nm} 공사 자재 — 매장 인테리어 {full} 순서·재단 납품 | 영진목재",
              f"체인점·상가 매장 인테리어 {full} 공정의 순서와 필요한 자재. 대전 3000평 매장에서 재단해 전국 현장 배송(운임 견적). {TEL}", body, "", ld)
+
+
+def gen_balju(page, E, CTA, TEL, EMAIL):
+    """업체용 자재 발주서 — 품목 줄을 넣고 메일 보내기·인쇄(서버 없이 이 화면에서만)."""
+    tel = TEL.replace("-", "")
+    body = ('<section class="wrap sec gg"><p class="crumb"><a href="/franchise/">체인점 인테리어 자재</a> › 자재 발주서</p>'
+            '<h1>인테리어 자재 발주서 — 업체용 무료 양식(메일 보내기·인쇄)</h1>'
+            '<p class="glead">매장·상가 인테리어 현장에 필요한 자재를 줄마다 적고 <b>메일로 보내기</b>를 누르면 영진종합목재(월드건축자재)로 견적 요청 메일이 만들어집니다. 인쇄해서 현장 발주서로 써도 됩니다. 적은 내용은 이 화면에만 있고 어디에도 저장되지 않습니다.</p>'
+            '<div class="bj"><div class="bjh"><label>업체명·담당자 <input id="bjc" placeholder="예: ○○인테리어 홍길동"></label><label>현장 주소 <input id="bja" placeholder="예: 서울 ○○구 ○○로"></label><label>희망 입고일 <input id="bjd" placeholder="예: 12월 5일 오전"></label></div>'
+            '<table class="rt" id="bjt"><thead><tr><th>품목</th><th>규격(두께·크기)</th><th>수량</th><th>재단 크기(있으면)</th></tr></thead><tbody></tbody></table>'
+            '<div class="row"><button class="b o" type="button" id="bjadd">줄 추가</button><button class="b r" type="button" id="bjmail">메일로 보내기</button><button class="b o" type="button" onclick="print()">인쇄</button>'
+            f'<a class="b d" href="tel:{tel}">전화 {TEL}</a></div>'
+            '<p class="gs">메일을 보낸 뒤 꼭 매장(' + TEL + ')에 전화해 주세요. 자재값과 운임을 먼저 알려 드리고, 입금 확인 후 재단·출고합니다. 사업자는 도매회원(wwood.kr) 가입 후 회원가로 거래합니다.</p></div>'
+            '<h2 class="gt">자주 쓰는 품목 예시</h2><p>석고보드 일반 9.5T 3×6 · 방수 석고보드 9.5T · 다루끼 1.0×1.0 12자 · 구조재 2×4 12자 · MDF 9·18mm 4×8 · 내수합판 12mm 4×8 · 인테리어 필름 · 몰딩 · 템바보드 · 흡음보드</p>'
+            '<div class="qk"><a href="/cut.html">재단표 만들기</a><a href="/calc.html">자재 계산기</a><a href="/price.html">기준가</a><a href="/franchise/">업종별 자재</a><a href="/dome.html">도매회원</a></div></section>'
+            '<style>.bjh{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:10px 0}.bjh label{display:flex;flex-direction:column;font-weight:700;gap:4px}.bj input{font-size:17px;padding:10px;border:1px solid #ccc;border-radius:8px;width:100%;box-sizing:border-box}#bjt td{padding:4px}@media print{header,footer,.row,.qk,nav{display:none!important}}</style>'
+            '<script>(function(){var tb=document.querySelector("#bjt tbody");function add(){var tr=document.createElement("tr");for(var i=0;i<4;i++){var td=document.createElement("td"),inp=document.createElement("input");inp.placeholder=["석고보드","9.5T 3×6","20장","—"][i];td.appendChild(inp);tr.appendChild(td)}tb.appendChild(tr)}for(var k=0;k<6;k++)add();document.getElementById("bjadd").onclick=add;'
+            'document.getElementById("bjmail").onclick=function(){var v=function(id){return document.getElementById(id).value.trim()};var L=[];[].forEach.call(tb.rows,function(r){var c=[].map.call(r.querySelectorAll("input"),function(x){return x.value.trim()});if(c.join(""))L.push("- "+c[0]+" / "+c[1]+" / "+c[2]+(c[3]?" / 재단 "+c[3]:""))});'
+            'var b="업체·담당: "+v("bjc")+"\\n현장 주소: "+v("bja")+"\\n희망 입고일: "+v("bjd")+"\\n\\n[품목 / 규격 / 수량 / 재단]\\n"+L.join("\\n")+"\\n\\n자재값·운임 견적 부탁드립니다.";'
+            'location.href="mailto:' + EMAIL + '?subject="+encodeURIComponent("[자재 발주] "+(v("bjc")||"인테리어 현장"))+"&body="+encodeURIComponent(b)}})();</script>'
+            + CTA)
+    ld = {"@context": "https://schema.org", "@type": "WebApplication", "name": "인테리어 자재 발주서", "applicationCategory": "BusinessApplication", "operatingSystem": "Web", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}}
+    page("franchise/balju.html", "인테리어 자재 발주서 양식 — 업체용 무료, 메일로 바로 견적 요청 | 영진목재",
+         "매장·상가 인테리어 현장 자재를 줄마다 적고 메일로 보내기·인쇄. 석고보드·각재·합판·MDF·필름 견적 요청과 재단·전국 현장 배송. 업체용 무료 자재 발주서.", body, "", ld)
