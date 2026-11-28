@@ -896,3 +896,32 @@ SCENES += [
   [(68, 45, "블랙 도장 나뭇결 판 벽", "woodwall", "결이 굵은 판을 세로로 붙이고 검은색으로 칠했습니다. 빛을 받으면 결이 도드라집니다.", "/qna/hapan-paint.html", "합판 페인트", [("/qna/misong-hapan.html", "미송합판"), ("/qna/byeok-hapan-butigi.html", "벽에 합판 붙이기"), ("/sigongbeop/ruba-byeok.html", "루바 벽 시공법")]),
    (20, 35, "우드 블라인드", "blind", "창에 나무 무늬 블라인드를 달아 검은 벽과 톤을 맞췄습니다.", "/yeongyeol/blind.html", "블라인드 시공 연결", [("/qna/curtain-rail.html", "커튼 레일")])]),
 ]
+
+# 영림 공간 연출 사진 4장 추가(2026-11-28)
+SCENES += [
+ ("milky-breeze-marble-wall", "밀키브리즈 — 흰 대리석 무늬 벽과 큰 창 거실 둘러보기", YL + "260fcfe7-f948-48ad-be79-3ac69c45011f.png", "사진: 영림",
+  "흰 바탕에 회색 결이 흐르는 대리석 무늬 판으로 벽 한 면을 덮고, 큰 창 옆에 흰 의자와 작은 탁자를 둔 거실입니다.",
+  [(55, 30, "밀키브리즈", "wall", "흰 바탕에 회색 결이 흐르는 대리석 무늬 판을 벽 한 면에 붙였습니다.", "/younglim/p/2439.html", "제품 보기", [("/younglim/wall.html", "영림 월판넬 전체"), ("/qna/injo-daeriseok.html", "인조 대리석"), ("/qna/wallpanel-vs-tempa.html", "월판넬 vs 템바보드")]),
+   (40, 70, "흰 라운지 의자", "furniture", "크롬 다리에 흰 쿠션을 얹은 낮은 의자입니다.", "/bigyo/gagu-nopi.html", "가구 높이", [("/mandeul/benchi.html", "벤치·의자 만들기")]),
+   (13, 76, "작은 사이드 테이블", "furniture", "의자 옆에 가는 다리의 작은 탁자를 두었습니다.", "/mandeul/saideu.html", "사이드 테이블 만들기", [("/qna/table-dari.html", "테이블 다리")]),
+   (4, 35, "큰 통창", "blind", "벽 끝을 바닥까지 내려오는 큰 유리창으로 열었습니다.", "/qna/curtain-rail.html", "커튼 레일", [("/yeongyeol/blind.html", "커튼·블라인드 시공 연결")])]),
+ ("blush-oak-maru-window", "YMP-201 블러시 오크 — 밝은 오크 마루와 커튼 창가 둘러보기", YL + "1bdf515b-f49d-4003-83d6-5a74fffa0548.jpg", "사진: 영림",
+  "밝은 오크 결 마루를 창가까지 깔고, 바닥까지 내린 커튼 앞에 나무 의자 하나를 둔 방입니다.",
+  [(60, 80, "YMP-201 블러시 오크", "maru", "밝은 오크 나뭇결 마루를 창가까지 길게 깔았습니다.", "/younglim/p/3460.html", "제품 보기", [("/younglim/maru.html", "영림 마루 전체"), ("/qna/badakjae-goreugi.html", "바닥재 고르기"), ("/qna/maru-banghyang.html", "마루 까는 방향")]),
+   (45, 38, "나무 라운지 의자", "furniture", "나무 틀에 엮은 등받이를 단 낮은 의자입니다.", "/bigyo/gagu-nopi.html", "가구 높이", [("/mandeul/benchi.html", "벤치·의자 만들기")]),
+   (85, 22, "바닥까지 내린 커튼", "blind", "창 전체를 바닥까지 닿는 얇은 흰 커튼으로 가렸습니다.", "/qna/curtain-rail.html", "커튼 레일", [("/qna/curtain-rail-vs-bong.html", "커튼 레일 vs 봉")]),
+   (15, 52, "벽에 붙인 흰 낮은 수납", "cabinet", "벽을 따라 흰 낮은 수납장을 짜 넣었습니다.", "/qna/geosil-sunap-bench.html", "거실 수납 벤치", [("/qna/butbakijang-self.html", "붙박이장 셀프")])]),
+ ("gemma-wood-sliding-jungmun", "젬마 — 나무 프레임 세로살 유리 중문 둘러보기", YL + "7e2ba0a6-3e2a-4032-a31a-4de305941f0e.jpg", "사진: 영림",
+  "나무색 프레임에 가는 세로살과 유리를 넣은 슬라이딩 중문을 달고, 옆에 짙은 나무 장을 둔 공간입니다.",
+  [(47, 48, "젬마", "jungmun", "나무색 프레임 안에 가는 세로살과 유리를 넣은 슬라이딩 중문입니다.", "/younglim/p/1740.html", "제품 보기", [("/younglim/jungmun.html", "영림 슬라이딩 중문 전체"), ("/qna/jungmun-silcheuk.html", "중문 실측"), ("/bigyo/slide-vs-swing-jungmun.html", "중문 방식 비교")]),
+   (91, 40, "짙은 색 벽", "wall", "문 옆 벽을 짙은 갈색으로 마감해 나무 문틀과 대비를 줬습니다.", "/younglim/wall.html", "월판넬 보기", [("/qna/wallpanel-vs-tempa.html", "월판넬 vs 템바보드")]),
+   (9, 75, "짙은 나무 낮은 장", "cabinet", "문 옆에 짙은 나뭇결 낮은 장을 두고 화병을 올렸습니다.", "/mandeul/geosiljang.html", "거실장 만들기", [("/qna/wonmok-geosiljang.html", "원목 거실장")]),
+   (55, 73, "유리 너머 의자", "furniture", "중문 유리 너머로 안쪽 방의 나무 의자가 비칩니다.", "/mandeul/benchi.html", "벤치·의자 만들기", [("/bigyo/gagu-nopi.html", "가구 높이")])]),
+ ("slim-hanger-door-dressroom", "슬림 노출형 행거 도어 — 레일이 보이는 드레스룸 문 둘러보기", YL + "93a1c658-5857-4f0f-928e-e058a69ec02b.jpg", "사진: 영림",
+  "벽 위에 검은 레일을 드러내 달고 짙은 색 문을 옆으로 밀어 여는 드레스룸 입구입니다. 문 안쪽에 옷 거는 봉과 선반이 보입니다.",
+  [(67, 55, "슬림 노출형 행거 도어", "door", "위 레일에 매달려 옆으로 밀어 여는 짙은 색 문입니다.", "/younglim/p/2115.html", "제품 보기", [("/younglim/jungmun-slim.html", "영림 슬림 중문 전체"), ("/qna/sliding-hanger-door.html", "슬라이딩 행거 도어"), ("/qna/dressroom-sliding-door.html", "드레스룸 슬라이딩 도어")]),
+   (58, 18, "노출 행거 레일", "hardware", "문 위에 검은 레일을 그대로 드러내 달았습니다.", "/qna/sliding-door-rail.html", "슬라이딩 도어 레일", [("/qna/sliding-damper.html", "슬라이딩 댐퍼")]),
+   (40, 45, "드레스룸 행거·선반", "cabinet", "문 안쪽에 옷 거는 봉과 선반을 짜 넣었습니다.", "/qna/dressroom.html", "드레스룸", [("/qna/system-hanger.html", "시스템 행거"), ("/qna/dressroom-seonban.html", "드레스룸 선반")]),
+   (10, 78, "짙은 나무 낮은 장", "furniture", "벽 쪽에 짙은 나뭇결 낮은 장을 두었습니다.", "/mandeul/geosiljang.html", "거실장 만들기", [("/qna/wonmok-geosiljang.html", "원목 거실장")]),
+   (60, 95, "나뭇결 바닥", "maru", "중간 톤 나뭇결 바닥을 문 앞까지 깔았습니다.", "/younglim/maru.html", "영림 마루 보기", [("/qna/badakjae-goreugi.html", "바닥재 고르기")])]),
+]
