@@ -955,6 +955,20 @@ for x in (100, 1267, 2433):
 m += [B(0, 19, 959, 3600, 1, 2, "sil")]
 SGM["wainscoting-byeok"] = ("웨인스코팅 몰딩 벽 3.6×2.4m (허리 몰딩 + 액자 6칸)", m, "0:%d|%d:%d|%d:%d|%d:%d" % (n1, n1, n2, n2, n3, n3, len(m)))
 
+_PP = [0, 2311]
+m = [B(x - 105.5, y - 105.5, 0, 300, 300, 100, "conc") for y in _PP for x in _PP]
+m += [B(x - 5, y - 5, 100, 99, 99, 6, "metal") for y in _PP for x in _PP]
+m += [B(x, y, 106, 89, 89, 2300, "bangbu") for y in _PP for x in _PP]
+m += [B(-300, y, 2221, 3000, 38, 185, "bangbu") for y in (-38, 89, 2273, 2400)]
+m += [B(44.5 + k * 462.2 - 19, -300, 2406, 38, 3000, 140, "bangbu") for k in range(6)]
+for x in _PP:
+    for y in _PP:
+        sx = 1 if x == 0 else -1; sy = 1 if y == 0 else -1
+        m += [B((89 + 75 * i) if sx > 0 else (2311 - 75 - 75 * i), y, 1960 + 75 * i, 75, 89, 146, "bangbu") for i in range(5)]
+        m += [B(x, (89 + 75 * i) if sy > 0 else (2311 - 75 - 75 * i), 1960 + 75 * i, 89, 75, 146, "bangbu") for i in range(5)]
+m += [B(-300, -300 + j * 296.2, 2546, 3000, 38, 38, "bangbu") for j in range(11)]
+SGM["bangbu-pagora"] = ("방부목 파고라 2.4×2.4m · 지붕 3.0×3.0m (콘크리트 기초·기둥받침)", m, "0:8|8:16|16:62|62:73")
+
 if __name__ == "__main__":
     root = os.path.dirname(os.path.abspath(__file__))
     od = os.path.join(root, "assets", "mandeul"); os.makedirs(od, exist_ok=True)
