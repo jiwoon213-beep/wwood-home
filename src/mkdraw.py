@@ -923,6 +923,21 @@ def render_steps(slug, boxes, out, title, caps, spec):
     save_c(wmark(img), out, 84)
 
 
+m = [B(0, -100, 0, 3600, 100, 2400, "conc"), B(0, 0, 0, 3600, 10, 2400, "wpaper"), B(0, 10, 958, 3600, 1, 4, "gap")]
+m += [B(x, 10, z, 4, 1, 60, "gap") for x in (100, 1167, 1267, 2333, 2433, 3500) for z in (150, 2240)]
+n1 = len(m)
+m += [B(0, 10, 900, 3600, 9, 60, "white")]
+n2 = len(m)
+def _fr(x, z, w, h):
+    return [B(x, 10, z, w, 9, 30, "white"), B(x, 10, z + h - 30, w, 9, 30, "white"), B(x, 10, z + 30, 30, 9, h - 60, "white"), B(x + w - 30, 10, z + 30, 30, 9, h - 60, "white")]
+for x in (100, 1267, 2433):
+    m += _fr(x, 150, 1067, 650)
+n3 = len(m)
+for x in (100, 1267, 2433):
+    m += _fr(x, 1060, 1067, 1240)
+m += [B(0, 19, 959, 3600, 1, 2, "sil")]
+SGM["wainscoting-byeok"] = ("웨인스코팅 몰딩 벽 3.6×2.4m (허리 몰딩 + 액자 6칸)", m, "0:%d|%d:%d|%d:%d|%d:%d" % (n1, n1, n2, n2, n3, n3, len(m)))
+
 if __name__ == "__main__":
     root = os.path.dirname(os.path.abspath(__file__))
     od = os.path.join(root, "assets", "mandeul"); os.makedirs(od, exist_ok=True)
