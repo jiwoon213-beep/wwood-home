@@ -335,7 +335,7 @@ def gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, top, vsplit, P):
 # 상가·매장 공정별 자재 안내(인테리어 업체용) — /franchise/g-<slug>.html
 GJ = [
  ("bangeum-room", "방음 룸", "상담실·연습실·노래방 방음 룸", ["벽을 이중으로 세우고 사이에 흡음재를 채웁니다.", "차음 석고보드를 겹쳐 붙이고 틈은 실리콘으로 막습니다.", "문은 방음 문이나 틈막이를 달고, 환기 덕트는 소음기를 생각합니다."],
-  ["sound", "gypsum", "insul"], [("/qna/bangeum-gabyeok.html", "방음 가벽"), ("/qna/chaeum-seokgo.html", "차음 석고보드"), ("/qna/bangeum-mun.html", "방음 문")]),
+  ["sound", "gypsum", "insul"], [("/qna/bangeum-gabyeok.html", "방음 가벽"), ("/qna/chaeum-seokgo.html", "차음 석고보드"), ("/qna/bangeum-mun.html", "방음 문"), ('/qna/cafe-soeum-julgi.html', '카페 소음 줄이기')]),
  ("hwajangsil", "화장실", "매장 화장실 리모델링", ["방수층을 먼저 확인·보수합니다.", "벽은 방수 석고보드·타일, 천장은 물에 강한 자재로 마감합니다.", "문은 습기에 강한 도어로 하고 문턱 높이를 맞춥니다."],
   ["tile", "gypsum", "door"], [("/qna/yoksil-cheonjang.html", "욕실 천장"), ("/qna/hwajangsil-munteul-gyoche.html", "화장실 문틀 교체"), ("/qna/hwajangsil-bangeum.html", "화장실 방음")]),
  ("dancha", "단차·계단", "매장 입구 단차·내부 계단·단상", ["단차 높이와 쓰는 사람 동선을 확인합니다.", "구조재로 틀을 짜고 합판·마루로 덮습니다.", "모서리는 미끄럼 방지 마감과 몰딩으로 정리합니다."],
@@ -345,11 +345,11 @@ GJ = [
  ("baekroom", "창고·백룸", "매장 창고·직원 공간", ["창고 칸막이를 각재+석고나 합판으로 세웁니다.", "선반은 하중을 보고 각재·합판으로 짭니다.", "습기 찬 창고는 환기와 바닥 띄움을 생각합니다."],
   ["gujo", "hapan", "gypsum"], [("/qna/changgo-seonban.html", "창고 선반"), ("/qna/changgo-rack.html", "창고 랙")]),
  ("cheolgeo", "철거", "기존 매장 인테리어 철거", ["가벽·천장·바닥재·간판을 어디까지 뜯을지 임대 계약·원상복구 조건으로 정합니다.", "철거 전 전기·설비를 차단하고 남길 배관·배선을 표시합니다.", "폐기물은 성상별로 나눠 처리 업체를 미리 잡습니다."],
-  [], [("/geuncheo.html", "현장 근처 폐기물·용달 찾기"), ("/qna/sangga-wonsang-bokgu.html", "상가 원상복구")]),
+  [], [("/geuncheo.html", "현장 근처 폐기물·용달 찾기"), ("/qna/sangga-wonsang-bokgu.html", "상가 원상복구"), ('/qna/mokjae-pegimul.html', '목재 폐기물 버리기')]),
  ("gabyeok", "가벽·칸막이", "목공 가벽·경량 칸막이", ["바닥·천장에 런너(또는 각재)를 고정하고 스터드를 세웁니다.", "소리를 막을 벽은 사이에 흡음재를 채웁니다.", "석고보드를 한 겹 또는 두 겹 붙이고 이음부를 퍼티로 잡습니다."],
-  ["gypsum", "gujo", "sound"], [("/gabyeok-gyesan.html", "가벽 자재 계산기"), ("/qna/sigma-stud.html", "경량 스터드"), ("/qna/seokgo-myeotjang.html", "석고보드 몇 장"), ('/qna/samusil-gabyeok-self.html', '사무실 가벽 셀프'), ('/qna/samusil-gabyeok-vs-partition.html', '가벽 vs 파티션'), ('/qna/sikdang-kanmagi.html', '식당 칸막이'), ('/qna/hagwon-interior-jajae.html', '학원 강의실 나누기')]),
+  ["gypsum", "gujo", "sound"], [("/gabyeok-gyesan.html", "가벽 자재 계산기"), ("/qna/sigma-stud.html", "경량 스터드"), ("/qna/seokgo-myeotjang.html", "석고보드 몇 장"), ('/qna/samusil-gabyeok-self.html', '사무실 가벽 셀프'), ('/qna/samusil-gabyeok-vs-partition.html', '가벽 vs 파티션'), ('/qna/sikdang-kanmagi.html', '식당 칸막이'), ('/qna/hagwon-interior-jajae.html', '학원 강의실 나누기'), ('/qna/gyeongryang-kanmagi.html', '경량칸막이'), ('/qna/seokgo-kanmagi.html', '석고 칸막이')]),
  ("cheonjang", "천장", "석고 천장·루바 천장·흡음 천장", ["천장 각재(또는 경량 천장틀)로 틀을 짜고 조명·에어컨 자리를 미리 냅니다.", "석고보드·루바·흡음재 중 매장 콘셉트에 맞는 마감을 붙입니다.", "노출 천장은 기존 구조물을 정리하고 도장합니다."],
-  ["gypsum", "hinoki", "sound"], [("/qna/cheonjang-mokgong-bangbeop.html", "천장 목공 방법"), ("/sigongbeop/rubaa-cheonjang.html", "루바 천장 시공법"), ("/bigyo/heupeum-board.html", "흡음보드 비교"), ('/qna/sangga-cheonjang-mokgong.html', '상가 천장 목공'), ('/qna/sangga-cheonjang-tex.html', '상가 천장 텍스 교체'), ('/qna/nochul-cheonjang.html', '노출천장'), ('/qna/cafe-cheonjang-magam.html', '카페 천장 마감')]),
+  ["gypsum", "hinoki", "sound"], [("/qna/cheonjang-mokgong-bangbeop.html", "천장 목공 방법"), ("/sigongbeop/rubaa-cheonjang.html", "루바 천장 시공법"), ("/bigyo/heupeum-board.html", "흡음보드 비교"), ('/qna/sangga-cheonjang-mokgong.html', '상가 천장 목공'), ('/qna/sangga-cheonjang-tex.html', '상가 천장 텍스 교체'), ('/qna/nochul-cheonjang.html', '노출천장'), ('/qna/cafe-cheonjang-magam.html', '카페 천장 마감'), ('/qna/cheonjang-heubeumjae-self.html', '천장 흡음재 셀프')]),
  ("counter", "카운터·바", "카운터·바 테이블·진열대 제작", ["카운터 몸통은 각재·합판으로 짜고 겉은 MDF·필름이나 타일로 마감합니다.", "상판은 물·열을 생각해 집성판·인조석 등으로 고릅니다.", "포스·전원 배선 구멍을 제작 단계에서 냅니다."],
   ["jipseong", "mdf", "hapan"], [("/qna/counter-jejak.html", "카운터 제작"), ("/qna/bar-table.html", "바 테이블"), ("/cut.html", "재단표 만들기"), ('/qna/cafe-bar-table-nopi.html', '카페 바테이블 높이'), ('/qna/maejang-counter-nopi.html', '매장 카운터 높이')]),
  ("byeok", "벽 마감", "필름·도장·템바보드·타일 벽", ["벽 바탕을 평평하게 퍼티하고 샌딩합니다.", "필름은 프라이머 후 붙이고, 도장은 하도·상도 순서로 칠합니다.", "템바보드·패널은 본드와 타카로 고정하고 모서리를 몰딩으로 마감합니다."],
