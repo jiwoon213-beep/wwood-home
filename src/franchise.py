@@ -324,9 +324,9 @@ def gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, top, vsplit, P):
          + '<h2 class="gt">업체가 자주 찾는 정보</h2><div class="qk">' + "".join(f'<a href="{u}">{E(t)}</a>' for u, t in INFO) + '</div>'
          + f'<h2 class="gt">자주 쓰는 자재 기준가</h2>{ptab}<p class="gs">매장 소매 기준가(부가세 별도) · 운임 별도 · 사업자는 도매회원 가입 후 회원가</p></section>'
          f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>{CTA}', "", ld)
-    gen_gj(page, E, CTA, faqslide, TEL)
+    gen_gj(page, E, CTA, faqslide, TEL, top, vsplit)
     gen_balju(page, E, CTA, TEL, EMAIL)
-    gen_city(page, E, CTA, faqslide, TEL, ptab)
+    gen_city(page, E, CTA, faqslide, TEL, ptab, top, vsplit)
     return out
 
 
@@ -365,12 +365,17 @@ GJ = [
 ]
 
 
-def gen_gj(page, E, CTA, faqslide, TEL):
+def gen_gj(page, E, CTA, faqslide, TEL, top=None, vsplit=None):
     tel = TEL.replace("-", "")
     order = " → ".join(g[1] for g in GJ)
     for slug, nm, full, steps, mats, links in GJ:
         mlinks = "".join(f'<a href="/jajae/{m}.html">{E(JN.get(m, m))}</a>' for m in mats)
         ilinks = "".join(f'<a href="{u}">{E(t)}</a>' for u, t in links)
+        _kw = {"cheolgeo": "철거", "gabyeok": "가벽|칸막이", "cheonjang": "천장|루바|텍스", "counter": "카운터|상판|싱크대", "byeok": "필름|템바|도장|페인트|아트월", "badak": "데코타일|타일|마루|장판",
+               "mun": "중문|방문|도어|문틀", "jubang": "주방|싱크대|타일", "ganpan": "간판|외벽|사이딩", "seonban": "선반|수납|진열", "bangeum-room": "방음|흡음", "hwajangsil": "욕실|화장실",
+               "dancha": "계단|단차|단상", "facade": "외벽|사이딩|파사드", "baekroom": "창고|선반"}.get(slug, nm)
+        _vs = top(lambda v: v.get("type") != "S" and re.search(_kw, v["title"]), 6) if top else []
+        _vsec = (f'<section class="wrap sec"><h2>{E(nm)} 시공 영상</h2>{vsplit(_vs, "h3")}</section>') if (_vs and vsplit) else ""
         fq = [(f"매장 {nm} 공사 자재를 현장으로 받을 수 있나요?", "네. 품목·규격·수량·재단 크기·현장 주소를 보내 주시면 자재값과 운임을 먼저 알려 드리고, 입금 확인 후 재단·상차해 용달로 보냅니다."),
               ("여러 매장 같은 공사를 반복하는데요?", "같은 재단표로 매장마다 같은 크기로 재단해 보낼 수 있습니다. 매장마다 달라지는 치수만 실측해 알려 주세요."),
               ("사업자 회원가가 있나요?", "사업자등록증·명함 확인 후 도매회원(wwood.kr)으로 가입하시면 회원가로 주문하실 수 있습니다.")]
@@ -382,6 +387,7 @@ def gen_gj(page, E, CTA, faqslide, TEL):
                 + (f'<h2 class="gt">이 공정 자재</h2><div class="qk">{mlinks}</div>' if mats else "")
                 + f'<h2 class="gt">관련 정보</h2><div class="qk">{ilinks}</div>'
                 f'<h2 class="gt">매장 공사 전체 순서</h2><p>{E(order)}</p><div class="qk">' + "".join(f'<a href="/franchise/g-{g[0]}.html">{E(g[1])}</a>' for g in GJ if g[0] != slug) + '</div></section>'
+                + _vsec
                 + f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>'
                 + '<section class="wrap sec"><p class="small">업종별 자재: ' + " · ".join(f'<a href="/franchise/{b[0]}.html">{E(b[1])}</a>' for b in BIZ[:20]) + ' · <a href="/franchise/">전체</a></p></section>' + CTA)
         ld = {"@context": "https://schema.org", "@type": "HowTo", "name": f"상가·매장 {nm} 공사 순서", "step": [{"@type": "HowToStep", "text": s} for s in steps]}
@@ -424,7 +430,7 @@ CITY = [("seoul", "서울", "seoul"), ("busan", "부산", "busan-gyeongnam"), ("
         ("suncheon", "순천", "gwangju-jeonnam"), ("gunsan", "군산", "jeonbuk")]
 
 
-def gen_city(page, E, CTA, faqslide, TEL, ptab):
+def gen_city(page, E, CTA, faqslide, TEL, ptab, top=None, vsplit=None):
     tel = TEL.replace("-", "")
     try:
         import nation as _N
@@ -434,6 +440,20 @@ def gen_city(page, E, CTA, faqslide, TEL, ptab):
     for slug, nm, rg in CITY:
         jeju = rg == "jeju"
         how = "화물 배편" if jeju else "용달(화물차)"
+        import os as _os, glob as _gl
+        from urllib.parse import quote as _q
+        _ad = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "..", "apt")
+        _ap = []
+        for _f in sorted(_gl.glob(_os.path.join(_ad, "*", "*.html"))):
+            _b = _os.path.basename(_f)[:-5]
+            if "-" in _b or _b == "index": continue
+            if _b.startswith(nm): _ap.append((_b, "/apt/" + _os.path.basename(_os.path.dirname(_f)) + "/" + _q(_b) + ".html"))
+        _sd = {"서울": "seoul", "부산": "busan", "인천": "incheon", "대구": "daegu", "광주": "gwangju", "울산": "ulsan", "제주": "jeju"}.get(nm)
+        _aps = ""
+        if _ap or _sd:
+            _aps = '<h2 class="gt">' + E(nm) + ' 아파트별 인테리어 자재</h2><div class="qk">' + (f'<a href="/apt/{_sd}/">{E(nm)} 전체 아파트</a>' if _sd else "") + "".join(f'<a href="{u}">{E(t)}</a>' for t, u in _ap[:12]) + '</div>'
+        _vs = top(lambda v: nm in v["title"], 4) if top else []
+        _vsec = (f'<section class="wrap sec"><h2>{E(nm)} 현장 영상</h2>{vsplit(_vs, "h3")}</section>') if (_vs and vsplit) else ""
         fq = [(f"{nm}에 매장이 있나요?", f"매장은 대전 유성대로 44 한 곳(3000평)입니다. {nm} 현장에는 대전에서 원하는 크기로 재단해 {how}로 보내 드립니다."),
               (f"{nm} 현장까지 운임은 얼마인가요?", "정해진 금액이 없고 거리·차량·수량에 따라 달라 주문 전에 먼저 견적을 드립니다. 품목을 한 번에 모으면 운임 부담이 줄어듭니다."),
               ("실물을 보고 고를 수 있나요?", "대전 매장에 오시면 큰 판 실물을 보실 수 있고, 유튜브 '월드건축자재DIY'와 홈페이지 공간 사진·쇼룸 사진으로 미리 보실 수 있습니다. 필요하면 사진으로 실물 상태를 보내 드립니다."),
@@ -445,8 +465,10 @@ def gen_city(page, E, CTA, faqslide, TEL, ptab):
                 f'<h2 class="gt">이렇게 받습니다</h2><ol class="gtip"><li>발주서나 전화로 품목·규격·수량·재단 크기·{E(nm)} 현장 주소를 알려 주세요.</li><li>자재값과 {E(nm)}까지 운임을 먼저 알려 드립니다.</li><li>입금 확인 후 재단·상차해 출고합니다.</li></ol>'
                 f'<h2 class="gt">자주 쓰는 자재 기준가</h2>{ptab}<p class="gs">매장 소매 기준가(부가세 별도) · 운임 별도</p>'
                 f'<h2 class="gt">업종별·공정별 자재</h2><div class="qk">' + "".join(f'<a href="/franchise/{b[0]}.html">{E(b[1])}</a>' for b in BIZ[:16]) + "".join(f'<a href="/franchise/g-{g[0]}.html">{E(g[1])}</a>' for g in GJ[:6]) + '<a href="/qna/interior-jajae-bolsu-inneun-got.html">자재 실물 볼 수 있는 곳</a><a href="/qna/interior-jajae-hoesa.html">자재 거래처 고르기</a></div>'
+                + _aps
                 + (f'<p class="small"><a href="/franchise/r-{rg}.html">{E(RN.get(rg, ""))} 체인점 자재 배송</a> · <a href="/jeonguk/{rg}.html">{E(RN.get(rg, ""))} 목재 배송 안내</a></p>' if rg in RN else "") + '</section>'
                 + f'<section class="wrap sec gg"><h2 class="gt">자주 묻는 질문</h2>{faqslide(fq)}</section>'
+                + _vsec
                 + '<section class="wrap sec"><p class="small">다른 도시: ' + " · ".join(f'<a href="/franchise/c-{c[0]}.html">{E(c[1])}</a>' for c in CITY if c[0] != slug) + '</p></section>' + CTA)
         ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in fq]}
         page(f"franchise/c-{slug}.html", f"{nm} 인테리어 자재 — 석고보드·각재·합판 재단해 {nm} 현장 배송 | 대전 영진목재",
