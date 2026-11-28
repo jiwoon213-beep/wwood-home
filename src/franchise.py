@@ -216,6 +216,14 @@ BIZ = [
   ["jipseong", "hapan", "sound", "gujo"],
   ["단상은 각재로 틀을 짜고 합판·마루로 덮습니다.", "울림이 큰 공간은 흡음재로 소리를 정리합니다."],
   [("/gonggan/cafe-wood-stage.html", "단상 공간 사진"), ("/mandeul/jakeopdae.html", "작업대 만들기")]),
+ ("teahouse", "전통찻집·한방카페", "찻집·티카페·한옥 콘셉트 카페", "좌식 마루·평상, 루바·한지 느낌 벽, 격자 칸막이, 천장 루바",
+  ["gujo", "hapan", "hinoki", "maru", "molding", "stain"],
+  ["좌식 마루는 각재로 틀을 짜고 합판 위에 마루를 덮어 걸터앉기 좋은 높이로 맞춥니다.", "루바·원목 마감은 차와 물이 튀는 곳이라 오일·스테인으로 표면을 보호합니다."],
+  [("/qna/jwasik-pyeongsang.html", "좌식 평상"), ("/qna/gansal-partition.html", "간살 파티션"), ("/qna/ruba-oil.html", "루바 오일 마감")]),
+ ("arcade", "오락실·인형뽑기방", "코인오락실·게임장·뽑기방", "기계 배치 벽·바닥 마감, 배선 정리 몰딩, 천장 조명, 카운터",
+  ["gypsum", "sound", "film", "molding", "maru"],
+  ["기계 무게와 전기 용량·콘센트 위치는 전기 업체와 먼저 정하고 목공을 합니다.", "기계 소리가 울리는 홀은 벽·천장에 흡음재를 넣어 소음을 줄입니다."],
+  [("/qna/tv-seon-sumgigi.html", "배선 숨기기"), ("/qna/seokgo-cheonjang-jomyeong.html", "석고 천장 조명"), ("/qna/heubeumjae-jongryu.html", "흡음재 종류")]),
 ]
 
 PX = [("석고보드 일반 9.5T 3×6", r"석고-일반 3\*6 @ 9\.5T$"), ("방수 석고보드 9.5T 3×6", r"석고-방수 3\*6 @ 9\.5T"), ("방화 석고보드 12.5T 3×6", r"석고-방화 3\*6 @12\.5T"),
@@ -362,6 +370,8 @@ GJ = [
   ["gypsum", "tile"], [("/qna/jubang-byeok.html", "주방 벽"), ("/qna/bangsu-seokgo.html", "방수 석고보드"), ("/qna/banghwa-seokgo.html", "방화 석고보드"), ('/qna/cafe-jubang-seonban.html', '카페 주방 선반·동선'), ('/qna/samusil-hyugesil.html', '휴게실·탕비실')]),
  ("ganpan", "간판·외부", "간판 바탕·외부 마감", ["간판을 달 외벽 바탕(각파이프·합판)을 단단히 고정합니다.", "외부 목재는 방부목·외부용 마감으로 비를 막습니다.", "어닝·캐노피 등 외부 구조물은 건물 관리 규정을 먼저 확인합니다."],
   ["bangbu", "hardware", "siding"], [("/qna/ganpan-sigong.html", "간판 시공"), ("/qna/oebyeok-paint.html", "외벽 페인트")]),
+ ("jomyeong", "조명 바탕 목공", "간접조명 홈·라인조명·커튼박스 목공", ["조명 위치·종류(라인·매입·간접)와 전선 자리를 전기 업체와 먼저 정합니다.", "천장·벽에 각재로 간접조명 턱이나 라인조명 홈 바탕을 짭니다.", "석고보드·몰딩으로 덮어 빛이 새는 선을 정리하고 도장·필름으로 마감합니다."],
+  ["gujo", "gypsum", "molding"], [("/qna/line-jomyeong.html", "라인조명"), ("/qna/ganjeop-molding-self.html", "간접조명 몰딩"), ("/qna/uomul-cheonjang-ganjeop.html", "우물천장 간접조명"), ("/qna/curtainbox-ganjeop.html", "커튼박스 간접조명"), ("/qna/jomyeong-baechi.html", "조명 배치")]),
  ("seonban", "선반·집기", "벽 선반·진열 집기", ["벽 진열은 바탕 합판이나 각재에 브라켓을 고정합니다.", "같은 크기 선반판은 재단표로 반복 재단합니다.", "무거운 진열은 선반 두께와 받침 간격을 넉넉히 잡습니다."],
   ["jipseong", "mdf", "hardware"], [("/qna/seonban-bracket.html", "선반 브라켓"), ("/qna/system-seonban.html", "시스템 선반"), ("/qna/maejang-banbok-jaedan.html", "같은 규격 반복 재단"), ('/qna/mujiju-byeokseonban.html', '무지주 벽선반')]),
 ]
@@ -375,7 +385,7 @@ def gen_gj(page, E, CTA, faqslide, TEL, top=None, vsplit=None):
         ilinks = "".join(f'<a href="{u}">{E(t)}</a>' for u, t in links)
         _kw = {"cheolgeo": "철거", "gabyeok": "가벽|칸막이", "cheonjang": "천장|루바|텍스", "counter": "카운터|상판|싱크대", "byeok": "필름|템바|도장|페인트|아트월", "badak": "데코타일|타일|마루|장판",
                "mun": "중문|방문|도어|문틀", "jubang": "주방|싱크대|타일", "ganpan": "간판|외벽|사이딩", "seonban": "선반|수납|진열", "bangeum-room": "방음|흡음", "hwajangsil": "욕실|화장실",
-               "dancha": "계단|단차|단상", "facade": "외벽|사이딩|파사드", "baekroom": "창고|선반"}.get(slug, nm)
+               "dancha": "계단|단차|단상", "jomyeong": "조명|간접", "facade": "외벽|사이딩|파사드", "baekroom": "창고|선반"}.get(slug, nm)
         _vs = top(lambda v: v.get("type") != "S" and re.search(_kw, v["title"]), 6) if top else []
         _vsec = (f'<section class="wrap sec"><h2>{E(nm)} 시공 영상</h2>{vsplit(_vs, "h3")}</section>') if (_vs and vsplit) else ""
         fq = [(f"매장 {nm} 공사 자재를 현장으로 받을 수 있나요?", "네. 품목·규격·수량·재단 크기·현장 주소를 보내 주시면 자재값과 운임을 먼저 알려 드리고, 입금 확인 후 재단·상차해 용달로 보냅니다."),
