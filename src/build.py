@@ -303,7 +303,7 @@ DNAV = [
     ("재단·계산", "/cut.html", [("/cut.html", "목재 재단", "원하는 크기로 재단 미리보기"), ("/calc.html", "자재비 계산기", "몇 장·몇 평 필요한지 계산")]),
     ("DIY·시공법", "/mandeul/", [("/mandeul/", "DIY 만들기", "가구·데크 자재와 재단 크기"), ("/sigongbeop/", "자재 시공법", "붙이는 순서·주의할 점"), ("/video/", "영상", "현장 시공·자재 영상")]),
     ("인테리어", "/gonggan/", [("/doumi.html", "셀프 인테리어 도우미", "질문 4개로 필요한 것 한 번에"), ("/apt/", "전국 아파트별 자재", "우리 단지 연식에 맞는 자재"), ("/gonggan/", "공간 사진", "사진 속 + 누르면 자재·시공법"), ("/trend/", "인테리어 트렌드", "스타일별 도어·벽재·바닥")]),
-    ("시공·도매", "/sigong.html", [("/sigong.html", "시공", "월드아키텍쳐 직접 시공"), ("/yeongyeol/", "시공팀 연결", "공정별 시공팀 연결"), ("/geuncheo.html", "현장 근처 찾기", "철물점·인력사무소·폐기물·용달"), ("/dome.html", "도매·납품", "업체·현장 도매 회원")]),
+    ("시공·도매", "/sigong.html", [("/sigong.html", "시공", "월드아키텍쳐 직접 시공"), ("/yeongyeol/", "시공팀 연결", "공정별 시공팀 연결"), ("/geuncheo.html", "현장 근처 찾기", "철물점·인력사무소·폐기물·용달"), ("/dome.html", "도매·납품", "업체·현장 도매 회원"), ("/franchise/", "체인점 매장 자재", "프랜차이즈 매장 공사 업체 재단 납품")]),
     ("소식", "/news/", []),
 ]
 def _dnav(active):
@@ -2130,6 +2130,11 @@ def build():
     LCLIST = _lc.gen(page, E, CTA, faqslide, ADDR, HOURS, TEL, ROOT, CASES, top, vsplit)
     import nation as _nt
     NTLIST = _nt.gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, CASES, top, vsplit, P)
+    try:
+        import franchise as _fr
+        FRLIST = _fr.gen(page, E, CTA, faqslide, TEL, EMAIL, ADDR, HOURS, top, vsplit, P)
+    except Exception as _e:
+        print("franchise 오류", _e); FRLIST = []
     import trend as _trd
     TRLIST = _trd.gen(page, E, CTA, faqslide, ADDR, HOURS, ROOT)
     MKNM = {x[0]: x[1] for x in MK}
