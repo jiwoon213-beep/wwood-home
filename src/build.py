@@ -2875,6 +2875,12 @@ var h=location.hash.slice(1);if(h){{var ix=[].slice.call(sl.children).findIndex(
         if x[0] not in _nx and _isnew(_fs0.get(f"{BASE}/{k_}/{x[0]}.html", _nd.isoformat())): _newpg.add(f"/{k_}/{x[0]}.html")
     for p_ in POSTS:
         if _isnew(p_.get("date", "")): _newpg.add(f"/news/{p_['slug']}.html")
+    for u_, d_ in _fs0.items():  # 브랜드 스타일 DIY·인테리어 회사 스타일 시공법
+        p_ = u_.replace(BASE, "")
+        if (p_.startswith("/mandeul/s-") or p_.startswith("/sigongbeop/b-")) and _isnew(d_): _newpg.add(p_)
+    for p_ in glob.glob(f"{OUT}/mandeul/s-*.html") + glob.glob(f"{OUT}/sigongbeop/b-*.html"):
+        p_ = "/" + os.path.relpath(p_, OUT)
+        if BASE + p_ not in _fs0: _newpg.add(p_)  # 오늘 처음 생긴 것
     _newv = set()
     for l_ in open(f"{ROOT}/data/yt_all.tsv", encoding="utf-8") if os.path.exists(f"{ROOT}/data/yt_all.tsv") else []:
         r_ = l_.split("\t")
